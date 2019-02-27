@@ -27,7 +27,7 @@ React API and nothing more.
 
 ## Docs
 
-| @[Annotations](https://github.com/Neloreck/dreamstate/wiki/Annotations)| [Utils](https://github.com/Neloreck/dreamstate/wiki/Utils)|
+| @[Decorators](https://github.com/Neloreck/dreamstate/wiki/Decorators)| [Utils](https://github.com/Neloreck/dreamstate/wiki/Utils)|
 | :------------- | :------------- |
 | @[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume) | [ReactContextManager](https://github.com/Neloreck/dreamstate/wiki/ReactContextManager) |
 | @[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide) | - |
@@ -41,87 +41,94 @@ React API and nothing more.
 <p>
     
 ```javascript jsx
-import * as React from "react";
-import { PureComponent } from "react";
-import { render } from "react-dom";
+import * as React from 'react';
+import { PureComponent } from 'react';
+import { render } from 'react-dom';
 
-import { Consume, Provide, ReactContextManager } from "dreamstate";
+import { Bind, Consume, Provide, ReactContextManager } from 'dreamstate';
 
-// Data store.
-
+// Context store creation.
 export class AuthContext extends ReactContextManager {
 
-  changeAuthenticationStatus = () => {
-    this.state.authState.isAuthenticated = !this.state.authState.isAuthenticated;
-    this.update();
+  // Wrap your actions and state separately to avoid naming collisions.
+  context = {
+    authActions: {
+      switchAuthStatus: this.switchAuthStatus,
+      randomizeUserAsync: this.randomizeUserAsync,
+      randomizeUser: this.randomizeUser
+    },
+    authState: {
+      isAuthenticated: true,
+      user: 'initial'
+    }
   };
 
-  setUser = (user) => {
-    this.state.authState.user = user;
-    this.update();
+  setState = ReactContextManager.getSetter(this, 'authState');
+
+  // Bind decorator. Arrow functions-methods/.bind(this) or lambdas can be used for binding too.
+  @Bind()
+  switchAuthStatus() {
+    this.setState({ isAuthenticated: !this.context.authState.isAuthenticated });
   };
 
-  setUserAsync = () => {
+  @Bind()
+  randomizeUser() {
+    this.setState({ user: 'user-' + Math.floor(Math.random() * 100) });
+  };
+
+  @Bind()
+  randomizeUserAsync() {
     return new Promise((resolve) => {
       setTimeout(() => {
-        this.state.authState.user = "user-" + Math.floor(Math.random() * 10000);
-        this.update();
+        this.setState({ user: 'user-' + Math.floor(Math.random() * 10000) });
         resolve();
       }, 3000)
     });
   };
 
-  // Wrap your actions and state separately to avoid naming collisions.
-  context = {
-    authActions: {
-      changeAuthenticationStatus: this.changeAuthenticationStatus,
-      setUserAsync: this.setUserAsync,
-      setUser: this.setUser
-    },
-    authState: {
-      isAuthenticated: true,
-      user: "anonymous"
-    }
-  };
+  // First provider mounted.
+  onProvisionStarted() {
+    console.info('Data provision started.');
+  }
+
+  // Context was updated.
+  afterUpdate() {
+    console.info('Data updated:', this.context.authState);
+  }
 
 }
 
+// Singleton instance. Should be located in some kind of stores 'index' module file.
 const authContext = new AuthContext();
 
-// View.
-
-/*
- * Single provide-consume component.
- * Actually, only one module component (for example, router) should provide context.
- * All you need - inject props by consuming.
- */
-@Provide(authContext)
+// Context consuming component with reactive subscription.
 @Consume(authContext)
 export class MainView extends PureComponent {
 
+  paddingStyle = { padding: '10px' };
+
   render() {
+
     const {
       label,
-      authState: {user, isAuthenticated},
-      authActions: {setUser, setUserAsync, changeAuthenticationStatus}
+      authState: { user, isAuthenticated },
+      authActions: { randomizeUser, randomizeUserAsync, switchAuthStatus }
     } = this.props;
 
-    const paddingStyle = { padding: "10px" };
-
     return (
-      <div style={paddingStyle}>
+      <div style={this.paddingStyle}>
 
         <div> External prop value: '{ label }' </div>
 
-        <div style={paddingStyle}>
+        <div style={this.paddingStyle}>
           <span>USERNAME: </span> {user} <br/>
           <span>AUTHENTICATED: </span>  {isAuthenticated.toString()} <br/>
         </div>
 
-        <div style={paddingStyle}>
-          <button onClick={changeAuthenticationStatus}>Change Authentication Status</button>
-          <button onClick={setUserAsync}>Randomize User Async</button>
-          <button onClick={() => setUser("user-" + Math.floor(Math.random() * 100))}>Randomize User</button>
+        <div style={this.paddingStyle}>
+          <button onClick={switchAuthStatus}>Switch Authentication Status</button>
+          <button onClick={randomizeUserAsync}>Randomize User Async</button>
+          <button onClick={randomizeUser}>Randomize User</button>
         </div>
 
       </div>
@@ -130,21 +137,33 @@ export class MainView extends PureComponent {
 
 }
 
-// Render into DOM.
+// Component with provider. All consumers should be under it in the react-dom tree.
+@Provide(authContext)
+export class Application extends PureComponent {
 
+  render() {
+
+    const { children } = this.props;
+
+    return children;
+  }
+
+}
+
+// Render into DOM.
 render(
-  <div>
-    <MainView label={ "First component." }/> 
-    <MainView label={ "Second component." }/>
-  </div>,
-  document.getElementById("application-root")
+  <Application>
+    <MainView label={ 'First item with consumer.'}/>
+    <MainView label={ 'Second item with consumer.'}/>
+  </Application>,
+  document.getElementById('application-root')
 );
 
 ```
 </p>
 </details>
 
-<details><summary>Application entrypoint.</summary>
+<details><summary>TS Application entrypoint example.</summary>
 <p>
     
 ```typescript jsx
