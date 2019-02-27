@@ -189,7 +189,7 @@ render(
 </p>
 </details>
 
-<details><summary>Context store reexport and signleton creation.</summary>
+<details><summary>TS Context store reexport and signleton creation.</summary>
 <p>
     
 ```typescript jsx
@@ -206,7 +206,7 @@ export const dataContextManager: DataContextManager = new DataContextManager();
 </p>
 </details>
 
-<details><summary>Context and handlers declaration.</summary>
+<details><summary>TS Context and handlers declaration.</summary>
 <p>
     
 ```typescript jsx
@@ -219,9 +219,9 @@ import { Bind, ReactContextManager } from "dreamstate";
 
 export interface IAuthContext {
   authActions: {
-    setUser: (user: string) => void;
-    setUserAsync: () => Promise<void>;
-    changeAuthenticationStatus: () => void;
+    randomizeUser(): void;
+    randomizeUserAsync(): Promise<void>;
+    changeAuthenticationStatus(): void;
   };
   authState: {
     isAuthenticated: boolean;
@@ -244,8 +244,8 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
     // Some kind of handlers.
     authActions: {
       changeAuthenticationStatus: this.changeAuthenticationStatus,
-      setUserAsync: this.setUserAsync,
-      setUser: this.setUser
+      randomizeUserAsync: this.randomizeUserAsync,
+      randomizeUser: this.randomizeUser
     },
     // Provided storage.
     authState: {
@@ -254,6 +254,7 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
     }
   };
 
+  // Setter with autoupdate instead of manual transactional updating.
   private setContext = ReactContextManager.getSetter(this, "authState");
 
   @Bind()
@@ -262,15 +263,15 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
   }
 
   @Bind()
-  public setUser(user: string): void {
-    this.setContext({ user });
+  public randomizeUser(): void {
+    this.setContext({ user: "user-" + Math.floor(Math.random() * 100) });
   }
 
   @Bind()
-  public setUserAsync(): Promise<void> {
+  public randomizeUserAsync(): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        this.setContext({ user: "user-" + Math.floor(Math.random() * 10000) });
+        this.randomizeUser();
         resolve();
       }, AuthContextManager.ASYNC_USER_CHANGE_DELAY)
     });
@@ -283,7 +284,7 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
 </p>
 </details>
 
-<details><summary>Connected component.</summary>
+<details><summary>TS Connected component.</summary>
 <p>
   
 ```typescript jsx
@@ -294,16 +295,14 @@ import { PureComponent, ReactNode } from "react";
 // Store related things.
 import { authContextManager, dataContextManager, IAuthContext, IDataContext } from "../data";
 
-
 // Props typing: own, injected and bundled props. You should know what has to be declared manually.
 export interface IMainViewOwnProps { someLabelFromExternalProps: string; }
 export interface IMainViewExternalProps extends IAuthContext, IDataContext {}
-export interface IMainViewProps extends IMainViewExternalProps, IMainViewOwnProps {}
 
 // Component related.
 @Provide(authContextManager, dataContextManager)
 @Consume(authContextManager, dataContextManager)
-export class MainView extends PureComponent<IMainViewProps> {
+export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOwnProps> {
 
   public render(): ReactNode {
 
@@ -312,9 +311,9 @@ export class MainView extends PureComponent<IMainViewProps> {
       someLabelFromExternalProps,
       // Get, what you need form injected props.
       dataState: {value},
-      dataActions: {setValue},
+      dataActions: {randomizeValue},
       authState: {user, isAuthenticated},
-      authActions: {setUser, setUserAsync, changeAuthenticationStatus}
+      authActions: {randomizeUser, randomizeUserAsync, changeAuthenticationStatus}
     } = this.props;
 
     const rootStyle = { border: "2px black solid", margin: 12, padding: 12 };
@@ -328,21 +327,21 @@ export class MainView extends PureComponent<IMainViewProps> {
         <div style={sectionStyle}>
 
           <h5> Auth context: </h5>
-          <span>USERNAME: </span> {user} <br/>
-          <span>AUTHENTICATED: </span>  {isAuthenticated.toString()} <br/>
+          <span> USERNAME: </span> {user} <br/>
+          <span> AUTHENTICATED: </span>  {isAuthenticated.toString()} <br/>
   
           <button onClick={changeAuthenticationStatus}>Change Authentication Status</button>
-          <button onClick={setUserAsync}>Randomize User Async</button>
-          <button onClick={() => setUser("user-" + Math.floor(Math.random() * 100))}>Randomize User</button>
+          <button onClick={randomizeUserAsync}>Randomize User Async</button>
+          <button onClick={randomizeUser}>Randomize User</button>
        
         </div>
 
         <div style={sectionStyle}>
 
           <h5> Data context: </h5>
-          <span>VALUE: </span> {value} <br/>
+          <span> VALUE: </span> {value} <br/>
 
-          <button onClick={() => setValue("value-" + Math.floor(Math.random() * 100))}>Randomize Value</button>
+          <button onClick={randomizeValue}>Randomize Value</button>
 
         </div>
 

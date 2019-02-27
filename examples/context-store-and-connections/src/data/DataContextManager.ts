@@ -7,7 +7,7 @@ import { Bind, ReactContextManager } from "dreamstate";
 
 export interface IDataContext {
   dataActions: {
-    setValue: (value: string) => void;
+    randomizeValue(): void;
   };
   dataState: {
     value: string;
@@ -26,7 +26,7 @@ export class DataContextManager extends ReactContextManager<IDataContext> {
   protected readonly context: IDataContext = {
     // Some kind of handlers.
     dataActions: {
-      setValue: this.setValue
+      randomizeValue: this.randomizeValue
     },
     // Provided storage.
     dataState: {
@@ -35,9 +35,9 @@ export class DataContextManager extends ReactContextManager<IDataContext> {
   };
 
   @Bind()
-  public setValue(value: string): void {
+  public randomizeValue(): void {
     // Manual transaction for update.
-    this.context.dataState = { ...this.context.dataState, value };
+    this.context.dataState = { ...this.context.dataState, value: "value-" + Math.floor(Math.random() * 100) };
     this.update();
   }
 

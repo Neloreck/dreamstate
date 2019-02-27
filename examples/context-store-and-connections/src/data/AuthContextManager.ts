@@ -7,9 +7,9 @@ import { Bind, ReactContextManager } from "dreamstate";
 
 export interface IAuthContext {
   authActions: {
-    setUser: (user: string) => void;
-    setUserAsync: () => Promise<void>;
-    changeAuthenticationStatus: () => void;
+    randomizeUser(): void;
+    randomizeUserAsync(): Promise<void>;
+    changeAuthenticationStatus(): void;
   };
   authState: {
     isAuthenticated: boolean;
@@ -32,8 +32,8 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
     // Some kind of handlers.
     authActions: {
       changeAuthenticationStatus: this.changeAuthenticationStatus,
-      setUserAsync: this.setUserAsync,
-      setUser: this.setUser
+      randomizeUserAsync: this.randomizeUserAsync,
+      randomizeUser: this.randomizeUser
     },
     // Provided storage.
     authState: {
@@ -51,15 +51,15 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
   }
 
   @Bind()
-  public setUser(user: string): void {
-    this.setContext({ user });
+  public randomizeUser(): void {
+    this.setContext({ user: "user-" + Math.floor(Math.random() * 100) });
   }
 
   @Bind()
-  public setUserAsync(): Promise<void> {
+  public randomizeUserAsync(): Promise<void> {
     return new Promise((resolve) => {
       setTimeout(() => {
-        this.setContext({ user: "user-" + Math.floor(Math.random() * 10000) });
+        this.randomizeUser();
         resolve();
       }, AuthContextManager.ASYNC_USER_CHANGE_DELAY)
     });
