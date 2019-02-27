@@ -37,7 +37,7 @@ React API and nothing more.
 ## Example (wiki contains more explanations):
 
 
-<details><summary>Single file pure JS example:</summary>
+<details><summary>JS Single file store/provide/consume example:</summary>
 <p>
     
 ```javascript jsx
