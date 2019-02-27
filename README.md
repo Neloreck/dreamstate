@@ -33,9 +33,11 @@ React API and nothing more.
 | @[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide) | - |
 | @[Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind) | - |
 
+## Documentation:
+
+Repository [wiki](https://github.com/Neloreck/dreamstate/wiki) includes docs and samples. <br/>
 
 ## Example (wiki contains more explanations):
-
 
 <details><summary>JS Single file store/provide/consume example:</summary>
 <p>
@@ -355,18 +357,13 @@ export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOw
 </p>
 </details>
 
+## Full examples
 
-## Documentation:
-
-Repository [wiki](https://github.com/Neloreck/dreamstate/wiki) includes docs and samples. <br/>
+Repository includes example project with commentaries: <a href='https://github.com/Neloreck/dreamstate/tree/master/examples'>link</a>. <br/>
 
 ## Proposals and contribution:
 
 Feel free to contibute or mail me with questions/proposals/issues (Neloreck@gmail.com). <br/>
-
-## Full examples
-
-Repository includes example project with commentaries: <a href='https://github.com/Neloreck/dreamstate/tree/master/examples'>link</a>. <br/>
 
 ## Licence
 
