@@ -19,8 +19,8 @@ React API and nothing more.
 
 - `npm install --save dreamstate`
 
-
 <b>Important:</b>
+- Package requires 'react' as peer dependency.
 - Package uses 'expirementalDecorators' features. You should configure your project bundler correctly.
 
 <hr/>
@@ -141,6 +141,8 @@ render(
 );
 
 ```
+</p>
+</details>
 
 <details><summary>Application entrypoint.</summary>
 <p>
