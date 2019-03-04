@@ -1,4 +1,4 @@
-import { Bind, ReactContextManager } from "dreamstate";
+import { Bind, ContextManager } from "dreamstate";
 
 /*
  * Context manager state declaration.
@@ -23,7 +23,7 @@ export interface IAuthContext {
  *
  * Also, you can store something inside of it (additional props, static etc...) instead of modifying state each time.
  */
-export class AuthContextManager extends ReactContextManager<IAuthContext> {
+export class AuthContextManager extends ContextManager<IAuthContext> {
 
   private static ASYNC_USER_CHANGE_DELAY: number = 3000;
 
@@ -43,7 +43,7 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
   };
 
   // Setter with autoupdate instead of manual transactional updating.
-  private setContext = ReactContextManager.getSetter(this, "authState");
+  private setContext = ContextManager.getSetter(this, "authState");
 
   @Bind()
   public changeAuthenticationStatus(): void {

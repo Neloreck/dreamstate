@@ -29,7 +29,7 @@ React API and nothing more.
 
 | @[Decorators](https://github.com/Neloreck/dreamstate/wiki/Decorators)| [Utils](https://github.com/Neloreck/dreamstate/wiki/Utils)|
 | :------------- | :------------- |
-| @[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume) | [ReactContextManager](https://github.com/Neloreck/dreamstate/wiki/ReactContextManager) |
+| @[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume) | [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager) |
 | @[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide) | - |
 | @[Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind) | - |
 
@@ -47,10 +47,10 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { render } from 'react-dom';
 
-import { Bind, Consume, Provide, ReactContextManager } from 'dreamstate';
+import { Bind, Consume, Provide, ContextManager } from 'dreamstate';
 
 // Context store creation.
-export class AuthContext extends ReactContextManager {
+export class AuthContextManager extends ContextManager {
 
   // Wrap your actions and state separately to avoid naming collisions.
   context = {
@@ -65,7 +65,7 @@ export class AuthContext extends ReactContextManager {
     }
   };
 
-  setState = ReactContextManager.getSetter(this, 'authState');
+  setState = ContextManager.getSetter(this, 'authState');
 
   // Bind decorator. Arrow functions-methods/.bind(this) or lambdas can be used for binding too.
   @Bind()
@@ -101,10 +101,10 @@ export class AuthContext extends ReactContextManager {
 }
 
 // Singleton instance. Should be located in some kind of stores 'index' module file.
-const authContext = new AuthContext();
+const authContextManager = new AuthContextManager();
 
 // Context consuming component with reactive subscription.
-@Consume(authContext)
+@Consume(authContextManager)
 export class MainView extends PureComponent {
 
   paddingStyle = { padding: '10px' };
@@ -212,7 +212,7 @@ export const dataContextManager: DataContextManager = new DataContextManager();
 <p>
     
 ```typescript jsx
-import { Bind, ReactContextManager } from "dreamstate";
+import { Bind, ContextManager } from "dreamstate";
 
 /*
  * Context manager state declaration.
@@ -237,7 +237,7 @@ export interface IAuthContext {
  *
  * Also, you can store something inside of it (additional props, static etc...) instead of modifying state each time.
  */
-export class AuthContextManager extends ReactContextManager<IAuthContext> {
+export class AuthContextManager extends ContextManager<IAuthContext> {
 
   private static ASYNC_USER_CHANGE_DELAY: number = 3000;
 
@@ -257,7 +257,7 @@ export class AuthContextManager extends ReactContextManager<IAuthContext> {
   };
 
   // Setter with autoupdate instead of manual transactional updating.
-  private setContext = ReactContextManager.getSetter(this, "authState");
+  private setContext = ContextManager.getSetter(this, "authState");
 
   @Bind()
   public changeAuthenticationStatus(): void {

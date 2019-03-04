@@ -1,5 +1,5 @@
 import * as React from "react";
-import { createContext, ComponentType, Context, Consumer } from "react";
+import { createContext, ComponentType, Context, Consumer, ReactNode } from "react";
 import { default as OriginalBind} from "autobind-decorator";
 
 export const Bind = () => OriginalBind;
@@ -10,7 +10,7 @@ export const Bind = () => OriginalBind;
  * Observes changes and uses default react Provider.
  */
 export const Provide =
-  (...managers: Array<ReactContextManager<any>>) => <ComponentTargetType extends ComponentType<any>>(target: ComponentTargetType) => {
+  (...managers: Array<ContextManager<any>>) => <ComponentTargetType extends ComponentType<any>>(target: ComponentTargetType) => {
 
     let element!: ComponentType;
 
@@ -30,7 +30,7 @@ export const Provide =
  * Observes changes and uses default react Provider.
  */
 export const Consume =
-  (...managers: Array<ReactContextManager<any>>) =>
+  (...managers: Array<ContextManager<any>>) =>
     <ComponentTargetType> (target: ComponentTargetType) => {
 
       let element!: ComponentType;
@@ -53,9 +53,9 @@ export const Consume =
  * Class based context manager for react.
  * Current Issue: Static items inside of each class instance.
  */
-export abstract class ReactContextManager<T extends object> {
+export abstract class ContextManager<T extends object> {
 
-  public static getSetter = <S extends object, D extends keyof S>(manager: ReactContextManager<S>, key: D) => {
+  public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) => {
 
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
@@ -65,7 +65,7 @@ export abstract class ReactContextManager<T extends object> {
     };
   };
 
-  private static getObserver = (parent: ReactContextManager<any>) => (
+  private static getObserver = (parent: ContextManager<any>) => (
     class extends React.PureComponent {
 
       public componentWillMount(): void {
@@ -85,7 +85,7 @@ export abstract class ReactContextManager<T extends object> {
         }
       }
 
-      public render(): JSX.Element {
+      public render(): ReactNode {
         return React.createElement(parent.providedContext.Provider,  { value: parent.getProvidedProps() }, this.props.children);
       }
     }
@@ -104,7 +104,7 @@ export abstract class ReactContextManager<T extends object> {
   }
 
   public getProvider() {
-    return ReactContextManager.getObserver(this);
+    return ContextManager.getObserver(this);
   }
 
   public update(): void {

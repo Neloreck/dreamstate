@@ -1,4 +1,4 @@
-import { Bind, ReactContextManager } from "dreamstate";
+import { Bind, ContextManager } from "dreamstate";
 
 /*
  * Context manager state declaration.
@@ -20,7 +20,7 @@ export interface IDataContext {
  *
  * Also, you can store something inside of it (additional props, static etc...) instead of modifying state each time.
  */
-export class DataContextManager extends ReactContextManager<IDataContext> {
+export class DataContextManager extends ContextManager<IDataContext> {
 
   // Default context state.
   protected readonly context: IDataContext = {
