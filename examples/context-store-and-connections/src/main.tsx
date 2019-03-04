@@ -6,7 +6,7 @@ import { MainView, IMainViewExternalProps } from "./view/MainView";
 render(
   <div>
 
-    <h2> Both components are connected to the same store, so they are in total sync: </h2>
+    <div> Both components are connected to the same store, so they are in total sync: </div>
 
     <MainView someLabelFromExternalProps={"First component."} {...{} as IMainViewExternalProps}/>
     <MainView someLabelFromExternalProps={"Second component."} {...{} as IMainViewExternalProps}/>

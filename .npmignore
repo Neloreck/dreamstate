@@ -2,5 +2,5 @@
 .github/
 src/
 test/
-example/
+examples/
 target/

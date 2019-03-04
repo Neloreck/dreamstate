@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Declarative annotations based context for redux.",
   "main": "./index.js",
   "sideEffects": false,

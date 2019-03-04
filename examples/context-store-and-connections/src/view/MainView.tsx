@@ -36,7 +36,7 @@ export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOw
 
         <div style={sectionStyle}>
 
-          <h5> Auth context: </h5>
+          <span> Auth context: </span>
           <span> USERNAME: </span> {user} <br/>
           <span> AUTHENTICATED: </span>  {isAuthenticated.toString()} <br/>
   
@@ -48,7 +48,7 @@ export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOw
 
         <div style={sectionStyle}>
 
-          <h5> Data context: </h5>
+          <span> Data context: </span>
           <span> VALUE: </span> {value} <br/>
 
           <button onClick={randomizeValue}>Randomize Value</button>
