@@ -301,6 +301,10 @@ import { authContextManager, dataContextManager, IAuthContext, IDataContext } fr
 export interface IMainViewOwnProps { someLabelFromExternalProps: string; }
 export interface IMainViewExternalProps extends IAuthContext, IDataContext {}
 
+// Constant styles - constant refs without odd JSX rerenders.
+const rootStyle = { border: "2px black solid", margin: 12, padding: 12 };
+const sectionStyle = { padding: 8 };
+
 // Component related.
 @Provide(authContextManager, dataContextManager)
 @Consume(authContextManager, dataContextManager)
@@ -312,14 +316,12 @@ export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOw
       // Own prop.
       someLabelFromExternalProps,
       // Get, what you need form injected props.
-      dataState: {value},
-      dataActions: {randomizeValue},
-      authState: {user, isAuthenticated},
-      authActions: {randomizeUser, randomizeUserAsync, changeAuthenticationStatus}
+      dataState: { value },
+      dataActions: { randomizeValue },
+      authState: { user, isAuthenticated },
+      authActions: { randomizeUser, randomizeUserAsync, changeAuthenticationStatus }
     } = this.props;
 
-    const rootStyle = { border: "2px black solid", margin: 12, padding: 12 };
-    const sectionStyle = { padding: 8 };
 
     return (
       <div style={rootStyle}>
@@ -340,7 +342,7 @@ export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOw
 
         <div style={sectionStyle}>
 
-          <h5> Data context: </h5>
+          <span> Data context: </h5>
           <span> VALUE: </span> {value} <br/>
 
           <button onClick={randomizeValue}>Randomize Value</button>

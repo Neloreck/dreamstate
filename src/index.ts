@@ -1,13 +1,11 @@
-import * as React from "react";
-import { createContext, ComponentType, Context, Consumer, ReactNode } from "react";
 import { default as OriginalBind} from "autobind-decorator";
-
-export const Bind = () => OriginalBind;
+import * as React from "react";
+import { createContext, ComponentType, Context, Consumer, PureComponent, ReactNode } from "react";
 
 /*
- * Decorator.
+ * Decorator factory.
  * Provide context from context manager.
- * Observes changes and uses default react Provider.
+ * Observes changes and uses default react Provider for data flow.
  */
 export const Provide =
   (...managers: Array<ContextManager<any>>) => <ComponentTargetType extends ComponentType<any>>(target: ComponentTargetType) => {
@@ -25,7 +23,7 @@ export const Provide =
   };
 
 /*
- * Decorator.
+ * Decorator factory.
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
@@ -66,7 +64,8 @@ export abstract class ContextManager<T extends object> {
   };
 
   private static getObserver = (parent: ContextManager<any>) => (
-    class extends React.PureComponent {
+
+    class extends PureComponent {
 
       public componentWillMount(): void {
 
@@ -121,8 +120,15 @@ export abstract class ContextManager<T extends object> {
 
 
   private getProvidedProps(): T {
-    // @ts-ignore
+    // @ts-ignore current TS error with object/extends object.
     return { ...this.context };
   }
 
 }
+
+/*
+ * Decorator factory.
+ * Modifies method descriptor, so it will be bound to prototype instance once.
+ * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
+ */
+export const Bind = () => OriginalBind;
