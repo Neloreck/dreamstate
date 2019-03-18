@@ -3,6 +3,15 @@ import * as React from "react";
 import { createContext, ComponentType, Context, Consumer, PureComponent, ReactNode } from "react";
 
 /*
+ * ±1.4KB min+gzip, only pure react codebase usage.
+ *
+ * 'https://github.com/Neloreck/dreamstate'
+ *
+ * OOP style context store for react.
+ * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
+ */
+
+/*
  * Decorator factory.
  * Provide context from context manager.
  * Observes changes and uses default react Provider for data flow.
@@ -53,6 +62,11 @@ export const Consume =
  */
 export abstract class ContextManager<T extends object> {
 
+  /*
+   * Setter method factory.
+   * !Strictly typed generic method with 'update' lifecycle.
+   * Helps to avoid boilerplate code with manual 'update' transactional updates for simple methods.
+   */
   public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) => {
 
     return (obj: Partial<S[D]>) => {
@@ -63,7 +77,11 @@ export abstract class ContextManager<T extends object> {
     };
   };
 
-  private static getObserver = (parent: ContextManager<any>) => (
+  /*
+   * Observer factory for react providers.
+   * Allows to use lifecycle and observer pattern.
+   */
+  private static getObserver = (parent: ContextManager<any>): ComponentType => (
 
     class extends PureComponent {
 
@@ -90,37 +108,81 @@ export abstract class ContextManager<T extends object> {
     }
   );
 
-  private readonly providedContext: Context<T>;
+  /*
+   * Array of provider observers.
+   * Used for one app-level supply or for separate react dom sub-trees injection.
+   */
   protected observedElements: Array<any> = [];
+
+  /*
+   * Abstract store/actions bundle.
+   * Left for generic implementation.
+   */
   protected abstract context: T;
 
+  /*
+   * React Context<T> store internal.
+   */
+  private readonly providedContext: Context<T>;
+
+  /*
+   * Default constructor.
+   * Allows to create react context provider/consumer bundle.
+   * Stores it as private readonly singleton per each storage.
+   */
   public constructor() {
     this.providedContext = createContext(this.getProvidedProps());
   }
 
+  /*
+   * Utility getter.
+   * Allows to get related React.Consumer for manual renders.
+   */
   public getConsumer(): Consumer<T> {
     return this.providedContext.Consumer;
   }
 
+  /*
+   * Utility getter.
+   * Allows to get related React.Provider for manual renders.
+   */
   public getProvider() {
     return ContextManager.getObserver(this);
   }
 
+  /*
+   * Force React.Provider update.
+   * Calls lifecycle methods.
+   * Should not cause odd renders because affects only related React.Provider elements (commonly - 1 per store).
+   */
   public update(): void {
+
     this.beforeUpdate();
     this.observedElements.forEach((it) => it.forceUpdate());
     this.afterUpdate();
   }
 
+  /*
+   * Lifecycle.
+   * First provider was injected into DOM / Last provider was removed from DOM.
+   */
   protected onProvisionStarted(): void {}
   protected onProvisionEnded(): void {}
 
+  /*
+   * Lifecycle.
+   * Before/after manual update lifecycle event.
+   * Also shares for 'getSetter' methods.
+   */
   protected beforeUpdate(): void {}
   protected afterUpdate(): void {}
 
-
+  /*
+   * Get provided context object.
+   * Spread object every time for new references and provider HOC update.
+   * It will not force consumers/React.Provider odd renders because actions/state nested objects will be separated.
+   */
   private getProvidedProps(): T {
-    // @ts-ignore current TS error with object/extends object.
     return { ...this.context };
   }
 
