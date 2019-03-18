@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Declarative annotations based context for redux.",
   "main": "./index.js",
   "sideEffects": false,
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/neloreck/redux-cbd.git"
+    "url": "git+https://github.com/neloreck/dreamstate.git"
   },
   "keywords": [
     "action",
