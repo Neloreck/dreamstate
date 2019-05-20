@@ -1,6 +1,6 @@
 import { default as OriginalBind} from "autobind-decorator";
 import * as React from "react";
-import { createContext, ComponentType, Context, Consumer, PureComponent, ReactNode } from "react";
+import { createContext, Component, ComponentType, Context, Consumer, ReactNode } from "react";
 
 /*
  * ±1.4KB min+gzip, only pure react codebase usage.
@@ -10,6 +10,42 @@ import { createContext, ComponentType, Context, Consumer, PureComponent, ReactNo
  * OOP style context store for react.
  * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
  */
+
+/*
+ * Utility.
+ * Shallow comparison for objects.
+ */
+export const shallowEqualObjects = (first: object, second: object): boolean => {
+
+  if (first === second) {
+    return true;
+  }
+
+  if (!first || !second) {
+    return false;
+  }
+
+  const firstKeys: Array<string> = Object.keys(first);
+  const secondKeys: Array<string> = Object.keys(second);
+
+  const length: number = firstKeys.length;
+
+  if (secondKeys.length !== length) {
+    return false;
+  }
+
+  for (let it = 0; it < length; it ++) {
+
+    const key: string = firstKeys[it];
+
+    // @ts-ignore indexed for built-ins.
+    if (first[key] !== second[key]) {
+      return false;
+    }
+  }
+
+  return true;
+};
 
 /*
  * Decorator factory.
@@ -72,7 +108,7 @@ export abstract class ContextManager<T extends object> {
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
       manager.context[key] = { ...(manager.context as any)[key], ...(obj as object) };
-      manager.observedElements.forEach((it) => it.forceUpdate());
+      manager.observedElements.forEach((it) => it.setState(manager.getProvidedProps()));
       manager.afterUpdate();
     };
   };
@@ -83,7 +119,13 @@ export abstract class ContextManager<T extends object> {
    */
   private static getObserver = (parent: ContextManager<any>): ComponentType => (
 
-    class extends PureComponent {
+    class extends Component {
+
+      state = parent.getProvidedProps();
+
+      shouldComponentUpdate(nextProps: any, nextState: Readonly<{[index: string]: object}>): boolean {
+        return Object.keys(this.state).some((key: string): boolean => !shallowEqualObjects(this.state[key], nextState[key]));
+      }
 
       public componentWillMount(): void {
 
@@ -95,6 +137,7 @@ export abstract class ContextManager<T extends object> {
       }
 
       public componentWillUnmount(): void {
+
         parent.observedElements = parent.observedElements.filter((it) => it !== this);
 
         if (parent.observedElements.length === 0) {
@@ -103,7 +146,7 @@ export abstract class ContextManager<T extends object> {
       }
 
       public render(): ReactNode {
-        return React.createElement(parent.providedContext.Provider,  { value: parent.getProvidedProps() }, this.props.children);
+        return React.createElement(parent.providedContext.Provider,  { value: this.state }, this.props.children);
       }
     }
   );
@@ -158,7 +201,7 @@ export abstract class ContextManager<T extends object> {
   public update(): void {
 
     this.beforeUpdate();
-    this.observedElements.forEach((it) => it.forceUpdate());
+    this.observedElements.forEach((it) => it.setState(this.getProvidedProps()));
     this.afterUpdate();
   }
 
