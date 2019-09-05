@@ -1,6 +1,6 @@
-import { default as OriginalBind} from "autobind-decorator";
+import { default as OriginalBind } from "autobind-decorator";
 import * as React from "react";
-import { createContext, Component, ComponentType, Context, Consumer, ReactNode } from "react";
+import { createContext, Component, ComponentType, Context, Consumer, ReactNode, useContext } from "react";
 
 /*
  * ±1.4KB min+gzip, only pure react codebase usage.
@@ -11,7 +11,14 @@ import { createContext, Component, ComponentType, Context, Consumer, ReactNode }
  * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
  */
 
-/*
+/**
+ * Interface for string indexed objects.
+ */
+interface IStringIndexed<T> {
+  [index: string]: T;
+}
+
+/**
  * Utility.
  * Shallow comparison for objects.
  */
@@ -47,7 +54,12 @@ export const shallowEqualObjects = (first: object, second: object): boolean => {
   return true;
 };
 
-/*
+/**
+ * Use manager hook, higher order wrapper for useContext.
+ */
+export const useManager = <T extends object>(manager: ContextManager<T>) => useContext(manager.internalReactContext);
+
+/**
  * Decorator factory.
  * Provide context from context manager.
  * Observes changes and uses default react Provider for data flow.
@@ -67,7 +79,7 @@ export const Provide =
     return element as any;
   };
 
-/*
+/**
  * Decorator factory.
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
@@ -91,14 +103,14 @@ export const Consume =
       return element as any;
     };
 
-/*
+/**
  * Abstract class.
  * Class based context manager for react.
  * Current Issue: Static items inside of each class instance.
  */
 export abstract class ContextManager<T extends object> {
 
-  /*
+  /**
    * Setter method factory.
    * !Strictly typed generic method with 'update' lifecycle.
    * Helps to avoid boilerplate code with manual 'update' transactional updates for simple methods.
@@ -113,21 +125,21 @@ export abstract class ContextManager<T extends object> {
     };
   };
 
-  /*
+  /**
    * Observer factory for react providers.
    * Allows to use lifecycle and observer pattern.
    */
-  private static getObserver = (parent: ContextManager<any>): ComponentType => (
+  private static getObserver = <T extends IStringIndexed<any>>(parent: ContextManager<T>): ComponentType => (
 
-    class extends Component {
+    class extends Component<any, T> {
 
-      state = parent.getProvidedProps();
+      state: T = parent.getProvidedProps();
 
-      shouldComponentUpdate(nextProps: any, nextState: Readonly<{[index: string]: object}>): boolean {
+      public shouldComponentUpdate(nextProps: any, nextState: T): boolean {
         return Object.keys(this.state).some((key: string): boolean => !shallowEqualObjects(this.state[key], nextState[key]));
       }
 
-      public componentWillMount(): void {
+      public componentDidMount(): void {
 
         if (parent.observedElements.length === 0) {
           parent.onProvisionStarted();
@@ -146,54 +158,55 @@ export abstract class ContextManager<T extends object> {
       }
 
       public render(): ReactNode {
-        return React.createElement(parent.providedContext.Provider,  { value: this.state }, this.props.children);
+        return React.createElement(parent.internalReactContext.Provider,  { value: this.state }, this.props.children);
       }
+
     }
   );
 
-  /*
-   * Array of provider observers.
-   * Used for one app-level supply or for separate react dom sub-trees injection.
+  /**
+   * React Context<T> store internal.
    */
-  protected observedElements: Array<any> = [];
+  public readonly internalReactContext: Context<T>;
 
-  /*
+  /**
    * Abstract store/actions bundle.
    * Left for generic implementation.
    */
   protected abstract context: T;
 
-  /*
-   * React Context<T> store internal.
+  /**
+   * Array of provider observers.
+   * Used for one app-level supply or for separate react dom sub-trees injection.
    */
-  private readonly providedContext: Context<T>;
+  protected observedElements: Array<Component> = [];
 
-  /*
+  /**
    * Default constructor.
    * Allows to create react context provider/consumer bundle.
    * Stores it as private readonly singleton per each storage.
    */
   public constructor() {
-    this.providedContext = createContext(this.getProvidedProps());
+    this.internalReactContext = createContext(this.getProvidedProps());
   }
 
-  /*
+  /**
    * Utility getter.
    * Allows to get related React.Consumer for manual renders.
    */
   public getConsumer(): Consumer<T> {
-    return this.providedContext.Consumer;
+    return this.internalReactContext.Consumer;
   }
 
-  /*
+  /**
    * Utility getter.
    * Allows to get related React.Provider for manual renders.
    */
-  public getProvider() {
+  public getProvider(): ComponentType {
     return ContextManager.getObserver(this);
   }
 
-  /*
+  /**
    * Force React.Provider update.
    * Calls lifecycle methods.
    * Should not cause odd renders because affects only related React.Provider elements (commonly - 1 per store).
@@ -205,14 +218,16 @@ export abstract class ContextManager<T extends object> {
     this.afterUpdate();
   }
 
-  /*
+  // todo: Set context?
+
+  /**
    * Lifecycle.
    * First provider was injected into DOM / Last provider was removed from DOM.
    */
   protected onProvisionStarted(): void {}
   protected onProvisionEnded(): void {}
 
-  /*
+  /**
    * Lifecycle.
    * Before/after manual update lifecycle event.
    * Also shares for 'getSetter' methods.
@@ -220,18 +235,18 @@ export abstract class ContextManager<T extends object> {
   protected beforeUpdate(): void {}
   protected afterUpdate(): void {}
 
-  /*
+  /**
    * Get provided context object.
    * Spread object every time for new references and provider HOC update.
    * It will not force consumers/React.Provider odd renders because actions/state nested objects will be separated.
    */
   private getProvidedProps(): T {
-    return { ...this.context };
+    return Object.assign({}, this.context);
   }
 
 }
 
-/*
+/**
  * Decorator factory.
  * Modifies method descriptor, so it will be bound to prototype instance once.
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.

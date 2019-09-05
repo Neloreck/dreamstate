@@ -105,7 +105,7 @@ const authContextManager = new AuthContextManager();
 
 // Context consuming component with reactive subscription.
 @Consume(authContextManager)
-export class MainView extends PureComponent {
+export class ClassView extends PureComponent {
 
   paddingStyle = { padding: '10px' };
 
@@ -155,8 +155,8 @@ export class Application extends PureComponent {
 // Render into DOM.
 render(
   <Application>
-    <MainView label={ 'First item with consumer.'}/>
-    <MainView label={ 'Second item with consumer.'}/>
+    <ClassView label={ 'First item with consumer.'}/>
+    <ClassView label={ 'Second item with consumer.'}/>
   </Application>,
   document.getElementById('application-root')
 );
@@ -172,15 +172,15 @@ render(
 import * as React from "react";
 import { render } from "react-dom";
 
-import { MainView, IMainViewExternalProps } from "./view/MainView";
+import { ClassView, IMainViewExternalProps } from "./view/ClassView";
 
 render(
   <div>
 
     <div> Both components are connected to the same store, so they are in total sync: </div>
 
-    <MainView someLabelFromExternalProps={"First component."} {...{} as IMainViewExternalProps}/>
-    <MainView someLabelFromExternalProps={"Second component."} {...{} as IMainViewExternalProps}/>
+    <ClassView someLabelFromExternalProps={"First component."} {...{} as IMainViewExternalProps}/>
+    <ClassView someLabelFromExternalProps={"Second component."} {...{} as IMainViewExternalProps}/>
 
   </div>,
   document.getElementById("application-root")
@@ -308,7 +308,7 @@ const sectionStyle = { padding: 8 };
 // Component related.
 @Provide(authContextManager, dataContextManager)
 @Consume(authContextManager, dataContextManager)
-export class MainView extends PureComponent<IMainViewExternalProps & IMainViewOwnProps> {
+export class ClassView extends PureComponent<IMainViewExternalProps & IMainViewOwnProps> {
 
   public render(): ReactNode {
 

@@ -1,13 +1,13 @@
-import * as webpack from "webpack";
+import { Configuration } from "webpack";
 import * as path from "path";
 
-const HtmlWebpackPlugin =  require("html-webpack-plugin");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 
-const projectRoot = path.resolve(__dirname, "./");
+const PROJECT_ROOT: string = path.resolve(__dirname, "./");
 
 // For development purposes only.
 // Use proper config for production builds.
-export class WebpackConfig implements webpack.Configuration {
+export class WebpackConfig implements Configuration {
 
   mode: "development" = "development";
 
@@ -16,11 +16,11 @@ export class WebpackConfig implements webpack.Configuration {
   };
 
   entry = [
-    path.resolve(projectRoot, "src/main.tsx")
+    path.resolve(PROJECT_ROOT, "src/main.tsx")
   ];
 
   output = {
-    path: path.resolve(projectRoot, "target/"),
+    path: path.resolve(PROJECT_ROOT, "target/"),
     filename: "js/[name].bundle.js",
     sourceMapFilename: "js/map/[name].bundle.map"
   };
@@ -34,7 +34,7 @@ export class WebpackConfig implements webpack.Configuration {
         test: /\.(ts|tsx)$/,
         loader: "awesome-typescript-loader",
         query: {
-          configFileName: path.resolve(projectRoot, "./tsconfig.json")
+          configFileName: path.resolve(PROJECT_ROOT, "./tsconfig.json")
         }
       }
     ]
@@ -44,7 +44,7 @@ export class WebpackConfig implements webpack.Configuration {
     new HtmlWebpackPlugin({
       inject: true,
       filename: "index.html",
-      template: path.resolve(projectRoot, "src/index.html")
+      template: path.resolve(PROJECT_ROOT, "src/index.html")
     })
   ];
 

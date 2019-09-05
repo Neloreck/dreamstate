@@ -1,16 +1,35 @@
 import * as React from "react";
 import { render } from "react-dom";
+import { PureComponent, ReactNode } from "react";
+import { Provide } from "dreamstate";
 
-import { MainView, IMainViewExternalProps } from "./view/MainView";
+// Data.
+import { authContextManager, dataContextManager } from "./data";
 
-render(
-  <div>
+// View.
+import { ClassView, IClassViewInjectedProps } from "./view/ClassView";
+import { FunctionalView } from "./view/FunctonalView";
 
-    <div> Both components are connected to the same store, so they are in total sync: </div>
+@Provide(authContextManager, dataContextManager)
+export class Root extends PureComponent {
 
-    <MainView someLabelFromExternalProps={"First component."} {...{} as IMainViewExternalProps}/>
-    <MainView someLabelFromExternalProps={"Second component."} {...{} as IMainViewExternalProps}/>
+  public render(): ReactNode {
 
-  </div>,
-  document.getElementById("application-root")
-);
+    return (
+      <>
+
+        <div> Components are connected to the same store, so they are in total sync: </div>
+
+        <ClassView someLabelFromExternalProps={"First component."} {...{} as IClassViewInjectedProps}/>
+
+        <FunctionalView/>
+
+        <ClassView someLabelFromExternalProps={"Second component."} {...{} as IClassViewInjectedProps}/>
+
+      </>
+    );
+  }
+
+}
+
+render(<Root/>, document.getElementById("application-root"));
