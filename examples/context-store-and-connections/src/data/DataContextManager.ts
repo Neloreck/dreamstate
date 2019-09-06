@@ -23,7 +23,7 @@ export interface IDataContext {
 export class DataContextManager extends ContextManager<IDataContext> {
 
   // Default context state.
-  protected readonly context: IDataContext = {
+  public readonly context: IDataContext = {
     // Some kind of handlers.
     dataActions: {
       randomizeValue: this.randomizeValue
@@ -47,12 +47,12 @@ export class DataContextManager extends ContextManager<IDataContext> {
 
   @Bind()
   public onProvisionStarted(): void {
-    console.info("Provision started. Also have provision ended.");
+    console.info("Provision started of data context started.");
   }
 
   @Bind()
   public beforeUpdate(): void {
-    console.info("Before updated triggered. Also have after update.");
+    console.info("Before data context updated triggered.");
   }
 
 }

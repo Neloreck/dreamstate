@@ -3,11 +3,11 @@ import { ReactElement } from "react";
 import { useManager } from "dreamstate";
 
 // Data.
-import {authContextManager, dataContextManager} from "../data";
+import { authContextManager, dataContextManager } from "../data";
 
 export function FunctionalView(): ReactElement {
 
-  const { authActions, authState: { isAuthenticated, isLoading, user } } = useManager(authContextManager);
+  const { authState: { isAuthenticated, user } } = useManager(authContextManager);
   const { dataActions, dataState: { value } } = useManager(dataContextManager);
 
   return (
@@ -19,20 +19,16 @@ export function FunctionalView(): ReactElement {
 
         <div className={"functional-view-section"}>
 
-          <span> Auth context: </span> <br/>
-          <span> USERNAME: </span> {user} <br/>
-          <span> AUTHENTICATED: </span>  {isAuthenticated.toString()} <br/>
-
-          <button disabled={isLoading} onClick={authActions.changeAuthenticationStatus}> Change Authentication Status </button>
-          <button disabled={isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
-          <button disabled={isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
+           Auth context <br/>
+           USERNAME: { user } <br/>
+           AUTHENTICATED:  { isAuthenticated.toString() } <br/>
 
         </div>
 
         <div className={"functional-view-section"}>
 
-          <span> Data context: </span> <br/>
-          <span> VALUE: </span> {value} <br/>
+           Data context <br/>
+           VALUE: { value } <br/>
 
           <button onClick={dataActions.randomizeValue}> Randomize Value </button>
 

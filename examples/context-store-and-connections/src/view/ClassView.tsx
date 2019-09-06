@@ -6,10 +6,14 @@ import { PureComponent, ReactNode } from "react";
 import { authContextManager, dataContextManager, IAuthContext, IDataContext } from "../data";
 
 // Props typing: own, injected and bundled props. You should know what has to be declared manually.
-export interface IClassViewOwnProps { someLabelFromExternalProps: string; }
-export interface IClassViewInjectedProps extends IAuthContext, IDataContext {}
+export interface IClassViewOwnProps {
+  someLabelFromExternalProps: string;
+}
 
-@Consume(authContextManager, dataContextManager)
+export interface IClassViewInjectedProps extends IAuthContext, Pick<IDataContext, "dataState"> {
+}
+
+@Consume(authContextManager, { from: dataContextManager, take: [ "dataState" ] })
 export class ClassView extends PureComponent<IClassViewInjectedProps & IClassViewOwnProps> {
 
   public render(): ReactNode {
@@ -19,7 +23,6 @@ export class ClassView extends PureComponent<IClassViewInjectedProps & IClassVie
       someLabelFromExternalProps,
       // Get, what you need form injected props.
       dataState: { value },
-      dataActions,
       authState: { user, isAuthenticated, isLoading },
       authActions
     } = this.props;
@@ -35,9 +38,10 @@ export class ClassView extends PureComponent<IClassViewInjectedProps & IClassVie
 
           <div className={"main-view-section"}>
 
-            <span> Auth context: </span> <br/>
-            <span> USERNAME: </span> {user} <br/>
-            <span> AUTHENTICATED: </span>  {isAuthenticated.toString()} <br/>
+            Auth context <br/>
+
+            USERNAME: { user } <br/>
+            AUTHENTICATED: { isAuthenticated.toString() } <br/>
 
             <button disabled={isLoading} onClick={authActions.changeAuthenticationStatus}> Change Authentication Status </button>
             <button disabled={isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
@@ -47,10 +51,8 @@ export class ClassView extends PureComponent<IClassViewInjectedProps & IClassVie
 
           <div className={"main-view-section"}>
 
-            <span> Data context: </span> <br/>
-            <span> VALUE: </span> {value} <br/>
-
-            <button onClick={dataActions.randomizeValue}> Randomize Value </button>
+            Data context <br/>
+            VALUE: { value } <br/>
 
           </div>
 

@@ -29,7 +29,7 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   private static ASYNC_USER_CHANGE_DELAY: number = 1000;
 
   // Default context state.
-  protected readonly context: IAuthContext = {
+  public readonly context: IAuthContext = {
     // Some kind of handlers.
     authActions: {
       changeAuthenticationStatus: this.changeAuthenticationStatus,
