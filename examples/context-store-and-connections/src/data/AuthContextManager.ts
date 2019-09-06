@@ -67,6 +67,14 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
       .then((user: string) => this.setState({ isLoading: false, user }));
   }
 
+  protected onProvisionStarted(): void {
+    console.info("Auth provision started.");
+  }
+
+  protected onProvisionEnded(): void {
+    console.info("Auth provision ended.");
+  }
+
   private waitFor(millis: number): Promise<void> {
     return new Promise((resolve) => setTimeout(() => resolve(), millis));
   }

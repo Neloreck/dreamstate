@@ -1,41 +1,16 @@
 import * as React from "react";
-import { createContext, Component, ComponentType, Context, Consumer, ReactNode, useContext } from "react";
+import {
+  createContext,
+  createElement,
+  ComponentType,
+  Context,
+  Consumer,
+  useContext,
+  useLayoutEffect,
+  useState, useRef
+} from "react";
 
-/*
- * ±1.4KB min+gzip, only pure react codebase usage.
- *
- * 'https://github.com/Neloreck/dreamstate'
- *
- * OOP style context store for react.
- * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
- */
-
-/**
- * Interface for string indexed objects.
- */
-interface IStringIndexed<T> {
-  [index: string]: T;
-}
-
-/**
- * Any context manager type.
- */
-export type TAnyCM = ContextManager<any>;
-
-/**
- * Pick declaration.
- * Describe object that will help to get listed state params.
- */
-export interface IConsumePick<A extends TAnyCM> {
-  from: A;
-  take: Array<keyof A["context"]>;
-}
-
-/**
- * Consumable type.
- * Manager or pick descriptor.
- */
-export type TConsumable<T extends TAnyCM> = IConsumePick<T> | T;
+const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 
 /**
  * Utility.
@@ -73,6 +48,47 @@ export const shallowEqualObjects = (first: object, second: object): boolean => {
   return true;
 };
 
+/*
+ * ±1.4KB min+gzip, only pure react codebase usage.
+ *
+ * 'https://github.com/Neloreck/dreamstate'
+ *
+ * OOP style context store for react.
+ * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
+ */
+
+/**
+ * Interface for string indexed objects.
+ */
+interface IStringIndexed<T> {
+  [index: string]: T;
+}
+
+/**
+ * Any context manager type.
+ */
+export type TAnyCM = ContextManager<any>;
+
+/**
+ * Pick declaration.
+ * Describe object that will help to get listed state params.
+ */
+export interface IConsumePick<A extends TAnyCM> {
+  from: A;
+  take: Array<keyof A["context"]>;
+}
+
+/**
+ * Generic setter method.
+ */
+export type TSetter<T> = (value: T) => void;
+
+/**
+ * Consumable type.
+ * Manager or pick descriptor.
+ */
+export type TConsumable<T extends TAnyCM> = IConsumePick<T> | T;
+
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
@@ -83,22 +99,45 @@ export const useManager = <T extends object>(manager: ContextManager<T>): T => u
  * Provide context from context manager.
  * Observes changes and uses default react Provider for data flow.
  */
-export const Provide =
-  (...managers: Array<TAnyCM>): ClassDecorator =>
-    <T>(target: T) => {
+export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target: T) => {
 
-      let element!: ComponentType;
+  let element!: ComponentType;
 
-      for (const manager of managers) {
+  for (let it = sources.length - 1; it >= 0; it -- ) {
 
-        // Remember scoped element in closure block.
-        const scopedElement = element || target;
+    const current: TAnyCM = sources[it];
+    const scopedElement = element;
 
-        element = (props: IStringIndexed<any>) => React.createElement(manager.getProvider(), null, React.createElement(scopedElement, props));
-      }
+    function ScopedProvider(props: IStringIndexed<any>) {
+      return createElement(current.getProvider(), null, scopedElement ? React.createElement(scopedElement, props) : props.children);
+    }
 
-      return element as any;
-    };
+    if (IS_PRODUCTION) {
+      // @ts-ignore
+      ScopedProvider.displayName = "pg";
+    } else {
+      // @ts-ignore
+      ScopedProvider.displayName = `Dreamstate.ProviderGroup[${current.constructor.name}]`;
+    }
+
+    element = ScopedProvider;
+  }
+
+  function P(props: IStringIndexed<any>) {
+    return createElement(element, {}, createElement(target as any, props))
+  }
+
+  /**
+   * Use correct naming for non-production mode.
+   */
+  if (IS_PRODUCTION) {
+    P.displayName = "dp";
+  } else {
+    P.displayName = `Dreamstate.Provider[${sources.map((it: TConsumable<any>) => it.constructor.name )}]`;
+  }
+
+  return P as any;
+};
 
 /**
  * todo: Wait for variadic arguments from typescript.
@@ -119,37 +158,42 @@ export interface IConsume {
  * Observes changes and uses default react Provider.
  */
 export const Consume: IConsume =
-  (...sources: Array<TConsumable<any>>): any =>
-    <C> (target: C) => {
+  (...sources: Array<TConsumable<any>>): any => {
 
-      let element!: ComponentType;
+    return <C>(target: C) => {
 
-      for (const source of sources) {
+      function C(props: any) {
 
-        // Remember scoped element in closure block.
-        const scopedElement = element || target;
+        let consumed: IStringIndexed<any> = { ...props };
 
-        if (source instanceof ContextManager) {
+        for (const source of sources) {
 
-          element = ((renderProps: object) => React.createElement(
-            source.getConsumer() as any,
-            null,
-            (contextProps: object) => React.createElement(scopedElement, { ...renderProps, ...contextProps }))) as any
-        } else {
+          if (source instanceof ContextManager) {
+            consumed = Object.assign(consumed, useManager(source))
+          } else {
 
-          const propsToPick: Array<string> = (source as IConsumePick<any>).take as Array<string>;
+            const propsToPick: Array<string> = (source as IConsumePick<any>).take as Array<string>;
+            const propsPicked: IStringIndexed<any> = useManager((source as IConsumePick<any>).from);
 
-          element = (<P extends IStringIndexed<any>>(props: object) => React.createElement(
-            (source as IConsumePick<any>).from.getConsumer() as any,
-            null,
-            (contextProps: P) => React.createElement(scopedElement,
-              { ...props, ...propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = contextProps[e], a), {}) })
-          )) as any
+            consumed = Object.assign(consumed, propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = propsPicked[e], a), {}));
+          }
         }
+
+        return createElement(target as any, { ...props, ...consumed });
       }
 
-      return element as any;
-    };
+      /**
+       * Use correct naming for non-production mode.
+       */
+      if (IS_PRODUCTION) {
+        C.displayName = "dc";
+      } else {
+        C.displayName = `Dreamstate.Consumer[${sources.map((it: TConsumable<any>) => it instanceof ContextManager ?  it.constructor.name : `${it.from.constructor.name}{${it.take}}`)}]`;
+      }
+
+      return C;
+    }
+  };
 
 /**
  * Abstract class.
@@ -168,7 +212,7 @@ export abstract class ContextManager<T extends object> {
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
       manager.context[key] = { ...(manager.context as any)[key], ...(obj as object) };
-      manager.observedElements.forEach((it) => it.setState(manager.getProvidedProps()));
+      manager.observedElements.forEach((it) => it(manager.getProvidedProps()));
       manager.afterUpdate();
     };
   };
@@ -176,43 +220,52 @@ export abstract class ContextManager<T extends object> {
   /**
    * Observer factory for react providers.
    * Allows to use lifecycle and observer pattern.
-   *
-   * todo: Functional with hooks?
    */
-  private static getObserver = <T extends IStringIndexed<any>>(parent: ContextManager<T>): ComponentType => (
+  private static getObserver = <T extends IStringIndexed<any>>(parent: ContextManager<T>): ComponentType => {
 
-    class extends Component<any, T> {
+    function Observer(props: IStringIndexed<any>) {
 
-      state: T = parent.getProvidedProps();
+      const [ observedState, setObservedState ]: [ any, any ] = useState(parent.getProvidedProps());
 
-      public shouldComponentUpdate(nextProps: any, nextState: T): boolean {
-        return Object.keys(this.state).some((key: string): boolean => !shallowEqualObjects(this.state[key], nextState[key]));
-      }
+      const stateRef = useRef(observedState);
 
-      public componentDidMount(): void {
+      const setWithMemo = (newState: IStringIndexed<any>) => {
+
+        if (Object.keys(stateRef.current).some((key: string): boolean => !shallowEqualObjects(stateRef.current[key], newState[key]))) {
+          stateRef.current = newState;
+          setObservedState(newState);
+        }
+      };
+
+      useLayoutEffect(() => {
 
         if (parent.observedElements.length === 0) {
           parent.onProvisionStarted();
         }
 
-        parent.observedElements.push(this);
-      }
+        parent.observedElements.push(setWithMemo);
 
-      public componentWillUnmount(): void {
+        return () => {
 
-        parent.observedElements = parent.observedElements.filter((it) => it !== this);
+          parent.observedElements = parent.observedElements.filter((it) => it !== setWithMemo);
 
-        if (parent.observedElements.length === 0) {
-          parent.onProvisionEnded();
+          if (parent.observedElements.length === 0) {
+            parent.onProvisionEnded();
+          }
         }
-      }
+      }, []);
 
-      public render(): ReactNode {
-        return React.createElement(parent.internalReactContext.Provider,  { value: this.state }, this.props.children);
-      }
-
+      return React.createElement(parent.internalReactContext.Provider,  { value: observedState }, props.children);
     }
-  );
+
+    if (IS_PRODUCTION) {
+      Observer.displayName = "dp";
+    } else {
+      Observer.displayName = `Dreamstate.Observer[${parent.constructor.name}]`;
+    }
+
+    return Observer;
+  };
 
   /**
    * React Context<T> store internal.
@@ -229,7 +282,7 @@ export abstract class ContextManager<T extends object> {
    * Array of provider observers.
    * Used for one app-level supply or for separate react dom sub-trees injection.
    */
-  protected observedElements: Array<Component> = [];
+  protected observedElements: Array<TSetter<any>> = [];
 
   /**
    * Default constructor.
@@ -264,7 +317,7 @@ export abstract class ContextManager<T extends object> {
   public update(): void {
 
     this.beforeUpdate();
-    this.observedElements.forEach((it) => it.setState(this.getProvidedProps()));
+    this.observedElements.forEach((it: TSetter<any>) => it(this.getProvidedProps()));
     this.afterUpdate();
   }
 

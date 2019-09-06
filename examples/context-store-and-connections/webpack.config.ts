@@ -3,13 +3,14 @@ import * as path from "path";
 
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
+const MODE: string = (process.env.NODE_ENV || "development");
 const PROJECT_ROOT: string = path.resolve(__dirname, "./");
 
 // For development purposes only.
 // Use proper config for production builds.
 export class WebpackConfig implements Configuration {
 
-  mode: "development" = "development";
+  mode: "development" | "production" = MODE as any;
 
   resolve = {
     extensions: [".ts", ".tsx", ".js", ".jsx"]
