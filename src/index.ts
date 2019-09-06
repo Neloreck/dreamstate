@@ -301,7 +301,7 @@ export abstract class ContextManager<T extends object> {
  * Modifies method descriptor, so it will be bound to prototype instance once.
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
  */
-export const Bind = <T>(target: (...args: Array<any>) => any, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> => {
+export const Bind = (): MethodDecorator => <T>(target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> => {
 
   let original: T = descriptor.value as T;
 
@@ -318,6 +318,7 @@ export const Bind = <T>(target: (...args: Array<any>) => any, propertyKey: strin
     configurable: true,
     get(): T {
 
+      // @ts-ignore functional interface.
       if (definingProperty || this === target.prototype || this.hasOwnProperty(propertyKey) || typeof original !== 'function') {
         return original;
       }
