@@ -108,9 +108,9 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
     const current: TAnyCM = sources[it];
     const scopedElement = element;
 
-    function ScopedProvider(props: IStringIndexed<any>) {
+    const ScopedProvider = function(props: IStringIndexed<any>) {
       return createElement(current.getProvider(), null, scopedElement ? React.createElement(scopedElement, props) : props.children);
-    }
+    };
 
     if (IS_PRODUCTION) {
       // @ts-ignore
