@@ -32,7 +32,7 @@
     ]
   },
   "dependencies": {
-    "dreamstate": "1.2.0",
+    "dreamstate": "1.2.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3"
   },
