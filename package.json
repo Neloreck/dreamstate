@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "Store manager for react context based on OOP.",
   "main": "./index.js",
   "sideEffects": false,
