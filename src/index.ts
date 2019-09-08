@@ -7,7 +7,7 @@ import {
   Consumer,
   useContext,
   useLayoutEffect,
-  useState, useRef
+  useState, useRef, ReactElement
 } from "react";
 
 const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
@@ -15,6 +15,8 @@ const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 /**
  * Utility.
  * Shallow comparison for objects.
+ *
+ * todo: use package? Not sure.
  */
 export const shallowEqualObjects = (first: object, second: object): boolean => {
 
@@ -95,36 +97,21 @@ export type TConsumable<T extends TAnyCM> = IConsumePick<T> | T;
 export const useManager = <T extends object>(manager: ContextManager<T>): T => useContext(manager.internalReactContext);
 
 /**
+ * Generate subtree of providers.
+ */
+const generateProviderTree = (targets: Array<TAnyCM>, current: number, children: ReactElement): ReactElement => {
+  return current < 0 ? children : createElement(targets[current].getProvider(), null, generateProviderTree(targets, current - 1, children));
+};
+
+/**
  * Decorator factory.
  * Provide context from context manager.
  * Observes changes and uses default react Provider for data flow.
  */
 export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target: T) => {
 
-  let element!: ComponentType;
-
-  for (let it = sources.length - 1; it >= 0; it -- ) {
-
-    const current: TAnyCM = sources[it];
-    const scopedElement = element;
-
-    const ScopedProvider = function(props: IStringIndexed<any>) {
-      return createElement(current.getProvider(), null, scopedElement ? React.createElement(scopedElement, props) : props.children);
-    };
-
-    if (IS_PRODUCTION) {
-      // @ts-ignore
-      ScopedProvider.displayName = "pg";
-    } else {
-      // @ts-ignore
-      ScopedProvider.displayName = `Dreamstate.ProviderGroup[${current.constructor.name}]`;
-    }
-
-    element = ScopedProvider;
-  }
-
   function P(props: IStringIndexed<any>) {
-    return createElement(element, {}, createElement(target as any, props))
+    return generateProviderTree(sources, sources.length - 1, createElement(target as any, props));
   }
 
   /**
@@ -220,9 +207,12 @@ export abstract class ContextManager<T extends object> {
   /**
    * Observer factory for react providers.
    * Allows to use lifecycle and observer pattern.
+   *
+   * todo: Investigate, if possible: Single observer for every @Provide element.
    */
   private static getObserver = <T extends IStringIndexed<any>>(parent: ContextManager<T>): ComponentType => {
 
+    // todo: Stricter caching and prevent double-copy for ref.
     function Observer(props: IStringIndexed<any>) {
 
       const [ observedState, setObservedState ]: [ any, any ] = useState(parent.getProvidedProps());
