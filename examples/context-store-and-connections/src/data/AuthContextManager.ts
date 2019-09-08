@@ -1,4 +1,4 @@
-import { Bind, ContextManager } from "dreamstate";
+import { Bind, ContextManager } from "../dreamstate";
 
 /*
  * Context manager state declaration.

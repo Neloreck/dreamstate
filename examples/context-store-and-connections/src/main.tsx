@@ -1,7 +1,7 @@
 import * as React from "react";
 import { render } from "react-dom";
 import { PureComponent, ReactNode } from "react";
-import { Provide } from "dreamstate";
+import { Provide } from "./dreamstate";
 
 // Data.
 import { authContextManager, dataContextManager } from "./data";

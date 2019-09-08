@@ -1,4 +1,4 @@
-import { Consume } from "dreamstate";
+import { Consume } from "../dreamstate";
 import * as React from "react";
 import { PureComponent, ReactNode } from "react";
 
