@@ -36,6 +36,16 @@ import {
 const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 
 /**
+ * Regex for names changing.
+ */
+const MANAGER_REGEX: RegExp = /Manager/g;
+
+/**
+ * Empty string ref.
+ */
+const EMPTY: string = "";
+
+/**
  * Utility.
  * Shallow comparison for objects.
  *
@@ -182,7 +192,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
   if (IS_PRODUCTION) {
     Observer.displayName = "dp";
   } else {
-    Observer.displayName = `Dreamstate.Observer[${sources.map((it: TConsumable<any>) => it.constructor.name )}]`;
+    Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.constructor.name.replace(MANAGER_REGEX, EMPTY) )}]`;
   }
 
   return Observer as any;
@@ -237,7 +247,7 @@ export const Consume: IConsume =
       if (IS_PRODUCTION) {
         Consumer.displayName = "dc";
       } else {
-        Consumer.displayName = `Dreamstate.Consumer[${sources.map((it: TConsumable<any>) => it instanceof ContextManager ?  it.constructor.name : `${it.from.constructor.name}{${it.take}}`)}]`;
+        Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it instanceof ContextManager ?  it.constructor.name.replace(MANAGER_REGEX, EMPTY) : `${it.from.constructor.name.replace(MANAGER_REGEX, EMPTY)}{${it.take}}`)}]`;
       }
 
       return Consumer;
@@ -290,6 +300,12 @@ export abstract class ContextManager<T extends object> {
    */
   public constructor() {
     this.internalReactContext = createContext(this.getProvidedProps());
+
+    if (IS_PRODUCTION) {
+      this.internalReactContext.displayName = "DS." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
+    } else {
+      this.internalReactContext.displayName = "Dreamstate." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
+    }
   }
 
   /**
