@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "1.2.5",
+  "version": "1.2.7",
   "description": "Store manager for react context based on OOP.",
   "main": "./index.js",
   "sideEffects": false,
@@ -37,7 +37,8 @@
   },
   "dependencies": {
     "hoist-non-react-statics": "^3.3.0",
-    "@types/hoist-non-react-statics": "^3.3.1"
+    "@types/hoist-non-react-statics": "^3.3.1",
+    "shallow-equal": "^1.1.0"
   },
   "devDependencies": {
     "react": "^16.8.3",
