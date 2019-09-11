@@ -16,6 +16,8 @@ export interface IClassViewInjectedProps extends IAuthContext, Pick<IDataContext
 @Consume(authContextManager, { from: dataContextManager, take: [ "dataState" ] })
 export class ClassView extends PureComponent<IClassViewInjectedProps & IClassViewOwnProps> {
 
+  public static STATIC_PROP: Date = new Date();
+
   public render(): ReactNode {
 
     const {
@@ -32,7 +34,7 @@ export class ClassView extends PureComponent<IClassViewInjectedProps & IClassVie
 
         <div className={"main-view"}>
 
-          ClassView <br/>
+          ClassView - { ClassView.STATIC_PROP.toString() }  <br/>
 
           <div> External prop value: '{someLabelFromExternalProps}' </div>
 

@@ -15,23 +15,18 @@ import {
   ProviderExoticComponent,
   ProviderProps
 } from "react";
-
+import { default as hoistNonReactStatics } from "hoist-non-react-statics";
+import { shallowEqualObjects } from "shallow-equal";
 
 /*
- * ±1.5KB min+gzip, only pure react codebase usage.
- *
  * 'https://github.com/Neloreck/dreamstate'
  *
  * OOP style context store for react.
  * Based on observing and using as small tree components count as possible.
- * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
  */
 
 /**
  * Check current application mode.
- *
- * todo: Build production and dev-debug bundles separated?
- * (add more debug properties if yes)
  */
 const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 
@@ -46,42 +41,9 @@ const MANAGER_REGEX: RegExp = /Manager/g;
 const EMPTY: string = "";
 
 /**
- * Utility.
- * Shallow comparison for objects.
- *
- * todo: use package? Not sure.
+ * Empty array ref.
  */
-export const shallowEqualObjects = (first: object, second: object): boolean => {
-
-  if (first === second) {
-    return true;
-  }
-
-  if (!first || !second) {
-    return false;
-  }
-
-  const firstKeys: Array<string> = Object.keys(first);
-  const secondKeys: Array<string> = Object.keys(second);
-
-  const length: number = firstKeys.length;
-
-  if (secondKeys.length !== length) {
-    return false;
-  }
-
-  for (let it = 0; it < length; it ++) {
-
-    const key: string = firstKeys[it];
-
-    // @ts-ignore indexed for built-ins.
-    if (first[key] !== second[key]) {
-      return false;
-    }
-  }
-
-  return true;
-};
+const EMPTY_ARR: Array<never> = [];
 
 /**
  * Interface for string indexed objects.
@@ -118,7 +80,7 @@ export type TConsumable<T extends TAnyCM> = IConsumePick<T> | T;
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
-export const useManager = <T extends object>(manager: ContextManager<T>): T => useContext(manager.internalReactContext);
+export const useManager = <T extends object>(manager: ContextManager<T>): T => useContext(manager.__internal);
 
 /**
  * Decorator factory.
@@ -133,6 +95,11 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
   const sourcesStates: Array<IStringIndexed<any>> = new Array(sources.length);
 
   function Observer(props: IStringIndexed<any>): ReactElement {
+
+    /**
+     * Remove old states references after observer removal. Prevent memory leaks.
+     */
+    useLayoutEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
 
     /**
      * Collect states for future updates/rendering.
@@ -153,7 +120,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
           observedStateRef.current = newState;
           setObservedState(newState);
         }
-      }, []);
+      }, EMPTY_ARR);
 
       /**
        * Layout for sync tracking and state updates if next-in-tree component will use depending from it props etc.
@@ -161,7 +128,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
       useLayoutEffect(() => {
         manager.addObserver(setWithMemo);
         return () => manager.removeObserver(setWithMemo);
-      }, []);
+      }, EMPTY_ARR);
 
       /**
        * Update corresponding ref.
@@ -190,7 +157,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
    * Use correct naming for non-production mode.
    */
   if (IS_PRODUCTION) {
-    Observer.displayName = "dp";
+    Observer.displayName = "D.O";
   } else {
     Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.constructor.name.replace(MANAGER_REGEX, EMPTY) )}]`;
   }
@@ -245,12 +212,12 @@ export const Consume: IConsume =
        * Use correct naming for non-production mode.
        */
       if (IS_PRODUCTION) {
-        Consumer.displayName = "dc";
+        Consumer.displayName = "D.C";
       } else {
         Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it instanceof ContextManager ?  it.constructor.name.replace(MANAGER_REGEX, EMPTY) : `${it.from.constructor.name.replace(MANAGER_REGEX, EMPTY)}{${it.take}}`)}]`;
       }
 
-      return Consumer;
+      return hoistNonReactStatics(Consumer, target as any);
     }
   };
 
@@ -270,7 +237,7 @@ export abstract class ContextManager<T extends object> {
 
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
-      manager.context[key] = { ...(manager.context as any)[key], ...(obj as object) };
+      manager.context[key] = Object.assign({}, manager.context[key], obj);
       manager.observedElements.forEach((it) => it(manager.getProvidedProps()));
       manager.afterUpdate();
     };
@@ -279,7 +246,7 @@ export abstract class ContextManager<T extends object> {
   /**
    * React Context<T> store internal.
    */
-  public readonly internalReactContext: Context<T>;
+  public readonly __internal: Context<T>;
 
   /**
    * Abstract store/actions bundle.
@@ -299,12 +266,13 @@ export abstract class ContextManager<T extends object> {
    * Stores it as private readonly singleton per each storage.
    */
   public constructor() {
-    this.internalReactContext = createContext(this.getProvidedProps());
+
+    this.__internal = createContext(this.getProvidedProps());
 
     if (IS_PRODUCTION) {
-      this.internalReactContext.displayName = "DS." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
+      this.__internal.displayName = "DS." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
     } else {
-      this.internalReactContext.displayName = "Dreamstate." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
+      this.__internal.displayName = "Dreamstate." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
     }
   }
 
@@ -313,7 +281,7 @@ export abstract class ContextManager<T extends object> {
    * Allows to get related React.Consumer for manual renders.
    */
   public getConsumer(): Consumer<T> {
-    return this.internalReactContext.Consumer;
+    return this.__internal.Consumer;
   }
 
   /**
@@ -321,7 +289,7 @@ export abstract class ContextManager<T extends object> {
    * Allows to get related React.Provider for manual renders.
    */
   public getProvider(): ProviderExoticComponent<ProviderProps<T>> {
-    return this.internalReactContext.Provider;
+    return this.__internal.Provider;
   }
 
   /**
