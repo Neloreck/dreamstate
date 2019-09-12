@@ -7,8 +7,9 @@ import { Provide } from "./dreamstate";
 import { authContextManager, dataContextManager } from "./data";
 
 // View.
-import { ClassView, IClassViewInjectedProps } from "./view/ClassView";
 import { FunctionalView } from "./view/FunctonalView";
+import { ConsumedClassView } from "./view/ConsumedClassView";
+import { DecoratedClassView, IDecoratedClassViewInjectedProps } from "./view/DecoratedClassView";
 
 @Provide(authContextManager, dataContextManager)
 export class Root extends PureComponent {
@@ -20,11 +21,11 @@ export class Root extends PureComponent {
 
         <div> Components are connected to the same store, so they are in total sync: </div>
 
-        <ClassView someLabelFromExternalProps={"First component."} {...{} as IClassViewInjectedProps}/>
+        <DecoratedClassView someLabelFromExternalProps={"First component."} {...{} as IDecoratedClassViewInjectedProps}/>
 
         <FunctionalView/>
 
-        <ClassView someLabelFromExternalProps={"Second component."} {...{} as IClassViewInjectedProps}/>
+        <ConsumedClassView someLabelFromExternalProps={"Second component."}/>
 
       </>
     );

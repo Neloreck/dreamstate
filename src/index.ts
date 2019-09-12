@@ -2,7 +2,6 @@ import {
   createContext,
   createElement,
   Context,
-  Consumer,
   useContext,
   useLayoutEffect,
   useState,
@@ -12,13 +11,9 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  ProviderExoticComponent,
-  ProviderProps
 } from "react";
 
-
 /*
- * ±1.5KB min+gzip, only pure react codebase usage.
  *
  * 'https://github.com/Neloreck/dreamstate'
  *
@@ -44,6 +39,16 @@ const MANAGER_REGEX: RegExp = /Manager/g;
  * Empty string ref.
  */
 const EMPTY: string = "";
+
+/**
+ * Symbol key for private observers.
+ */
+const OBSERVERS_KEY: Symbol = Symbol("DREAMSTATE_OBSERVERS");
+
+/**
+ * Symbol key for private react context.
+ */
+const CONTEXT_KEY: Symbol = Symbol("DREAMSTATE_CONTEXT");
 
 /**
  * Utility.
@@ -118,7 +123,8 @@ export type TConsumable<T extends TAnyCM> = IConsumePick<T> | T;
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
-export const useManager = <T extends object>(manager: ContextManager<T>): T => useContext(manager.internalReactContext);
+// @ts-ignore
+export const useManager = <T extends object>(manager: ContextManager<T>): T => useContext(manager[CONTEXT_KEY]);
 
 /**
  * Decorator factory.
@@ -128,7 +134,7 @@ export const useManager = <T extends object>(manager: ContextManager<T>): T => u
 export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target: T) => {
 
   /**
-   * Since we are using strictly defined closuer, we are able to use cached value and looped hooks there.
+   * Since we are using strictly defined closure, we are able to use cached value and looped hooks there.
    */
   const sourcesStates: Array<IStringIndexed<any>> = new Array(sources.length);
 
@@ -176,7 +182,8 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
       return (
         current >= sources.length
           ? createElement(target as any, props)
-          : createElement(sources[current].getProvider(), { value: sourcesStates[current] }, provideSubTree(current + 1))
+          // @ts-ignore
+          : createElement(sources[current][CONTEXT_KEY].Provider, { value: sourcesStates[current] }, provideSubTree(current + 1))
       );
     }, sourcesStates);
 
@@ -271,15 +278,11 @@ export abstract class ContextManager<T extends object> {
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
       manager.context[key] = { ...(manager.context as any)[key], ...(obj as object) };
-      manager.observedElements.forEach((it) => it(manager.getProvidedProps()));
+      // @ts-ignore
+      manager[OBSERVERS_KEY].forEach((it) => it(manager.getProvidedProps()));
       manager.afterUpdate();
     };
   };
-
-  /**
-   * React Context<T> store internal.
-   */
-  public readonly internalReactContext: Context<T>;
 
   /**
    * Abstract store/actions bundle.
@@ -288,40 +291,40 @@ export abstract class ContextManager<T extends object> {
   public abstract context: T;
 
   /**
-   * Array of provider observers.
-   * Used for one app-level supply or for separate react dom sub-trees injection.
-   */
-  protected observedElements: Array<TSetter<any>> = [];
-
-  /**
    * Default constructor.
    * Allows to create react context provider/consumer bundle.
    * Stores it as private readonly singleton per each storage.
    */
   public constructor() {
-    this.internalReactContext = createContext(this.getProvidedProps());
+
+    /**
+     * Private internal for react context.
+     */
+    // @ts-ignore
+    this[CONTEXT_KEY] = createContext(this.getProvidedProps());
+
+    /**
+     * Private internal for observers.
+     */
+    // @ts-ignore
+    this[OBSERVERS_KEY] = [];
 
     if (IS_PRODUCTION) {
-      this.internalReactContext.displayName = "DS." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
+      // @ts-ignore
+      this[CONTEXT_KEY].displayName = "DS." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
     } else {
-      this.internalReactContext.displayName = "Dreamstate." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
+      // @ts-ignore
+      this[CONTEXT_KEY].displayName = "Dreamstate." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
     }
   }
 
   /**
    * Utility getter.
-   * Allows to get related React.Consumer for manual renders.
+   * Allows to get related React.Context for manual renders.
    */
-  public getConsumer(): Consumer<T> {
-    return this.internalReactContext.Consumer;
-  }
-
-  /**
-   * Utility getter.
-   * Allows to get related React.Provider for manual renders.
-   */
-  public getProvider(): ProviderExoticComponent<ProviderProps<T>> {
-    return this.internalReactContext.Provider;
+  public getContext(): Context<T> {
+    // @ts-ignore
+    return this[CONTEXT_KEY];
   }
 
   /**
@@ -330,11 +333,13 @@ export abstract class ContextManager<T extends object> {
    */
   public addObserver(observer: (value: T) => void): void {
 
-    if (this.observedElements.length === 0) {
+    // @ts-ignore
+    if (this[OBSERVERS_KEY].length === 0) {
       this.onProvisionStarted();
     }
 
-    this.observedElements.push(observer);
+    // @ts-ignore
+    this[OBSERVERS_KEY].push(observer);
   }
 
   /**
@@ -343,9 +348,11 @@ export abstract class ContextManager<T extends object> {
    */
   public removeObserver(observer: (value: T) => void): void {
 
-    this.observedElements = this.observedElements.filter((it) => it !== observer);
+    // @ts-ignore
+    this[OBSERVERS_KEY] = this[OBSERVERS_KEY].filter((it) => it !== observer);
 
-    if (this.observedElements.length === 0) {
+    // @ts-ignore
+    if (this[OBSERVERS_KEY].length === 0) {
       this.onProvisionEnded();
     }
   }
@@ -358,7 +365,8 @@ export abstract class ContextManager<T extends object> {
   public update(): void {
 
     this.beforeUpdate();
-    this.observedElements.forEach((it: TSetter<any>) => it(this.getProvidedProps()));
+    // @ts-ignore
+    this[OBSERVERS_KEY].forEach((it: TSetter<any>) => it(this.getProvidedProps()));
     this.afterUpdate();
   }
 
