@@ -16,6 +16,8 @@ export interface IDecoratedClassViewInjectedProps extends IAuthContext, Pick<IDa
 @Consume(authContextManager, { from: dataContextManager, take: [ "dataState" ] })
 export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjectedProps & IDecoratedClassViewOwnProps> {
 
+  private static SOME_STATIC_INTERNAL: Date = new Date();
+
   public render(): ReactNode {
 
     const {
@@ -33,7 +35,9 @@ export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjecte
         <div className={"decorated-class-view"}>
 
           DecoratedClassView <br/>
-
+          <br/>
+          Static prop: { DecoratedClassView.SOME_STATIC_INTERNAL.toString() } <br/>
+          <br/>
           <div> External prop value: '{someLabelFromExternalProps}' </div>
 
           <div className={"decorated-class-view-section"}>
