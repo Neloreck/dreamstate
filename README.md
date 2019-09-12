@@ -41,9 +41,6 @@ Repository [wiki](https://github.com/Neloreck/dreamstate/wiki) includes docs and
 
 Repository includes example project with commentaries: <a href='https://github.com/Neloreck/dreamstate/tree/master/examples'>link</a>. <br/>
 
-## Known issues:
- - HOC decorators erase your class static context, so you are unable to use static methods/data.
-
 ## Proposals and contribution:
 
 Feel free to contibute or mail me with questions/proposals/issues (Neloreck@gmail.com). <br/>

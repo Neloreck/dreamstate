@@ -12,6 +12,8 @@ import {
   SetStateAction,
   useCallback,
 } from "react";
+import { default as hoistNonReactStatics } from "hoist-non-react-statics";
+import { shallowEqualObjects } from "shallow-equal";
 
 /*
  *
@@ -19,14 +21,10 @@ import {
  *
  * OOP style context store for react.
  * Based on observing and using as small tree components count as possible.
- * Reactivity, lifecycle, strict TS typing, dependency injection + singleton pattern for each application store without boilerplate code.
  */
 
 /**
  * Check current application mode.
- *
- * todo: Build production and dev-debug bundles separated?
- * (add more debug properties if yes)
  */
 const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 
@@ -51,42 +49,9 @@ const OBSERVERS_KEY: Symbol = Symbol("DREAMSTATE_OBSERVERS");
 const CONTEXT_KEY: Symbol = Symbol("DREAMSTATE_CONTEXT");
 
 /**
- * Utility.
- * Shallow comparison for objects.
- *
- * todo: use package? Not sure.
+ * Empty array ref.
  */
-export const shallowEqualObjects = (first: object, second: object): boolean => {
-
-  if (first === second) {
-    return true;
-  }
-
-  if (!first || !second) {
-    return false;
-  }
-
-  const firstKeys: Array<string> = Object.keys(first);
-  const secondKeys: Array<string> = Object.keys(second);
-
-  const length: number = firstKeys.length;
-
-  if (secondKeys.length !== length) {
-    return false;
-  }
-
-  for (let it = 0; it < length; it ++) {
-
-    const key: string = firstKeys[it];
-
-    // @ts-ignore indexed for built-ins.
-    if (first[key] !== second[key]) {
-      return false;
-    }
-  }
-
-  return true;
-};
+const EMPTY_ARR: Array<never> = [];
 
 /**
  * Interface for string indexed objects.
@@ -141,6 +106,11 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
   function Observer(props: IStringIndexed<any>): ReactElement {
 
     /**
+     * Remove old states references after observer removal. Prevent memory leaks.
+     */
+    useLayoutEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
+
+    /**
      * Collect states for future updates/rendering.
      */
     for (let it = 0; it < sources.length; it ++) {
@@ -159,7 +129,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
           observedStateRef.current = newState;
           setObservedState(newState);
         }
-      }, []);
+      }, EMPTY_ARR);
 
       /**
        * Layout for sync tracking and state updates if next-in-tree component will use depending from it props etc.
@@ -167,7 +137,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
       useLayoutEffect(() => {
         manager.addObserver(setWithMemo);
         return () => manager.removeObserver(setWithMemo);
-      }, []);
+      }, EMPTY_ARR);
 
       /**
        * Update corresponding ref.
@@ -197,7 +167,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
    * Use correct naming for non-production mode.
    */
   if (IS_PRODUCTION) {
-    Observer.displayName = "dp";
+    Observer.displayName = "D.O";
   } else {
     Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.constructor.name.replace(MANAGER_REGEX, EMPTY) )}]`;
   }
@@ -252,12 +222,12 @@ export const Consume: IConsume =
        * Use correct naming for non-production mode.
        */
       if (IS_PRODUCTION) {
-        Consumer.displayName = "dc";
+        Consumer.displayName = "D.C";
       } else {
         Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it instanceof ContextManager ?  it.constructor.name.replace(MANAGER_REGEX, EMPTY) : `${it.from.constructor.name.replace(MANAGER_REGEX, EMPTY)}{${it.take}}`)}]`;
       }
 
-      return Consumer;
+      return hoistNonReactStatics(Consumer, target as any);
     }
   };
 
@@ -277,7 +247,7 @@ export abstract class ContextManager<T extends object> {
 
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
-      manager.context[key] = { ...(manager.context as any)[key], ...(obj as object) };
+      manager.context[key] = Object.assign({}, manager.context[key], obj);
       // @ts-ignore
       manager[OBSERVERS_KEY].forEach((it) => it(manager.getProvidedProps()));
       manager.afterUpdate();
