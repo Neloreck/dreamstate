@@ -23,80 +23,130 @@ import { shallowEqualObjects } from "shallow-equal";
  * Based on observing and using as small tree components count as possible.
  */
 
-/**
- * Check current application mode.
- */
 const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 
 /**
- * Regex for names changing.
+ * Constants references.
  */
-const MANAGER_REGEX: RegExp = /Manager/g;
-
-/**
- * Empty string ref.
- */
-const EMPTY: string = "";
-
-/**
- * Symbol key for private observers.
- */
-const OBSERVERS_KEY: Symbol = Symbol("DREAMSTATE_OBSERVERS");
-
-/**
- * Symbol key for private react context.
- */
-const CONTEXT_KEY: Symbol = Symbol("DREAMSTATE_CONTEXT");
-
-/**
- * Empty array ref.
- */
+const EMPTY_STRING: string = "";
 const EMPTY_ARR: Array<never> = [];
+const MANAGER_REGEX: RegExp = /Manager/g;
+const REGISTRY: IStringIndexed<ContextManager<any>> = {};
 
 /**
- * Interface for string indexed objects.
+ * Symbol keys for internals.
+ */
+const IDENTIFIER_KEY: unique symbol = Symbol("DS_CM");
+const OBSERVERS_KEY: unique symbol = Symbol("DS_OBSERVERS");
+const CONTEXT_KEY: unique symbol = Symbol("DS_CONTEXT");
+
+/**
+ * Internal types.
  */
 interface IStringIndexed<T> {
   [index: string]: T;
 }
 
-/**
- * Any context manager type.
- */
-export type TAnyCM = ContextManager<any>;
+interface IContextManagerConstructor<T extends object> {
+  [OBSERVERS_KEY]: Array<TSetter<T>>;
+  [IDENTIFIER_KEY]: any;
+  prototype: ContextManager<T>;
+  new(): ContextManager<T>;
+  getContextType(): Context<T>;
+}
 
-/**
- * Pick declaration.
- * Describe object that will help to get listed state params.
- */
-export interface IConsumePick<A extends TAnyCM> {
+type TConstructor<T> = new (...args: Array<any>) => T;
+
+type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
+
+type TSetter<T> = (value: T) => void;
+
+export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<T> | T;
+
+interface IConsumePick<A extends TAnyContextManagerConstructor> {
   from: A;
-  take: Array<keyof A["context"]>;
+  take: Array<keyof A["prototype"]["context"]>;
 }
 
 /**
- * Generic setter method.
+ * Internal utils.
  */
-export type TSetter<T> = (value: T) => void;
 
 /**
- * Consumable type.
- * Manager or pick descriptor.
+ * Utility getter.
+ * Add state changes observer.
  */
-export type TConsumable<T extends TAnyCM> = IConsumePick<T> | T;
+const addObserver = <T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void => {
+
+  if (manager[OBSERVERS_KEY].length === 0) {
+    // @ts-ignore protected.
+    REGISTRY[manager[IDENTIFIER_KEY]].onProvisionStarted();
+  }
+
+  manager[OBSERVERS_KEY].push(observer);
+};
+
+/**
+ * Utility getter.
+ * Remove state changes observer.
+ */
+const removeObserver = <T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void => {
+
+  manager[OBSERVERS_KEY] = manager[OBSERVERS_KEY].filter((it) => it !== observer);
+
+  if (manager[OBSERVERS_KEY].length === 0) {
+    if (!REGISTRY[manager[IDENTIFIER_KEY]]) {
+      throw new Error("Context manager already defined in registry. Is it memory leak?");
+    } else {
+      // @ts-ignore protected.
+      REGISTRY[manager[IDENTIFIER_KEY]].onProvisionEnded();
+      delete REGISTRY[manager[IDENTIFIER_KEY]];
+    }
+  }
+};
+
+function useDreamstateInitialState<T extends object>(manager: IContextManagerConstructor<T>) {
+
+  return useState(() => {
+
+    let instance: ContextManager<T>;
+
+    if (!manager.hasOwnProperty(IDENTIFIER_KEY)) {
+
+      const UNIQUE_IDENTIFIER: symbol = Symbol(manager.name);
+
+      manager[OBSERVERS_KEY] = [];
+      manager[IDENTIFIER_KEY] = UNIQUE_IDENTIFIER;
+    }
+
+    if (REGISTRY.hasOwnProperty(manager[IDENTIFIER_KEY])) {
+      instance = REGISTRY[manager[IDENTIFIER_KEY]];
+    } else {
+
+      instance = new manager();
+
+      REGISTRY[manager[IDENTIFIER_KEY]] = instance;
+    }
+
+    return instance.getProvidedProps()
+  });
+}
+
+/**
+ * Exported.
+ */
 
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
-// @ts-ignore
-export const useManager = <T extends object>(manager: ContextManager<T>): T => useContext(manager[CONTEXT_KEY]);
+export const useManager = <T extends object, D extends IContextManagerConstructor<T>>(managerConstructor: D): D["prototype"]["context"] => useContext(managerConstructor.getContextType());
 
 /**
  * Decorator factory.
  * Provide context from context managers.
  * Observes changes and uses default react Providers for data flow.
  */
-export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target: T) => {
+export const Provide = (...sources: Array<TAnyContextManagerConstructor>): ClassDecorator => <T>(target: T) => {
 
   /**
    * Since we are using strictly defined closure, we are able to use cached value and looped hooks there.
@@ -115,11 +165,10 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
      */
     for (let it = 0; it < sources.length; it ++) {
 
-      const manager: TAnyCM = sources[it];
+      const managerClass: TAnyContextManagerConstructor = sources[it];
 
-      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useState(manager.getProvidedProps());
+      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useDreamstateInitialState(managerClass);
       const observedStateRef: MutableRefObject<IStringIndexed<any>> = useRef(observedState);
-
       /**
        * ShouldComponent update for correct states observing with less rendering.
        */
@@ -135,8 +184,8 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
        * Layout for sync tracking and state updates if next-in-tree component will use depending from it props etc.
        */
       useLayoutEffect(() => {
-        manager.addObserver(setWithMemo);
-        return () => manager.removeObserver(setWithMemo);
+        addObserver(managerClass, setWithMemo);
+        return () => removeObserver(managerClass, setWithMemo);
       }, EMPTY_ARR);
 
       /**
@@ -152,8 +201,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
       return (
         current >= sources.length
           ? createElement(target as any, props)
-          // @ts-ignore
-          : createElement(sources[current][CONTEXT_KEY].Provider, { value: sourcesStates[current] }, provideSubTree(current + 1))
+          : createElement(sources[current].getContextType().Provider, { value: sourcesStates[current] }, provideSubTree(current + 1))
       );
     }, sourcesStates);
 
@@ -169,7 +217,7 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
   if (IS_PRODUCTION) {
     Observer.displayName = "D.O";
   } else {
-    Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.constructor.name.replace(MANAGER_REGEX, EMPTY) )}]`;
+    Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING) )}]`;
   }
 
   return Observer as any;
@@ -181,11 +229,11 @@ export const Provide = (...sources: Array<TAnyCM>): ClassDecorator => <T>(target
  */
 export interface IConsume {
   // Mock for variadic selectors.
-  <A extends TAnyCM, B extends TAnyCM, C extends TAnyCM, D extends TAnyCM, E extends TAnyCM, F extends TAnyCM>(
+  <A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor, C extends TAnyContextManagerConstructor, D extends TAnyContextManagerConstructor, E extends TAnyContextManagerConstructor, F extends TAnyContextManagerConstructor>(
     a: TConsumable<A>, b?: TConsumable<B>, c?: TConsumable<C>, d?: TConsumable<D>, e?: TConsumable<E>, f?: TConsumable<F>,
   ): ClassDecorator;
   // Default usage with context managers.
-  (...managers: Array<ContextManager<any>>): ClassDecorator;
+  (...managers: Array<TAnyContextManagerConstructor>): ClassDecorator;
 }
 
 /**
@@ -204,7 +252,7 @@ export const Consume: IConsume =
 
         for (const source of sources) {
 
-          if (source instanceof ContextManager) {
+          if (source.prototype instanceof ContextManager) {
             consumed = Object.assign(consumed, useManager(source))
           } else {
 
@@ -224,7 +272,9 @@ export const Consume: IConsume =
       if (IS_PRODUCTION) {
         Consumer.displayName = "D.C";
       } else {
-        Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it instanceof ContextManager ?  it.constructor.name.replace(MANAGER_REGEX, EMPTY) : `${it.from.constructor.name.replace(MANAGER_REGEX, EMPTY)}{${it.take}}`)}]`;
+        Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it.prototype instanceof ContextManager
+          ?  it.name.replace(MANAGER_REGEX, EMPTY_STRING)
+          : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
       }
 
       return hoistNonReactStatics(Consumer, target as any);
@@ -238,6 +288,12 @@ export const Consume: IConsume =
  */
 export abstract class ContextManager<T extends object> {
 
+  static [IDENTIFIER_KEY]: any;
+
+  static [OBSERVERS_KEY]: Array<TSetter<any>>;
+
+  static [CONTEXT_KEY]: Context<any>;
+
   /**
    * Setter method factory.
    * !Strictly typed generic method with 'update' lifecycle.
@@ -248,11 +304,44 @@ export abstract class ContextManager<T extends object> {
     return (obj: Partial<S[D]>) => {
       manager.beforeUpdate();
       manager.context[key] = Object.assign({}, manager.context[key], obj);
-      // @ts-ignore
-      manager[OBSERVERS_KEY].forEach((it) => it(manager.getProvidedProps()));
+      // @ts-ignore symbol.
+      manager.constructor[OBSERVERS_KEY].forEach((it) => it(manager.getProvidedProps()));
       manager.afterUpdate();
     };
   };
+
+  /**
+   * Get current provided manager.
+   */
+  public static current<S, D extends TConstructor<S>>(this: D): S {
+    // @ts-ignore symbol.
+    return REGISTRY[this[IDENTIFIER_KEY]] as S;
+  }
+
+  /**
+   * Utility getter.
+   * Singleton generator.
+   * Allows to get related React.Context for manual renders.
+   */
+  public static getContextType<T extends object>(): Context<T> {
+
+    if (!this.hasOwnProperty(CONTEXT_KEY)) {
+
+      const reactContextType: Context<T> = createContext(null as any);
+
+      if (IS_PRODUCTION) {
+        reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+      } else {
+        reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+      }
+
+      this[CONTEXT_KEY] = reactContextType;
+
+      return reactContextType;
+    }
+
+    return this[CONTEXT_KEY];
+  }
 
   /**
    * Abstract store/actions bundle.
@@ -261,82 +350,15 @@ export abstract class ContextManager<T extends object> {
   public abstract context: T;
 
   /**
-   * Default constructor.
-   * Allows to create react context provider/consumer bundle.
-   * Stores it as private readonly singleton per each storage.
-   */
-  public constructor() {
-
-    /**
-     * Private internal for react context.
-     */
-    // @ts-ignore
-    this[CONTEXT_KEY] = createContext(this.getProvidedProps());
-
-    /**
-     * Private internal for observers.
-     */
-    // @ts-ignore
-    this[OBSERVERS_KEY] = [];
-
-    if (IS_PRODUCTION) {
-      // @ts-ignore
-      this[CONTEXT_KEY].displayName = "DS." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
-    } else {
-      // @ts-ignore
-      this[CONTEXT_KEY].displayName = "Dreamstate." + this.constructor.name.replace(MANAGER_REGEX, EMPTY);
-    }
-  }
-
-  /**
-   * Utility getter.
-   * Allows to get related React.Context for manual renders.
-   */
-  public getContext(): Context<T> {
-    // @ts-ignore
-    return this[CONTEXT_KEY];
-  }
-
-  /**
-   * Utility getter.
-   * Add state changes observer.
-   */
-  public addObserver(observer: (value: T) => void): void {
-
-    // @ts-ignore
-    if (this[OBSERVERS_KEY].length === 0) {
-      this.onProvisionStarted();
-    }
-
-    // @ts-ignore
-    this[OBSERVERS_KEY].push(observer);
-  }
-
-  /**
-   * Utility getter.
-   * Remove state changes observer.
-   */
-  public removeObserver(observer: (value: T) => void): void {
-
-    // @ts-ignore
-    this[OBSERVERS_KEY] = this[OBSERVERS_KEY].filter((it) => it !== observer);
-
-    // @ts-ignore
-    if (this[OBSERVERS_KEY].length === 0) {
-      this.onProvisionEnded();
-    }
-  }
-
-  /**
    * Force React.Provider update.
    * Calls lifecycle methods.
    * Should not cause odd renders because affects only related React.Provider elements (commonly - 1 per store).
    */
-  public update(): void {
+  public forceUpdate(): void {
 
     this.beforeUpdate();
-    // @ts-ignore
-    this[OBSERVERS_KEY].forEach((it: TSetter<any>) => it(this.getProvidedProps()));
+    // @ts-ignore constructor.
+    this.constructor[OBSERVERS_KEY].forEach((it: TSetter<T>) => it(this.getProvidedProps()));
     this.afterUpdate();
   }
 
@@ -351,19 +373,28 @@ export abstract class ContextManager<T extends object> {
 
   /**
    * Lifecycle.
-   * First provider was injected into DOM / Last provider was removed from DOM.
+   * First provider was injected into DOM.
    */
   protected onProvisionStarted(): void {}
+
+  /**
+   * Lifecycle.
+   * Last provider was removed from DOM.
+   */
   protected onProvisionEnded(): void {}
 
   /**
    * Lifecycle.
-   * Before/after manual update lifecycle event.
-   * Also shares for 'getSetter' methods.
-   *
-   * todo: Previous state?
+   * Before update lifecycle event.
+   * Also shared for 'getSetter' methods.
    */
   protected beforeUpdate(): void {}
+
+  /**
+   * Lifecycle.
+   * After update lifecycle event.
+   * Also shared for 'getSetter' methods.
+   */
   protected afterUpdate(): void {}
 
 }

@@ -1,34 +1,42 @@
 import * as React from "react";
 import { render } from "react-dom";
 import { PureComponent, ReactNode } from "react";
-import { Provide } from "./dreamstate";
-
-// Data.
-import { authContextManager, dataContextManager } from "./data";
+import { Bind } from "./dreamstate";
 
 // View.
-import { FunctionalView } from "./view/FunctonalView";
-import { ConsumedClassView } from "./view/ConsumedClassView";
-import { DecoratedClassView, IDecoratedClassViewInjectedProps } from "./view/DecoratedClassView";
+import { ProvidedWrapper } from "./view/ProvidedWrapper";
 
-@Provide(authContextManager, dataContextManager)
-export class Root extends PureComponent {
+export interface IRootState {
+  enabled: boolean;
+}
+
+export class Root extends PureComponent<object, IRootState> {
+
+  public state: IRootState = {
+    enabled: true
+  };
 
   public render(): ReactNode {
+
+    const { enabled } = this.state;
 
     return (
       <>
 
-        <div> Components are connected to the same store, so they are in total sync: </div>
+        <button onClick={this.onToggleRendering}> Toggle Rendering </button>
 
-        <DecoratedClassView someLabelFromExternalProps={"First component."} {...{} as IDecoratedClassViewInjectedProps}/>
-
-        <FunctionalView/>
-
-        <ConsumedClassView someLabelFromExternalProps={"Second component."}/>
+        { enabled ? <ProvidedWrapper/> : null }
 
       </>
     );
+  }
+
+  @Bind()
+  private onToggleRendering(): void {
+
+    const { enabled } = this.state;
+
+    this.setState({ enabled: !enabled })
   }
 
 }

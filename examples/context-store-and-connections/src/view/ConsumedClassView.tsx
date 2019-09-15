@@ -2,7 +2,7 @@ import * as React from "react";
 import { Context, PureComponent, ReactNode } from "react";
 
 // Data.
-import { authContextManager, IAuthContext } from "../data";
+import { AuthContextManager, IAuthContext } from "../data";
 
 // Props typing: own, injected and bundled props. You should know what has to be declared manually.
 export interface IConsumedClassViewOwnProps {
@@ -11,7 +11,7 @@ export interface IConsumedClassViewOwnProps {
 
 export class ConsumedClassView extends PureComponent<IConsumedClassViewOwnProps, never, IAuthContext> {
 
-  public static contextType: Context<IAuthContext> = authContextManager.getContext();
+  public static contextType: Context<IAuthContext> = AuthContextManager.getContextType();
 
   public render(): ReactNode {
 

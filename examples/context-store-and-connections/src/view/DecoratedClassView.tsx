@@ -3,7 +3,7 @@ import * as React from "react";
 import { PureComponent, ReactNode } from "react";
 
 // Data.
-import { authContextManager, dataContextManager, IAuthContext, IDataContext } from "../data";
+import { AuthContextManager, DataContextManager, IAuthContext, IDataContext } from "../data";
 
 // Props typing: own, injected and bundled props. You should know what has to be declared manually.
 export interface IDecoratedClassViewOwnProps {
@@ -13,7 +13,7 @@ export interface IDecoratedClassViewOwnProps {
 export interface IDecoratedClassViewInjectedProps extends IAuthContext, Pick<IDataContext, "dataState"> {
 }
 
-@Consume(authContextManager, { from: dataContextManager, take: [ "dataState" ] })
+@Consume(AuthContextManager, { from: DataContextManager, take: [ "dataState" ] })
 export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjectedProps & IDecoratedClassViewOwnProps> {
 
   private static SOME_STATIC_INTERNAL: Date = new Date();

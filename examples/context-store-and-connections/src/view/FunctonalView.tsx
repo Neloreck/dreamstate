@@ -3,12 +3,12 @@ import { ReactElement } from "react";
 import { useManager } from "../dreamstate";
 
 // Data.
-import { authContextManager, dataContextManager } from "../data";
+import { AuthContextManager, DataContextManager } from "../data";
 
 export function FunctionalView(): ReactElement {
 
-  const { authState: { isAuthenticated, user } } = useManager(authContextManager);
-  const { dataActions, dataState: { value } } = useManager(dataContextManager);
+  const { authState: { isAuthenticated, user } } = useManager(AuthContextManager);
+  const { dataActions, dataState: { value } } = useManager(DataContextManager);
 
   return (
     <>

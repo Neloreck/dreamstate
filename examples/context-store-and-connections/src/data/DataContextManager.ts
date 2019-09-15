@@ -30,7 +30,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
     },
     // Provided storage.
     dataState: {
-        value: "value"
+      value: "default"
     }
   };
 
@@ -38,7 +38,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
   public randomizeValue(): void {
     // Manual transaction for update.
     this.context.dataState = { ...this.context.dataState, value: "value-" + Math.floor(Math.random() * 100) };
-    this.update();
+    this.forceUpdate();
   }
 
   /*
@@ -47,7 +47,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
 
   @Bind()
   public onProvisionStarted(): void {
-    console.info("Provision started of data context started.");
+    console.info("Data provision started.");
   }
 
   @Bind()
