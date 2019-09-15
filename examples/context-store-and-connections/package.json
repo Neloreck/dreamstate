@@ -6,7 +6,7 @@
   "main": "src/main.tsx",
   "scripts": {
     "start": "npx webpack-dev-server --config ./webpack.config.ts",
-    "start:prod": "npx cross-env NODE_ENV=production npx webpack-dev-server --config ./webpack.config.ts",
+    "start:prod": "npx cross-env NODE_ENV=production npx webpack-dev-server --compress --config ./webpack.config.ts",
     "build": "webpack --config ./webpack.config.ts"
   },
   "babel": {

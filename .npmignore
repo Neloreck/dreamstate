@@ -1,5 +1,6 @@
 .idea/
 .github/
+.babelrc/
 src/
 test/
 examples/
