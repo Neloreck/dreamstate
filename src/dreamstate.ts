@@ -11,6 +11,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  ComponentType,
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -150,10 +151,16 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
 
   /**
    * Since we are using strictly defined closure, we are able to use cached value and looped hooks there.
+   * todo: Weak map there?
    */
   const sourcesStates: Array<IStringIndexed<any>> = new Array(sources.length);
 
   function Observer(props: IStringIndexed<any>): ReactElement {
+
+    /**
+     * Remove old states references after observer removal. Prevent memory leaks.
+     */
+    useLayoutEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
 
     /**
      * Collect states for future updates/rendering.
@@ -161,6 +168,7 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
     for (let it = 0; it < sources.length; it ++) {
 
       const managerClass: TAnyContextManagerConstructor = sources[it];
+
       const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useDreamstateInitialState(managerClass);
       const observedStateRef: MutableRefObject<IStringIndexed<any>> = useRef(observedState);
       /**
@@ -187,11 +195,6 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
        */
       sourcesStates[it] = observedState as any;
     }
-
-    /**
-     * Remove old states references after observer removal. Prevent memory leaks.
-     */
-    useLayoutEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
 
     /**
      * Recursive rendering of tree without
@@ -242,27 +245,26 @@ export interface IConsume {
  */
 export const Consume: IConsume =
   (...sources: Array<TConsumable<any>>): any => {
+    return <C>(target: ComponentType<C>) => {
 
-    return <C>(target: C) => {
+      function Consumer(ownProps: object) {
 
-      function Consumer(props: any) {
-
-        let consumed: IStringIndexed<any> = { ...props };
+        let consumed: IStringIndexed<any> = {};
 
         for (const source of sources) {
 
           if (source.prototype instanceof ContextManager) {
-            consumed = Object.assign(consumed, useManager(source))
+            Object.assign(consumed, useManager(source))
           } else {
 
             const propsToPick: Array<string> = (source as IConsumePick<any>).take as Array<string>;
             const propsPicked: IStringIndexed<any> = useManager((source as IConsumePick<any>).from);
 
-            consumed = Object.assign(consumed, propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = propsPicked[e], a), {}));
+            Object.assign(consumed, propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = propsPicked[e], a), {}));
           }
         }
 
-        return createElement(target as any, { ...props, ...consumed });
+        return createElement(target as any, { ...consumed, ...ownProps });
       }
 
       /**
@@ -300,7 +302,7 @@ export abstract class ContextManager<T extends object> {
    */
   public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) => {
 
-    return (obj: Partial<S[D]>) => {
+    return (obj: Partial<S[D]>): void => {
       manager.beforeUpdate();
       manager.context[key] = Object.assign({}, manager.context[key], obj);
       // @ts-ignore symbol.
@@ -312,7 +314,7 @@ export abstract class ContextManager<T extends object> {
   /**
    * Get current provided manager.
    */
-  public static current<S, D extends TConstructor<S>>(this: D): S {
+  public static current<S>(): S {
     // @ts-ignore symbol.
     return REGISTRY[this[IDENTIFIER_KEY]] as S;
   }
@@ -367,7 +369,7 @@ export abstract class ContextManager<T extends object> {
    * It will not force consumers/React.Provider odd renders because actions/state nested objects will be separated.
    */
   public getProvidedProps(): T {
-    return Object.assign({}, this.context);
+    return { ...this.context };
   }
 
   /**
