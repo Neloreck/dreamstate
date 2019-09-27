@@ -264,7 +264,7 @@ export const Consume: IConsume =
           }
         }
 
-        return createElement(target as any, { ...consumed, ...ownProps });
+        return createElement(target as any, Object.assign(consumed, ownProps));
       }
 
       /**
