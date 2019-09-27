@@ -56,8 +56,6 @@ interface IContextManagerConstructor<T extends object> {
   getContextType(): Context<T>;
 }
 
-type TConstructor<T> = new (...args: Array<any>) => T;
-
 type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
 
 type TSetter<T> = (value: T) => void;
@@ -106,21 +104,13 @@ const removeObserver = <T extends object>(manager: IContextManagerConstructor<T>
   }
 };
 
-function useDreamstateInitialState<T extends object>(manager: IContextManagerConstructor<T>) {
+function useManagerWithLazyInit<T extends object>(manager: IContextManagerConstructor<T>) {
 
   return useState(() => {
 
     let instance: ContextManager<T>;
 
-    if (!manager.hasOwnProperty(IDENTIFIER_KEY)) {
-
-      const UNIQUE_IDENTIFIER: symbol = Symbol(manager.name);
-
-      manager[OBSERVERS_KEY] = [];
-      manager[IDENTIFIER_KEY] = UNIQUE_IDENTIFIER;
-    }
-
-    if (REGISTRY.hasOwnProperty(manager[IDENTIFIER_KEY])) {
+    if (manager.hasOwnProperty(IDENTIFIER_KEY) && REGISTRY.hasOwnProperty(manager[IDENTIFIER_KEY])) {
       instance = REGISTRY[manager[IDENTIFIER_KEY]];
     } else {
 
@@ -169,7 +159,7 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
 
       const managerClass: TAnyContextManagerConstructor = sources[it];
 
-      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useDreamstateInitialState(managerClass);
+      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useManagerWithLazyInit(managerClass);
       const observedStateRef: MutableRefObject<IStringIndexed<any>> = useRef(observedState);
       /**
        * ShouldComponent update for correct states observing with less rendering.
@@ -349,6 +339,17 @@ export abstract class ContextManager<T extends object> {
    * Left for generic implementation.
    */
   public abstract context: T;
+
+  public constructor() {
+
+    if (!this.constructor.hasOwnProperty(IDENTIFIER_KEY)) {
+
+      // @ts-ignore
+      this.constructor[IDENTIFIER_KEY] = Symbol(this.constructor.name);
+      // @ts-ignore
+      this.constructor[OBSERVERS_KEY] = [];
+    }
+  }
 
   /**
    * Force React.Provider update.
