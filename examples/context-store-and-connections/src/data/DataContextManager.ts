@@ -51,6 +51,11 @@ export class DataContextManager extends ContextManager<IDataContext> {
   }
 
   @Bind()
+  public onProvisionEnded(): void {
+    console.info("Data provision ended.");
+  }
+
+  @Bind()
   public beforeUpdate(): void {
     console.info("Before data context updated triggered.");
   }
