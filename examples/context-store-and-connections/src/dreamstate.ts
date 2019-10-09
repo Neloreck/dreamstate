@@ -2,6 +2,7 @@ import {
   createContext,
   createElement,
   Context,
+  FunctionComponent,
   useContext,
   useLayoutEffect,
   useState,
@@ -11,7 +12,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  ComponentType,
+  ComponentType
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -29,6 +30,7 @@ const IS_PRODUCTION: boolean = (process.env.NODE_ENV === "production");
 /**
  * Constants references.
  */
+
 const EMPTY_STRING: string = "";
 const EMPTY_ARR: Array<never> = [];
 const MANAGER_REGEX: RegExp = /Manager/g;
@@ -37,13 +39,15 @@ const REGISTRY: IStringIndexed<ContextManager<any>> = {};
 /**
  * Symbol keys for internals.
  */
+
 const IDENTIFIER_KEY: unique symbol = Symbol("DS_CM");
 const OBSERVERS_KEY: unique symbol = Symbol("DS_OBSERVERS");
 const CONTEXT_KEY: unique symbol = Symbol("DS_CONTEXT");
 
 /**
- * Internal types.
+ * Types.
  */
+
 interface IStringIndexed<T> {
   [index: string]: T;
 }
@@ -56,15 +60,41 @@ interface IContextManagerConstructor<T extends object> {
   getContextType(): Context<T>;
 }
 
-type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
-
 type TSetter<T> = (value: T) => void;
+
+export type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
 
 export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<T> | T;
 
-interface IConsumePick<A extends TAnyContextManagerConstructor> {
+export interface IConsumePick<A extends TAnyContextManagerConstructor> {
   from: A;
   take: Array<keyof A["prototype"]["context"]>;
+}
+
+/**
+ * todo: Wait for variadic arguments from typescript and remove this awful hardcode nesting.
+ * Declaration interface (temp) for consumer decorator.
+ */
+export interface IConsume {
+  // Mock for variadic selectors.
+  <A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor, C extends TAnyContextManagerConstructor, D extends TAnyContextManagerConstructor, E extends TAnyContextManagerConstructor, F extends TAnyContextManagerConstructor>(
+    a: TConsumable<A>, b?: TConsumable<B>, c?: TConsumable<C>, d?: TConsumable<D>, e?: TConsumable<E>, f?: TConsumable<F>,
+  ): <T>(component: ComponentType<T>) => ComponentType<T>;
+  // Default usage with context managers.
+  (...managers: Array<TAnyContextManagerConstructor>): <T>(component: ComponentType<T>) => ComponentType<T>;
+}
+
+/**
+ * todo: Wait for variadic arguments from typescript and remove this awful hardcode nesting.
+ * Declaration interface (temp) for consumer decorator.
+ */
+export interface IConsumeDecorator {
+  // Mock for variadic selectors.
+  <A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor, C extends TAnyContextManagerConstructor, D extends TAnyContextManagerConstructor, E extends TAnyContextManagerConstructor, F extends TAnyContextManagerConstructor>(
+    a: TConsumable<A>, b?: TConsumable<B>, c?: TConsumable<C>, d?: TConsumable<D>, e?: TConsumable<E>, f?: TConsumable<F>,
+  ): ClassDecorator;
+  // Default usage with context managers.
+  (...managers: Array<TAnyContextManagerConstructor>): ClassDecorator;
 }
 
 /**
@@ -72,72 +102,9 @@ interface IConsumePick<A extends TAnyContextManagerConstructor> {
  */
 
 /**
- * Utility getter.
- * Add state changes observer.
+ * Utility method for observers creation.
  */
-const addObserver = <T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void => {
-
-  if (manager[OBSERVERS_KEY].length === 0) {
-    // @ts-ignore protected.
-    REGISTRY[manager[IDENTIFIER_KEY]].onProvisionStarted();
-  }
-
-  manager[OBSERVERS_KEY].push(observer);
-};
-
-/**
- * Utility getter.
- * Remove state changes observer.
- */
-const removeObserver = <T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void => {
-
-  manager[OBSERVERS_KEY] = manager[OBSERVERS_KEY].filter((it) => it !== observer);
-
-  if (manager[OBSERVERS_KEY].length === 0) {
-    if (!REGISTRY[manager[IDENTIFIER_KEY]]) {
-      throw new Error("Context manager already defined in registry. Is it memory leak?");
-    } else {
-      // @ts-ignore protected.
-      REGISTRY[manager[IDENTIFIER_KEY]].onProvisionEnded();
-      delete REGISTRY[manager[IDENTIFIER_KEY]];
-    }
-  }
-};
-
-function useManagerWithLazyInit<T extends object>(manager: IContextManagerConstructor<T>) {
-
-  return useState(() => {
-
-    let instance: ContextManager<T>;
-
-    if (manager.hasOwnProperty(IDENTIFIER_KEY) && REGISTRY.hasOwnProperty(manager[IDENTIFIER_KEY])) {
-      instance = REGISTRY[manager[IDENTIFIER_KEY]];
-    } else {
-
-      instance = new manager();
-
-      REGISTRY[manager[IDENTIFIER_KEY]] = instance;
-    }
-
-    return instance.getProvidedProps()
-  });
-}
-
-/**
- * Exported.
- */
-
-/**
- * Use manager hook, higher order wrapper for useContext.
- */
-export const useManager = <T extends object, D extends IContextManagerConstructor<T>>(managerConstructor: D): D["prototype"]["context"] => useContext(managerConstructor.getContextType());
-
-/**
- * Decorator factory.
- * Provide context from context managers.
- * Observes changes and uses default react Providers for data flow.
- */
-export const Provide = (...sources: Array<TAnyContextManagerConstructor>): ClassDecorator => <T>(target: T) => {
+function createManagersObserver(children: ComponentType | null, sources: Array<TAnyContextManagerConstructor>) {
 
   /**
    * Since we are using strictly defined closure, we are able to use cached value and looped hooks there.
@@ -159,7 +126,7 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
 
       const managerClass: TAnyContextManagerConstructor = sources[it];
 
-      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useManagerWithLazyInit(managerClass);
+      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useManagerLazyInit(managerClass);
       const observedStateRef: MutableRefObject<IStringIndexed<any>> = useRef(observedState);
       /**
        * ShouldComponent update for correct states observing with less rendering.
@@ -192,7 +159,7 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
     const provideSubTree = useCallback((current: number): ReactElement => {
       return (
         current >= sources.length
-          ? createElement(target as any, props)
+          ? (children ? createElement(children, props) : props.children)
           : createElement(sources[current].getContextType().Provider, { value: sourcesStates[current] }, provideSubTree(current + 1))
       );
     }, sourcesStates);
@@ -213,64 +180,188 @@ export const Provide = (...sources: Array<TAnyContextManagerConstructor>): Class
   }
 
   return Observer as any;
-};
+}
+
+function createManagerConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+
+  function Consumer(ownProps: object) {
+
+    let consumed: IStringIndexed<any> = {};
+
+    for (const source of sources) {
+
+      if (source.prototype instanceof ContextManager) {
+        Object.assign(consumed, useManager(source))
+      } else {
+
+        const propsToPick: Array<string> = (source as IConsumePick<any>).take as Array<string>;
+        const propsPicked: IStringIndexed<any> = useManager((source as IConsumePick<any>).from);
+
+        Object.assign(consumed, propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = propsPicked[e], a), {}));
+      }
+    }
+
+    return createElement(target as any, Object.assign(consumed, ownProps));
+  }
+
+  /**
+   * Use correct naming for non-production mode.
+   */
+  if (IS_PRODUCTION) {
+    Consumer.displayName = "D.C";
+  } else {
+    Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it.prototype instanceof ContextManager
+      ?  it.name.replace(MANAGER_REGEX, EMPTY_STRING)
+      : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
+  }
+
+  return Consumer;
+}
 
 /**
- * todo: Wait for variadic arguments from typescript and remove this awful hardcode nesting.
- * Declaration interface (temp) for consumer decorator.
+ * Utility getter.
+ * Add state changes observer.
  */
-export interface IConsume {
-  // Mock for variadic selectors.
-  <A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor, C extends TAnyContextManagerConstructor, D extends TAnyContextManagerConstructor, E extends TAnyContextManagerConstructor, F extends TAnyContextManagerConstructor>(
-    a: TConsumable<A>, b?: TConsumable<B>, c?: TConsumable<C>, d?: TConsumable<D>, e?: TConsumable<E>, f?: TConsumable<F>,
-  ): ClassDecorator;
-  // Default usage with context managers.
-  (...managers: Array<TAnyContextManagerConstructor>): ClassDecorator;
+function addObserver<T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void {
+
+  if (manager[OBSERVERS_KEY].length === 0) {
+    // @ts-ignore protected.
+    REGISTRY[manager[IDENTIFIER_KEY]].onProvisionStarted();
+  }
+
+  manager[OBSERVERS_KEY].push(observer);
 }
+
+/**
+ * Utility getter.
+ * Remove state changes observer.
+ */
+function removeObserver<T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void {
+
+  manager[OBSERVERS_KEY] = manager[OBSERVERS_KEY].filter((it) => it !== observer);
+
+  if (manager[OBSERVERS_KEY].length === 0) {
+    if (!REGISTRY[manager[IDENTIFIER_KEY]]) {
+      throw new Error("Context manager already defined in registry. Is it memory leak?");
+    } else {
+      // @ts-ignore protected.
+      REGISTRY[manager[IDENTIFIER_KEY]].onProvisionEnded();
+      delete REGISTRY[manager[IDENTIFIER_KEY]];
+    }
+  }
+}
+
+/**
+ * Utility to initialize first state from manager state.
+ * Wrapped in lambda to prevent code execution for each render.
+ */
+function useManagerLazyInit<T extends object>(manager: IContextManagerConstructor<T>) {
+
+  return useState(() => {
+
+    let instance: ContextManager<T>;
+
+    if (manager.hasOwnProperty(IDENTIFIER_KEY) && REGISTRY.hasOwnProperty(manager[IDENTIFIER_KEY])) {
+      instance = REGISTRY[manager[IDENTIFIER_KEY]];
+    } else {
+      instance = new manager();
+      REGISTRY[manager[IDENTIFIER_KEY]] = instance;
+    }
+
+    return instance.getProvidedProps()
+  });
+}
+
+/**
+ * Exported API.
+ */
+
+/**
+ * Use manager hook, higher order wrapper for useContext.
+ */
+export const useManager = <T extends object, D extends IContextManagerConstructor<T>>(managerConstructor: D): D["prototype"]["context"] => useContext(managerConstructor.getContextType());
+
+/**
+ * Decorator factory.
+ * Provide context from context managers.
+ * Observes changes and uses default react Providers for data flow.
+ */
+export const Provide = (...sources: Array<TAnyContextManagerConstructor>) => (component: ComponentType) => hoistNonReactStatics(createManagersObserver(component, sources), component);
+
+/**
+ * HOC alias for @Provide.
+ */
+export const withProvision = Provide;
+
+/**
+ * Create component for manual provision without HOC/Decorator-like api.
+ * Useful if your root is functional component or you are using createComponent api without JSX.
+ */
+export const createProvider = (...sources: Array<TAnyContextManagerConstructor>): FunctionComponent<{}> => createManagersObserver(null, sources);
 
 /**
  * Decorator factory.
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
-export const Consume: IConsume =
-  (...sources: Array<TConsumable<any>>): any => {
-    return <C>(target: ComponentType<C>) => {
+export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>): any => (target: ComponentType) => hoistNonReactStatics(createManagerConsumer(target, sources), target as any);
 
-      function Consumer(ownProps: object) {
+/**
+ * HOC alias for @Consume.
+ */
+export const withConsumption: IConsume = Consume as IConsume;
 
-        let consumed: IStringIndexed<any> = {};
+/**
+ * Decorator factory.
+ * Modifies method descriptor, so it will be bound to prototype instance once.
+ * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
+ */
+export const Bind = (): MethodDecorator => <T>(target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> => {
 
-        for (const source of sources) {
+  let original: T = descriptor.value as T;
 
-          if (source.prototype instanceof ContextManager) {
-            Object.assign(consumed, useManager(source))
-          } else {
+  if (typeof original !== "function") {
+    throw new TypeError(`@Bind decorator can only be applied to methods not: ${typeof original}.`);
+  }
 
-            const propsToPick: Array<string> = (source as IConsumePick<any>).take as Array<string>;
-            const propsPicked: IStringIndexed<any> = useManager((source as IConsumePick<any>).from);
+  // In IE11 calling Object.defineProperty has a side-effect of evaluating the
+  // getter for the property which is being replaced. This causes infinite
+  // recursion and an "Out of stack space" error.
+  let definingProperty = false;
 
-            Object.assign(consumed, propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = propsPicked[e], a), {}));
-          }
+  return {
+    configurable: true,
+    get(): T {
+
+      // @ts-ignore functional interface.
+      if (definingProperty || this === target.prototype || this.hasOwnProperty(propertyKey) || typeof original !== 'function') {
+        return original;
+      }
+
+      const bound: T = original.bind(this);
+
+      definingProperty = true;
+
+      Object.defineProperty(this, propertyKey, {
+        configurable: true,
+        get(): T {
+          return bound;
+        },
+        set(value: T): void {
+          original = value;
+          delete this[propertyKey];
         }
+      });
 
-        return createElement(target as any, Object.assign(consumed, ownProps));
-      }
+      definingProperty = false;
 
-      /**
-       * Use correct naming for non-production mode.
-       */
-      if (IS_PRODUCTION) {
-        Consumer.displayName = "D.C";
-      } else {
-        Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it.prototype instanceof ContextManager
-          ?  it.name.replace(MANAGER_REGEX, EMPTY_STRING)
-          : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
-      }
-
-      return hoistNonReactStatics(Consumer, target as any);
+      return bound;
+    },
+    set(value: T): void {
+      original = value;
     }
   };
+};
 
 /**
  * Abstract class.
@@ -400,55 +491,3 @@ export abstract class ContextManager<T extends object> {
   protected afterUpdate(): void {}
 
 }
-
-/**
- * Decorator factory.
- * Modifies method descriptor, so it will be bound to prototype instance once.
- * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
- */
-export const Bind = (): MethodDecorator => <T>(target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> => {
-
-  let original: T = descriptor.value as T;
-
-  if (typeof original !== "function") {
-    throw new TypeError(`@Bind decorator can only be applied to methods not: ${typeof original}.`);
-  }
-
-  // In IE11 calling Object.defineProperty has a side-effect of evaluating the
-  // getter for the property which is being replaced. This causes infinite
-  // recursion and an "Out of stack space" error.
-  let definingProperty = false;
-
-  return {
-    configurable: true,
-    get(): T {
-
-      // @ts-ignore functional interface.
-      if (definingProperty || this === target.prototype || this.hasOwnProperty(propertyKey) || typeof original !== 'function') {
-        return original;
-      }
-
-      const bound: T = original.bind(this);
-
-      definingProperty = true;
-
-      Object.defineProperty(this, propertyKey, {
-        configurable: true,
-        get(): T {
-          return bound;
-        },
-        set(value: T): void {
-          original = value;
-          delete this[propertyKey];
-        }
-      });
-
-      definingProperty = false;
-
-      return bound;
-    },
-    set(value: T): void {
-      original = value;
-    }
-  };
-};
