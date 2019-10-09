@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
 [![language-ts](https://img.shields.io/badge/language-typescript%3A%20100%25-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/search?l=typescript)<br/>
 [![start with wiki](https://img.shields.io/badge/docs-wiki-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/wiki)
-[![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/blob/master/LICENSE)
+                      [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/blob/master/LICENSE)
 <br/>
 [![npm downloads](https://img.shields.io/npm/dt/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
 [![HitCount](http://hits.dwyl.com/neloreck/dreamstate.svg)](http://hits.dwyl.com/neloreck/dreamstate)
@@ -11,7 +11,11 @@
 <hr/>
 
 The simplest and smallest class based storage for react with lifecycle and observers. <br/>
-React API and nothing more.
+React API with common observer pattern and nothing more.
+<br/> <br/>
+Library allows you to create shared context stores for your application without long spaghetti-coded providers. <br/>
+Also it simplifies cases when your contexts should reference each outher. <br/>
+It includes common lifecycle and lazy management of store memory allocation.
 
 <hr/>
 
@@ -20,18 +24,25 @@ React API and nothing more.
 - `npm install --save dreamstate`
 
 <b>Important:</b>
-- Package requires 'react' as peer dependency.
-- Package uses 'expirementalDecorators' features. You should configure your project bundler correctly if you want to use Bind/Consume/Provide.
+- Package requires 'react' as peer dependency. Hooks support is currently required.
+- Package uses 'expirementalDecorators' features for some helpers. You should configure your project bundler correctly if you want to use decorators api.
 
 <hr/>
 
 ## Docs
-
-| @[Decorators](https://github.com/Neloreck/dreamstate/wiki/Decorators)| [Utils](https://github.com/Neloreck/dreamstate/wiki/Utils)|
-| :------------- | :------------- |
-| @[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume) | [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager) |
-| @[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide) | [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager) |
-| @[Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind) | - |
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= <br/>
+| @[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide) - provision decorator. <br/>
+| [withProvision](https://github.com/Neloreck/dreamstate/wiki/withProvision) - provision HOC. <br/>
+| [createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider) - provision component factory. <br/>
+| <br/>
+| @[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume) - consumption decorator. <br/>
+| [withConsumption](https://github.com/Neloreck/dreamstate/wiki/withConsumption) - consumption HOC. <br/>
+| [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager) - consumption hook. <br/>
+| <br/>
+| [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager) - abstract context manager class. <br/>
+| <br/>
+| @[Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind) - method decorator for binding. <br/>
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= <br/>
 
 ## Documentation:
 
@@ -41,9 +52,9 @@ Repository [wiki](https://github.com/Neloreck/dreamstate/wiki) includes docs and
 
 Repository includes example project with commentaries: <a href='https://github.com/Neloreck/dreamstate/tree/master/examples'>link</a>. <br/>
 
-## Proposals and contribution:
+  ## Proposals and contribution:
 
-Feel free to contibute or mail me with questions/proposals/issues (Neloreck@gmail.com). <br/>
+  Feel free to contibute or mail me with questions/proposals/issues (Neloreck@gmail.com). <br/>
 
 ## Licence
 
