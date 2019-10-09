@@ -1,7 +1,7 @@
 {
   "name": "dreamstate",
-  "version": "2.1.0",
-  "description": "Store manager for react context based on OOP.",
+  "version": "2.1.1",
+  "description": "Store management library based on context and observers.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "sideEffects": false,

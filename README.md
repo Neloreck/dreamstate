@@ -10,12 +10,11 @@
 
 <hr/>
 
-The simplest and smallest class based storage for react with lifecycle and observers. <br/>
+The simplest and smallest class based storage for react. <br/>
 React API with common observer pattern and nothing more.
 <br/> <br/>
-Library allows you to create shared context stores for your application without long spaghetti-coded providers. <br/>
-Also it simplifies cases when your contexts should reference each outher. <br/>
-It includes common lifecycle and lazy management of store memory allocation.
+Library allows you to create shared context stores for your application without long spaghetti-coded providers and simplifies cases when your contexts should reference each other. <br/>
+It includes react-like lifecycle and lazy management of store memory allocation.
 
 <hr/>
 
@@ -30,19 +29,14 @@ It includes common lifecycle and lazy management of store memory allocation.
 <hr/>
 
 ## Docs
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= <br/>
-| @[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide) - provision decorator. <br/>
-| [withProvision](https://github.com/Neloreck/dreamstate/wiki/withProvision) - provision HOC. <br/>
-| [createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider) - provision component factory. <br/>
-| <br/>
-| @[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume) - consumption decorator. <br/>
-| [withConsumption](https://github.com/Neloreck/dreamstate/wiki/withConsumption) - consumption HOC. <br/>
-| [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager) - consumption hook. <br/>
-| <br/>
-| [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager) - abstract context manager class. <br/>
-| <br/>
-| @[Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind) - method decorator for binding. <br/>
-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= <br/>
+[[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide)] - provision decorator. <br/>
+[[withProvision](https://github.com/Neloreck/dreamstate/wiki/withProvision)] - provision HOC. <br/>
+[[createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider)] - provision component factory. <br/>
+[[Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume)] - consumption decorator. <br/>
+[[withConsumption](https://github.com/Neloreck/dreamstate/wiki/withConsumption)] - consumption HOC. <br/>
+[[useManager](https://github.com/Neloreck/dreamstate/wiki/useManager)] - consumption hook. <br/>
+[[ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)] - abstract context manager class. <br/>
+[[Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind)] - method decorator for binding. <br/>
 
 ## Documentation:
 
@@ -52,7 +46,7 @@ Repository [wiki](https://github.com/Neloreck/dreamstate/wiki) includes docs and
 
 Repository includes example project with commentaries: <a href='https://github.com/Neloreck/dreamstate/tree/master/examples'>link</a>. <br/>
 
-  ## Proposals and contribution:
+## Proposals and contribution:
 
   Feel free to contibute or mail me with questions/proposals/issues (Neloreck@gmail.com). <br/>
 
