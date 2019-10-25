@@ -1,4 +1,4 @@
-import { Bind, ContextManager } from "../dreamstate";
+import { ContextManager } from "../dreamstate";
 
 /*
  * Context manager state declaration.
@@ -26,7 +26,8 @@ export class DataContextManager extends ContextManager<IDataContext> {
   public readonly context: IDataContext = {
     // Some kind of handlers.
     dataActions: {
-      randomizeValue: this.randomizeValue
+      // !!! You can use such approach instead of decorators.
+      randomizeValue: () => this.randomizeValue()
     },
     // Provided storage.
     dataState: {
@@ -34,7 +35,6 @@ export class DataContextManager extends ContextManager<IDataContext> {
     }
   };
 
-  @Bind()
   public randomizeValue(): void {
     // Manual transaction for update.
     this.context.dataState = { ...this.context.dataState, value: "value-" + Math.floor(Math.random() * 100) };
@@ -45,17 +45,14 @@ export class DataContextManager extends ContextManager<IDataContext> {
    * React-like lifecycle.
    */
 
-  @Bind()
   public onProvisionStarted(): void {
     console.info("Data provision started.");
   }
 
-  @Bind()
   public onProvisionEnded(): void {
     console.info("Data provision ended.");
   }
 
-  @Bind()
   public beforeUpdate(): void {
     console.info("Before data context updated triggered.");
   }

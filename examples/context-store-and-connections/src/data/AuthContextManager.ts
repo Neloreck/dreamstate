@@ -1,4 +1,4 @@
-import { Bind, ContextManager } from "../dreamstate";
+import { Bind, ContextManager, createLoadable, ILoadable } from "../dreamstate";
 
 /*
  * Context manager state declaration.
@@ -9,12 +9,10 @@ export interface IAuthContext {
   authActions: {
     randomizeUser(): void;
     randomizeUserAsync(): Promise<void>;
-    changeAuthenticationStatus(): void;
+    resetUser(): void;
   };
   authState: {
-    isLoading: boolean;
-    isAuthenticated: boolean;
-    user: string;
+    user: ILoadable<string>;
   };
 }
 
@@ -32,15 +30,13 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   public readonly context: IAuthContext = {
     // Some kind of handlers.
     authActions: {
-      changeAuthenticationStatus: this.changeAuthenticationStatus,
       randomizeUserAsync: this.randomizeUserAsync,
-      randomizeUser: this.randomizeUser
+      randomizeUser: this.randomizeUser,
+      resetUser: this.resetUser
     },
     // Provided storage.
     authState: {
-      isAuthenticated: true,
-      isLoading: false,
-      user: "anonymous"
+      user: createLoadable("anonymous")
     }
   };
 
@@ -48,23 +44,35 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   private setState = ContextManager.getSetter(this, "authState");
 
   @Bind()
-  public changeAuthenticationStatus(): void {
-    this.setState({ isAuthenticated: !this.context.authState.isAuthenticated });
-  }
-
-  @Bind()
   public randomizeUser(): void {
-    this.setState({ user: "user-" + Math.floor(Math.random() * 100) });
+
+    const { user } = this.context.authState;
+
+    const newUsername: string = "randomized-sync-" + Math.floor(Math.random() * 100);
+
+    this.setState({ user: user.asUpdated(newUsername) });
   }
 
   @Bind()
-  public randomizeUserAsync(): Promise<void> {
+  public async randomizeUserAsync(): Promise<void> {
 
-    this.setState({ isLoading: true });
+    const { user } = this.context.authState;
 
-    return this.waitFor(AuthContextManager.ASYNC_USER_CHANGE_DELAY)
-      .then(() => `randomized-${Math.floor(Math.random() * 100)}`)
-      .then((user: string) => this.setState({ isLoading: false, user }));
+    this.setState({ user: user.asLoading() });
+
+    await this.waitFor(AuthContextManager.ASYNC_USER_CHANGE_DELAY);
+
+    const newUsername: string = "randomized-async-" + Math.floor(Math.random() * 1000);
+
+    this.setState({ user: user.asReady(newUsername) });
+  }
+
+  @Bind()
+  public resetUser(): void {
+
+    const { user } = this.context.authState;
+
+    this.setState({ user: user.asInitial() });
   }
 
   protected onProvisionStarted(): void {

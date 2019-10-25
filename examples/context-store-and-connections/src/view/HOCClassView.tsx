@@ -24,7 +24,7 @@ class ClassView extends PureComponent<IHOCClassViewInjectedProps & IHOCClassView
       someLabelFromExternalProps,
       // Get, what you need form injected props.
       dataState: { value },
-      authState: { user, isAuthenticated, isLoading },
+      authState: { user },
       authActions
     } = this.props;
 
@@ -43,12 +43,10 @@ class ClassView extends PureComponent<IHOCClassViewInjectedProps & IHOCClassView
 
             Auth context <br/>
 
-            USERNAME: { user } <br/>
-            AUTHENTICATED: { isAuthenticated.toString() } <br/>
+            USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
 
-            <button disabled={isLoading} onClick={authActions.changeAuthenticationStatus}> Change Authentication Status </button>
-            <button disabled={isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
-            <button disabled={isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
+            <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
+            <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
 
           </div>
 

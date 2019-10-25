@@ -12,7 +12,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  ComponentType
+  ComponentType,
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -71,6 +71,19 @@ export interface IConsumePick<A extends TAnyContextManagerConstructor> {
   take: Array<keyof A["prototype"]["context"]>;
 }
 
+export interface ILoadable<T, E = Error> {
+  // Data.
+  error: E | null;
+  isLoading: boolean;
+  value: T | null;
+  // Methods.
+  asInitial(): ILoadable<T, E>;
+  asFailed(error: E): ILoadable<T, E>;
+  asLoading(): ILoadable<T, E>;
+  asReady(value: T): ILoadable<T, E>;
+  asUpdated(value: T): ILoadable<T, E>;
+}
+
 /**
  * todo: Wait for variadic arguments from typescript and remove this awful hardcode nesting.
  * Declaration interface (temp) for consumer decorator.
@@ -100,6 +113,17 @@ export interface IConsumeDecorator {
 /**
  * Internal utils.
  */
+
+/**
+ * Subtree provider as global scope helper.
+ */
+function provideSubTree(current: number, bottom: ReactElement, sources: Array<TAnyContextManagerConstructor>, states: Array<IStringIndexed<any>>): ReactElement {
+  return (
+    current >= sources.length
+      ? bottom
+      : createElement(sources[current].getContextType().Provider, { value: states[current] }, provideSubTree(current + 1, bottom, sources, states))
+  );
+}
 
 /**
  * Utility method for observers creation.
@@ -154,20 +178,9 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
     }
 
     /**
-     * Recursive rendering of tree without
-     */
-    const provideSubTree = useCallback((current: number): ReactElement => {
-      return (
-        current >= sources.length
-          ? (children ? createElement(children, props) : props.children)
-          : createElement(sources[current].getContextType().Provider, { value: sourcesStates[current] }, provideSubTree(current + 1))
-      );
-    }, sourcesStates);
-
-    /**
      * Render tree from root.
      */
-    return provideSubTree(0);
+    return provideSubTree(0, (children ? createElement(children, props) : props.children), sources, sourcesStates);
   }
 
   /**
@@ -310,6 +323,34 @@ export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>):
  * HOC alias for @Consume.
  */
 export const withConsumption: IConsume = Consume as IConsume;
+
+/**
+ * Create loadable value utility.
+ */
+export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T, E> {
+  return ({
+    // Data.
+    error: null,
+    isLoading: false,
+    value: initialValue,
+    // Methods.
+    asInitial(): ILoadable<T, E> {
+      return { ...this, error: null, isLoading: false, value: initialValue };
+    },
+    asLoading(): ILoadable<T, E> {
+      return { ...this, error: null, isLoading: true };
+    },
+    asFailed(error: E | null): ILoadable<T, E> {
+      return { ...this, error, isLoading: false };
+    },
+    asReady(value: T | null): ILoadable<T, E> {
+      return { ...this, error: null, isLoading: false, value };
+    },
+    asUpdated(value: T | null): ILoadable<T, E> {
+      return { ...this, value };
+    }
+  });
+}
 
 /**
  * Decorator factory.

@@ -7,7 +7,7 @@ import { AuthContextManager, DataContextManager } from "../data";
 
 export function FunctionalView(): ReactElement {
 
-  const { authState: { isAuthenticated, user } } = useManager(AuthContextManager);
+  const { authState: { user } } = useManager(AuthContextManager);
   const { dataActions, dataState: { value } } = useManager(DataContextManager);
 
   return (
@@ -20,8 +20,7 @@ export function FunctionalView(): ReactElement {
         <div className={"functional-view-section"}>
 
            Auth context <br/>
-           USERNAME: { user } <br/>
-           AUTHENTICATED:  { isAuthenticated.toString() } <br/>
+           USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
 
         </div>
 

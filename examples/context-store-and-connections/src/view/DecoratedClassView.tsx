@@ -25,7 +25,7 @@ export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjecte
       someLabelFromExternalProps,
       // Get, what you need form injected props.
       dataState: { value },
-      authState: { user, isAuthenticated, isLoading },
+      authState: { user },
       authActions
     } = this.props;
 
@@ -44,12 +44,11 @@ export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjecte
 
             Auth context <br/>
 
-            USERNAME: { user } <br/>
-            AUTHENTICATED: { isAuthenticated.toString() } <br/>
+            USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
 
-            <button disabled={isLoading} onClick={authActions.changeAuthenticationStatus}> Change Authentication Status </button>
-            <button disabled={isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
-            <button disabled={isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
+            <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
+            <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
+            <button disabled={user.isLoading} onClick={authActions.resetUser}> Reset User </button>
 
           </div>
 
