@@ -1,4 +1,4 @@
-import { Bind, ContextManager, createLoadable, ILoadable } from "../dreamstate";
+import { Bind, ContextManager, createLoadable, ILoadable, TStateSetter } from "../dreamstate";
 
 /*
  * Context manager state declaration.
@@ -41,7 +41,7 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   };
 
   // Setter with autoupdate instead of manual transactional updating.
-  private setState = ContextManager.getSetter(this, "authState");
+  private setState: TStateSetter<IAuthContext, "authState"> = ContextManager.getSetter(this, "authState");
 
   @Bind()
   public randomizeUser(): void {
