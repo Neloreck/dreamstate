@@ -62,6 +62,8 @@ interface IContextManagerConstructor<T extends object> {
 
 type TSetter<T> = (value: T) => void;
 
+export type TStateSetter<T extends object, K extends keyof T> = (value: Partial<T[K]>) => void;
+
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
 
 export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<T> | T;

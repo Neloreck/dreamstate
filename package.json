@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Store management library based on context and observers.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
