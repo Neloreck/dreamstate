@@ -84,7 +84,7 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   }
 
   private waitFor(millis: number): Promise<void> {
-    return new Promise((resolve) => setTimeout(() => resolve(), millis));
+    return new Promise((resolve) => setTimeout(resolve, millis));
   }
 
 }
