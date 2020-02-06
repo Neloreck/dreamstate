@@ -325,12 +325,12 @@ export const useManager = <T extends object, D extends IContextManagerConstructo
  *
  * Creates legacy or proposal decorator based on used environment.
  */
-export const Provide = (...sources: Array<TAnyContextManagerConstructor>) => (classOrDescriptor: TConstructor<Component>) =>
+export const Provide = (...sources: Array<TAnyContextManagerConstructor>) => (classOrDescriptor: ComponentType) =>
   ((typeof classOrDescriptor === 'function'))
     ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
     : ({
       ...(classOrDescriptor as ClassDescriptor),
-      finisher: (wrappedComponent: TConstructor<Component>) => hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
+      finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
     });
 
 /**
@@ -349,12 +349,12 @@ export const createProvider = (...sources: Array<TAnyContextManagerConstructor>)
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
-export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>): any => (classOrDescriptor: TConstructor<Component>) =>
+export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>): any => (classOrDescriptor: ComponentType) =>
   ((typeof classOrDescriptor === 'function'))
     ? hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor)
     : ({
       ...(classOrDescriptor as ClassDescriptor),
-      finisher: (wrappedComponent: TConstructor<Component>) => hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
+      finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
     });
 
 /**
