@@ -12,7 +12,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  ComponentType,
+  ComponentType, Component,
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -60,7 +60,29 @@ interface IContextManagerConstructor<T extends object> {
   getContextType(): Context<T>;
 }
 
+
+// From the TC39 Decorators proposal.
+interface ClassElement {
+  kind: 'field' | 'method';
+  key: PropertyKey;
+  placement: 'static' | 'prototype' | 'own';
+  initializer?: Function;
+  extras?: ClassElement[];
+  finisher?: <T>(clazz: TConstructor<T>) => undefined | TConstructor<T>;
+  descriptor?: PropertyDescriptor;
+}
+
+interface ClassDescriptor {
+  kind: 'class';
+  elements: ClassElement[];
+  finisher?: <T>(clazz: TConstructor<T>) => undefined | TConstructor<T>;
+}
+
 type TSetter<T> = (value: T) => void;
+
+type TConstructor<T> = {
+  new (...args: unknown[]): T
+};
 
 export type TStateSetter<T extends object, K extends keyof T> = (value: Partial<T[K]>) => void;
 
@@ -197,7 +219,7 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
   return Observer as any;
 }
 
-function createManagerConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
 
   function Consumer(ownProps: object) {
 
@@ -300,8 +322,16 @@ export const useManager = <T extends object, D extends IContextManagerConstructo
  * Decorator factory.
  * Provide context from context managers.
  * Observes changes and uses default react Providers for data flow.
+ *
+ * Creates legacy or proposal decorator based on used environment.
  */
-export const Provide = (...sources: Array<TAnyContextManagerConstructor>) => (component: ComponentType) => hoistNonReactStatics(createManagersObserver(component, sources), component);
+export const Provide = (...sources: Array<TAnyContextManagerConstructor>) => (classOrDescriptor: TConstructor<Component> | ClassDescriptor) =>
+  ((typeof classOrDescriptor === 'function'))
+    ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
+    : ({
+      ...classOrDescriptor,
+      finisher: (wrappedComponent: TConstructor<Component>) => hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
+    });
 
 /**
  * HOC alias for @Provide.
@@ -319,7 +349,13 @@ export const createProvider = (...sources: Array<TAnyContextManagerConstructor>)
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
-export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>): any => (target: ComponentType) => hoistNonReactStatics(createManagerConsumer(target, sources), target as any);
+export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>): any => (classOrDescriptor: TConstructor<Component> | ClassDescriptor) =>
+  ((typeof classOrDescriptor === 'function'))
+    ? hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor)
+    : ({
+      ...classOrDescriptor,
+      finisher: (wrappedComponent: TConstructor<Component>) => hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
+    });
 
 /**
  * HOC alias for @Consume.
