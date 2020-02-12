@@ -12,7 +12,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
-  ComponentType, Component,
+  ComponentType,
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -77,6 +77,12 @@ interface ClassDescriptor {
   elements: ClassElement[];
   finisher?: <T>(clazz: TConstructor<T>) => undefined | TConstructor<T>;
 }
+
+interface MethodDescriptor extends ClassElement {
+  kind: 'method';
+  descriptor: PropertyDescriptor;
+}
+// Proposal end.
 
 type TSetter<T> = (value: T) => void;
 
@@ -391,55 +397,50 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
 }
 
 /**
+ * Bind decorator wrappers factory for methods binding.
+ */
+const createBoundDescriptor = <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) => {
+
+  return  ({
+    configurable: true,
+    get(this: object): T {
+
+      const bound: T = (from as any).value.bind(this);
+
+      Object.defineProperty(this, property, {
+        value: bound,
+        configurable: true,
+        writable: true
+      });
+
+      return bound;
+    }
+  });
+};
+
+/**
  * Decorator factory.
  * Modifies method descriptor, so it will be bound to prototype instance once.
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
  */
-export const Bind = (): MethodDecorator => <T>(target: object, propertyKey: string | symbol, descriptor: TypedPropertyDescriptor<T>): TypedPropertyDescriptor<T> => {
+export const Bind = (): MethodDecorator => <T>(targetOrDescriptor: object | MethodDescriptor, propertyKey: PropertyKey | undefined, descriptor: TypedPropertyDescriptor<T> | undefined) => {
 
-  let original: T = descriptor.value as T;
-
-  if (typeof original !== "function") {
-    throw new TypeError(`@Bind decorator can only be applied to methods not: ${typeof original}.`);
-  }
-
-  // In IE11 calling Object.defineProperty has a side-effect of evaluating the
-  // getter for the property which is being replaced. This causes infinite
-  // recursion and an "Out of stack space" error.
-  let definingProperty = false;
-
-  return {
-    configurable: true,
-    get(): T {
-
-      // @ts-ignore functional interface.
-      if (definingProperty || this === target.prototype || this.hasOwnProperty(propertyKey) || typeof original !== 'function') {
-        return original;
-      }
-
-      const bound: T = original.bind(this);
-
-      definingProperty = true;
-
-      Object.defineProperty(this, propertyKey, {
-        configurable: true,
-        get(): T {
-          return bound;
-        },
-        set(value: T): void {
-          original = value;
-          delete this[propertyKey];
-        }
-      });
-
-      definingProperty = false;
-
-      return bound;
-    },
-    set(value: T): void {
-      original = value;
+  if (propertyKey && descriptor) {
+    // If it is legacy method decorator.
+    if (typeof descriptor.value !== 'function') {
+      throw new TypeError(`Only methods can be decorated with @Bind. ${propertyKey.toString()} is not a method.`);
+    } else {
+      return createBoundDescriptor(descriptor, propertyKey);
     }
-  };
+  } else {
+    // If it is
+    if ((targetOrDescriptor as MethodDescriptor).kind !== "method") {
+      throw new TypeError(`Only methods can be decorated with @Bind. ${(targetOrDescriptor as MethodDescriptor).key.toString()} is not a method.`);
+    } else {
+      (targetOrDescriptor as MethodDescriptor).descriptor = createBoundDescriptor((targetOrDescriptor as MethodDescriptor).descriptor, (targetOrDescriptor as MethodDescriptor).key)
+      return targetOrDescriptor;
+    }
+  }
 };
 
 /**
