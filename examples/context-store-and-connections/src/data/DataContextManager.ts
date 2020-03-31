@@ -57,4 +57,8 @@ export class DataContextManager extends ContextManager<IDataContext> {
     console.info("Before data context updated triggered.");
   }
 
+  public beforeDestroy(): void {
+    console.info("Before data context destroyed triggered.");
+  }
+
 }

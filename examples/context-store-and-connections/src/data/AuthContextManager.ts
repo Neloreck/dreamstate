@@ -24,7 +24,16 @@ export interface IAuthContext {
  */
 export class AuthContextManager extends ContextManager<IAuthContext> {
 
-  private static ASYNC_USER_CHANGE_DELAY: number = 1000;
+  /**
+   * Should dreamstate destroy store instance after observers removal or preserve it even if no observers are present.
+   * Singleton objects will never be destroyed once created.
+   * Non-singleton objects are destroyed if all observers are removed.
+   *
+   * Sometimes you will want to create stores that are not globally supplied but should have single application state.
+   */
+  protected static readonly IS_SINGLETON: boolean = true;
+
+  private static readonly ASYNC_USER_CHANGE_DELAY: number = 1000;
 
   // Default context state.
   public readonly context: IAuthContext = {
@@ -81,6 +90,10 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
 
   protected onProvisionEnded(): void {
     console.info("Auth provision ended.");
+  }
+
+  protected beforeDestroy(): void {
+    // WILL NEVER BE CALLED -> AuthContextManager is singleton because it has static prop IS_SINGLETON = true.
   }
 
   private waitFor(millis: number): Promise<void> {

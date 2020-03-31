@@ -4,7 +4,7 @@ import {
   Context,
   FunctionComponent,
   useContext,
-  useLayoutEffect,
+  useEffect,
   useState,
   useRef,
   ReactElement,
@@ -171,7 +171,7 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
     /**
      * Remove old states references after observer removal. Prevent memory leaks.
      */
-    useLayoutEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
+    useEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
 
     /**
      * Collect states for future updates/rendering.
@@ -196,7 +196,7 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
       /**
        * Layout for sync tracking and state updates if next-in-tree component will use depending from it props etc.
        */
-      useLayoutEffect(() => {
+      useEffect(() => {
         addObserver(managerClass, setWithMemo);
         return () => removeObserver(managerClass, setWithMemo);
       }, EMPTY_ARR);
@@ -284,12 +284,19 @@ function removeObserver<T extends object>(manager: IContextManagerConstructor<T>
   manager[OBSERVERS_KEY] = manager[OBSERVERS_KEY].filter((it) => it !== observer);
 
   if (manager[OBSERVERS_KEY].length === 0) {
-    if (!REGISTRY[manager[IDENTIFIER_KEY]]) {
-      throw new Error("Context manager already defined in registry. Is it memory leak?");
+    const instance: ContextManager<T> | undefined = REGISTRY[manager[IDENTIFIER_KEY]];
+
+    if (!instance) {
+      throw new Error("Could not find manager instance when removing last observer. Is it memory leak?");
     } else {
       // @ts-ignore protected.
-      REGISTRY[manager[IDENTIFIER_KEY]].onProvisionEnded();
-      delete REGISTRY[manager[IDENTIFIER_KEY]];
+      instance.onProvisionEnded();
+      // @ts-ignore protected field, do not expose it for external usage.
+      if (!manager.IS_SINGLETON) {
+        // @ts-ignore protected field, do not expose it for external usage.
+        instance.beforeDestroy();
+        delete REGISTRY[manager[IDENTIFIER_KEY]];
+      }
     }
   }
 }
@@ -450,11 +457,18 @@ export const Bind = (): MethodDecorator => <T>(targetOrDescriptor: object | Meth
  */
 export abstract class ContextManager<T extends object> {
 
-  static [IDENTIFIER_KEY]: any;
+  public static [IDENTIFIER_KEY]: any;
 
-  static [OBSERVERS_KEY]: Array<TSetter<any>>;
+  public static [OBSERVERS_KEY]: Array<TSetter<any>>;
 
-  static [CONTEXT_KEY]: Context<any>;
+  public static [CONTEXT_KEY]: Context<any>;
+
+  /**
+   * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
+   * Singleton objects will never be destroyed once created.
+   * Non-singleton objects are destroyed if all observers are removed.
+   */
+  protected static IS_SINGLETON: boolean = false;
 
   /**
    * Setter method factory.
@@ -569,5 +583,11 @@ export abstract class ContextManager<T extends object> {
    * Also shared for 'getSetter' methods.
    */
   protected afterUpdate(): void {}
+
+  /**
+   * Lifecycle.
+   * Fired when last instance of context manager observer is removed and it will be destroyed.
+   */
+  protected beforeDestroy(): void {}
 
 }

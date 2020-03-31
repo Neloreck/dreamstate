@@ -1,19 +1,21 @@
 {
   "name": "dreamstate",
-  "version": "2.3.3",
+  "version": "2.4.0",
   "description": "Store management library based on context and observers.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "sideEffects": false,
   "private": false,
+  "author": "Syrotenko Igor",
+  "license": "MIT",
   "scripts": {
     "build": "npm run clean && mkdir ./lib && npm run build:tsc && npm run build:switcher && npm run build:dev && npm run build:prod && npm run include:dts && rm -rf ./target",
     "clean": "rm -rf ./lib && rm -rf ./target",
     "include:dts": "cp ./target/dreamstate.d.ts ./lib/index.d.ts",
-    "build:tsc": "tsc -p ./src/tsconfig.json",
-    "build:switcher": "npx babel target/index.js --out-file lib/index.js --minified --compact true --no-comments --env-name production",
-    "build:prod": "npx babel target/dreamstate.js --out-file lib/dreamstate.production.min.js --minified --compact true --no-comments --env-name production",
-    "build:dev": "npx babel target/dreamstate.js --out-file lib/dreamstate.development.js --env-name development",
+    "build:tsc": "tsc -p ./src --emitDeclarationOnly",
+    "build:switcher": "npx babel src/index.ts --out-file lib/index.js --minified --compact true --no-comments --env-name production",
+    "build:prod": "cross-env IS_DEV=false babel src/dreamstate.ts --config-file ./babel.config.json --out-file lib/dreamstate.production.min.js --minified --compact true --no-comments --presets minify",
+    "build:dev": "cross-env IS_DEV=true babel src/dreamstate.ts --config-file ./babel.config.json --out-file lib/dreamstate.development.js",
     "=============================": "================================================================================",
     "prepublishOnly": "npm run build"
   },
@@ -21,6 +23,10 @@
     "type": "git",
     "url": "git+https://github.com/neloreck/dreamstate.git"
   },
+  "bugs": {
+    "url": "https://github.com/neloreck/dreamstate/issues"
+  },
+  "homepage": "https://github.com/neloreck/dreamstate#readme",
   "keywords": [
     "action",
     "class-based",
@@ -34,29 +40,36 @@
     "typescript",
     "utility"
   ],
-  "author": "Syrotenko Igor",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/neloreck/dreamstate/issues"
-  },
-  "homepage": "https://github.com/neloreck/dreamstate#readme",
   "peerDependencies": {
-    "react": "^16.8.0"
+    "react": ">=16.8.0"
   },
   "dependencies": {
-    "hoist-non-react-statics": "~3.*.*",
-    "shallow-equal": "~1.*.*"
+    "hoist-non-react-statics": ">=3.0.0",
+    "shallow-equal": ">=1.0.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.7.5",
     "@babel/core": "^7.7.5",
     "@babel/node": "^7.7.4",
-    "@types/node": "^12.12.17",
-    "@types/react": "^16.9.16",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.9.0",
+    "@babel/plugin-transform-arrow-functions": "^7.8.3",
+    "@babel/plugin-transform-block-scoped-functions": "^7.8.3",
+    "@babel/plugin-transform-destructuring": "^7.8.8",
+    "@babel/plugin-transform-modules-commonjs": "^7.9.0",
+    "@babel/plugin-transform-parameters": "^7.9.3",
+    "@babel/plugin-transform-shorthand-properties": "^7.8.3",
+    "@babel/plugin-transform-spread": "^7.8.3",
+    "@babel/plugin-transform-template-literals": "^7.8.3",
+    "@babel/preset-typescript": "^7.9.0",
     "@types/hoist-non-react-statics": "^3.3.1",
+    "@types/node": "^12.12.17",
+    "@types/react": ">=16.9.16",
+    "babel-plugin-transform-inline-environment-variables": "^0.4.3",
     "babel-preset-minify": "^0.5.1",
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
-    "typescript": "^3.7.3"
+    "cross-env": "^7.0.2",
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
+    "typescript": "^3.8.3"
   }
 }

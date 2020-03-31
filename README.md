@@ -6,7 +6,6 @@
                       [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/blob/master/LICENSE)
 <br/>
 [![npm downloads](https://img.shields.io/npm/dt/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
-[![HitCount](http://hits.dwyl.com/neloreck/dreamstate.svg)](http://hits.dwyl.com/neloreck/dreamstate)
 
 <hr/>
 
@@ -21,12 +20,6 @@ It includes react-like lifecycle and lazy management of store memory allocation.
 ## Installation
 
 - `npm install --save dreamstate`
-
-<b>Important:</b>
-- Package requires 'react' as peer dependency. Hooks support is currently required.
-- Package uses 'expirementalDecorators' features for some helpers. You should configure your project bundler correctly if you want to use decorators api.
-
-<hr/>
 
 ## Docs
 [[Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide)] - provision decorator. <br/>

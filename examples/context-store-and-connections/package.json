@@ -2,7 +2,7 @@
   "name": "dreamstate_example",
   "author": "Syrotenko Igor",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.0.0",
   "main": "src/main.tsx",
   "scripts": {
     "start": "npx webpack-dev-server --config ./webpack.config.ts",
@@ -32,7 +32,6 @@
     ]
   },
   "dependencies": {
-    "dreamstate": "1.2.1",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "shallow-equal": "^1.2.0",
