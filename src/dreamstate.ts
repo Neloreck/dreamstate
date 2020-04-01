@@ -6,13 +6,10 @@ import {
   useContext,
   useEffect,
   useState,
-  useRef,
   ReactElement,
-  MutableRefObject,
-  Dispatch,
-  SetStateAction,
-  useCallback,
   ComponentType,
+  useCallback,
+  useMemo
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -21,7 +18,7 @@ import { shallowEqualObjects } from "shallow-equal";
  *
  * 'https://github.com/Neloreck/dreamstate'
  *
- * Context store for react.
+ * OOP style context store for react.
  * Based on observing and using as small tree components count as possible.
  */
 
@@ -41,6 +38,7 @@ const REGISTRY: IStringIndexed<ContextManager<any>> = {};
 const IDENTIFIER_KEY: unique symbol = Symbol("DS_CM");
 const OBSERVERS_KEY: unique symbol = Symbol("DS_OBSERVERS");
 const CONTEXT_KEY: unique symbol = Symbol("DS_CONTEXT");
+const CURRENT_STATE_KEY: unique symbol = Symbol("DS_CONTEXT");
 
 /**
  * Types.
@@ -51,13 +49,13 @@ interface IStringIndexed<T> {
 }
 
 interface IContextManagerConstructor<T extends object> {
-  [OBSERVERS_KEY]: Array<TSetter<T>>;
+  [OBSERVERS_KEY]: Array<TUpdateObserver>;
   [IDENTIFIER_KEY]: any;
+  [CURRENT_STATE_KEY]: T;
   prototype: ContextManager<T>;
   new(): ContextManager<T>;
   getContextType(): Context<T>;
 }
-
 
 // From the TC39 Decorators proposal.
 interface ClassElement {
@@ -82,7 +80,9 @@ interface MethodDescriptor extends ClassElement {
 }
 // Proposal end.
 
-type TSetter<T> = (value: T) => void;
+type TPartialDeriver<T> = (value: T) => Partial<T>;
+
+type TUpdateObserver = () => void;
 
 type TConstructor<T> = {
   new (...args: unknown[]): T
@@ -139,17 +139,78 @@ export interface IConsumeDecorator {
 }
 
 /**
- * Internal utils.
+ * Internal lib utils.
  */
+
+/**
+ * Add state changes observer.
+ */
+function addObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: TUpdateObserver): void {
+  // Notify about provision, if it is first observer.
+  if (managerConstructor[OBSERVERS_KEY].length === 0) {
+    // @ts-ignore protected and symbol properties.
+    REGISTRY[managerConstructor[IDENTIFIER_KEY]].onProvisionStarted();
+  }
+
+  managerConstructor[OBSERVERS_KEY].push(observer);
+}
+
+/**
+ * Remove state changes observer and kill instance if it is not singleton.
+ */
+function removeObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: (value: T) => void): void {
+  // Remove observer.
+  managerConstructor[OBSERVERS_KEY] = managerConstructor[OBSERVERS_KEY].filter((it) => it !== observer);
+
+  if (managerConstructor[OBSERVERS_KEY].length === 0) {
+    const instance: ContextManager<T> | undefined = REGISTRY[managerConstructor[IDENTIFIER_KEY]];
+
+    if (!instance) {
+      throw new Error("Could not find manager instance when removing last observer.");
+    } else {
+      // @ts-ignore protected.
+      instance.onProvisionEnded();
+      // @ts-ignore protected field, do not expose it for external usage.
+      if (!managerConstructor.IS_SINGLETON) {
+        // @ts-ignore protected field, do not expose it for external usage.
+        instance.beforeDestroy();
+        delete managerConstructor[CURRENT_STATE_KEY];
+        delete REGISTRY[managerConstructor[IDENTIFIER_KEY]];
+      }
+    }
+  }
+}
+
+/**
+ * Initialize context manager once before tree mount and use memo.
+ * Subscribe to adding/removing observers on mount/unmount.
+ */
+function useLazyInitializeManager<T extends object>(managerConstructor: IContextManagerConstructor<T>, updateObserver: () => void): void {
+  // Lazy init before observing with memo.
+  useMemo(function (): void {
+    // Only if registry is empty -> create new instance, remember its context and save it to registry.
+    if (!managerConstructor.hasOwnProperty(IDENTIFIER_KEY) || !REGISTRY.hasOwnProperty(managerConstructor[IDENTIFIER_KEY])) {
+      const instance: ContextManager<T> = new managerConstructor();
+      // @ts-ignore symbol properties.
+      managerConstructor[CURRENT_STATE_KEY] = instance.context;
+      REGISTRY[managerConstructor[IDENTIFIER_KEY]] = instance;
+    }
+  }, EMPTY_ARR);
+
+  useEffect(() => {
+    addObserver(managerConstructor, updateObserver);
+    return () => removeObserver(managerConstructor, updateObserver);
+  }, EMPTY_ARR);
+}
 
 /**
  * Subtree provider as global scope helper.
  */
-function provideSubTree(current: number, bottom: ReactElement, sources: Array<TAnyContextManagerConstructor>, states: Array<IStringIndexed<any>>): ReactElement {
+function provideSubTree(current: number, bottom: ReactElement, sources: Array<TAnyContextManagerConstructor>): ReactElement {
   return (
     current >= sources.length
       ? bottom
-      : createElement(sources[current].getContextType().Provider, { value: states[current] }, provideSubTree(current + 1, bottom, sources, states))
+      : createElement(sources[current].getContextType().Provider, { value: sources[current][CURRENT_STATE_KEY] }, provideSubTree(current + 1, bottom, sources))
   );
 }
 
@@ -157,74 +218,54 @@ function provideSubTree(current: number, bottom: ReactElement, sources: Array<TA
  * Utility method for observers creation.
  */
 function createManagersObserver(children: ComponentType | null, sources: Array<TAnyContextManagerConstructor>) {
-
-  /**
-   * Since we are using strictly defined closure, we are able to use cached value and looped hooks there.
-   * todo: Weak map there?
-   */
-  const sourcesStates: Array<IStringIndexed<any>> = new Array(sources.length);
-
+  // Create observer component that will handle observing.
   function Observer(props: IStringIndexed<any>): ReactElement {
-
-    /**
-     * Remove old states references after observer removal. Prevent memory leaks.
-     */
-    useEffect(() => () => { sourcesStates.splice(0, sourcesStates.length) }, EMPTY_ARR);
-
-    /**
-     * Collect states for future updates/rendering.
-     */
+    // Update providers subtree utility.
+    const [ , updateState ] = useState();
+    const updateProviders = useCallback(function () { updateState({}); }, EMPTY_ARR);
+    // Subscribe to tree updater and lazily get first context value.
     for (let it = 0; it < sources.length; it ++) {
-
-      const managerClass: TAnyContextManagerConstructor = sources[it];
-
-      const [ observedState, setObservedState ]: [ IStringIndexed<any>, Dispatch<SetStateAction<IStringIndexed<any>>> ] = useManagerLazyInit(managerClass);
-      const observedStateRef: MutableRefObject<IStringIndexed<any>> = useRef(observedState);
-      /**
-       * ShouldComponent update for correct states observing with less rendering.
-       */
-      const setWithMemo = useCallback((newState: IStringIndexed<any>): void => {
-
-        if (Object.keys(observedStateRef.current).some((key: string): boolean => !shallowEqualObjects(observedStateRef.current[key], newState[key]))) {
-          observedStateRef.current = newState;
-          setObservedState(newState);
-        }
-      }, EMPTY_ARR);
-
-      /**
-       * Layout for sync tracking and state updates if next-in-tree component will use depending from it props etc.
-       */
-      useEffect(() => {
-        addObserver(managerClass, setWithMemo);
-        return () => removeObserver(managerClass, setWithMemo);
-      }, EMPTY_ARR);
-
-      /**
-       * Update corresponding ref.
-       */
-      sourcesStates[it] = observedState as any;
+      useLazyInitializeManager(sources[it], updateProviders);
     }
 
-    /**
-     * Render tree from root.
-     */
-    return provideSubTree(0, (children ? createElement(children, props) : props.children), sources, sourcesStates);
+    return provideSubTree(0, (children ? createElement(children, props) : props.children), sources);
   }
 
-  /**
-   * Use correct naming for non-production mode.
-   */
   if (process.env.IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING) )}]`;
-  } else {
     Observer.displayName = "D.O";
+  } else {
+    Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING) )}]`;
   }
 
   return Observer as any;
 }
 
-function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+/**
+ * Compare context manager state diff with shallow check + nested objects check.
+ */
+function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nextContext: { [index: string]: any }): boolean {
+  const previousContext: { [index: string]: any; } = (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY];
 
+  return  Object
+    .keys(nextContext)
+    .some((key: string): boolean =>
+      typeof nextContext[key] === "object"
+        ? !shallowEqualObjects(nextContext[key], previousContext[key])
+        : nextContext[key] !== previousContext[key]
+    );
+}
+
+/**
+ * Notify observers and check if update is needed.
+ */
+function notifyObservers<T extends { [index: string]: any; }>(manager: ContextManager<T>, nextContext: T): void {
+  (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY] = nextContext;
+  (manager.constructor as IContextManagerConstructor<T>)[OBSERVERS_KEY].forEach(((it) => it()))
+}
+
+// todo: Somehow create new observer with ability to select key for HoCs.
+function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+  // HOC component to pick props and provide needed/selected.
   function Consumer(ownProps: object) {
 
     let consumed: IStringIndexed<any> = {};
@@ -245,80 +286,15 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
     return createElement(target as any, Object.assign(consumed, ownProps));
   }
 
-  /**
-   * Use correct naming for non-production mode.
-   */
   if (process.env.IS_DEV) {
     Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it.prototype instanceof ContextManager
       ?  it.name.replace(MANAGER_REGEX, EMPTY_STRING)
       : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
   } else {
     Consumer.displayName = "D.C";
-
   }
 
   return Consumer;
-}
-
-/**
- * Utility getter.
- * Add state changes observer.
- */
-function addObserver<T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void {
-
-  if (manager[OBSERVERS_KEY].length === 0) {
-    // @ts-ignore protected.
-    REGISTRY[manager[IDENTIFIER_KEY]].onProvisionStarted();
-  }
-
-  manager[OBSERVERS_KEY].push(observer);
-}
-
-/**
- * Utility getter.
- * Remove state changes observer.
- */
-function removeObserver<T extends object>(manager: IContextManagerConstructor<T>, observer: (value: T) => void): void {
-
-  manager[OBSERVERS_KEY] = manager[OBSERVERS_KEY].filter((it) => it !== observer);
-
-  if (manager[OBSERVERS_KEY].length === 0) {
-    const instance: ContextManager<T> | undefined = REGISTRY[manager[IDENTIFIER_KEY]];
-
-    if (!instance) {
-      throw new Error("Could not find manager instance when removing last observer. Is it memory leak?");
-    } else {
-      // @ts-ignore protected.
-      instance.onProvisionEnded();
-      // @ts-ignore protected field, do not expose it for external usage.
-      if (!manager.IS_SINGLETON) {
-        // @ts-ignore protected field, do not expose it for external usage.
-        instance.beforeDestroy();
-        delete REGISTRY[manager[IDENTIFIER_KEY]];
-      }
-    }
-  }
-}
-
-/**
- * Utility to initialize first state from manager state.
- * Wrapped in lambda to prevent code execution for each render.
- */
-function useManagerLazyInit<T extends object>(manager: IContextManagerConstructor<T>) {
-
-  return useState(() => {
-
-    let instance: ContextManager<T>;
-
-    if (manager.hasOwnProperty(IDENTIFIER_KEY) && REGISTRY.hasOwnProperty(manager[IDENTIFIER_KEY])) {
-      instance = REGISTRY[manager[IDENTIFIER_KEY]];
-    } else {
-      instance = new manager();
-      REGISTRY[manager[IDENTIFIER_KEY]] = instance;
-    }
-
-    return instance.getProvidedProps()
-  });
 }
 
 /**
@@ -328,7 +304,9 @@ function useManagerLazyInit<T extends object>(manager: IContextManagerConstructo
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
-export const useManager = <T extends object, D extends IContextManagerConstructor<T>>(managerConstructor: D): D["prototype"]["context"] => useContext(managerConstructor.getContextType());
+export function useManager<T extends object, D extends IContextManagerConstructor<T>>(managerConstructor: D): D["prototype"]["context"] {
+  return useContext(managerConstructor.getContextType());
+}
 
 /**
  * Decorator factory.
@@ -337,13 +315,17 @@ export const useManager = <T extends object, D extends IContextManagerConstructo
  *
  * Creates legacy or proposal decorator based on used environment.
  */
-export const Provide = (...sources: Array<TAnyContextManagerConstructor>) => (classOrDescriptor: ComponentType) =>
-  ((typeof classOrDescriptor === 'function'))
-    ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
-    : ({
-      ...(classOrDescriptor as ClassDescriptor),
-      finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
-    });
+export function Provide (...sources: Array<TAnyContextManagerConstructor>) {
+  // Support legacy and proposal decorators. Create observer of requested managers.
+  return function(classOrDescriptor: ComponentType) {
+    return ((typeof classOrDescriptor === 'function'))
+      ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
+      : ({
+        ...(classOrDescriptor as ClassDescriptor),
+        finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
+      });
+  };
+}
 
 /**
  * HOC alias for @Provide.
@@ -354,20 +336,27 @@ export const withProvision = Provide;
  * Create component for manual provision without HOC/Decorator-like api.
  * Useful if your root is functional component or you are using createComponent api without JSX.
  */
-export const createProvider = (...sources: Array<TAnyContextManagerConstructor>): FunctionComponent<{}> => createManagersObserver(null, sources);
+export function createProvider (...sources: Array<TAnyContextManagerConstructor>): FunctionComponent<{}> {
+  return createManagersObserver(null, sources);
+}
 
 /**
  * Decorator factory.
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
-export const Consume: IConsumeDecorator = (...sources: Array<TConsumable<any>>): any => (classOrDescriptor: ComponentType) =>
-  ((typeof classOrDescriptor === 'function'))
-    ? hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor)
-    : ({
-      ...(classOrDescriptor as ClassDescriptor),
-      finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
-    });
+export const Consume: IConsumeDecorator = function (...sources: Array<TConsumable<any>>): any {
+  // Higher order decorator to reserve params.
+  return function(classOrDescriptor: ComponentType) {
+    // Support legacy and proposal decorators.
+    return ((typeof classOrDescriptor === 'function'))
+      ? hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor)
+      : ({
+        ...(classOrDescriptor as ClassDescriptor),
+        finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
+      });
+  };
+};
 
 /**
  * HOC alias for @Consume.
@@ -405,12 +394,11 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
 /**
  * Bind decorator wrappers factory for methods binding.
  */
-const createBoundDescriptor = <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) => {
-
-  return  ({
+function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) {
+  // Descriptor with lazy binding.
+  return ({
     configurable: true,
     get(this: object): T {
-
       const bound: T = (from as any).value.bind(this);
 
       Object.defineProperty(this, property, {
@@ -422,32 +410,35 @@ const createBoundDescriptor = <T>(from: TypedPropertyDescriptor<T>, property: Pr
       return bound;
     }
   });
-};
+}
 
 /**
  * Decorator factory.
  * Modifies method descriptor, so it will be bound to prototype instance once.
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
  */
-export const Bind = (): MethodDecorator => <T>(targetOrDescriptor: object | MethodDescriptor, propertyKey: PropertyKey | undefined, descriptor: TypedPropertyDescriptor<T> | undefined) => {
-
-  if (propertyKey && descriptor) {
-    // If it is legacy method decorator.
-    if (typeof descriptor.value !== 'function') {
-      throw new TypeError(`Only methods can be decorated with @Bind. ${propertyKey.toString()} is not a method.`);
+export function Bind(): MethodDecorator {
+  // Higher order decorator to reserve closure parameters for futuure.
+  return function<T>(targetOrDescriptor: object | MethodDescriptor, propertyKey: PropertyKey | undefined, descriptor: TypedPropertyDescriptor<T> | undefined) {
+    // Different behaviour for legacy and proposal decorators.
+    if (propertyKey && descriptor) {
+      // If it is legacy method decorator.
+      if (typeof descriptor.value !== 'function') {
+        throw new TypeError(`Only methods can be decorated with @Bind. ${propertyKey.toString()} is not a method.`);
+      } else {
+        return createBoundDescriptor(descriptor, propertyKey);
+      }
     } else {
-      return createBoundDescriptor(descriptor, propertyKey);
+      // If it is not proposal method decorator.
+      if ((targetOrDescriptor as MethodDescriptor).kind !== "method") {
+        throw new TypeError(`Only methods can be decorated with @Bind. ${(targetOrDescriptor as MethodDescriptor).key.toString()} is not a method.`);
+      } else {
+        (targetOrDescriptor as MethodDescriptor).descriptor = createBoundDescriptor((targetOrDescriptor as MethodDescriptor).descriptor, (targetOrDescriptor as MethodDescriptor).key)
+        return targetOrDescriptor;
+      }
     }
-  } else {
-    // If it is
-    if ((targetOrDescriptor as MethodDescriptor).kind !== "method") {
-      throw new TypeError(`Only methods can be decorated with @Bind. ${(targetOrDescriptor as MethodDescriptor).key.toString()} is not a method.`);
-    } else {
-      (targetOrDescriptor as MethodDescriptor).descriptor = createBoundDescriptor((targetOrDescriptor as MethodDescriptor).descriptor, (targetOrDescriptor as MethodDescriptor).key)
-      return targetOrDescriptor;
-    }
-  }
-};
+  };
+}
 
 /**
  * Abstract class.
@@ -458,9 +449,11 @@ export abstract class ContextManager<T extends object> {
 
   public static [IDENTIFIER_KEY]: any;
 
-  public static [OBSERVERS_KEY]: Array<TSetter<any>>;
+  public static [OBSERVERS_KEY]: Array<TUpdateObserver>;
 
   public static [CONTEXT_KEY]: Context<any>;
+
+  public static [CURRENT_STATE_KEY]: any;
 
   /**
    * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
@@ -474,23 +467,18 @@ export abstract class ContextManager<T extends object> {
    * !Strictly typed generic method with 'update' lifecycle.
    * Helps to avoid boilerplate code with manual 'update' transactional updates for simple methods.
    */
-  public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) => {
-
-    return (obj: Partial<S[D]>): void => {
-      manager.beforeUpdate();
-      manager.context[key] = Object.assign({}, manager.context[key], obj);
-      // @ts-ignore symbol.
-      manager.constructor[OBSERVERS_KEY].forEach((it) => it(manager.getProvidedProps()));
-      manager.afterUpdate();
+  public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) =>
+    (next: Partial<S[D]> | TPartialDeriver<S[D]>): void => {
+      return manager.setContext({
+        [key]: Object.assign({}, manager.context[key], typeof next === "function" ? next(manager.context[key]) : next) } as any
+      );
     };
-  };
 
   /**
    * Get current provided manager.
    */
-  public static current<S>(): S {
-    // @ts-ignore symbol.
-    return REGISTRY[this[IDENTIFIER_KEY]] as S;
+  public static current<S extends object, T extends ContextManager<S>>(this: IContextManagerConstructor<S> & { new(): T; }): T {
+    return REGISTRY[this[IDENTIFIER_KEY]] as T;
   }
 
   /**
@@ -538,23 +526,30 @@ export abstract class ContextManager<T extends object> {
   /**
    * Force React.Provider update.
    * Calls lifecycle methods.
-   * Should not cause odd renders because affects only related React.Provider elements (commonly - 1 per store).
    */
   public forceUpdate(): void {
-
-    this.beforeUpdate();
-    // @ts-ignore constructor.
-    this.constructor[OBSERVERS_KEY].forEach((it: TSetter<T>) => it(this.getProvidedProps()));
-    this.afterUpdate();
+    // Force updates and common lifecycle with same params.
+    this.beforeUpdate(this.context);
+    this.context = Object.assign({}, this.context);
+    notifyObservers(this, this.context);
+    this.afterUpdate(this.context);
   }
 
   /**
-   * Get provided context object.
-   * Spread object every time for new references and provider HOC update.
-   * It will not force consumers/React.Provider odd renders because actions/state nested objects will be separated.
+   * Update current context from partially supplied state.
+   * Calls lifecycle methods.
    */
-  public getProvidedProps(): T {
-    return { ...this.context };
+  public setContext(next: Partial<T> | TPartialDeriver<T>): void {
+
+    const previousContext: T = this.context;
+    const nextContext: T = Object.assign({}, previousContext, next);
+
+    if (shouldObserversUpdate(this, nextContext)) {
+      this.beforeUpdate(nextContext);
+      this.context = nextContext;
+      notifyObservers(this, nextContext);
+      this.afterUpdate(previousContext);
+    }
   }
 
   /**
@@ -574,19 +569,19 @@ export abstract class ContextManager<T extends object> {
    * Before update lifecycle event.
    * Also shared for 'getSetter' methods.
    */
-  protected beforeUpdate(): void {}
+  protected beforeUpdate(nextContext: T): void {}
 
   /**
    * Lifecycle.
    * After update lifecycle event.
    * Also shared for 'getSetter' methods.
    */
-  protected afterUpdate(): void {}
+  protected afterUpdate(previousContext: T): void {}
 
   /**
    * Lifecycle.
    * Fired when last instance of context manager observer is removed and it will be destroyed.
    */
-  protected beforeDestroy(): void {}
+  protected beforeDestroy(context: T): void {}
 
 }

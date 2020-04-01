@@ -92,6 +92,10 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
     console.info("Auth provision ended.");
   }
 
+  protected beforeUpdate(nextContext: IAuthContext): void {
+    console.info("Before auth context updated triggered.");
+  }
+
   protected beforeDestroy(): void {
     // WILL NEVER BE CALLED -> AuthContextManager is singleton because it has static prop IS_SINGLETON = true.
   }

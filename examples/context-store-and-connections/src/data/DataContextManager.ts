@@ -37,7 +37,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
 
   public randomizeValue(): void {
     // Manual transaction for update.
-    this.context.dataState = { ...this.context.dataState, value: "value-" + Math.floor(Math.random() * 100) };
+    this.context.dataState.value = "value-" + Math.floor(Math.random() * 100);
     this.forceUpdate();
   }
 
@@ -45,19 +45,19 @@ export class DataContextManager extends ContextManager<IDataContext> {
    * React-like lifecycle.
    */
 
-  public onProvisionStarted(): void {
+  protected onProvisionStarted(): void {
     console.info("Data provision started.");
   }
 
-  public onProvisionEnded(): void {
+  protected onProvisionEnded(): void {
     console.info("Data provision ended.");
   }
 
-  public beforeUpdate(): void {
+  protected beforeUpdate(): void {
     console.info("Before data context updated triggered.");
   }
 
-  public beforeDestroy(): void {
+  protected beforeDestroy(): void {
     console.info("Before data context destroyed triggered.");
   }
 
