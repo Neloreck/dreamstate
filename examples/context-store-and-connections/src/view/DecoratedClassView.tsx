@@ -10,21 +10,32 @@ export interface IDecoratedClassViewOwnProps {
   someLabelFromExternalProps: string;
 }
 
-export interface IDecoratedClassViewInjectedProps extends IAuthContext, Pick<IDataContext, "dataState"> {
+export interface IDecoratedClassViewInjectedProps extends IAuthContext, IDataContext {
+  value: string;
+  ds: IDataContext["dataState"]
 }
 
-@Consume(AuthContextManager, { from: DataContextManager, take: [ "dataState" ] })
+@Consume(
+  AuthContextManager,
+  // Redux-like selection of only needed props.
+  {
+    // @ts-ignore
+    from: DataContextManager,
+    take: (context: IDataContext) => ({ value: context.dataState.value })
+  }
+)
 export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjectedProps & IDecoratedClassViewOwnProps> {
 
   private static SOME_STATIC_INTERNAL: Date = new Date();
 
   public render(): ReactNode {
+    console.error(this.props);
 
     const {
       // Own prop.
       someLabelFromExternalProps,
       // Get, what you need form injected props.
-      dataState: { value },
+      value,
       authState: { user },
       authActions
     } = this.props;

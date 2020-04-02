@@ -36,9 +36,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
   };
 
   public randomizeValue(): void {
-    // Manual transaction for update.
-    this.context.dataState.value = "value-" + Math.floor(Math.random() * 100);
-    this.forceUpdate();
+    this.setContext({ dataState: { value: "value-" + Math.floor(Math.random() * 100) } });
   }
 
   /*

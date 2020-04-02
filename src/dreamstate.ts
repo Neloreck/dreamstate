@@ -28,7 +28,7 @@ import { shallowEqualObjects } from "shallow-equal";
 
 const EMPTY_STRING: string = "";
 const EMPTY_ARR: Array<never> = [];
-const MANAGER_REGEX: RegExp = /Manager/g;
+const MANAGER_REGEX: RegExp = /Manager$/;
 const REGISTRY: IStringIndexed<ContextManager<any>> = {};
 
 /**
@@ -80,7 +80,7 @@ interface MethodDescriptor extends ClassElement {
 }
 // Proposal end.
 
-type TPartialDeriver<T> = (value: T) => Partial<T>;
+type TPartialTransformer<T> = (value: T) => Partial<T>;
 
 type TUpdateObserver = () => void;
 
@@ -88,15 +88,24 @@ type TConstructor<T> = {
   new (...args: unknown[]): T
 };
 
+type TObjectKey<T> = T extends object ? { [K in keyof T]: K }[keyof T] : never;
+
+type TContextFunctionalSelector<T extends object, R extends object = object> = (context: T) => R | Partial<T>;
+
+type TContextObjectSelector<T extends object> =  { [K in keyof T]: { from: K, take: Array<TObjectKey<T[K]>> } }[keyof T]
+
+type TTakeContextSelector<T extends object> = keyof T | Array<keyof T> | TContextObjectSelector<T> | TContextFunctionalSelector<T> | undefined;
+
 export type TStateSetter<T extends object, K extends keyof T> = (value: Partial<T[K]>) => void;
 
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
 
 export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<T> | T;
 
-export interface IConsumePick<A extends TAnyContextManagerConstructor> {
-  from: A;
-  take: Array<keyof A["prototype"]["context"]>;
+export interface IConsumePick<TContextConstructor extends TAnyContextManagerConstructor, TContextState extends object= TContextConstructor["prototype"]["context"]> {
+  from: TContextConstructor;
+  take?: TTakeContextSelector<TContextState>;
+  as?: string;
 }
 
 export interface ILoadable<T, E = Error> {
@@ -232,9 +241,9 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
   }
 
   if (process.env.IS_DEV) {
-    Observer.displayName = "D.O";
-  } else {
     Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING) )}]`;
+  } else {
+    Observer.displayName = "DS.Observer";
   }
 
   return Observer as any;
@@ -243,8 +252,8 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
 /**
  * Compare context manager state diff with shallow check + nested objects check.
  */
-function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nextContext: { [index: string]: any }): boolean {
-  const previousContext: { [index: string]: any; } = (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY];
+function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nextContext: IStringIndexed<any>): boolean {
+  const previousContext: IStringIndexed<any> = (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY];
 
   return  Object
     .keys(nextContext)
@@ -258,13 +267,67 @@ function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nex
 /**
  * Notify observers and check if update is needed.
  */
-function notifyObservers<T extends { [index: string]: any; }>(manager: ContextManager<T>, nextContext: T): void {
+function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<T>, nextContext: T): void {
   (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY] = nextContext;
   (manager.constructor as IContextManagerConstructor<T>)[OBSERVERS_KEY].forEach(((it) => it()))
 }
 
-// todo: Somehow create new observer with ability to select key for HoCs.
 function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+  // Only dev assistance with detailed messages.
+  if (process.env.IS_DEV) {
+    // Warn about too big consume count.
+    if (sources.length > 5) {
+      console.warn(
+        "Seems like your component tries to consume more than 5 stores at once, more than 5 can lead to slower rendering for big components." +
+        " Separate consuming by using multiple Consume decorators/hocs for one component or review your components structure.",
+        `Source: '${target.name}'.`
+      );
+    }
+
+    // Validate input sources.
+    for (const source of sources) {
+      if (typeof source === "object") {
+        if (!source.from || typeof source.from !== "function") {
+          throw new TypeError(`Specified 'from' selector should point to correct context manager. Supplied type: '${typeof source.from}'. Check '${target.name}' component.`);
+        } else if (!(source.from.prototype instanceof ContextManager)) {
+          throw new TypeError(`Specified consume target should inherit 'ContextManager', seems like you have forgotten to extend your manager class. Wrong parameter: '${source.from.name || "anonymous function."}'. Check '${target.name}' component.`);
+        }
+
+        if (typeof source.as !== "undefined" && typeof source.as !== "string") {
+          throw new TypeError(`Specified 'as' param should point to string component property key. Supplied type: '${typeof source.as}'. Check '${target.name}' component.`);
+        }
+
+        if (source.take === null) {
+          throw new TypeError(`Specified 'take' param should be a valid selector. Selectors can be functional, string, array or object. Supplied type: '${typeof source}'. Check '${target.name}' component.`);
+        }
+      } else if (typeof source === "function") {
+        if (!(source.prototype instanceof ContextManager)) {
+          throw new TypeError(`Specified consume target should inherit 'ContextManager', seems like you have forgotten to extend your manager class. Wrong parameter: '${source.name || "anonymous function"}'. Check '${target.name}' component.`);
+        }
+      } else {
+        throw new TypeError(`Specified consume source is not selector or context manager. Supplied type: '${typeof source}'. Check '${target.name}' component.`);
+      }
+    }
+  } else {
+    for (const source of sources) {
+      if (
+        (typeof source !== "object" && typeof source !== "function")
+        ||
+        (
+          typeof source === "object" && (
+            (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager)) ||
+            (typeof source.as !== "undefined" && typeof source.as !== "string") ||
+            source.take === null
+          )
+        )
+        ||
+        typeof source === "function" && !(source.prototype instanceof ContextManager)
+      ) {
+        throw new TypeError("Wrong context-consume parameter supplied.");
+      }
+    }
+  }
+
   // HOC component to pick props and provide needed/selected.
   function Consumer(ownProps: object) {
 
@@ -276,10 +339,31 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
         Object.assign(consumed, useManager(source))
       } else {
 
-        const propsToPick: Array<string> = (source as IConsumePick<any>).take as Array<string>;
-        const propsPicked: IStringIndexed<any> = useManager((source as IConsumePick<any>).from);
+        const selector: TTakeContextSelector<any> = source.take;
+        const context: IStringIndexed<any> = useManager(source.from);
 
-        Object.assign(consumed, propsToPick.reduce((a: IStringIndexed<any>, e: string) => (a[e] = propsPicked[e], a), {}));
+        if (selector === undefined) {
+          if (typeof source.as !== "undefined") {
+            consumed[source.as] = context;
+          } else {
+            Object.assign(consumed, context);
+          }
+        } else if (Array.isArray(selector)) {
+          const pickedData = (selector as Array<string>).reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[e], a), {});
+          Object.assign(consumed, source.as ? { [source.as]: pickedData } : pickedData);
+        } else if (typeof selector === "function") {
+          Object.assign(consumed, source.as ? { [source.as]:  selector(context) } :  selector(context));
+        } else if (typeof selector === "object") {
+          const pickedData = selector.take ? selector.take.reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[selector.from][e], a), {}) : context[selector.from];
+
+          if (typeof source.as === "undefined") {
+            Object.assign(consumed, pickedData);
+          } else {
+            consumed[source.as] = pickedData;
+          }
+        } else if (typeof selector === "string") {
+          consumed[typeof source.as === "undefined" ? selector : source.as] = context[selector] ;
+        }
       }
     }
 
@@ -291,7 +375,7 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
       ?  it.name.replace(MANAGER_REGEX, EMPTY_STRING)
       : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
   } else {
-    Consumer.displayName = "D.C";
+    Consumer.displayName = "DS.Consumer";
   }
 
   return Consumer;
@@ -356,7 +440,7 @@ export const Consume: IConsumeDecorator = function (...sources: Array<TConsumabl
         finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
       });
   };
-};
+} as any;
 
 /**
  * HOC alias for @Consume.
@@ -468,7 +552,7 @@ export abstract class ContextManager<T extends object> {
    * Helps to avoid boilerplate code with manual 'update' transactional updates for simple methods.
    */
   public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) =>
-    (next: Partial<S[D]> | TPartialDeriver<S[D]>): void => {
+    (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
       return manager.setContext({
         [key]: Object.assign({}, manager.context[key], typeof next === "function" ? next(manager.context[key]) : next) } as any
       );
@@ -539,7 +623,7 @@ export abstract class ContextManager<T extends object> {
    * Update current context from partially supplied state.
    * Calls lifecycle methods.
    */
-  public setContext(next: Partial<T> | TPartialDeriver<T>): void {
+  public setContext(next: Partial<T> | TPartialTransformer<T>): void {
 
     const previousContext: T = this.context;
     const nextContext: T = Object.assign({}, previousContext, next);
