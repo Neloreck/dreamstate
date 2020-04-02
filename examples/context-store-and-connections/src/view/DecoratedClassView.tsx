@@ -29,8 +29,6 @@ export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjecte
   private static SOME_STATIC_INTERNAL: Date = new Date();
 
   public render(): ReactNode {
-    console.error(this.props);
-
     const {
       // Own prop.
       someLabelFromExternalProps,

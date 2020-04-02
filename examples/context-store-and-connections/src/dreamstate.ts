@@ -25,33 +25,33 @@ import { shallowEqualObjects } from "shallow-equal";
 /**
  * Constants references.
  */
-
 const EMPTY_STRING: string = "";
 const EMPTY_ARR: Array<never> = [];
 const MANAGER_REGEX: RegExp = /Manager$/;
-const REGISTRY: IStringIndexed<ContextManager<any>> = {};
+const STORE_REGISTRY: {
+  MANAGERS: IStringIndexed<ContextManager<any>>;
+  OBSERVERS: IStringIndexed<Array<TUpdateObserver>>;
+  STATES: IStringIndexed<any>;
+} = {
+  MANAGERS: {},
+  OBSERVERS: {},
+  STATES: {}
+};
 
 /**
  * Symbol keys for internals.
  */
-
 const IDENTIFIER_KEY: unique symbol = Symbol("DS_CM");
-const OBSERVERS_KEY: unique symbol = Symbol("DS_OBSERVERS");
-const CONTEXT_KEY: unique symbol = Symbol("DS_CONTEXT");
-const CURRENT_STATE_KEY: unique symbol = Symbol("DS_CONTEXT");
 
 /**
  * Types.
  */
-
 interface IStringIndexed<T> {
   [index: string]: T;
 }
 
 interface IContextManagerConstructor<T extends object> {
-  [OBSERVERS_KEY]: Array<TUpdateObserver>;
   [IDENTIFIER_KEY]: any;
-  [CURRENT_STATE_KEY]: T;
   prototype: ContextManager<T>;
   new(): ContextManager<T>;
   getContextType(): Context<T>;
@@ -155,13 +155,17 @@ export interface IConsumeDecorator {
  * Add state changes observer.
  */
 function addObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: TUpdateObserver): void {
+  // Lazy init for observers arr.
+  if (!STORE_REGISTRY.OBSERVERS.hasOwnProperty(managerConstructor[IDENTIFIER_KEY])) {
+    STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]] = [];
+  }
   // Notify about provision, if it is first observer.
-  if (managerConstructor[OBSERVERS_KEY].length === 0) {
+  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].length === 0) {
     // @ts-ignore protected and symbol properties.
-    REGISTRY[managerConstructor[IDENTIFIER_KEY]].onProvisionStarted();
+    STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]].onProvisionStarted();
   }
 
-  managerConstructor[OBSERVERS_KEY].push(observer);
+  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].push(observer);
 }
 
 /**
@@ -169,10 +173,11 @@ function addObserver<T extends object>(managerConstructor: IContextManagerConstr
  */
 function removeObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: (value: T) => void): void {
   // Remove observer.
-  managerConstructor[OBSERVERS_KEY] = managerConstructor[OBSERVERS_KEY].filter((it) => it !== observer);
+  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]] =
+    STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].filter((it) => it !== observer);
 
-  if (managerConstructor[OBSERVERS_KEY].length === 0) {
-    const instance: ContextManager<T> | undefined = REGISTRY[managerConstructor[IDENTIFIER_KEY]];
+  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].length === 0) {
+    const instance: ContextManager<T> | undefined = STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
 
     if (!instance) {
       throw new Error("Could not find manager instance when removing last observer.");
@@ -181,10 +186,8 @@ function removeObserver<T extends object>(managerConstructor: IContextManagerCon
       instance.onProvisionEnded();
       // @ts-ignore protected field, do not expose it for external usage.
       if (!managerConstructor.IS_SINGLETON) {
-        // @ts-ignore protected field, do not expose it for external usage.
-        instance.beforeDestroy();
-        delete managerConstructor[CURRENT_STATE_KEY];
-        delete REGISTRY[managerConstructor[IDENTIFIER_KEY]];
+        delete STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]];
+        delete STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
       }
     }
   }
@@ -198,11 +201,10 @@ function useLazyInitializeManager<T extends object>(managerConstructor: IContext
   // Lazy init before observing with memo.
   useMemo(function (): void {
     // Only if registry is empty -> create new instance, remember its context and save it to registry.
-    if (!managerConstructor.hasOwnProperty(IDENTIFIER_KEY) || !REGISTRY.hasOwnProperty(managerConstructor[IDENTIFIER_KEY])) {
+    if (!managerConstructor.hasOwnProperty(IDENTIFIER_KEY) || !STORE_REGISTRY.MANAGERS.hasOwnProperty(managerConstructor[IDENTIFIER_KEY])) {
       const instance: ContextManager<T> = new managerConstructor();
-      // @ts-ignore symbol properties.
-      managerConstructor[CURRENT_STATE_KEY] = instance.context;
-      REGISTRY[managerConstructor[IDENTIFIER_KEY]] = instance;
+      STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]] = instance.context;
+      STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]] = instance;
     }
   }, EMPTY_ARR);
 
@@ -219,7 +221,11 @@ function provideSubTree(current: number, bottom: ReactElement, sources: Array<TA
   return (
     current >= sources.length
       ? bottom
-      : createElement(sources[current].getContextType().Provider, { value: sources[current][CURRENT_STATE_KEY] }, provideSubTree(current + 1, bottom, sources))
+      : createElement(
+        sources[current].getContextType().Provider,
+        { value: STORE_REGISTRY.STATES[sources[current][IDENTIFIER_KEY]] },
+        provideSubTree(current + 1, bottom, sources)
+      )
   );
 }
 
@@ -253,7 +259,7 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
  * Compare context manager state diff with shallow check + nested objects check.
  */
 function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nextContext: IStringIndexed<any>): boolean {
-  const previousContext: IStringIndexed<any> = (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY];
+  const previousContext: IStringIndexed<any> = STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
 
   return  Object
     .keys(nextContext)
@@ -268,8 +274,8 @@ function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nex
  * Notify observers and check if update is needed.
  */
 function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<T>, nextContext: T): void {
-  (manager.constructor as IContextManagerConstructor<T>)[CURRENT_STATE_KEY] = nextContext;
-  (manager.constructor as IContextManagerConstructor<T>)[OBSERVERS_KEY].forEach(((it) => it()))
+  STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
+  STORE_REGISTRY.OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].forEach(((it: TUpdateObserver) => it()))
 }
 
 function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
@@ -530,14 +536,11 @@ export function Bind(): MethodDecorator {
  * Current Issue: Static items inside of each class instance.
  */
 export abstract class ContextManager<T extends object> {
-
-  public static [IDENTIFIER_KEY]: any;
-
-  public static [OBSERVERS_KEY]: Array<TUpdateObserver>;
-
-  public static [CONTEXT_KEY]: Context<any>;
-
-  public static [CURRENT_STATE_KEY]: any;
+  // Lazy initialization for IDENTIFIER KEY.
+  public static get [IDENTIFIER_KEY](): any {
+    Object.defineProperty(this, IDENTIFIER_KEY, { value: Symbol.for(this.name), writable: false, configurable: false });
+    return this[IDENTIFIER_KEY];
+  }
 
   /**
    * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
@@ -562,7 +565,7 @@ export abstract class ContextManager<T extends object> {
    * Get current provided manager.
    */
   public static current<S extends object, T extends ContextManager<S>>(this: IContextManagerConstructor<S> & { new(): T; }): T {
-    return REGISTRY[this[IDENTIFIER_KEY]] as T;
+    return STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
   }
 
   /**
@@ -572,22 +575,16 @@ export abstract class ContextManager<T extends object> {
    */
   public static getContextType<T extends object>(): Context<T> {
 
-    if (!this.hasOwnProperty(CONTEXT_KEY)) {
+    const reactContextType: Context<T> = createContext(null as any);
 
-      const reactContextType: Context<T> = createContext(null as any);
-
-      if (process.env.IS_DEV) {
-        reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-      } else {
-        reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-      }
-
-      this[CONTEXT_KEY] = reactContextType;
-
-      return reactContextType;
+    if (process.env.IS_DEV) {
+      reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+    } else {
+      reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
     }
 
-    return this[CONTEXT_KEY];
+    Object.defineProperty(this, 'getContextType', { value: function () { return reactContextType; }, writable: false, configurable: false });
+    return this.getContextType();
   }
 
   /**
@@ -595,17 +592,6 @@ export abstract class ContextManager<T extends object> {
    * Left for generic implementation.
    */
   public abstract context: T;
-
-  public constructor() {
-
-    if (!this.constructor.hasOwnProperty(IDENTIFIER_KEY)) {
-
-      // @ts-ignore
-      this.constructor[IDENTIFIER_KEY] = Symbol(this.constructor.name);
-      // @ts-ignore
-      this.constructor[OBSERVERS_KEY] = [];
-    }
-  }
 
   /**
    * Force React.Provider update.
@@ -661,11 +647,4 @@ export abstract class ContextManager<T extends object> {
    * Also shared for 'getSetter' methods.
    */
   protected afterUpdate(previousContext: T): void {}
-
-  /**
-   * Lifecycle.
-   * Fired when last instance of context manager observer is removed and it will be destroyed.
-   */
-  protected beforeDestroy(context: T): void {}
-
 }
