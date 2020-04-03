@@ -41,7 +41,7 @@ const STORE_REGISTRY: {
 /**
  * Symbol keys for internals.
  */
-const IDENTIFIER_KEY: unique symbol = Symbol("DS_CM");
+const IDENTIFIER_KEY: unique symbol = Symbol("DS_ID");
 
 /**
  * Types.
@@ -155,10 +155,6 @@ export interface IConsumeDecorator {
  * Add state changes observer.
  */
 function addObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: TUpdateObserver): void {
-  // Lazy init for observers arr.
-  if (!STORE_REGISTRY.OBSERVERS.hasOwnProperty(managerConstructor[IDENTIFIER_KEY])) {
-    STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]] = [];
-  }
   // Notify about provision, if it is first observer.
   if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].length === 0) {
     // @ts-ignore protected and symbol properties.
@@ -261,7 +257,7 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
 function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nextContext: IStringIndexed<any>): boolean {
   const previousContext: IStringIndexed<any> = STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
 
-  return  Object
+  return Object
     .keys(nextContext)
     .some((key: string): boolean =>
       typeof nextContext[key] === "object"
@@ -538,8 +534,16 @@ export function Bind(): MethodDecorator {
 export abstract class ContextManager<T extends object> {
   // Lazy initialization for IDENTIFIER KEY.
   public static get [IDENTIFIER_KEY](): any {
-    Object.defineProperty(this, IDENTIFIER_KEY, { value: Symbol.for(this.name), writable: false, configurable: false });
-    return this[IDENTIFIER_KEY];
+
+    const id: symbol = Symbol.for(this.name);
+
+    // Lazy preparation of state and observers internal storage.
+    STORE_REGISTRY.STATES[id as any] = {};
+    STORE_REGISTRY.OBSERVERS[id as any] = [];
+
+    Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
+
+    return id;
   }
 
   /**
@@ -556,6 +560,17 @@ export abstract class ContextManager<T extends object> {
    */
   public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) =>
     (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
+
+      if (process.env.IS_DEV) {
+        if ((typeof next !== "function" && typeof next !== "object") || next === null) {
+          console.warn(
+            "If you want to update specific non-object state variable, use setContext instead. " +
+            "Custom setters are intended to help with nested state objects. " +
+            `State updater should be an object or a function. Supplied value type: ${typeof next}.`
+          );
+        }
+      }
+
       return manager.setContext({
         [key]: Object.assign({}, manager.context[key], typeof next === "function" ? next(manager.context[key]) : next) } as any
       );
@@ -610,6 +625,12 @@ export abstract class ContextManager<T extends object> {
    * Calls lifecycle methods.
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
+
+    if (process.env.IS_DEV) {
+      if ((typeof next !== "function" && typeof next !== "object") || next === null) {
+        console.warn(`Seems like wrong prop was supplied to the 'setContext' method. Context state updater should be an object or a function. Supplied value type: ${typeof next}.`);
+      }
+    }
 
     const previousContext: T = this.context;
     const nextContext: T = Object.assign({}, previousContext, next);
