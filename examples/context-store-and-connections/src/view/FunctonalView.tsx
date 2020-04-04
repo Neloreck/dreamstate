@@ -3,11 +3,10 @@ import { ReactElement } from "react";
 import { useManager } from "../dreamstate";
 
 // Data.
-import { AuthContextManager, DataContextManager } from "../data";
+import {  DataContextManager } from "../data";
 
 export function FunctionalView(): ReactElement {
 
-  const { authState: { user } } = useManager(AuthContextManager);
   const { dataActions, dataState: { value } } = useManager(DataContextManager);
 
   return (
@@ -16,13 +15,6 @@ export function FunctionalView(): ReactElement {
       <div className={'functional-view'}>
 
         FunctionalView <br/>
-
-        <div className={"functional-view-section"}>
-
-           Auth context <br/>
-           USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
-
-        </div>
 
         <div className={"functional-view-section"}>
 

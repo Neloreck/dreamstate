@@ -9,7 +9,8 @@ import {
   ReactElement,
   ComponentType,
   useCallback,
-  useMemo
+  useMemo,
+  memo
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -248,7 +249,8 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
     Observer.displayName = "DS.Observer";
   }
 
-  return Observer as any;
+  // Hoc helper for decorated components to prevent odd renders.
+  return memo(Observer) as any;
 }
 
 /**
@@ -403,7 +405,7 @@ export function useManager<T extends object, D extends IContextManagerConstructo
  */
 export function Provide (...sources: Array<TAnyContextManagerConstructor>) {
   // Support legacy and proposal decorators. Create observer of requested managers.
-  return function(classOrDescriptor: ComponentType) {
+  return function(classOrDescriptor: ComponentType<any>) {
     return ((typeof classOrDescriptor === 'function'))
       ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
       : ({
