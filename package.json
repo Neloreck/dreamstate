@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "2.4.3",
+  "version": "2.4.5",
   "description": "Store management library based on context and observers.",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -9,7 +9,7 @@
   "author": "Syrotenko Igor",
   "license": "MIT",
   "scripts": {
-    "build": "npm run clean && mkdir ./lib && npm run build:tsc && npm run build:switcher && npm run build:dev && npm run build:prod && npm run include:dts && rm -rf ./target",
+    "build": "npm run clean && mkdir ./lib && npm run build:tsc && npm run build:switcher && npm run build:prod && npm run build:dev && npm run include:dts && rm -rf ./target",
     "clean": "rm -rf ./lib && rm -rf ./target",
     "include:dts": "cp ./target/dreamstate.d.ts ./lib/index.d.ts",
     "build:tsc": "tsc -p ./src --emitDeclarationOnly",

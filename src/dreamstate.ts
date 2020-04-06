@@ -32,10 +32,12 @@ const MANAGER_REGEX: RegExp = /Manager$/;
 const STORE_REGISTRY: {
   MANAGERS: IStringIndexed<ContextManager<any>>;
   OBSERVERS: IStringIndexed<Array<TUpdateObserver>>;
+  CONTEXTS: IStringIndexed<Context<any>>;
   STATES: IStringIndexed<any>;
 } = {
   MANAGERS: {},
   OBSERVERS: {},
+  CONTEXTS: {},
   STATES: {}
 };
 
@@ -49,6 +51,13 @@ const IDENTIFIER_KEY: unique symbol = Symbol("DS_ID");
  */
 interface IStringIndexed<T> {
   [index: string]: T;
+}
+
+interface IHotNodeModule extends NodeModule {
+  hot: {
+    data: IStringIndexed<any>;
+    dispose(data: IStringIndexed<any>): void;
+  };
 }
 
 interface IContextManagerConstructor<T extends object> {
@@ -72,7 +81,7 @@ interface ClassElement {
 interface ClassDescriptor {
   kind: 'class';
   elements: ClassElement[];
-  finisher?: <T>(clazz: TConstructor<T>) => undefined | TConstructor<T>;
+  finisher?: <T>(clazz: TConstructor<T>) => void | TConstructor<T>;
 }
 
 interface MethodDescriptor extends ClassElement {
@@ -243,7 +252,7 @@ function createManagersObserver(children: ComponentType | null, sources: Array<T
     return provideSubTree(0, (children ? createElement(children, props) : props.children), sources);
   }
 
-  if (process.env.IS_DEV) {
+  if (process.env.IS_DEV === "true") {
     Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING) )}]`;
   } else {
     Observer.displayName = "DS.Observer";
@@ -278,7 +287,7 @@ function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<
 
 function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
   // Only dev assistance with detailed messages.
-  if (process.env.IS_DEV) {
+  if (process.env.IS_DEV === "true") {
     // Warn about too big consume count.
     if (sources.length > 5) {
       console.warn(
@@ -374,7 +383,7 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
     return createElement(target as any, Object.assign(consumed, ownProps));
   }
 
-  if (process.env.IS_DEV) {
+  if (process.env.IS_DEV === "true") {
     Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) => it.prototype instanceof ContextManager
       ?  it.name.replace(MANAGER_REGEX, EMPTY_STRING)
       : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
@@ -383,6 +392,27 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
   }
 
   return Consumer;
+}
+
+/**
+ * Bind decorator wrappers factory for methods binding.
+ */
+function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) {
+  // Descriptor with lazy binding.
+  return ({
+    configurable: true,
+    get(this: object): T {
+      const bound: T = (from as any).value.bind(this);
+
+      Object.defineProperty(this, property, {
+        value: bound,
+        configurable: true,
+        writable: true
+      });
+
+      return bound;
+    }
+  });
 }
 
 /**
@@ -480,24 +510,64 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
 }
 
 /**
- * Bind decorator wrappers factory for methods binding.
+ * Hmr handler for context managers.
+ * Logic included only in dev builds.
  */
-function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) {
-  // Descriptor with lazy binding.
-  return ({
-    configurable: true,
-    get(this: object): T {
-      const bound: T = (from as any).value.bind(this);
+export function Hmr(targetModule: NodeModule): any {
+  // Clear explanation instead of undefined ref error.
+  if (!targetModule) {
+    throw new Error("Module reference should be provided for 'Hmr' decorator.");
+  }
+  // Higher order decorator to get module ref.
+  return function <T>(targetOrDescriptor: object | ClassDescriptor, propertyKey: PropertyKey | undefined) {
+    // Will not work in production mode.
+    if (process.env.IS_DEV === "true") {
+      // Dispose and write ID prop again.
+      const handleDisposal = function (targetClass: TAnyContextManagerConstructor) {
+        if ((targetModule as IHotNodeModule).hot) {
+          // Preserve id reference to prevent broken UI.
+          const oldId: any = (targetModule as IHotNodeModule).hot.data && (targetModule as any).hot.data.ID;
 
-      Object.defineProperty(this, property, {
-        value: bound,
-        configurable: true,
-        writable: true
-      });
+          if (oldId) {
+            Object.defineProperty(targetClass, IDENTIFIER_KEY, { value: oldId, writable: false, configurable: false });
 
-      return bound;
+            if (STORE_REGISTRY.MANAGERS[oldId]) {
+              const newManager = new targetClass();
+              STORE_REGISTRY.MANAGERS[oldId] = newManager;
+              STORE_REGISTRY.STATES[oldId] = newManager.context;
+              // todo: MOUNT UNMOUNT DETECTION?
+              if (STORE_REGISTRY.OBSERVERS[oldId].length) {
+                // @ts-ignore privacy.
+                STORE_REGISTRY.MANAGERS[(targetClass as TAnyContextManagerConstructor)[IDENTIFIER_KEY]].onProvisionStarted();
+              }
+            }
+          }
+
+          (targetModule as IHotNodeModule).hot.dispose(function (data: IStringIndexed<any>) {
+            data.ID = (targetClass as TAnyContextManagerConstructor)[IDENTIFIER_KEY];
+            // Notify managers about cleanup to prevent memory leaks.
+            if (STORE_REGISTRY.MANAGERS[data.ID] && STORE_REGISTRY.OBSERVERS[data.ID].length) {
+              // @ts-ignore privacy.
+              STORE_REGISTRY.MANAGERS[(targetClass as TAnyContextManagerConstructor)[IDENTIFIER_KEY]].onProvisionEnded();
+            }
+          });
+        }
+      };
+      // Support legacy and proposal decorators.
+      if (propertyKey) {
+        return handleDisposal(targetOrDescriptor as TAnyContextManagerConstructor);
+      } else {
+        (targetOrDescriptor as ClassDescriptor).finisher = function (clazz: TConstructor<any>): void {
+          handleDisposal(clazz as TAnyContextManagerConstructor);
+        };
+        return targetOrDescriptor;
+      }
     }
-  });
+  }
+}
+
+export function enableHmr(module: NodeModule, target: object): void {
+  Hmr(module)(target, true as any);
 }
 
 /**
@@ -563,7 +633,7 @@ export abstract class ContextManager<T extends object> {
   public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) =>
     (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
 
-      if (process.env.IS_DEV) {
+      if (process.env.IS_DEV === "true") {
         if ((typeof next !== "function" && typeof next !== "object") || next === null) {
           console.warn(
             "If you want to update specific non-object state variable, use setContext instead. " +
@@ -592,16 +662,24 @@ export abstract class ContextManager<T extends object> {
    */
   public static getContextType<T extends object>(): Context<T> {
 
-    const reactContextType: Context<T> = createContext(null as any);
+    if (STORE_REGISTRY.CONTEXTS.hasOwnProperty(this[IDENTIFIER_KEY])) {
+      const reactContextType: Context<T> = STORE_REGISTRY.CONTEXTS[this[IDENTIFIER_KEY]];
 
-    if (process.env.IS_DEV) {
-      reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+      Object.defineProperty(this, 'getContextType', { value: function () { return reactContextType; }, writable: false, configurable: false });
+      return reactContextType;
     } else {
-      reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-    }
+      const reactContextType: Context<T> = createContext(null as any);
 
-    Object.defineProperty(this, 'getContextType', { value: function () { return reactContextType; }, writable: false, configurable: false });
-    return this.getContextType();
+      if (process.env.IS_DEV === "true") {
+        reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+      } else {
+        reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+      }
+
+      STORE_REGISTRY.CONTEXTS[this[IDENTIFIER_KEY]] = reactContextType;
+      Object.defineProperty(this, 'getContextType', { value: function () { return reactContextType; }, writable: false, configurable: false });
+      return this.getContextType();
+    }
   }
 
   /**
@@ -628,7 +706,7 @@ export abstract class ContextManager<T extends object> {
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
 
-    if (process.env.IS_DEV) {
+    if (process.env.IS_DEV === "true") {
       if ((typeof next !== "function" && typeof next !== "object") || next === null) {
         console.warn(`Seems like wrong prop was supplied to the 'setContext' method. Context state updater should be an object or a function. Supplied value type: ${typeof next}.`);
       }
