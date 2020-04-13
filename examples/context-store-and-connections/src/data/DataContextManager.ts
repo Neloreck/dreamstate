@@ -1,4 +1,4 @@
-import { ContextManager } from "../dreamstate";
+import { Bind, ContextManager } from "../dreamstate";
 
 /*
  * Context manager state declaration.
@@ -26,8 +26,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
   public readonly context: IDataContext = {
     // Some kind of handlers.
     dataActions: {
-      // !!! You can use such approach instead of decorators.
-      randomizeValue: () => this.randomizeValue()
+      randomizeValue: this.randomizeValue
     },
     // Provided storage.
     dataState: {
@@ -35,6 +34,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
     }
   };
 
+  @Bind()
   public randomizeValue(): void {
     this.setContext({ dataState: { value: "value-" + Math.floor(Math.random() * 100) } });
   }

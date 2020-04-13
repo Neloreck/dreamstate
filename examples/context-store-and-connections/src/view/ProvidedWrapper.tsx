@@ -1,6 +1,6 @@
 import * as React from "react";
-import { PureComponent, ReactNode } from "react";
-import { Provide } from "../dreamstate";
+import { ReactElement } from "react";
+import { createProvider } from "../dreamstate";
 
 // Data.
 import { AuthContextManager, DataContextManager } from "../data";
@@ -10,27 +10,24 @@ import { FunctionalView } from "./FunctonalView";
 import { ConsumedClassView } from "./ConsumedClassView";
 import { DecoratedClassView, IDecoratedClassViewInjectedProps } from "./DecoratedClassView";
 import { HOCClassView, IHOCClassViewInjectedProps } from "./HOCClassView";
+import { getFullCurrentTime } from "./utils/time";
 
-@Provide(AuthContextManager, DataContextManager)
-export class ProvidedWrapper extends PureComponent {
+const ApplicationProvider = createProvider(AuthContextManager, DataContextManager);
 
-  public render(): ReactNode {
+export function ProvidedWrapper(): ReactElement {
+  return (
+    <ApplicationProvider>
 
-    return (
-      <>
+      Rendered: { getFullCurrentTime() }
 
-        <div> Components are connected to the same store, so they are in total sync. </div>
+      <ConsumedClassView/>
 
-        <DecoratedClassView someLabelFromExternalProps={"First component."} {...{} as IDecoratedClassViewInjectedProps}/>
+      <FunctionalView/>
 
-        <HOCClassView someLabelFromExternalProps={"First component."} {...{} as IHOCClassViewInjectedProps}/>
+      <DecoratedClassView {...{} as IDecoratedClassViewInjectedProps}/>
 
-        <FunctionalView/>
+      <HOCClassView {...{} as IHOCClassViewInjectedProps}/>
 
-        <ConsumedClassView someLabelFromExternalProps={"Second component."}/>
-
-      </>
-    );
-  }
-
+    </ApplicationProvider>
+  );
 }

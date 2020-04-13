@@ -10,7 +10,10 @@ import {
   ComponentType,
   useCallback,
   useMemo,
-  memo
+  memo,
+  useLayoutEffect,
+  useRef,
+  MutableRefObject,
 } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 import { shallowEqualObjects } from "shallow-equal";
@@ -31,12 +34,14 @@ const EMPTY_ARR: Array<never> = [];
 const MANAGER_REGEX: RegExp = /Manager$/;
 const STORE_REGISTRY: {
   MANAGERS: IStringIndexed<ContextManager<any>>;
-  OBSERVERS: IStringIndexed<Array<TUpdateObserver>>;
+  OBSERVERS: IStringIndexed<Set<TUpdateObserver>>;
+  SUBSCRIBERS: IStringIndexed<Set<TUpdateSubscriber<any>>>;
   CONTEXTS: IStringIndexed<Context<any>>;
   STATES: IStringIndexed<any>;
 } = {
   MANAGERS: {},
   OBSERVERS: {},
+  SUBSCRIBERS: {},
   CONTEXTS: {},
   STATES: {}
 };
@@ -44,7 +49,7 @@ const STORE_REGISTRY: {
 /**
  * Symbol keys for internals.
  */
-const IDENTIFIER_KEY: unique symbol = Symbol("DS_ID");
+const IDENTIFIER_KEY: unique symbol = Symbol(process.env.IS_DEV === "true" ? "DS_ID" : "");
 
 /**
  * Types.
@@ -93,6 +98,8 @@ interface MethodDescriptor extends ClassElement {
 type TPartialTransformer<T> = (value: T) => Partial<T>;
 
 type TUpdateObserver = () => void;
+
+type TUpdateSubscriber<T extends object> = (context: T) => void;
 
 type TConstructor<T> = {
   new (...args: unknown[]): T
@@ -166,23 +173,22 @@ export interface IConsumeDecorator {
  */
 function addObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: TUpdateObserver): void {
   // Notify about provision, if it is first observer.
-  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].length === 0) {
+  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].size === 0) {
     // @ts-ignore protected and symbol properties.
     STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]].onProvisionStarted();
   }
 
-  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].push(observer);
+  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].add(observer);
 }
 
 /**
  * Remove state changes observer and kill instance if it is not singleton.
  */
-function removeObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: (value: T) => void): void {
+function removeObserver<T extends object>(managerConstructor: IContextManagerConstructor<T>, observer: TUpdateObserver): void {
   // Remove observer.
-  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]] =
-    STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].filter((it) => it !== observer);
+  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].delete(observer);
 
-  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].length === 0) {
+  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].size === 0) {
     const instance: ContextManager<T> | undefined = STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
 
     if (!instance) {
@@ -282,7 +288,8 @@ function shouldObserversUpdate<T extends object>(manager: ContextManager<T>, nex
  */
 function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<T>, nextContext: T): void {
   STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
-  STORE_REGISTRY.OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].forEach(((it: TUpdateObserver) => it()))
+  STORE_REGISTRY.OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].forEach(((it: TUpdateObserver) => it()));
+  STORE_REGISTRY.SUBSCRIBERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].forEach(((it: TUpdateSubscriber<T>) => it(nextContext)));
 }
 
 function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
@@ -342,6 +349,7 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
   }
 
   // HOC component to pick props and provide needed/selected.
+  // todo: useContext will update HOC every time, it should not be expensive but implement check for only needed props if react will add it.
   function Consumer(ownProps: object) {
 
     let consumed: IStringIndexed<any> = {};
@@ -355,17 +363,21 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
         const selector: TTakeContextSelector<any> = source.take;
         const context: IStringIndexed<any> = useManager(source.from);
 
+        // No selector, probably want to make alias for class component.
         if (selector === undefined) {
           if (typeof source.as !== "undefined") {
             consumed[source.as] = context;
           } else {
             Object.assign(consumed, context);
           }
+          // Selected array of needed props, filter only needed and alias if 'as' is supplied.
         } else if (Array.isArray(selector)) {
           const pickedData = (selector as Array<string>).reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[e], a), {});
           Object.assign(consumed, source.as ? { [source.as]: pickedData } : pickedData);
+          // Supplied functional selector, return object with needed props like redux does. Alias if 'as' is supplied.
         } else if (typeof selector === "function") {
           Object.assign(consumed, source.as ? { [source.as]:  selector(context) } :  selector(context));
+          // todo:
         } else if (typeof selector === "object") {
           const pickedData = selector.take ? selector.take.reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[selector.from][e], a), {}) : context[selector.from];
 
@@ -374,6 +386,7 @@ function createManagersConsumer(target: ComponentType, sources: Array<TConsumabl
           } else {
             consumed[source.as] = pickedData;
           }
+          // Provided string selector, only one prop is needed. Alias if 'as' is supplied.
         } else if (typeof selector === "string") {
           consumed[typeof source.as === "undefined" ? selector : source.as] = context[selector] ;
         }
@@ -415,6 +428,37 @@ function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: P
   });
 }
 
+function useContextWithMemo<T extends object, D extends IContextManagerConstructor<T>>(
+  managerConstructor: D,
+  depsSelector: (context: T) => Array<any>
+): D["prototype"]["context"] {
+  const [ state, setState ] = useState(function () {
+    return STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]];
+  });
+  const observed: MutableRefObject<Array<any>> = useRef(depsSelector(state));
+
+  const updateMemoState: TUpdateSubscriber<T> = useCallback(function (nextContext: T): void {
+    // Calculate changes like react lib does and fire change only after update.
+    const nextObserved = depsSelector(nextContext);
+
+    for (let it = 0; it < nextObserved.length; it ++) {
+      if (observed.current[it] !== nextObserved[it]) {
+        observed.current = nextObserved;
+        setState(nextContext);
+        return;
+      }
+    }
+  }, EMPTY_ARR);
+
+  useLayoutEffect(function () {
+    STORE_REGISTRY.SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].add(updateMemoState);
+    return function () {
+      STORE_REGISTRY.SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].delete(updateMemoState);
+    }
+  });
+
+  return state;
+}
 /**
  * Exported API.
  */
@@ -422,8 +466,15 @@ function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: P
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
-export function useManager<T extends object, D extends IContextManagerConstructor<T>>(managerConstructor: D): D["prototype"]["context"] {
-  return useContext(managerConstructor.getContextType());
+export function useManager<T extends object, D extends IContextManagerConstructor<T>>(
+  managerConstructor: D,
+  depsSelector?: (context: D["prototype"]["context"]) => Array<any>
+): D["prototype"]["context"] {
+  if (depsSelector) {
+    return useContextWithMemo(managerConstructor, depsSelector);
+  } else {
+    return useContext(managerConstructor.getContextType());
+  }
 }
 
 /**
@@ -536,7 +587,7 @@ export function Hmr(targetModule: NodeModule): any {
               STORE_REGISTRY.MANAGERS[oldId] = newManager;
               STORE_REGISTRY.STATES[oldId] = newManager.context;
               // todo: MOUNT UNMOUNT DETECTION?
-              if (STORE_REGISTRY.OBSERVERS[oldId].length) {
+              if (STORE_REGISTRY.OBSERVERS[oldId].size) {
                 // @ts-ignore privacy.
                 STORE_REGISTRY.MANAGERS[(targetClass as TAnyContextManagerConstructor)[IDENTIFIER_KEY]].onProvisionStarted();
               }
@@ -546,7 +597,7 @@ export function Hmr(targetModule: NodeModule): any {
           (targetModule as IHotNodeModule).hot.dispose(function (data: IStringIndexed<any>) {
             data.ID = (targetClass as TAnyContextManagerConstructor)[IDENTIFIER_KEY];
             // Notify managers about cleanup to prevent memory leaks.
-            if (STORE_REGISTRY.MANAGERS[data.ID] && STORE_REGISTRY.OBSERVERS[data.ID].length) {
+            if (STORE_REGISTRY.MANAGERS[data.ID] && STORE_REGISTRY.OBSERVERS[data.ID].size) {
               // @ts-ignore privacy.
               STORE_REGISTRY.MANAGERS[(targetClass as TAnyContextManagerConstructor)[IDENTIFIER_KEY]].onProvisionEnded();
             }
@@ -607,11 +658,12 @@ export abstract class ContextManager<T extends object> {
   // Lazy initialization for IDENTIFIER KEY.
   public static get [IDENTIFIER_KEY](): any {
 
-    const id: symbol = Symbol.for(this.name);
+    const id: symbol = Symbol(process.env.IS_DEV === "true" ? this.name : "");
 
     // Lazy preparation of state and observers internal storage.
     STORE_REGISTRY.STATES[id as any] = {};
-    STORE_REGISTRY.OBSERVERS[id as any] = [];
+    STORE_REGISTRY.OBSERVERS[id as any] = new Set();
+    STORE_REGISTRY.SUBSCRIBERS[id as any] = new Set();
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
 
@@ -648,11 +700,21 @@ export abstract class ContextManager<T extends object> {
       );
     };
 
+  // todo: Solve typing problem here: Should we check undefined?
+
   /**
    * Get current provided manager.
    */
   public static current<S extends object, T extends ContextManager<S>>(this: IContextManagerConstructor<S> & { new(): T; }): T {
     return STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
+  }
+
+  /**
+   * Get current provided manager context.
+   */
+  public static currentContext<S extends object, T extends ContextManager<S>>(this: IContextManagerConstructor<S> & { new(): T; }): T["context"] {
+    const manager: T = STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
+    return manager ? manager.context : undefined as any;
   }
 
   /**
@@ -713,7 +775,7 @@ export abstract class ContextManager<T extends object> {
     }
 
     const previousContext: T = this.context;
-    const nextContext: T = Object.assign({}, previousContext, next);
+    const nextContext: T = Object.assign({}, previousContext, typeof next === "function" ? next(previousContext) : next);
 
     if (shouldObserversUpdate(this, nextContext)) {
       this.beforeUpdate(nextContext);

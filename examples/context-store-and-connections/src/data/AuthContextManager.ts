@@ -1,4 +1,4 @@
-import { Bind, ContextManager, createLoadable, ILoadable, TStateSetter } from "../dreamstate";
+import { ContextManager, createLoadable, ILoadable } from "../dreamstate";
 
 /*
  * Context manager state declaration.
@@ -10,10 +10,10 @@ export interface IAuthContext {
     randomizeUser(): void;
     randomizeUserAsync(): Promise<void>;
     resetUser(): void;
+    randomizeScore(): void;
   };
-  authState: {
-    user: ILoadable<string>;
-  };
+  user: ILoadable<string>;
+  score: number;
 }
 
 /*
@@ -39,50 +39,39 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   public readonly context: IAuthContext = {
     // Some kind of handlers.
     authActions: {
-      randomizeUserAsync: this.randomizeUserAsync,
-      randomizeUser: this.randomizeUser,
-      resetUser: this.resetUser
+      randomizeUserAsync: this.randomizeUserAsync.bind(this),
+      randomizeUser: this.randomizeUser.bind(this),
+      resetUser: this.resetUser.bind(this),
+      randomizeScore: this.randomizeScore.bind(this)
     },
-    // Provided storage.
-    authState: {
-      user: createLoadable("anonymous")
-    }
+    // Loadable utility to manage loading state for async items.
+    user: createLoadable("anonymous"),
+    score: 0,
   };
 
-  // Setter with autoupdate instead of manual transactional updating.
-  private setState: TStateSetter<IAuthContext, "authState"> = ContextManager.getSetter(this, "authState");
+  public randomizeScore(): void {
+    this.setContext({ score: Math.random() });
+  }
 
-  @Bind()
   public randomizeUser(): void {
-
-    const { user } = this.context.authState;
-
-    const newUsername: string = "randomized-sync-" + Math.floor(Math.random() * 100);
-
-    this.setState({ user: user.asUpdated(newUsername) });
+    this.setContext(({ user }) => ({ user: user.asUpdated("r-sync-" + Math.random() * 100) }));
   }
 
-  @Bind()
-  public async randomizeUserAsync(): Promise<void> {
-
-    const { user } = this.context.authState;
-
-    this.setState({ user: user.asLoading() });
-
-    await this.waitFor(AuthContextManager.ASYNC_USER_CHANGE_DELAY);
-
-    const newUsername: string = "randomized-async-" + Math.floor(Math.random() * 1000);
-
-    this.setState({ user: user.asReady(newUsername) });
-  }
-
-  @Bind()
   public resetUser(): void {
-
-    const { user } = this.context.authState;
-
-    this.setState({ user: user.asInitial() });
+    this.setContext(({ user }) => ({ user: user.asInitial() }));
   }
+
+  public async randomizeUserAsync(): Promise<void> {
+    this.setContext(({ user }) => ({ user: user.asLoading() }));
+    // Just creating delay like async request does.
+    await this.waitFor(AuthContextManager.ASYNC_USER_CHANGE_DELAY);
+    // Finish update.
+    this.setContext(({ user }) => ({ user: user.asReady("r-async-" + Math.random() * 1000) }));
+  }
+
+  /**
+   * Providing some handlers only for example:
+   */
 
   protected onProvisionStarted(): void {
     console.info("Auth provision started.");
@@ -94,10 +83,6 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
 
   protected beforeUpdate(nextContext: IAuthContext): void {
     console.info("Before auth context updated triggered.");
-  }
-
-  protected beforeDestroy(): void {
-    // WILL NEVER BE CALLED -> AuthContextManager is singleton because it has static prop IS_SINGLETON = true.
   }
 
   private waitFor(millis: number): Promise<void> {

@@ -1,63 +1,45 @@
-import * as React from "react";
-import { Context, PureComponent, ReactNode } from "react";
+import React, { Context, PureComponent, ReactNode } from "react";
 
 // Data.
 import { AuthContextManager, IAuthContext } from "../data";
 
-// Props typing: own, injected and bundled props. You should know what has to be declared manually.
-export interface IConsumedClassViewOwnProps {
-  someLabelFromExternalProps: string;
-}
+// View.
+import { getFullCurrentTime } from "./utils/time";
 
-export class ConsumedClassView extends PureComponent<IConsumedClassViewOwnProps, never, IAuthContext> {
+export class ConsumedClassView extends PureComponent<{}, never, IAuthContext> {
 
   public static contextType: Context<IAuthContext> = AuthContextManager.getContextType();
 
   public render(): ReactNode {
-
-    const { someLabelFromExternalProps } = this.props;
-    const { authActions, authState: { user } } = this.context;
+    const { authActions, user } = this.context;
 
     return (
-      <>
+      <div className={"example-view"}>
 
-        <div className={"consumed-class-view"}>
+        ConsumedClassView: { getFullCurrentTime() + " [<= even not used props changes will trigger it (score prop)]" }
+        <br/>
 
-          ConsumedClassView <br/>
+        <div className={"example-section"}>
 
-          <div> External prop value: '{someLabelFromExternalProps}' </div>
+          <b> Auth context: </b> <br/>
 
-          <div className={"consumed-class-view-section"}>
+          Username: { user.isLoading ? "loading..." : user.value } <br/>
 
-            Auth context <br/>
-
-            USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
-
-            <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
-            <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
-
-          </div>
+          <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
+          <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
 
         </div>
 
-        <style>
-          {
-            `
-              .consumed-class-view {
-                border: 2px black solid;
-                margin: 12px;
-                padding: 12px;
-              }
+        <p>
+          This is simple class component that consumes exactly one context like react doc tells. <br/>
+          + Easy to manage, test and write. <br/>
+          + You will not mix props and context there => you will never get names collision. <br/>
+          + Less reactNodes than with HoC and decorators.
+          - It always renders on any context store change without checks. <br/>
+          - Only one context can be supplied with 'static contextType'.
+        </p>
 
-              .consumed-class-view-section {
-                padding: 8px;
-              }
-            `
-          }
-
-        </style>
-
-      </>
+      </div>
     );
   }
 

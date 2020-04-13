@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { PureComponent, ReactNode } from "react";
+import { useState, useCallback, ReactElement, ReactNode } from "react";
 import { Bind } from "./dreamstate";
 
 // View.
@@ -10,35 +10,47 @@ export interface IRootState {
   enabled: boolean;
 }
 
-export class Root extends PureComponent<object, IRootState> {
+export function Root(): ReactElement {
+  const [ enabled, setEnabled ] = useState(true);
+  const toggleRendering = useCallback(() => setEnabled(!enabled), [ enabled ]);
 
-  public state: IRootState = {
-    enabled: true
-  };
+  return (
+    <>
 
-  public render(): ReactNode {
+      <button onClick={toggleRendering}> Toggle Rendering </button>
 
-    const { enabled } = this.state;
+      { enabled ? <ProvidedWrapper/> : null }
 
-    return (
-      <>
+      <style>
+        {
+          `
+            button {
+              margin-right: 8px;
+            }
+    
+            #application-root {
+              box-sizing: border-box;
+              padding: 12px;
+            }  
+    
+            .example-view {
+              border: 2px black solid;
+              margin: 12px 0;
+              padding: 12px;
+            }
+    
+            .example-section {
+              border: 2px black solid;
+              padding: 8px;
+              margin-top: 8px;
+            }
+          `
+        }
+      </style>
 
-        <button onClick={this.onToggleRendering}> Toggle Rendering </button>
-
-        { enabled ? <ProvidedWrapper/> : null }
-
-      </>
-    );
-  }
-
-  @Bind()
-  private onToggleRendering(): void {
-
-    const { enabled } = this.state;
-
-    this.setState({ enabled: !enabled })
-  }
-
+    </>
+  );
 }
+
 
 render(<Root/>, document.getElementById("application-root"));

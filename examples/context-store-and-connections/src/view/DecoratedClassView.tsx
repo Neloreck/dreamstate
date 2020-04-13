@@ -5,89 +5,53 @@ import { PureComponent, ReactNode } from "react";
 // Data.
 import { AuthContextManager, DataContextManager, IAuthContext, IDataContext } from "../data";
 
-// Props typing: own, injected and bundled props. You should know what has to be declared manually.
-export interface IDecoratedClassViewOwnProps {
-  someLabelFromExternalProps: string;
-}
+// View.
+import { getFullCurrentTime } from "./utils/time";
 
-export interface IDecoratedClassViewInjectedProps extends IAuthContext, IDataContext {
-  value: string;
-  ds: IDataContext["dataState"]
+export interface IDecoratedClassViewInjectedProps extends IDataContext {
+  user: IAuthContext["user"];
 }
 
 @Consume(
-  AuthContextManager,
   // Redux-like selection of only needed props.
   {
-    // @ts-ignore
-    from: DataContextManager,
-    take: (context: IDataContext) => ({ value: context.dataState.value })
-  }
+    from: AuthContextManager,
+    take: ({ user }) => user,
+    as: "user"
+  },
+  DataContextManager
 )
-export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjectedProps & IDecoratedClassViewOwnProps> {
-
-  private static SOME_STATIC_INTERNAL: Date = new Date();
+export class DecoratedClassView extends PureComponent<IDecoratedClassViewInjectedProps> {
 
   public render(): ReactNode {
-    const {
-      // Own prop.
-      someLabelFromExternalProps,
-      // Get, what you need form injected props.
-      value,
-      authState: { user },
-      authActions
-    } = this.props;
+    const { dataActions, dataState: { value }, user } = this.props;
 
     return (
-      <>
+      <div className={"example-view"}>
 
-        <div className={"decorated-class-view"}>
+        DecoratedClassView: { getFullCurrentTime() } <br/>
 
-          DecoratedClassView <br/>
-          <br/>
-          Static prop: { DecoratedClassView.SOME_STATIC_INTERNAL.toString() } <br/>
-          <br/>
-          <div> External prop value: '{someLabelFromExternalProps}' </div>
-
-          <div className={"decorated-class-view-section"}>
-
-            Auth context <br/>
-
-            USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
-
-            <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
-            <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
-            <button disabled={user.isLoading} onClick={authActions.resetUser}> Reset User </button>
-
-          </div>
-
-          <div className={"decorated-class-view-section"}>
-
-            Data context <br/>
-            VALUE: { value } <br/>
-
-          </div>
-
+        <div className={"example-section"}>
+          <b> Auth context: </b> <br/>
+          Username: { user.isLoading ? "loading..." : user.value } <br/>
         </div>
 
-        <style>
-          {
-            `
-              .decorated-class-view {
-                border: 2px black solid;
-                margin: 12px;
-                padding: 12px;
-              }
+        <div className={"example-section"}>
+          <b> Data context: </b> <br/>
+          Value: { value } <br/>
+          <button onClick={dataActions.randomizeValue}> Randomize Value </button>
+        </div>
 
-              .decorated-class-view-section {
-                padding: 8px;
-              }
-            `
-          }
+        <p>
+          This is simple decorated component that consumes contexts and uses decorators with selectors. <br/>
+          + Easy to write with decorators. <br/>
+          + Selectors can help optimize rendering and pick needed props. <br/>
+          - HoCs create more and more not needed react nodes. <br/>
+          - Decorated classes are harder to test. <br/>
+          - Should manually mix props, manage naming collisions and declare types (like redux). <br/>
+        </p>
 
-        </style>
-
-      </>
+      </div>
     );
   }
 

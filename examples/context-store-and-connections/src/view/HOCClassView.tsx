@@ -1,85 +1,47 @@
-import { Consume, withConsumption } from "../dreamstate";
 import * as React from "react";
 import { PureComponent, ReactNode } from "react";
+import { withConsumption } from "../dreamstate";
 
 // Data.
-import { AuthContextManager, DataContextManager, IAuthContext, IDataContext } from "../data";
+import { AuthContextManager, IAuthContext } from "../data";
 
-// Props typing: own, injected and bundled props. You should know what has to be declared manually.
-export interface IHOCClassViewOwnProps {
-  someLabelFromExternalProps: string;
+// View.
+import { getFullCurrentTime } from "./utils/time";
+
+export interface IHOCClassViewInjectedProps extends IAuthContext {
 }
 
-export interface IHOCClassViewInjectedProps extends IAuthContext, Pick<IDataContext, "dataState"> {
-}
-
-class ClassView extends PureComponent<IHOCClassViewInjectedProps & IHOCClassViewOwnProps> {
-
-  private static SOME_STATIC_INTERNAL: Date = new Date();
+class ClassView extends PureComponent<IHOCClassViewInjectedProps> {
 
   public render(): ReactNode {
-
-    const {
-      // Own prop.
-      someLabelFromExternalProps,
-      // Get, what you need form injected props.
-      dataState: { value },
-      authState: { user },
-      authActions
-    } = this.props;
+    const { user, authActions } = this.props;
 
     return (
-      <>
+      <div className={"example-view"}>
 
-        <div className={"hoc-class-view"}>
+        HOCClassView: { getFullCurrentTime() + " [<= even not used props changes will trigger it (score prop)]"  } <br/>
 
-          HOCClassView <br/>
-          <br/>
-          Static prop: { ClassView.SOME_STATIC_INTERNAL.toString() } <br/>
-          <br/>
-          <div> External prop value: '{someLabelFromExternalProps}' </div>
-
-          <div className={"hoc-class-view-section"}>
-
-            Auth context <br/>
-
-            USERNAME: { user.isLoading ? "loading..." : user.value } <br/>
-
-            <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
-            <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
-
-          </div>
-
-          <div className={"hoc-class-view-section"}>
-
-            Data context <br/>
-            VALUE: { value } <br/>
-
-          </div>
-
+        <div className={"example-section"}>
+          <b> Auth context: </b> <br/>
+          Username: { user.isLoading ? "loading..." : user.value } <br/>
+          <button disabled={user.isLoading} onClick={authActions.randomizeUser}> Randomize User </button>
+          <button disabled={user.isLoading} onClick={authActions.randomizeUserAsync}> Randomize User Async </button>
         </div>
 
-        <style>
-          {
-            `
-              .hoc-class-view {
-                border: 2px black solid;
-                margin: 12px;
-                padding: 12px;
-              }
+        <p>
+          This is simple HoC based component that consumes contexts and uses wrapper functions. <br/>
+          + Selectors can help optimize rendering and pick needed props. <br/>
+          + Harder to write with HoCs. <br/>
+          - HoC classes are easier to test. <br/>
+          - HoCs create more and more not needed react nodes. <br/>
+          - Should manually mix props, manage naming collisions and declare types (like redux). <br/>
+        </p>
 
-              .hoc-class-view-section {
-                padding: 8px;
-              }
-            `
-          }
-
-        </style>
-
-      </>
+      </div>
     );
   }
 
 }
 
-export const HOCClassView = withConsumption(AuthContextManager, { from: DataContextManager, take: [ "dataState" ] })(ClassView);
+// Usable for functions also, but useManager is proper way to handle managers in functional components.
+export const HOCClassView = withConsumption(AuthContextManager)(ClassView);
