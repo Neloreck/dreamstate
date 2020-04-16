@@ -1,7 +1,17 @@
-'use strict';
+/*
+ *
+ * 'https://github.com/Neloreck/dreamstate'
+ *
+ * OOP style context store for react.
+ * Based on observing and using as small tree components count as possible.
+ */
 
-if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./dreamstate.production.min.js');
-} else {
-  module.exports = require('./dreamstate.development.js');
-}
+export { ILoadable, TStateSetter, TConsumable } from "./types";
+
+export {ContextManager} from "./ContextManager";
+
+export { Bind, createLoadable, Hmr, enableHmr } from "./utils";
+
+export { createProvider, Provide, withProvision } from "./provision";
+
+export { useManager, Consume, withConsumption } from "./consumption";

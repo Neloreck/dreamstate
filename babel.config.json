@@ -1,15 +1,19 @@
 {
   "presets": [
-    "@babel/preset-env",
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "browsers": [ "ie >= 11" ]
+        },
+        "exclude": [ "transform-async-to-generator", "transform-regenerator" ],
+        "modules": false,
+        "loose": true
+      }
+    ],
     "@babel/preset-typescript"
    ],
   "plugins": [
-    [ "transform-inline-environment-variables", {
-      "include": [
-        "IS_DEV"
-      ]
-    } ],
-    "@babel/plugin-transform-modules-commonjs",
     [ "@babel/plugin-proposal-class-properties", { "loose": true } ]
   ]
 }

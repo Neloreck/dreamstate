@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
     "target": "es5",
     "esModuleInterop": true,
     "strict": true,
@@ -8,7 +7,7 @@
     "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "outDir": "../target",
+    "rootDir": "./src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
@@ -23,7 +22,11 @@
       "dom"
     ]
   },
+  "include": [
+    "./src"
+  ],
   "exclude": [
+    "switch.ts",
     "node_modules"
   ]
 }
