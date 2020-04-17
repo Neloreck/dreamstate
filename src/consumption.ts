@@ -26,7 +26,11 @@ declare const IS_DEV: boolean;
 
 // Todo: Lazy check and strategy patter here.
 export function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
-  // Only dev assistance with detailed messages.
+  // todo: Should we warn if no alias and no selector provided?
+  // todo: Should we warn if provided empty array-selector?
+  /**
+   * Extended assistance for DEV bundle.
+   */
   if (IS_DEV) {
     // Warn about too big consume count.
     if (sources.length > 5) {
@@ -51,7 +55,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
         }
 
         if (source.take === null) {
-          throw new TypeError(`Specified 'take' param should be a valid selector. Selectors can be functional, string, array or object. Supplied type: '${typeof source}'. Check '${target.name}' component.`);
+          throw new TypeError(`Specified 'take' param should be a valid selector. Selectors can be functional, string or array. Supplied type: '${typeof source}'. Check '${target.name}' component.`);
         }
       } else if (typeof source === "function") {
         if (!(source.prototype instanceof ContextManager)) {
@@ -81,49 +85,97 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
     }
   }
 
-  // HOC component to pick props and provide needed/selected.
-  // todo: useContext will update HOC every time, it should not be expensive but implement check for only needed props if react will add it.
-  function Consumer(ownProps: object) {
+  /**
+   * Create selectors once to prevent checks on every render.
+   * Optimization on resolving + additional checks.
+   */
+  const selectors: Array<(accumulator: IStringIndexed<any>) => void> = new Array(sources.length);
 
-    let consumed: IStringIndexed<any> = {};
+  for (let it = 0; it < selectors.length; it ++) {
+    const source: TConsumable<any> = sources[it];
+    // Is context manager.
+    if (source.prototype instanceof ContextManager) {
+      selectors[it] = (accumulator: IStringIndexed<any>) => Object.assign(accumulator, useManager(source));
+    } else {
+      const take: TTakeContextSelector<any> = source.take;
+      const alias: string | undefined = source.as;
 
-    for (const source of sources) {
+      // No selector, only alias.
+      if (take === undefined) {
+        if (alias) {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            accumulator[source.as] = useManager(source.from);
+          };
+        } else {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            Object.assign(accumulator, useManager(source.from));
+          };
+        }
+      } else if (Array.isArray(take)) {
+        // Selected array of needed props, filter only needed and alias it if 'as' is supplied.
+        // Here we can automatically use memo parameter.
+        const memoCheck = function(current: IStringIndexed<any>) {
+          return (take as Array<string>).map(function(it: string) {
+            return current[it];
+          })
+        };
 
-      if (source.prototype instanceof ContextManager) {
-        Object.assign(consumed, useManager(source))
-      } else {
-
-        const selector: TTakeContextSelector<any> = source.take;
-        const context: IStringIndexed<any> = useManager(source.from);
-
-        // No selector, probably want to make alias for class component.
-        if (selector === undefined) {
-          if (typeof source.as !== "undefined") {
-            consumed[source.as] = context;
-          } else {
-            Object.assign(consumed, context);
+        if (alias) {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            const context: IStringIndexed<any> = useManager(source.from, memoCheck);
+            // Pick selected data.
+            accumulator[alias] = (take as Array<string>).reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[e], a), {});;
           }
-          // Selected array of needed props, filter only needed and alias if 'as' is supplied.
-        } else if (Array.isArray(selector)) {
-          const pickedData = (selector as Array<string>).reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[e], a), {});
-          Object.assign(consumed, source.as ? { [source.as]: pickedData } : pickedData);
-          // Supplied functional selector, return object with needed props like redux does. Alias if 'as' is supplied.
-        } else if (typeof selector === "function") {
-          Object.assign(consumed, source.as ? { [source.as]:  selector(context) } :  selector(context));
-          // todo:
-        } else if (typeof selector === "object") {
-          const pickedData = selector.take ? selector.take.reduce((a: IStringIndexed<any>, e: string) => (a[e] = context[selector.from][e], a), {}) : context[selector.from];
-
-          if (typeof source.as === "undefined") {
-            Object.assign(consumed, pickedData);
-          } else {
-            consumed[source.as] = pickedData;
+        } else {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            const context: IStringIndexed<any> = useManager(source.from, memoCheck);
+            // Pick selected data.
+            Object.assign(accumulator, (take as Array<string>).reduce(function(a: IStringIndexed<any>, e: string) {
+              return (a[e] = context[e], a);
+            }, {}));
           }
-          // Provided string selector, only one prop is needed. Alias if 'as' is supplied.
-        } else if (typeof selector === "string") {
-          consumed[typeof source.as === "undefined" ? selector : source.as] = context[selector] ;
+        }
+      } else if (typeof take === "function") {
+        // Supplied functional selector, return object with needed props like redux does. Alias if 'as' is supplied.
+        const memoCheck = function(current: IStringIndexed<any>) {
+          return Object.values(take(current));
+        };
+
+        if (alias) {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            accumulator[alias] = take(useManager(source.from, memoCheck));
+          };
+        } else {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            Object.assign(accumulator, take(useManager(source.from, memoCheck)));
+          };
+        }
+      } else if (typeof take === "string") {
+        // Pick only selected key prop. Using memo-selector here.
+        const memoCheck = function(current: IStringIndexed<any>) {
+          return [ current[take] ];
+        };
+
+        if (alias) {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            accumulator[alias] = useManager(source.from, memoCheck)[take];
+          };
+        } else {
+          selectors[it] = function(accumulator: IStringIndexed<any>) {
+            accumulator[take] = useManager(source.from, memoCheck)[take] ;
+          };
         }
       }
+    }
+  }
+
+  // HOC component to pick props and provide needed/selected.
+  function Consumer(ownProps: object) {
+    const consumed: IStringIndexed<any> = {};
+
+    // todo: Array.reduce or for-of?
+    for (const selector of selectors) {
+      selector(consumed);
     }
 
     return createElement(target as any, Object.assign(consumed, ownProps));
@@ -144,12 +196,12 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   managerConstructor: D,
   depsSelector: (context: T) => Array<any>
 ): D["prototype"]["context"] {
-  const [ state, setState ] = useState(function () {
+  const [ state, setState ] = useState(function() {
     return STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]];
   });
   const observed: MutableRefObject<Array<any>> = useRef(depsSelector(state));
 
-  const updateMemoState: TUpdateSubscriber<T> = useCallback(function (nextContext: T): void {
+  const updateMemoState: TUpdateSubscriber<T> = useCallback(function(nextContext: T): void {
     // Calculate changes like react lib does and fire change only after update.
     const nextObserved = depsSelector(nextContext);
 
@@ -162,9 +214,9 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
     }
   }, EMPTY_ARR);
 
-  useLayoutEffect(function () {
+  useLayoutEffect(function() {
     STORE_REGISTRY.SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].add(updateMemoState);
-    return function () {
+    return function() {
       STORE_REGISTRY.SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].delete(updateMemoState);
     }
   });
@@ -195,7 +247,7 @@ export function useManager<T extends object, D extends IContextManagerConstructo
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
-export const Consume: IConsumeDecorator = function (...sources: Array<TConsumable<any>>): any {
+export const Consume: IConsumeDecorator = function(...sources: Array<TConsumable<any>>): any {
   // Higher order decorator to reserve params.
   return function(classOrDescriptor: ComponentType) {
     // Support legacy and proposal decorators.

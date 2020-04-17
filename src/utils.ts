@@ -1,15 +1,4 @@
-import {
-  ClassDescriptor,
-  IHotNodeModule,
-  ILoadable,
-  IStringIndexed,
-  MethodDescriptor,
-  TAnyContextManagerConstructor,
-  TConstructor
-} from "./types";
-import { IDENTIFIER_KEY, STORE_REGISTRY } from "./internals";
-
-declare const IS_DEV: boolean;
+import { ILoadable, MethodDescriptor } from "./types";
 
 /**
  * Create loadable value utility.
@@ -24,8 +13,8 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
     asInitial(): ILoadable<T, E> {
       return { ...this, error: null, isLoading: false, value: initialValue };
     },
-    asLoading(): ILoadable<T, E> {
-      return { ...this, error: null, isLoading: true };
+    asLoading(value?: T): ILoadable<T, E> {
+      return { ...this, value: arguments.length ? value as T : this.value, error: null, isLoading: true };
     },
     asFailed(error: E | null): ILoadable<T, E> {
       return { ...this, error, isLoading: false };
@@ -87,3 +76,6 @@ export function Bind(): MethodDecorator {
     }
   };
 }
+
+// todo:
+// Create IMutable and asMerged store prop object creator here.

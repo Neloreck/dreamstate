@@ -6,10 +6,8 @@ import { createProvider } from "dreamstate";
 import { AuthContextManager, DataContextManager } from "../data";
 
 // View.
-import { FunctionalView } from "./FunctonalView";
-import { ConsumedClassView } from "./ConsumedClassView";
-import { DecoratedClassView, IDecoratedClassViewInjectedProps } from "./DecoratedClassView";
-import { HOCClassView, IHOCClassViewInjectedProps } from "./HOCClassView";
+import { ControllerView, IControllerViewInjectedProps } from "./ControllerView";
+import { ExamplesView } from "./ExamplesView";
 import { getFullCurrentTime } from "./utils/time";
 
 const ApplicationProvider = createProvider(AuthContextManager, DataContextManager);
@@ -20,13 +18,9 @@ export function ProvidedWrapper(): ReactElement {
 
       Rendered: { getFullCurrentTime() }
 
-      <ConsumedClassView/>
+      <ControllerView {...{} as IControllerViewInjectedProps}/>
 
-      <FunctionalView/>
-
-      <DecoratedClassView {...{} as IDecoratedClassViewInjectedProps}/>
-
-      <HOCClassView {...{} as IHOCClassViewInjectedProps}/>
+      <ExamplesView/>
 
     </ApplicationProvider>
   );

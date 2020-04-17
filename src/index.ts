@@ -10,7 +10,7 @@ export { ILoadable, TStateSetter, TConsumable } from "./types";
 
 export {ContextManager} from "./ContextManager";
 
-export { Bind, createLoadable, Hmr, enableHmr } from "./utils";
+export { Bind, createLoadable } from "./utils";
 
 export { createProvider, Provide, withProvision } from "./provision";
 

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { PureComponent, ReactNode } from "react";
-import { withConsumption } from "../dreamstate";
+import { withConsumption } from "dreamstate";
 
 // Data.
 import { AuthContextManager, IAuthContext } from "../data";

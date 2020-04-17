@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ReactElement } from "react";
-import { useManager } from "../dreamstate";
+import { useManager } from "dreamstate";
 
 // Data.
 import { AuthContextManager, DataContextManager } from "../data";

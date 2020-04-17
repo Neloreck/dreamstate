@@ -54,13 +54,9 @@ export type TConstructor<T> = {
   new (...args: unknown[]): T
 };
 
-export type TObjectKey<T> = T extends object ? { [K in keyof T]: K }[keyof T] : never;
-
 export type TContextFunctionalSelector<T extends object, R extends object = object> = (context: T) => R | Partial<T>;
 
-export type TContextObjectSelector<T extends object> =  { [K in keyof T]: { from: K, take: Array<TObjectKey<T[K]>> } }[keyof T]
-
-export type TTakeContextSelector<T extends object> = keyof T | Array<keyof T> | TContextObjectSelector<T> | TContextFunctionalSelector<T> | undefined;
+export type TTakeContextSelector<T extends object> = keyof T | Array<keyof T> | TContextFunctionalSelector<T> | undefined;
 
 export type TStateSetter<T extends object, K extends keyof T> = (value: Partial<T[K]>) => void;
 
