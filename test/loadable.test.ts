@@ -1,5 +1,5 @@
-import { ILoadable } from "../types";
-import { createLoadable } from "../utils";
+import { ILoadable } from "../src/types";
+import { createLoadable } from "../src/utils";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {

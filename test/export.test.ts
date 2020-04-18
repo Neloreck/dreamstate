@@ -1,5 +1,5 @@
 describe("Library exported API test.", () => {
-  const libRoot = require("../index");
+  const libRoot = require("../src");
 
   it("Should export ContextManager class.", () => {
     expect(libRoot.ContextManager).toBeDefined();

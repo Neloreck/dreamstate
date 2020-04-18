@@ -4,6 +4,9 @@ src/
 test/
 examples/
 target/
+
 rollup.config.js
 babel.config.json
 tsconfig.json
+tsconfig.test.json
+todo.MD

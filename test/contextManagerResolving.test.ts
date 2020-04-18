@@ -1,8 +1,8 @@
 import { Context } from "react";
 
-import { ContextManager } from "../ContextManager";
-import { IDENTIFIER_KEY } from "../internals";
-import { STORE_REGISTRY } from "../registry";
+import { ContextManager } from "../src/ContextManager";
+import { IDENTIFIER_KEY } from "../src/internals";
+import { STORE_REGISTRY } from "../src/registry";
 
 describe("Context store creation test.", () => {
   class TestContextManager extends ContextManager<object> {
