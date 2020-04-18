@@ -6,7 +6,7 @@ export const STORE_REGISTRY: {
   MANAGERS: IStringIndexed<ContextManager<any>>;
   CONTEXT_OBSERVERS: IStringIndexed<Set<TUpdateObserver>>;
   CONTEXT_SUBSCRIBERS: IStringIndexed<Set<TUpdateSubscriber<any>>>;
-  STATES: IStringIndexed<any>;
+  CONTEXT_STATES: IStringIndexed<any>;
 } = {
   /**
    * Registry of managers instances for global references and better management.
@@ -23,7 +23,11 @@ export const STORE_REGISTRY: {
    * Subscribers not necessarily related to react
    */
   CONTEXT_SUBSCRIBERS: {},
-  STATES: {},
+  /**
+   * Registry for current context states for singleton management, beforeUpdate checks and sync state across
+   * all manager subscribers.
+   */
+  CONTEXT_STATES: {},
 };
 
 /**
@@ -39,7 +43,7 @@ export function registerManager<T extends object>(
   ) {
     const instance: ContextManager<T> = new managerConstructor();
 
-    STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]] = instance.context;
+    STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]] = instance.context;
     STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]] = instance;
   }
 }
@@ -80,7 +84,7 @@ export function removeManagerObserverFromRegistry<T extends object>(
       instance.onProvisionEnded();
       // @ts-ignore protected field, do not expose it for external usage.
       if (!managerConstructor.IS_SINGLETON) {
-        delete STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]];
+        delete STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]];
         delete STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
       }
     }
@@ -95,7 +99,7 @@ export function addManagerSubscriber<T extends object, D extends IContextManager
   STORE_REGISTRY.CONTEXT_SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].add(subscriber);
 
   if (loadCurrent) {
-    subscriber(STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]]);
+    subscriber(STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]]);
   }
 }
 

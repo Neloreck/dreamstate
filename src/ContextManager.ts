@@ -19,7 +19,7 @@ export abstract class ContextManager<T extends object> {
     const id: symbol = Symbol(IS_DEV ? this.name : "");
 
     // Lazy preparation of state and observers internal storage.
-    STORE_REGISTRY.STATES[id as any] = {};
+    STORE_REGISTRY.CONTEXT_STATES[id as any] = {};
     STORE_REGISTRY.CONTEXT_OBSERVERS[id as any] = new Set();
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });

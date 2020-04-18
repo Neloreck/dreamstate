@@ -34,7 +34,7 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   depsSelector: (context: T) => Array<any>
 ): D["prototype"]["context"] {
   const [ state, setState ] = useState(function() {
-    return STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]];
+    return STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]];
   });
   const observed: MutableRefObject<Array<any>> = useRef(depsSelector(state));
 

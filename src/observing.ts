@@ -44,7 +44,7 @@ export function provideSubTree(
       ? bottom
       : createElement(
         sources[current].getContextType().Provider,
-        { value: STORE_REGISTRY.STATES[sources[current][IDENTIFIER_KEY]] },
+        { value: STORE_REGISTRY.CONTEXT_STATES[sources[current][IDENTIFIER_KEY]] },
         provideSubTree(current + 1, bottom, sources)
       )
   );
@@ -90,7 +90,7 @@ export function shouldObserversUpdate<T extends object>(
   manager: ContextManager<T>, nextContext: IStringIndexed<any>
 ): boolean {
   const previousContext: IStringIndexed<any> =
-    STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
+    STORE_REGISTRY.CONTEXT_STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
 
   return Object
     .keys(nextContext)
@@ -116,7 +116,7 @@ export function notifyObservers<T extends IStringIndexed<any>>(
   manager: ContextManager<T>,
   nextContext: T
 ): void {
-  STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
+  STORE_REGISTRY.CONTEXT_STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
   STORE_REGISTRY.CONTEXT_OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]]
     .forEach(function(it: TUpdateObserver) { it(); });
   /**

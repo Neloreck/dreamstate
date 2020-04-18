@@ -49,7 +49,7 @@ describe("Context store creation test.", () => {
 
     expect(STORE_REGISTRY.CONTEXT_OBSERVERS[id as any]).not.toBeUndefined();
     expect(STORE_REGISTRY.MANAGERS[id as any]).toBeUndefined();
-    expect(typeof STORE_REGISTRY.STATES[id as any]).toBe("object"); // todo: Review if it should be object prop.
+    expect(typeof STORE_REGISTRY.CONTEXT_STATES[id as any]).toBe("object");
   });
 
   it("Related react context should be lazily initialized correctly with changed displayName.", () => {
