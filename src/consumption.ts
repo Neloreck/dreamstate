@@ -21,7 +21,7 @@ import {
 } from "./types";
 import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
 import { ContextManager } from "./ContextManager";
-import { addManagerSubscriber, removeManagerSubscriber, STORE_REGISTRY } from "./registry";
+import { subscribeToManager, unsubscribeFromManager, STORE_REGISTRY } from "./registry";
 
 declare const IS_DEV: boolean;
 
@@ -52,9 +52,9 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   }, EMPTY_ARR);
 
   useLayoutEffect(function() {
-    addManagerSubscriber(managerConstructor, updateMemoState);
+    subscribeToManager(managerConstructor, updateMemoState);
     return function() {
-      removeManagerSubscriber(managerConstructor, updateMemoState);
+      unsubscribeFromManager(managerConstructor, updateMemoState);
     };
   });
 

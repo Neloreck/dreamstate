@@ -131,3 +131,14 @@ export interface MethodDescriptor extends ClassElement {
   kind: "method";
   descriptor: PropertyDescriptor;
 }
+
+export interface IContextManagerSignalsResolver {
+  subscriber: TSignalListener<any>;
+  switcher: TSignalListener<any>;
+}
+
+export type TSignalType = symbol | string;
+
+export type TSignalListener<T extends object> =
+  (type: TSignalType, data: T, emitter: ContextManager<any>) => void;
+

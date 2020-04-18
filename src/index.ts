@@ -10,7 +10,7 @@ export { ILoadable, TLoadable, TMutable, TStateSetter, TConsumable } from "./typ
 
 export { ContextManager } from "./ContextManager";
 
-export { addManagerSubscriber, removeManagerSubscriber } from "./registry";
+export { subscribeToManager, unsubscribeFromManager } from "./registry";
 
 export { createProvider, Provide, withProvision } from "./provision";
 

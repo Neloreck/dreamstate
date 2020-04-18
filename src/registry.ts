@@ -1,6 +1,12 @@
-import { IContextManagerConstructor, IStringIndexed, TUpdateObserver, TUpdateSubscriber } from "./types";
+import {
+  IContextManagerConstructor,
+  IStringIndexed,
+  TUpdateObserver,
+  TUpdateSubscriber
+} from "./types";
 import { ContextManager } from "./ContextManager";
-import { IDENTIFIER_KEY } from "./internals";
+import { IDENTIFIER_KEY, SIGNAL_LISTENER_KEY } from "./internals";
+import { subscribeToSignals, unsubscribeFromSignals } from "./signals";
 
 export const STORE_REGISTRY: {
   MANAGERS: IStringIndexed<ContextManager<any>>;
@@ -45,6 +51,28 @@ export function registerManager<T extends object>(
 
     STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]] = instance.context;
     STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]] = instance;
+
+    subscribeToSignals(instance[SIGNAL_LISTENER_KEY].switcher);
+  }
+}
+
+export function unRegisterManager<T extends object>(
+  managerConstructor: IContextManagerConstructor<T>,
+): void {
+  const instance: ContextManager<T> | undefined = STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
+
+  if (!instance) {
+    throw new Error("Could not find manager instance when unregister it.");
+  } else {
+    // @ts-ignore protected.
+    instance.onProvisionEnded();
+    // @ts-ignore protected field, do not expose it for external usage.
+    if (!managerConstructor.IS_SINGLETON) {
+      unsubscribeFromSignals(instance[SIGNAL_LISTENER_KEY].switcher);
+
+      delete STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]];
+      delete STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
+    }
   }
 }
 
@@ -75,23 +103,11 @@ export function removeManagerObserverFromRegistry<T extends object>(
   STORE_REGISTRY.CONTEXT_OBSERVERS[managerConstructor[IDENTIFIER_KEY]].delete(observer);
 
   if (STORE_REGISTRY.CONTEXT_OBSERVERS[managerConstructor[IDENTIFIER_KEY]].size === 0) {
-    const instance: ContextManager<T> | undefined = STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
-
-    if (!instance) {
-      throw new Error("Could not find manager instance when removing last observer.");
-    } else {
-      // @ts-ignore protected.
-      instance.onProvisionEnded();
-      // @ts-ignore protected field, do not expose it for external usage.
-      if (!managerConstructor.IS_SINGLETON) {
-        delete STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]];
-        delete STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
-      }
-    }
+    unRegisterManager(managerConstructor);
   }
 }
 
-export function addManagerSubscriber<T extends object, D extends IContextManagerConstructor<T>>(
+export function subscribeToManager<T extends object, D extends IContextManagerConstructor<T>>(
   managerConstructor: D,
   subscriber: TUpdateSubscriber<T>,
   loadCurrent: boolean = false
@@ -103,7 +119,7 @@ export function addManagerSubscriber<T extends object, D extends IContextManager
   }
 }
 
-export function removeManagerSubscriber<T extends object, D extends IContextManagerConstructor<T>>(
+export function unsubscribeFromManager<T extends object, D extends IContextManagerConstructor<T>>(
   managerConstructor: D,
   subscriber: TUpdateSubscriber<T>
 ): void {

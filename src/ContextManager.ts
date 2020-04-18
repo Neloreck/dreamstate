@@ -1,9 +1,16 @@
 import { Context, createContext } from "react";
 
-import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
-import { IContextManagerConstructor, TPartialTransformer } from "./types";
+import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, SIGNAL_LISTENER_KEY } from "./internals";
+import {
+  IContextManagerConstructor, IContextManagerSignalsResolver,
+  TAnyContextManagerConstructor,
+  TPartialTransformer,
+  TSignalListener,
+  TSignalType
+} from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
 import { STORE_REGISTRY } from "./registry";
+import { emitSignal } from "./signals";
 
 declare const IS_DEV: boolean;
 
@@ -106,6 +113,16 @@ export abstract class ContextManager<T extends object> {
   }
 
   /**
+   * Bound signal listener in private property.
+   * Story it there for proper memory cleanup.
+   * Do not modify original method descriptor and source class.
+   */
+  [SIGNAL_LISTENER_KEY]: IContextManagerSignalsResolver = {
+    switcher: this.onSignal.bind(this),
+    subscriber: this.onSignal.bind(this)
+  };
+
+  /**
    * Abstract store/actions bundle.
    * Left for generic implementation.
    */
@@ -155,6 +172,9 @@ export abstract class ContextManager<T extends object> {
    * First provider was injected into DOM.
    */
   protected onProvisionStarted(): void {
+    /**
+     * For inheritance.
+     */
   }
 
   /**
@@ -162,6 +182,9 @@ export abstract class ContextManager<T extends object> {
    * Last provider was removed from DOM.
    */
   protected onProvisionEnded(): void {
+    /**
+     * For inheritance.
+     */
   }
 
   /**
@@ -170,6 +193,9 @@ export abstract class ContextManager<T extends object> {
    * Also shared for 'getSetter' methods.
    */
   protected beforeUpdate(nextContext: T): void {
+    /**
+     * For inheritance.
+     */
   }
 
   /**
@@ -178,6 +204,23 @@ export abstract class ContextManager<T extends object> {
    * Also shared for 'getSetter' methods.
    */
   protected afterUpdate(previousContext: T): void {
+    /**
+     * For inheritance.
+     */
+  }
+
+  /**
+   * Signals.
+   */
+
+  protected onSignal<D extends object>(type: TSignalType, data: D, emitter: ContextManager<any>) {
+    /**
+     * For inheritance.
+     */
+  }
+
+  protected emitSignal<D extends object>(type: TSignalType, data: D): void {
+    emitSignal(type, data, this);
   }
 
 }
