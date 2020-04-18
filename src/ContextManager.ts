@@ -1,8 +1,9 @@
 import { Context, createContext } from "react";
 
-import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, STORE_REGISTRY } from "./internals";
+import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
 import { IContextManagerConstructor, TPartialTransformer } from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
+import { STORE_REGISTRY } from "./registry";
 
 declare const IS_DEV: boolean;
 
@@ -19,8 +20,7 @@ export abstract class ContextManager<T extends object> {
 
     // Lazy preparation of state and observers internal storage.
     STORE_REGISTRY.STATES[id as any] = {};
-    STORE_REGISTRY.OBSERVERS[id as any] = new Set();
-    STORE_REGISTRY.SUBSCRIBERS[id as any] = new Set();
+    STORE_REGISTRY.CONTEXT_OBSERVERS[id as any] = new Set();
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
 
@@ -84,38 +84,25 @@ export abstract class ContextManager<T extends object> {
 
   /**
    * Utility getter.
-   * Singleton generator.
+   * Lazy initialization, even for static resolving before anything from ContextManager is used.
    * Allows to get related React.Context for manual renders.
    */
   public static getContextType<T extends object>(): Context<T> {
-    if (Object.prototype.hasOwnProperty.call(STORE_REGISTRY.CONTEXTS, this[IDENTIFIER_KEY])) {
-      const reactContextType: Context<T> = STORE_REGISTRY.CONTEXTS[this[IDENTIFIER_KEY]];
+    const reactContextType: Context<T> = createContext(null as any);
 
-      Object.defineProperty(
-        this,
-        "getContextType",
-        { value: function () { return reactContextType; }, writable: false, configurable: false }
-      );
-
-      return reactContextType;
+    if (IS_DEV) {
+      reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
     } else {
-      const reactContextType: Context<T> = createContext(null as any);
-
-      if (IS_DEV) {
-        reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-      } else {
-        reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-      }
-
-      STORE_REGISTRY.CONTEXTS[this[IDENTIFIER_KEY]] = reactContextType;
-      Object.defineProperty(
-        this,
-        "getContextType",
-        { value: function () { return reactContextType; }, writable: false, configurable: false }
-      );
-
-      return this.getContextType();
+      reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
     }
+
+    Object.defineProperty(
+      this,
+      "getContextType",
+      { value: function () { return reactContextType; }, writable: false, configurable: false }
+    );
+
+    return this.getContextType();
   }
 
   /**

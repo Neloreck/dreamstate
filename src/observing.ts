@@ -1,58 +1,20 @@
-import { useEffect, useMemo } from "react";
+import { ComponentType, createElement, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
-import { EMPTY_ARR, IDENTIFIER_KEY, MUTABLE_KEY, STORE_REGISTRY } from "./internals";
+import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, MUTABLE_KEY } from "./internals";
 import {
   IContextManagerConstructor,
-  IStringIndexed,
-  TUpdateObserver,
-  TUpdateSubscriber
+  IStringIndexed, TAnyContextManagerConstructor, TConsumable,
+  TUpdateObserver, TUpdateSubscriber,
 } from "./types";
 import { ContextManager } from "./ContextManager";
+import {
+  addManagerObserverToRegistry,
+  registerManager,
+  removeManagerObserverFromRegistry,
+  STORE_REGISTRY
+} from "./registry";
 
 const shallowEqualObjects = require("shallow-equal").shallowEqualObjects;
-
-/**
- * Add state changes observer.
- */
-export function addObserver<T extends object>(
-  managerConstructor: IContextManagerConstructor<T>,
-  observer: TUpdateObserver
-): void {
-  // Notify about provision, if it is first observer.
-  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].size === 0) {
-    // @ts-ignore protected and symbol properties.
-    STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]].onProvisionStarted();
-  }
-
-  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].add(observer);
-}
-
-/**
- * Remove state changes observer and kill instance if it is not singleton.
- */
-export function removeObserver<T extends object>(
-  managerConstructor: IContextManagerConstructor<T>,
-  observer: TUpdateObserver
-): void {
-  // Remove observer.
-  STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].delete(observer);
-
-  if (STORE_REGISTRY.OBSERVERS[managerConstructor[IDENTIFIER_KEY]].size === 0) {
-    const instance: ContextManager<T> | undefined = STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
-
-    if (!instance) {
-      throw new Error("Could not find manager instance when removing last observer.");
-    } else {
-      // @ts-ignore protected.
-      instance.onProvisionEnded();
-      // @ts-ignore protected field, do not expose it for external usage.
-      if (!managerConstructor.IS_SINGLETON) {
-        delete STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]];
-        delete STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];
-      }
-    }
-  }
-}
 
 /**
  * Initialize context manager once before tree mount and use memo.
@@ -61,24 +23,64 @@ export function removeObserver<T extends object>(
 export function useLazyInitializeManager<T extends object>(
   managerConstructor: IContextManagerConstructor<T>, updateObserver: () => void
 ): void {
-  // Lazy init before observing with memo.
-  useMemo(function (): void {
-    // Only if registry is empty -> create new instance, remember its context and save it to registry.
-    if (
-      !Object.prototype.hasOwnProperty.call(managerConstructor, IDENTIFIER_KEY) ||
-      !Object.prototype.hasOwnProperty.call(STORE_REGISTRY.MANAGERS, managerConstructor[IDENTIFIER_KEY])
-    ) {
-      const instance: ContextManager<T> = new managerConstructor();
-
-      STORE_REGISTRY.STATES[managerConstructor[IDENTIFIER_KEY]] = instance.context;
-      STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]] = instance;
-    }
-  }, EMPTY_ARR);
+  useMemo(function (): void { registerManager(managerConstructor); }, EMPTY_ARR);
 
   useEffect(() => {
-    addObserver(managerConstructor, updateObserver);
-    return () => removeObserver(managerConstructor, updateObserver);
+    addManagerObserverToRegistry(managerConstructor, updateObserver);
+    return () => removeManagerObserverFromRegistry(managerConstructor, updateObserver);
   }, EMPTY_ARR);
+}
+
+/**
+ * Subtree provider as global scope helper.
+ */
+export function provideSubTree(
+  current: number,
+  bottom: ReactElement,
+  sources: Array<TAnyContextManagerConstructor>
+): ReactElement {
+  return (
+    current >= sources.length
+      ? bottom
+      : createElement(
+        sources[current].getContextType().Provider,
+        { value: STORE_REGISTRY.STATES[sources[current][IDENTIFIER_KEY]] },
+        provideSubTree(current + 1, bottom, sources)
+      )
+  );
+}
+
+/**
+ * Utility method for observers creation.
+ */
+export function createManagersObserver(
+  children: ComponentType | null,
+  sources: Array<TAnyContextManagerConstructor>
+) {
+  // Create observer component that will handle observing.
+  function Observer(props: IStringIndexed<any>): ReactElement {
+    // Update providers subtree utility.
+    const [ , updateState ] = useState();
+    const updateProviders = useCallback(function () { updateState({}); }, EMPTY_ARR);
+
+    // Subscribe to tree updater and lazily get first context value.
+    for (let it = 0; it < sources.length; it ++) {
+      useLazyInitializeManager(sources[it], updateProviders);
+    }
+
+    return provideSubTree(0, (children ? createElement(children, props) : props.children), sources);
+  }
+
+  if (IS_DEV) {
+    Observer.displayName = `Dreamstate.Observer.[${
+      sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING))
+    }]`;
+  } else {
+    Observer.displayName = "DS.Observer";
+  }
+
+  // Hoc helper for decorated components to prevent odd renders.
+  return memo(Observer) as any;
 }
 
 /**
@@ -110,10 +112,22 @@ export function shouldObserversUpdate<T extends object>(
 /**
  * Notify observers and check if update is needed.
  */
-export function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<T>, nextContext: T): void {
+export function notifyObservers<T extends IStringIndexed<any>>(
+  manager: ContextManager<T>,
+  nextContext: T
+): void {
   STORE_REGISTRY.STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
-  STORE_REGISTRY.OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]]
-    .forEach(((it: TUpdateObserver) => it()));
-  STORE_REGISTRY.SUBSCRIBERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].
-    forEach(((it: TUpdateSubscriber<T>) => it(nextContext)));
+  STORE_REGISTRY.CONTEXT_OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]]
+    .forEach(function(it: TUpdateObserver) { it(); });
+  /**
+   * Async execution for subscribers.
+   * There will be small amount of observers that work by the rules, but we cannot tell anything about subs.
+   * Subscribers should not block code there with CPU usage/unhandled exceptions.
+   */
+  STORE_REGISTRY.CONTEXT_SUBSCRIBERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].
+    forEach(function(it: TUpdateSubscriber<T>) {
+      setTimeout(function () {
+        it(nextContext);
+      });
+    });
 }

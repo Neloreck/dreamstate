@@ -10,8 +10,10 @@ export { ILoadable, TLoadable, TMutable, TStateSetter, TConsumable } from "./typ
 
 export { ContextManager } from "./ContextManager";
 
-export { Bind, createLoadable, createMutable } from "./utils";
+export { addManagerSubscriber, removeManagerSubscriber } from "./registry";
 
 export { createProvider, Provide, withProvision } from "./provision";
 
 export { useManager, Consume, withConsumption } from "./consumption";
+
+export { Bind, createLoadable, createMutable } from "./utils";

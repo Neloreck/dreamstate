@@ -19,8 +19,9 @@ import {
   TTakeContextSelector,
   TUpdateSubscriber
 } from "./types";
-import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, STORE_REGISTRY } from "./internals";
+import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
 import { ContextManager } from "./ContextManager";
+import { addManagerSubscriber, removeManagerSubscriber, STORE_REGISTRY } from "./registry";
 
 declare const IS_DEV: boolean;
 
@@ -51,9 +52,9 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   }, EMPTY_ARR);
 
   useLayoutEffect(function() {
-    STORE_REGISTRY.SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].add(updateMemoState);
+    addManagerSubscriber(managerConstructor, updateMemoState);
     return function() {
-      STORE_REGISTRY.SUBSCRIBERS[managerConstructor[IDENTIFIER_KEY]].delete(updateMemoState);
+      removeManagerSubscriber(managerConstructor, updateMemoState);
     };
   });
 

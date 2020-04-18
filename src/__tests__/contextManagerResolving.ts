@@ -1,6 +1,8 @@
-import { ContextManager } from "../ContextManager";
-import { IDENTIFIER_KEY, STORE_REGISTRY } from "../internals";
 import { Context } from "react";
+
+import { ContextManager } from "../ContextManager";
+import { IDENTIFIER_KEY } from "../internals";
+import { STORE_REGISTRY } from "../registry";
 
 describe("Context store creation test.", () => {
   class TestContextManager extends ContextManager<object> {
@@ -45,19 +47,13 @@ describe("Context store creation test.", () => {
 
     expect(typeof id).toBe("symbol");
 
-    expect(STORE_REGISTRY.OBSERVERS[id as any]).not.toBeUndefined();
-    expect(STORE_REGISTRY.SUBSCRIBERS[id as any]).not.toBeUndefined();
-    expect(STORE_REGISTRY.CONTEXTS[id as any]).toBeUndefined();
+    expect(STORE_REGISTRY.CONTEXT_OBSERVERS[id as any]).not.toBeUndefined();
     expect(STORE_REGISTRY.MANAGERS[id as any]).toBeUndefined();
     expect(typeof STORE_REGISTRY.STATES[id as any]).toBe("object"); // todo: Review if it should be object prop.
   });
 
   it("Related react context should be lazily initialized correctly with changed displayName.", () => {
-    expect(STORE_REGISTRY.CONTEXTS[TestContextManager[IDENTIFIER_KEY]]).toBeUndefined();
-
     const contextType: Context<object> = TestContextManager.getContextType();
-
-    expect(STORE_REGISTRY.CONTEXTS[TestContextManager[IDENTIFIER_KEY]]).not.toBeUndefined();
 
     expect(contextType).not.toBeUndefined();
     expect(contextType.Consumer).not.toBeUndefined();
