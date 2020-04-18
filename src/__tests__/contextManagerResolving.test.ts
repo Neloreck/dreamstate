@@ -39,7 +39,7 @@ describe("Context store creation test.", () => {
     expect(Object.keys(testContextManager)).toHaveLength(1);
 
     // Base class has all methods included.
-    expect(Object.keys(ContextManager.prototype)).toHaveLength(6);
+    expect(Object.keys(ContextManager.prototype)).toHaveLength(8);
   });
 
   it("Context ID symbol should generate properly with registry resolving.", () => {

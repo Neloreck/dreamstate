@@ -28,7 +28,7 @@
   ],
   "exclude": [
     "switch.ts",
-    "__tests__",
+    "**/__tests__/*.test.ts",
     "node_modules"
   ]
 }
