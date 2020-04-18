@@ -1,0 +1,68 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/errors",
+    "plugin:import/typescript"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "import"
+  ],
+  "settings": {
+  },
+  "rules": {
+    "indent": [ "error", 2 ],
+    "eol-last": [ "error", "always" ],
+    "no-duplicate-imports": "error",
+    "max-len": [ "error", { "code": 120 } ],
+    "key-spacing": [ 2, { "beforeColon": false, "afterColon": true } ],
+    "no-constructor-return": "error",
+    "arrow-spacing": "error",
+    "camelcase": "error",
+    "yoda": "error",
+    "arrow-parens": [ "error", "always" ],
+    "space-unary-ops": [
+      "error", {
+        "words": true,
+        "nonwords": false,
+        "overrides": {
+          "++": true,
+          "--": true
+        }
+      }
+    ],
+    "no-multiple-empty-lines": "error",
+    "no-multi-spaces": "error",
+    "object-curly-spacing": [ "error", "always" ],
+    "space-in-parens": [ "error", "never" ],
+    "func-call-spacing": [ "error", "never" ],
+    "padded-blocks": [ "error", { "blocks": "never", "classes": "always" } ],
+    "semi": "error",
+    "quotes": [ "error", "double" ],
+    "import/no-unresolved": 0,
+    "import/default": 0,
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "directive", "next": "*" },
+      { "blankLine": "any", "prev": "directive", "next": "directive" },
+      { "blankLine": "always", "prev": [ "const", "let", "var" ], "next": "*" },
+      { "blankLine": "always", "prev": [ "for", "if", "while", "do", "with" ], "next": "*" },
+      { "blankLine": "any", "prev": [ "const", "let", "var" ], "next": [ "const", "let", "var" ] }
+    ],
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-inferrable-types": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/interface-name-prefix": 0,
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-unused-vars": 0
+  }
+}

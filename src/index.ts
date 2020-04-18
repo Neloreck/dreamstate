@@ -6,11 +6,11 @@
  * Based on observing and using as small tree components count as possible.
  */
 
-export { ILoadable, TStateSetter, TConsumable } from "./types";
+export { ILoadable, TLoadable, TMutable, TStateSetter, TConsumable } from "./types";
 
-export {ContextManager} from "./ContextManager";
+export { ContextManager } from "./ContextManager";
 
-export { Bind, createLoadable } from "./utils";
+export { Bind, createLoadable, createMutable } from "./utils";
 
 export { createProvider, Provide, withProvision } from "./provision";
 

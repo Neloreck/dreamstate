@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
-if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./dreamstate.production.js');
+if (process.env.NODE_ENV === "production") {
+  module.exports = require("./dreamstate.production.js");
 } else {
-  module.exports = require('./dreamstate.development.js');
+  module.exports = require("./dreamstate.development.js");
 }

@@ -1,4 +1,4 @@
-import { Context, createContext} from "react";
+import { Context, createContext } from "react";
 
 import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, STORE_REGISTRY } from "./internals";
 import { IContextManagerConstructor, TPartialTransformer } from "./types";
@@ -12,9 +12,9 @@ declare const IS_DEV: boolean;
  * Current Issue: Static items inside of each class instance.
  */
 export abstract class ContextManager<T extends object> {
+
   // Lazy initialization for IDENTIFIER KEY.
   public static get [IDENTIFIER_KEY](): any {
-
     const id: symbol = Symbol(IS_DEV ? this.name : "");
 
     // Lazy preparation of state and observers internal storage.
@@ -41,7 +41,6 @@ export abstract class ContextManager<T extends object> {
    */
   public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) =>
     (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
-
       if (IS_DEV) {
         if ((typeof next !== "function" && typeof next !== "object") || next === null) {
           console.warn(
@@ -53,7 +52,11 @@ export abstract class ContextManager<T extends object> {
       }
 
       return manager.setContext({
-        [key]: Object.assign({}, manager.context[key], typeof next === "function" ? next(manager.context[key]) : next) } as any
+        [key]: Object.assign(
+          {},
+          manager.context[key],
+          typeof next === "function" ? next(manager.context[key]) : next)
+      } as any
       );
     };
 
@@ -62,15 +65,20 @@ export abstract class ContextManager<T extends object> {
   /**
    * Get current provided manager.
    */
-  public static current<S extends object, T extends ContextManager<S>>(this: IContextManagerConstructor<S> & { new(): T; }): T {
+  public static current<S extends object, T extends ContextManager<S>>(
+    this: IContextManagerConstructor<S> & { new(): T }
+  ): T {
     return STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
   }
 
   /**
    * Get current provided manager context.
    */
-  public static currentContext<S extends object, T extends ContextManager<S>>(this: IContextManagerConstructor<S> & { new(): T; }): T["context"] {
+  public static currentContext<S extends object, T extends ContextManager<S>>(
+    this: IContextManagerConstructor<S> & { new(): T }
+  ): T["context"] {
     const manager: T = STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
+
     return manager ? manager.context : undefined as any;
   }
 
@@ -80,11 +88,15 @@ export abstract class ContextManager<T extends object> {
    * Allows to get related React.Context for manual renders.
    */
   public static getContextType<T extends object>(): Context<T> {
-
-    if (STORE_REGISTRY.CONTEXTS.hasOwnProperty(this[IDENTIFIER_KEY])) {
+    if (Object.prototype.hasOwnProperty.call(STORE_REGISTRY.CONTEXTS, this[IDENTIFIER_KEY])) {
       const reactContextType: Context<T> = STORE_REGISTRY.CONTEXTS[this[IDENTIFIER_KEY]];
 
-      Object.defineProperty(this, 'getContextType', { value: function () { return reactContextType; }, writable: false, configurable: false });
+      Object.defineProperty(
+        this,
+        "getContextType",
+        { value: function () { return reactContextType; }, writable: false, configurable: false }
+      );
+
       return reactContextType;
     } else {
       const reactContextType: Context<T> = createContext(null as any);
@@ -96,7 +108,12 @@ export abstract class ContextManager<T extends object> {
       }
 
       STORE_REGISTRY.CONTEXTS[this[IDENTIFIER_KEY]] = reactContextType;
-      Object.defineProperty(this, 'getContextType', { value: function () { return reactContextType; }, writable: false, configurable: false });
+      Object.defineProperty(
+        this,
+        "getContextType",
+        { value: function () { return reactContextType; }, writable: false, configurable: false }
+      );
+
       return this.getContextType();
     }
   }
@@ -124,15 +141,19 @@ export abstract class ContextManager<T extends object> {
    * Calls lifecycle methods.
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
-
     if (IS_DEV) {
       if ((typeof next !== "function" && typeof next !== "object") || next === null) {
-        console.warn(`Seems like wrong prop was supplied to the 'setContext' method. Context state updater should be an object or a function. Supplied value type: ${typeof next}.`);
+        console.warn("Seems like wrong prop was supplied to the 'setContext' method. Context state updater " +
+          "should be an object or a function. Supplied value type:", typeof next);
       }
     }
 
     const previousContext: T = this.context;
-    const nextContext: T = Object.assign({}, previousContext, typeof next === "function" ? next(previousContext) : next);
+    const nextContext: T = Object.assign(
+      {},
+      previousContext,
+      typeof next === "function" ? next(previousContext) : next
+    );
 
     if (shouldObserversUpdate(this, nextContext)) {
       this.beforeUpdate(nextContext);
@@ -146,26 +167,30 @@ export abstract class ContextManager<T extends object> {
    * Lifecycle.
    * First provider was injected into DOM.
    */
-  protected onProvisionStarted(): void {}
+  protected onProvisionStarted(): void {
+  }
 
   /**
    * Lifecycle.
    * Last provider was removed from DOM.
    */
-  protected onProvisionEnded(): void {}
+  protected onProvisionEnded(): void {
+  }
 
   /**
    * Lifecycle.
    * Before update lifecycle event.
    * Also shared for 'getSetter' methods.
    */
-  protected beforeUpdate(nextContext: T): void {}
+  protected beforeUpdate(nextContext: T): void {
+  }
 
   /**
    * Lifecycle.
    * After update lifecycle event.
    * Also shared for 'getSetter' methods.
    */
-  protected afterUpdate(previousContext: T): void {}
+  protected afterUpdate(previousContext: T): void {
+  }
 
 }

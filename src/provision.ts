@@ -10,14 +10,18 @@ declare const IS_DEV: boolean;
 /**
  * Subtree provider as global scope helper.
  */
-export function provideSubTree(current: number, bottom: ReactElement, sources: Array<TAnyContextManagerConstructor>): ReactElement {
+export function provideSubTree(
+  current: number,
+  bottom: ReactElement,
+  sources: Array<TAnyContextManagerConstructor>
+): ReactElement {
   return (
     current >= sources.length
       ? bottom
       : createElement(
-      sources[current].getContextType().Provider,
-      { value: STORE_REGISTRY.STATES[sources[current][IDENTIFIER_KEY]] },
-      provideSubTree(current + 1, bottom, sources)
+        sources[current].getContextType().Provider,
+        { value: STORE_REGISTRY.STATES[sources[current][IDENTIFIER_KEY]] },
+        provideSubTree(current + 1, bottom, sources)
       )
   );
 }
@@ -25,12 +29,16 @@ export function provideSubTree(current: number, bottom: ReactElement, sources: A
 /**
  * Utility method for observers creation.
  */
-export function createManagersObserver(children: ComponentType | null, sources: Array<TAnyContextManagerConstructor>) {
+export function createManagersObserver(
+  children: ComponentType | null,
+  sources: Array<TAnyContextManagerConstructor>
+) {
   // Create observer component that will handle observing.
   function Observer(props: IStringIndexed<any>): ReactElement {
     // Update providers subtree utility.
     const [ , updateState ] = useState();
     const updateProviders = useCallback(function () { updateState({}); }, EMPTY_ARR);
+
     // Subscribe to tree updater and lazily get first context value.
     for (let it = 0; it < sources.length; it ++) {
       useLazyInitializeManager(sources[it], updateProviders);
@@ -40,7 +48,9 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   }
 
   if (IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING) )}]`;
+    Observer.displayName = `Dreamstate.Observer.[${
+      sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING))
+    }]`;
   } else {
     Observer.displayName = "DS.Observer";
   }
@@ -59,11 +69,12 @@ export function createManagersObserver(children: ComponentType | null, sources: 
 export function Provide (...sources: Array<TAnyContextManagerConstructor>) {
   // Support legacy and proposal decorators. Create observer of requested managers.
   return function(classOrDescriptor: ComponentType<any>) {
-    return ((typeof classOrDescriptor === 'function'))
+    return ((typeof classOrDescriptor === "function"))
       ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
       : ({
         ...(classOrDescriptor as ClassDescriptor),
-        finisher: (wrappedComponent: ComponentType) => hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
+        finisher: (wrappedComponent: ComponentType) =>
+          hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
       });
   };
 }
