@@ -52,7 +52,7 @@ export function registerManager<T extends object>(
     STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]] = instance.context;
     STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]] = instance;
 
-    subscribeToSignals(instance[SIGNAL_LISTENER_KEY].switcher);
+    subscribeToSignals(instance[SIGNAL_LISTENER_KEY]);
   }
 }
 
@@ -68,7 +68,7 @@ export function unRegisterManager<T extends object>(
     instance.onProvisionEnded();
     // @ts-ignore protected field, do not expose it for external usage.
     if (!managerConstructor.IS_SINGLETON) {
-      unsubscribeFromSignals(instance[SIGNAL_LISTENER_KEY].switcher);
+      unsubscribeFromSignals(instance[SIGNAL_LISTENER_KEY]);
 
       delete STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]];
       delete STORE_REGISTRY.MANAGERS[managerConstructor[IDENTIFIER_KEY]];

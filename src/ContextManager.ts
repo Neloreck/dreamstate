@@ -1,11 +1,12 @@
 import { Context, createContext } from "react";
 
-import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, SIGNAL_LISTENER_KEY } from "./internals";
 import {
-  IContextManagerConstructor, IContextManagerSignalsResolver,
-  TAnyContextManagerConstructor,
-  TPartialTransformer,
-  TSignalListener,
+  EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, SIGNAL_LISTENER_KEY, SIGNAL_LISTENER_LIST_KEY
+} from "./internals";
+import {
+  IContextManagerConstructor,
+  TPartialTransformer, TSignalListener,
+  TSignalSubs,
   TSignalType
 } from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
@@ -28,11 +29,14 @@ export abstract class ContextManager<T extends object> {
     // Lazy preparation of state and observers internal storage.
     STORE_REGISTRY.CONTEXT_STATES[id as any] = {};
     STORE_REGISTRY.CONTEXT_OBSERVERS[id as any] = new Set();
+    STORE_REGISTRY.CONTEXT_SUBSCRIBERS[id as any] = new Set();
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
 
     return id;
   }
+
+  public static [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs = [];
 
   /**
    * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
@@ -46,8 +50,8 @@ export abstract class ContextManager<T extends object> {
    * !Strictly typed generic method with 'update' lifecycle.
    * Helps to avoid boilerplate code with manual 'update' transactional updates for simple methods.
    */
-  public static getSetter = <S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) =>
-    (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
+  public static getSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
+    return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
       if (IS_DEV) {
         if ((typeof next !== "function" && typeof next !== "object") || next === null) {
           console.warn(
@@ -63,9 +67,9 @@ export abstract class ContextManager<T extends object> {
           {},
           manager.context[key],
           typeof next === "function" ? next(manager.context[key]) : next)
-      } as any
-      );
+      } as any);
     };
+  }
 
   // todo: Solve typing problem here: Should we check undefined?
 
@@ -117,10 +121,29 @@ export abstract class ContextManager<T extends object> {
    * Story it there for proper memory cleanup.
    * Do not modify original method descriptor and source class.
    */
-  [SIGNAL_LISTENER_KEY]: IContextManagerSignalsResolver = {
-    switcher: this.onSignal.bind(this),
-    subscriber: this.onSignal.bind(this)
-  };
+  public [SIGNAL_LISTENER_KEY]: TSignalListener<any> = function <D>(
+    this: ContextManager<any>,
+    type: TSignalType,
+    data: D,
+    emitter: ContextManager<any>
+  ): void {
+    if (emitter !== this) {
+      /**
+       * Main signal handler is always first.
+       */
+      this.onSignal(type, data, emitter);
+      /**
+       * Handle subscribers from metadata.
+       */
+      for (
+        const [ method, selector ] of (this.constructor as IContextManagerConstructor<T>)[SIGNAL_LISTENER_LIST_KEY]
+      ) {
+        if (selector(type)) {
+          (this as any)[method](type, data, emitter);
+        }
+      }
+    }
+  }.bind(this);
 
   /**
    * Abstract store/actions bundle.
@@ -213,13 +236,13 @@ export abstract class ContextManager<T extends object> {
    * Signals.
    */
 
-  protected onSignal<D extends object>(type: TSignalType, data: D, emitter: ContextManager<any>) {
+  protected onSignal<D>(type: TSignalType, data: D | undefined, emitter: ContextManager<any>) {
     /**
      * For inheritance.
      */
   }
 
-  protected emitSignal<D extends object>(type: TSignalType, data: D): void {
+  protected emitSignal<D>(type: TSignalType, data?: D): void {
     emitSignal(type, data, this);
   }
 

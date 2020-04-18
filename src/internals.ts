@@ -7,3 +7,4 @@ export const MANAGER_REGEX: RegExp = /Manager$/;
 export const IDENTIFIER_KEY: unique symbol = Symbol(IS_DEV ? "DS_ID" : "");
 export const MUTABLE_KEY: unique symbol = Symbol(IS_DEV ? "DS_MUTABLE" : "");
 export const SIGNAL_LISTENER_KEY: unique symbol = Symbol(IS_DEV ? "DS_SG_SUBSCRIBER" : "");
+export const SIGNAL_LISTENER_LIST_KEY: unique symbol = Symbol(IS_DEV ? "DS_SG_LIST" : "");

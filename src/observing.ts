@@ -16,6 +16,8 @@ import {
 
 const shallowEqualObjects = require("shallow-equal").shallowEqualObjects;
 
+declare const IS_DEV: boolean;
+
 /**
  * Initialize context manager once before tree mount and use memo.
  * Subscribe to adding/removing observers on mount/unmount.

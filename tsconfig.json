@@ -28,6 +28,7 @@
   ],
   "exclude": [
     "switch.ts",
+    "__tests__",
     "node_modules"
   ]
 }

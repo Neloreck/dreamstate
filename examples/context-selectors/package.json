@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "react": "^16.13.1",
-    "dreamstate": "^2.4.11",
+    "dreamstate": "latest",
     "react-dom": "^16.13.1",
     "shallow-equal": "^1.2.0",
     "hoist-non-react-statics": "^3.3.0"

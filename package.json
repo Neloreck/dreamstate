@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "2.4.12",
+  "version": "2.5.0",
   "description": "Store management library based on context and observers.",
   "main": "./lib/index.js",
   "types": "./lib/types",
@@ -17,7 +17,7 @@
     "build": "npm run clean && npm run build:src && npm run build:switcher && npm run build:dts",
     "=============================": "================================================================================",
     "lint": "npx eslint src/ --ext .ts",
-    "test": "jest",
+    "test": "jest ./src",
     "===============================": "==============================================================================",
     "prepublishOnly": "npm run lint && npm test && npm run build"
   },

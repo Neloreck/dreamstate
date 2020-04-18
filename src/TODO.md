@@ -1,7 +1,7 @@
 ## todo:
 
 1) Unit tests - more
-2) emit/emitters and subscribers for global events dispatching.
+2) Better typing for decorators
 
 - Think about actions/state separation.
 - Better dev assistance with logs and warnings for development bundle.

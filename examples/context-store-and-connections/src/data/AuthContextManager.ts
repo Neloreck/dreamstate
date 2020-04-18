@@ -50,6 +50,10 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
   };
 
   public randomizeScore(): void {
+    const nextScore: number = Math.random();
+
+    // Example of global context signals.
+    this.emitSignal("RandomizeScore", { score: nextScore });
     this.setContext({ score: Math.random() });
   }
 
@@ -83,6 +87,10 @@ export class AuthContextManager extends ContextManager<IAuthContext> {
 
   protected beforeUpdate(nextContext: IAuthContext): void {
     console.info("Before auth context updated triggered.");
+  }
+
+  protected onSignal(type: any, data: any, emitter: any): void {
+    console.info('AC received signal:', type, data, emitter === this);
   }
 
   private waitFor(millis: number): Promise<void> {

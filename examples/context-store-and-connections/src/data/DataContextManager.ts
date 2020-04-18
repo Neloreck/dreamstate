@@ -1,4 +1,4 @@
-import { Bind, ContextManager } from "dreamstate";
+import { Bind, ContextManager, Signal } from "dreamstate";
 
 /*
  * Context manager state declaration.
@@ -36,6 +36,7 @@ export class DataContextManager extends ContextManager<IDataContext> {
 
   @Bind()
   public randomizeValue(): void {
+    this.emitSignal("RandomizedValue", { msg: 1 });
     this.setContext({ dataState: { value: "value-" + Math.floor(Math.random() * 100) } });
   }
 
@@ -55,8 +56,9 @@ export class DataContextManager extends ContextManager<IDataContext> {
     console.info("Before data context updated triggered.");
   }
 
-  protected beforeDestroy(): void {
-    console.info("Before data context destroyed triggered.");
+  @Signal([ "RandomizeScore" ])
+  protected onAuthSignal(type: string, data: any): void {
+    console.info('DataContextManager received signal:', type, data);
   }
 
 }

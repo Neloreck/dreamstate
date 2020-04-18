@@ -1,7 +1,7 @@
 import { ComponentType, Context } from "react";
 
 import { ContextManager } from "./ContextManager";
-import { IDENTIFIER_KEY, MUTABLE_KEY } from "./internals";
+import { IDENTIFIER_KEY, MUTABLE_KEY, SIGNAL_LISTENER_LIST_KEY } from "./internals";
 
 export interface IStringIndexed<T> {
   [index: string]: T;
@@ -9,6 +9,7 @@ export interface IStringIndexed<T> {
 
 export interface IContextManagerConstructor<T extends object> {
   [IDENTIFIER_KEY]: any;
+  [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs;
   prototype: ContextManager<T>;
   new(): ContextManager<T>;
   getContextType(): Context<T>;
@@ -117,7 +118,7 @@ export interface ClassElement {
   placement: "static" | "prototype" | "own";
   initializer?: Function;
   extras?: ClassElement[];
-  finisher?: <T>(clazz: TConstructor<T>) => undefined | TConstructor<T>;
+  finisher?: <T>(clazz: TConstructor<T>) => void | undefined | TConstructor<T>;
   descriptor?: PropertyDescriptor;
 }
 
@@ -132,13 +133,9 @@ export interface MethodDescriptor extends ClassElement {
   descriptor: PropertyDescriptor;
 }
 
-export interface IContextManagerSignalsResolver {
-  subscriber: TSignalListener<any>;
-  switcher: TSignalListener<any>;
-}
-
-export type TSignalType = symbol | string;
+export type TSignalType = symbol | string | number;
 
 export type TSignalListener<T extends object> =
   (type: TSignalType, data: T, emitter: ContextManager<any>) => void;
 
+export type TSignalSubs = Array<[ string, (signal: TSignalType) => boolean ]>;

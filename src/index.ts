@@ -17,3 +17,5 @@ export { createProvider, Provide, withProvision } from "./provision";
 export { useManager, Consume, withConsumption } from "./consumption";
 
 export { Bind, createLoadable, createMutable } from "./utils";
+
+export { Signal, unsubscribeFromSignals, subscribeToSignals } from "./signals";
