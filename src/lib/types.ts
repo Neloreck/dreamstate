@@ -133,9 +133,34 @@ export interface MethodDescriptor extends ClassElement {
   descriptor: PropertyDescriptor;
 }
 
+export interface IBaseSignal<T extends TSignalType, D>{
+  /**
+   * Type of current signal.
+   */
+  type: T;
+  /**
+   * Data of current signal.
+   */
+  data?: D;
+}
+
+export interface ISignal<T extends TSignalType, D> extends IBaseSignal<T, D> {
+  /**
+   * Signal sender.
+   */
+  emitter: ContextManager<any> | null;
+  /**
+   * Stop signal handling by next listeners.
+   */
+  cancel(): void;
+  /**
+   * Stop signal handling flag.
+   */
+  cancelled?: boolean;
+}
+
 export type TSignalType = symbol | string | number;
 
-export type TSignalListener<T extends object> =
-  (type: TSignalType, data: T, emitter: ContextManager<any>) => void;
+export type TSignalListener<T extends TSignalType, D> = (signal: ISignal<T, D>) => void;
 
 export type TSignalSubs = Array<[ string | symbol, (signal: TSignalType) => boolean ]>;

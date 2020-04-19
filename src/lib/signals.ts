@@ -1,19 +1,38 @@
-import { MethodDescriptor, TAnyContextManagerConstructor, TSignalListener, TSignalType } from "./types";
-import { ContextManager } from "./management";
+import {
+  IBaseSignal,
+  ISignal,
+  MethodDescriptor,
+  TAnyContextManagerConstructor,
+  TSignalListener,
+  TSignalType
+} from "./types";
 import { EMPTY_ARR, SIGNAL_LISTENER_LIST_KEY } from "./internals";
 import { useEffect } from "react";
+import { ContextManager } from "./management";
 
-const SIGNAL_LISTENERS: Set<TSignalListener<any>> = new Set();
+const SIGNAL_LISTENERS: Set<TSignalListener<TSignalType, any>> = new Set();
 
-export function emitSignal<T>(
-  type: TSignalType,
-  data: T | undefined,
-  emitter: ContextManager<any>
+export function emitSignal<T extends TSignalType, D>(
+  base: IBaseSignal<T, D>,
+  emitter: ContextManager<any> | null = null
 ): void {
-  SIGNAL_LISTENERS.forEach(function (it: TSignalListener<any>) {
+  const signal: ISignal<T, D> = Object.assign(
+    base,
+    {
+      emitter,
+      cancelled: false,
+      cancel: function (): void {
+        this.cancelled = true;
+      }
+    });
+
+  SIGNAL_LISTENERS.forEach(function (it: TSignalListener<T, D>) {
     // Async query.
     setTimeout(function () {
-      it(type, data, emitter);
+      // todo: Check if cancel will work?
+      if (!signal.cancelled) {
+        it(signal);
+      }
     });
   });
 }
@@ -23,7 +42,7 @@ export function emitSignal<T>(
  * Should be filtered by users like redux does.
  * Not intended to be used as core feature, just for some elegant decisions.
  */
-export function subscribeToSignals(listener: TSignalListener<any>): void {
+export function subscribeToSignals(listener: TSignalListener<TSignalType, any>): void {
   SIGNAL_LISTENERS.add(listener);
 }
 
@@ -31,8 +50,29 @@ export function subscribeToSignals(listener: TSignalListener<any>): void {
  * Unsubscribe from all signals and listen everything.
  * Not intended to be used as core feature, just for some elegant decisions.
  */
-export function unsubscribeFromSignals(listener: TSignalListener<any>): void {
+export function unsubscribeFromSignals(listener: TSignalListener<TSignalType, any>): void {
   SIGNAL_LISTENERS.delete(listener);
+}
+
+/**
+ * Listen signal and call related metadata listeners of this manager.
+ */
+export function onMetadataListenerCalled<T extends TSignalType, D>(
+  this: ContextManager<any>,
+  signal: ISignal<T, D>
+): void {
+  /**
+   * Ignore own signals.
+   */
+  if (signal.emitter !== this) {
+    for (
+      const [ method, selector ] of (this.constructor as TAnyContextManagerConstructor)[SIGNAL_LISTENER_LIST_KEY]
+    ) {
+      if (selector(signal.type)) {
+        (this as any)[method](signal);
+      }
+    }
+  }
 }
 
 /**
@@ -80,7 +120,7 @@ export function Signal(signal: Array<TSignalType> | TSignalType): MethodDecorato
 /**
  * Hook for signals listening and custom UI handling.
  */
-export function useSignal(subscriber: TSignalListener<any>): void {
+export function useSignal(subscriber: TSignalListener<TSignalType, any>): void {
   useEffect(function () {
     subscribeToSignals(subscriber);
     return function () {

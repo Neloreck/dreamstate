@@ -8,13 +8,14 @@ import {
   SIGNAL_LISTENER_LIST_KEY
 } from "./internals";
 import {
-  IContextManagerConstructor,
-  TPartialTransformer, TSignalListener,
+  IBaseSignal,
+  TPartialTransformer,
+  TSignalListener,
   TSignalSubs,
   TSignalType
 } from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
-import { emitSignal } from "./signals";
+import { emitSignal, onMetadataListenerCalled } from "./signals";
 import {
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
@@ -24,53 +25,18 @@ import {
 declare const IS_DEV: boolean;
 
 /**
- * Setter method factory.
- * !Strictly typed generic method with 'update' lifecycle.
- */
-export function createSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
-  return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
-    if (IS_DEV) {
-      if ((typeof next !== "function" && typeof next !== "object") || next === null) {
-        console.warn(
-          "If you want to update specific non-object state variable, use setContext instead. " +
-          "Custom setters are intended to help with nested state objects. " +
-          `State updater should be an object or a function. Supplied value type: ${typeof next}.`
-        );
-      }
-    }
-
-    return manager.setContext({
-      [key]: Object.assign(
-        {},
-        manager.context[key],
-        typeof next === "function" ? next(manager.context[key]) : next)
-    } as any);
-  };
-}
-
-/**
  * Abstract class.
  * Class based context manager for react.
  * Current Issue: Static items inside of each class instance.
  */
 export abstract class ContextManager<T extends object> {
 
-  /*
-   * Internal.
-   * Lazy initialization for IDENTIFIER KEY and manager related registry.
+  /**
+   * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
+   * Singleton objects will never be destroyed once created.
+   * Non-singleton objects are destroyed if all observers are removed.
    */
-  public static get [IDENTIFIER_KEY](): symbol {
-    const id: symbol = Symbol(IS_DEV ? this.name : "");
-
-    // Lazy preparation of state and observers internal storage.
-    CONTEXT_STATES_REGISTRY[id as any] = {};
-    CONTEXT_OBSERVERS_REGISTRY[id as any] = new Set();
-    CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
-
-    Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
-
-    return id;
-  }
+  protected static IS_SINGLE: boolean = false;
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
@@ -94,12 +60,22 @@ export abstract class ContextManager<T extends object> {
     return reactContext;
   }
 
-  /**
-   * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
-   * Singleton objects will never be destroyed once created.
-   * Non-singleton objects are destroyed if all observers are removed.
+  /*
+   * Internal.
+   * Lazy initialization for IDENTIFIER KEY and manager related registry.
    */
-  protected static IS_SINGLE: boolean = false;
+  public static get [IDENTIFIER_KEY](): symbol {
+    const id: symbol = Symbol(IS_DEV ? this.name : "");
+
+    // Lazy preparation of state and observers internal storage.
+    CONTEXT_STATES_REGISTRY[id as any] = {};
+    CONTEXT_OBSERVERS_REGISTRY[id as any] = new Set();
+    CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
+
+    Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
+
+    return id;
+  }
 
   /**
    * Internal signals listeners for current context manager instance.
@@ -108,28 +84,8 @@ export abstract class ContextManager<T extends object> {
 
   /**
    * Bound signal listener in private property.
-   * Story it there for proper memory cleanup.
-   * Do not modify original method descriptor and source class.
    */
-  public [SIGNAL_LISTENER_KEY]: TSignalListener<any> = function <D>(
-    this: ContextManager<any>,
-    type: TSignalType,
-    data: D,
-    emitter: ContextManager<any>
-  ): void {
-    /**
-     * Ignore own signals.
-     */
-    if (emitter !== this) {
-      for (
-        const [ method, selector ] of (this.constructor as IContextManagerConstructor<T>)[SIGNAL_LISTENER_LIST_KEY]
-      ) {
-        if (selector(type)) {
-          (this as any)[method](type, data, emitter);
-        }
-      }
-    }
-  }.bind(this);
+  public [SIGNAL_LISTENER_KEY]: TSignalListener<TSignalType, any> = onMetadataListenerCalled.bind(this);
 
   /**
    * Abstract store/actions bundle.
@@ -221,8 +177,8 @@ export abstract class ContextManager<T extends object> {
   /**
    * Emit signal for other managers and subscribers.
    */
-  protected emitSignal<D>(type: TSignalType, data?: D): void {
-    emitSignal(type, data, this);
+  protected emitSignal<T extends TSignalType, D>(baseSignal: IBaseSignal<T, D>): void {
+    emitSignal(baseSignal, this);
   }
 
 }

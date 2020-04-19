@@ -104,7 +104,8 @@ export function shouldObserversUpdate<T extends object>(
   const previousContext: IStringIndexed<any> =
     CONTEXT_STATES_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
 
-  return Object
+  // If previous context is registered and current supplied.
+  return !previousContext || Object
     .keys(nextContext)
     .some(function (key: string): boolean {
       const nextValue: any = nextContext[key];

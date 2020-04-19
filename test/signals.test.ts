@@ -1,9 +1,9 @@
-import { Signal, subscribeToSignals, unsubscribeFromSignals } from "../src/signals";
-import { ContextManager } from "../src/management";
-import { SIGNAL_LISTENER_LIST_KEY } from "../src/internals";
-import { TSignalType } from "../src/types";
+import { Signal, subscribeToSignals, unsubscribeFromSignals } from "../src/lib/signals";
+import { ContextManager } from "../src/lib/management";
+import { SIGNAL_LISTENER_LIST_KEY } from "../src/lib/internals";
+import { ISignal, TSignalType } from "../src/lib/types";
 
-import { nextAsyncQuery, registerManagerInstance } from "./helpers";
+import { nextAsyncQuery, registerManagerClass } from "./helpers";
 
 describe("Signals and signaling.", () => {
   enum ESignal {
@@ -17,17 +17,17 @@ describe("Signals and signaling.", () => {
     public context: object = {};
 
     @Signal(ESignal.NUMBER_SIGNAL)
-    public onNumberSignal(): void {
+    public onNumberSignal(signal: ISignal<TSignalType, number>): void {
       return;
     }
 
     @Signal([ ESignal.STRING_SIGNAL ])
-    public onStringSignal(): void {
+    public onStringSignal(signal: ISignal<TSignalType, string>): void {
       return;
     }
 
     @Signal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
-    public onStringOrNumberSignal(): void {
+    public onStringOrNumberSignal(signal: ISignal<TSignalType, number | string>): void {
       return;
     }
 
@@ -38,15 +38,15 @@ describe("Signals and signaling.", () => {
     public context: object = {};
 
     public sendNumberSignal(): void {
-      this.emitSignal(ESignal.NUMBER_SIGNAL, Math.random());
+      this.emitSignal({ type: ESignal.NUMBER_SIGNAL, data: Math.random() });
     }
 
     public sendStringSignal(): void {
-      this.emitSignal(ESignal.STRING_SIGNAL, "random-" + Math.random());
+      this.emitSignal({ type: ESignal.STRING_SIGNAL, data: "random-" + Math.random() });
     }
 
     public sendEmptySignal(): void {
-      this.emitSignal(ESignal.EMPTY_SIGNAL);
+      this.emitSignal({ type: ESignal.EMPTY_SIGNAL });
     }
 
   }
@@ -85,8 +85,8 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal decorator should properly add metadata.", async () => {
-    const subscribedManager: SubscribedContextManager = registerManagerInstance(SubscribedContextManager);
-    const emittingManager: EmittingContextManager = registerManagerInstance(EmittingContextManager);
+    const subscribedManager: SubscribedContextManager = registerManagerClass(SubscribedContextManager);
+    const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
 
     subscribedManager.onNumberSignal = jest.fn();
     subscribedManager.onStringSignal = jest.fn();
@@ -125,18 +125,18 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal subscribers should properly listen managers signals.", async () => {
-    const emittingManager: EmittingContextManager = registerManagerInstance(EmittingContextManager);
+    const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
 
-    const numberSubscriber = jest.fn((type: TSignalType, data: number, emitter: ContextManager<any>) => {
-      expect(type).toBe(ESignal.NUMBER_SIGNAL);
-      expect(typeof data).toBe("number");
-      expect(emitter).toBe(emittingManager);
+    const numberSubscriber = jest.fn((signal: ISignal<TSignalType, number>) => {
+      expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
+      expect(typeof signal.data).toBe("number");
+      expect(signal.emitter).toBe(emittingManager);
     });
 
-    const stringSubscriber = jest.fn((type: TSignalType, data: number, emitter: ContextManager<any>) => {
-      expect(type).toBe(ESignal.STRING_SIGNAL);
-      expect(typeof data).toBe("string");
-      expect(emitter).toBe(emittingManager);
+    const stringSubscriber = jest.fn((signal: ISignal<TSignalType, string>) => {
+      expect(signal.type).toBe(ESignal.STRING_SIGNAL);
+      expect(typeof signal.data).toBe("string");
+      expect(signal.emitter).toBe(emittingManager);
     });
 
     subscribeToSignals(numberSubscriber);
@@ -155,5 +155,31 @@ describe("Signals and signaling.", () => {
     expect(stringSubscriber).toBeCalled();
 
     unsubscribeFromSignals(stringSubscriber);
+  });
+
+  it("Signal subscribers should properly cancel events and called in declared order.", async () => {
+    const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
+
+    const subscribedManager: SubscribedContextManager = registerManagerClass(SubscribedContextManager);
+
+    subscribedManager.onStringSignal = jest.fn();
+    subscribedManager.onStringOrNumberSignal = jest.fn((signal: ISignal<TSignalType, any>) => signal.cancel());
+
+    const firstSubscriber = jest.fn(() => {});
+    const secondSubscriber = jest.fn(() => {});
+
+    subscribeToSignals(firstSubscriber);
+    subscribeToSignals(secondSubscriber);
+
+    emittingManager.sendStringSignal();
+    await nextAsyncQuery();
+
+    expect(subscribedManager.onStringSignal).toBeCalled();
+    expect(subscribedManager.onStringOrNumberSignal).toBeCalled();
+    expect(firstSubscriber).not.toBeCalled();
+    expect(secondSubscriber).not.toBeCalled();
+
+    unsubscribeFromSignals(firstSubscriber);
+    unsubscribeFromSignals(secondSubscriber);
   });
 });

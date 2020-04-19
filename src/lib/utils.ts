@@ -1,5 +1,8 @@
-import { ILoadable, MethodDescriptor, TMutable } from "./types";
+import { ILoadable, MethodDescriptor, TMutable, TPartialTransformer } from "./types";
 import { MUTABLE_KEY } from "./internals";
+import { ContextManager } from "./management";
+
+declare const IS_DEV: boolean;
 
 /**
  * Create loadable value utility.
@@ -10,6 +13,7 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
     error: null,
     isLoading: false,
     value: initialValue,
+    // todo: Object.assign
     // Methods.
     asInitial(): ILoadable<T, E> {
       return { ...this, error: null, isLoading: false, value: initialValue };
@@ -64,6 +68,31 @@ export function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, prop
       return bound;
     }
   });
+}
+
+/**
+ * Setter method factory.
+ * !Strictly typed generic method with 'update' lifecycle.
+ */
+export function createSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
+  return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
+    if (IS_DEV) {
+      if ((typeof next !== "function" && typeof next !== "object") || next === null) {
+        console.warn(
+          "If you want to update specific non-object state variable, use setContext instead. " +
+          "Custom setters are intended to help with nested state objects. " +
+          `State updater should be an object or a function. Supplied value type: ${typeof next}.`
+        );
+      }
+    }
+
+    return manager.setContext({
+      [key]: Object.assign(
+        {},
+        manager.context[key],
+        typeof next === "function" ? next(manager.context[key]) : next)
+    } as any);
+  };
 }
 
 /**

@@ -6,16 +6,16 @@
  * Based on observing and using as small tree components count as possible.
  */
 
-export { ILoadable, TLoadable, TMutable, TStateSetter, TConsumable } from "./types";
+export { ILoadable, TLoadable, TMutable, TStateSetter, TConsumable, ISignal, IBaseSignal } from "./lib/types";
 
-export { ContextManager, createSetter } from "./management";
+export { ContextManager } from "./lib/management";
 
-export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurrentManager } from "./registry";
+export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurrentManager } from "./lib/registry";
 
-export { createProvider, Provide, withProvision } from "./provision";
+export { createProvider, Provide, withProvision } from "./lib/provision";
 
-export { useManager, Consume, withConsumption } from "./consumption";
+export { useManager, Consume, withConsumption } from "./lib/consumption";
 
-export { Bind, createLoadable, createMutable } from "./utils";
+export { Bind, createLoadable, createMutable, createSetter } from "./lib/utils";
 
-export { Signal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./signals";
+export { Signal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./lib/signals";
