@@ -24,6 +24,8 @@ import {
   removeManagerObserverFromRegistry,
 } from "./registry";
 
+import { log } from "../macroses/log.macro";
+
 const shallowEqualObjects = require("shallow-equal").shallowEqualObjects;
 
 declare const IS_DEV: boolean;
@@ -91,6 +93,8 @@ export function createManagersObserver(
     Observer.displayName = "DS.Observer";
   }
 
+  log.info("Context manager observer created:", Observer.displayName);
+
   // Hoc helper for decorated components to prevent odd renders.
   return memo(Observer) as any;
 }
@@ -129,6 +133,13 @@ export function notifyObservers<T extends IStringIndexed<any>>(
   manager: ContextManager<T>,
   nextContext: T
 ): void {
+  log.info(
+    "Context manager notify observers and subscribers:",
+    manager.constructor.name,
+    CONTEXT_OBSERVERS_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].size,
+    CONTEXT_SUBSCRIBERS_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].size
+  );
+
   CONTEXT_STATES_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
   CONTEXT_OBSERVERS_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]]
     .forEach(function(it: TUpdateObserver) { it(); });

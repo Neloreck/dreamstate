@@ -22,6 +22,8 @@ import {
   CONTEXT_SUBSCRIBERS_REGISTRY
 } from "./registry";
 
+import { log } from "../macroses/log.macro";
+
 declare const IS_DEV: boolean;
 
 /**
@@ -51,6 +53,8 @@ export abstract class ContextManager<T extends object> {
       reactContext.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
     }
 
+    log.info("Context manager context declared:", this, reactContext.displayName);
+
     Object.defineProperty(
       this,
       "REACT_CONTEXT",
@@ -73,6 +77,8 @@ export abstract class ContextManager<T extends object> {
     CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
+
+    log.info("Context manager id defined:", this, id);
 
     return id;
   }
@@ -98,6 +104,7 @@ export abstract class ContextManager<T extends object> {
    * Calls lifecycle methods.
    */
   public forceUpdate(): void {
+    log.info("Forcing context manager update:", this.constructor.name);
     // Force updates and common lifecycle with same params.
     this.beforeUpdate(this.context);
     this.context = Object.assign({}, this.context);
@@ -125,10 +132,14 @@ export abstract class ContextManager<T extends object> {
     );
 
     if (shouldObserversUpdate(this, nextContext)) {
+      log.info("Updating context manager:", this.constructor.name);
+
       this.beforeUpdate(nextContext);
       this.context = nextContext;
       notifyObservers(this, nextContext);
       this.afterUpdate(previousContext);
+    } else {
+      log.info("Context manager update cancelled, state is same:", this.constructor.name);
     }
   }
 

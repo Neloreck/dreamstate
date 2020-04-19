@@ -2,12 +2,16 @@ import { ILoadable, MethodDescriptor, TMutable, TPartialTransformer } from "./ty
 import { MUTABLE_KEY } from "./internals";
 import { ContextManager } from "./management";
 
+import { log } from "../macroses/log.macro";
+
 declare const IS_DEV: boolean;
 
 /**
  * Create loadable value utility.
  */
 export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T, E> {
+  log.info("Created loadable entity:", initialValue);
+
   return ({
     // Data.
     error: null,
@@ -16,19 +20,39 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
     // todo: Object.assign
     // Methods.
     asInitial(): ILoadable<T, E> {
-      return { ...this, error: null, isLoading: false, value: initialValue };
+      return Object.assign(
+        {},
+        this,
+        { error: null, isLoading: false, value: initialValue }
+      );
     },
     asLoading(value?: T): ILoadable<T, E> {
-      return { ...this, value: arguments.length ? value as T : this.value, error: null, isLoading: true };
+      return Object.assign(
+        {},
+        this,
+        { value: arguments.length ? value as T : this.value, error: null, isLoading: true }
+      );
     },
     asFailed(error: E | null, value?: T): ILoadable<T, E> {
-      return { ...this, error, isLoading: false, value: arguments.length > 1 ? value as T : this.value, };
+      return Object.assign(
+        {},
+        this,
+        { error, isLoading: false, value: arguments.length > 1 ? value as T : this.value }
+      );
     },
     asReady(value: T | null): ILoadable<T, E> {
-      return { ...this, error: null, isLoading: false, value };
+      return Object.assign(
+        {},
+        this,
+        { error: null, isLoading: false, value }
+      );
     },
     asUpdated(value: T | null): ILoadable<T, E> {
-      return { ...this, value };
+      return Object.assign(
+        {},
+        this,
+        { value }
+      );
     }
   });
 }
@@ -37,6 +61,8 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
  * Create mutable sub-state.
  */
 export function createMutable<T extends object>(initialValue: T): TMutable<T> {
+  log.info("Created mutable entity from:", initialValue);
+
   return Object.assign(
     {},
     initialValue,
@@ -53,6 +79,8 @@ export function createMutable<T extends object>(initialValue: T): TMutable<T> {
  * Bind decorator wrappers factory for methods binding.
  */
 export function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) {
+  log.info("Created bound descriptor for:", property);
+
   // Descriptor with lazy binding.
   return ({
     configurable: true,
@@ -75,6 +103,8 @@ export function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, prop
  * !Strictly typed generic method with 'update' lifecycle.
  */
 export function createSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
+  log.info("Created context setter for:", manager.constructor.name, key);
+
   return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
     if (IS_DEV) {
       if ((typeof next !== "function" && typeof next !== "object") || next === null) {
@@ -109,6 +139,7 @@ export function Bind(): MethodDecorator {
   ) {
     // Different behaviour for legacy and proposal decorators.
     if (propertyKey && descriptor) {
+      log.info("Creating legacy Bind decorator.");
       // If it is legacy method decorator.
       if (typeof descriptor.value !== "function") {
         throw new TypeError(`Only methods can be decorated with @Bind. ${propertyKey.toString()} is not a method.`);
@@ -116,6 +147,7 @@ export function Bind(): MethodDecorator {
         return createBoundDescriptor(descriptor, propertyKey);
       }
     } else {
+      log.info("Creating proposal Bind decorator.");
       // If it is not proposal method decorator.
       if ((targetOrDescriptor as MethodDescriptor).kind !== "method") {
         throw new TypeError(

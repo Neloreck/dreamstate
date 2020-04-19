@@ -1,8 +1,10 @@
 import { ComponentType, FunctionComponent } from "react";
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 
-import { ClassDescriptor, TAnyContextManagerConstructor } from "./types";
+import { MethodDescriptor, TAnyContextManagerConstructor } from "./types";
 import { createManagersObserver } from "./observing";
+
+import { log } from "../macroses/log.macro";
 
 /**
  * Decorator factory.
@@ -14,13 +16,17 @@ import { createManagersObserver } from "./observing";
 export function Provide (...sources: Array<TAnyContextManagerConstructor>) {
   // Support legacy and proposal decorators. Create observer of requested managers.
   return function(classOrDescriptor: ComponentType<any>) {
-    return ((typeof classOrDescriptor === "function"))
-      ? hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor)
-      : ({
-        ...(classOrDescriptor as ClassDescriptor),
-        finisher: (wrappedComponent: ComponentType) =>
-          hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent)
-      });
+    if (typeof classOrDescriptor === "function") {
+      log.info(`Creating legacy provide decorator for ${sources.length} sources. Target:`, classOrDescriptor.name);
+      return hoistNonReactStatics(createManagersObserver(classOrDescriptor, sources), classOrDescriptor);
+    } else {
+      (classOrDescriptor as MethodDescriptor).finisher = function (wrappedComponent: ComponentType) {
+        log.info(`Creating proposal consume decorator for ${sources.length} sources. Target:`, wrappedComponent.name);
+        return hoistNonReactStatics(createManagersObserver(wrappedComponent, sources), wrappedComponent);
+      } as any;
+
+      return classOrDescriptor;
+    }
   };
 }
 
@@ -34,5 +40,7 @@ export const withProvision = Provide;
  * Useful if your root is functional component or you are using createComponent api without JSX.
  */
 export function createProvider (...sources: Array<TAnyContextManagerConstructor>): FunctionComponent<{}> {
+  log.info(`Creating functional provider for ${sources.length} sources.`);
+
   return createManagersObserver(null, sources);
 }

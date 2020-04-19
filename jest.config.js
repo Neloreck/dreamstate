@@ -1,9 +1,9 @@
 module.exports = {
-  transform: { "\\.ts$": [ "ts-jest" ] },
+  transform: {
+    "^.+\\.[t|j]sx?$": "babel-jest"
+  },
   globals: {
     IS_DEV: false,
-    'ts-jest': {
-      tsConfig: 'tsconfig.test.json'
-    }
+    IS_DEBUG: false
   }
 };

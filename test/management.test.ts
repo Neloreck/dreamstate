@@ -59,11 +59,11 @@ describe("Context store creation test.", () => {
       expect(typeof ManagerConstructor.REACT_CONTEXT.Consumer).toBe("object");
 
       expect(Object.keys(ManagerConstructor)).toHaveLength(isSingle ? 1 : 0);
-      expect(Object.keys(ManagerConstructor.prototype)).toHaveLength(1);
+      expect(Object.keys(ManagerConstructor.prototype)).toHaveLength(0);
       expect(Object.keys(manager)).toHaveLength(1);
     };
 
-    expect(Object.keys(ContextManager.prototype)).toHaveLength(7);
+    expect(Object.keys(ContextManager.prototype)).toHaveLength(0);
 
     testContextManagerInit(TestContextManager);
     testContextManagerInit(TestSingleContextManager, true);

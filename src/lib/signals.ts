@@ -9,8 +9,21 @@ import {
 import { EMPTY_ARR, SIGNAL_LISTENER_LIST_KEY } from "./internals";
 import { useEffect } from "react";
 import { ContextManager } from "./management";
+import { log } from "../macroses/log.macro";
+
+declare const IS_DEBUG: boolean;
 
 const SIGNAL_LISTENERS: Set<TSignalListener<TSignalType, any>> = new Set();
+
+/**
+ * Expose internal signals references for debugging.
+ */
+if (IS_DEBUG) {
+  // @ts-ignore debug-only declaration.
+  window.__DREAMSTATE_SIGNAL_REGISTRY__ = {
+    SIGNAL_LISTENERS
+  };
+}
 
 export function emitSignal<T extends TSignalType, D>(
   base: IBaseSignal<T, D>,
@@ -26,12 +39,17 @@ export function emitSignal<T extends TSignalType, D>(
       }
     });
 
+  log.info("Signal API emit signal:", base, emitter ? emitter.constructor.name : null);
+
   SIGNAL_LISTENERS.forEach(function (it: TSignalListener<T, D>) {
     // Async query.
     setTimeout(function () {
       // todo: Check if cancel will work?
       if (!signal.cancelled) {
+        log.info("Signal API process signal:", signal);
         it(signal);
+      } else {
+        log.info("Signal API ignore cancelled signal:", signal);
       }
     });
   });
@@ -43,6 +61,8 @@ export function emitSignal<T extends TSignalType, D>(
  * Not intended to be used as core feature, just for some elegant decisions.
  */
 export function subscribeToSignals(listener: TSignalListener<TSignalType, any>): void {
+  log.info("Subscribe to signals api:", listener);
+
   SIGNAL_LISTENERS.add(listener);
 }
 
@@ -51,6 +71,8 @@ export function subscribeToSignals(listener: TSignalListener<TSignalType, any>):
  * Not intended to be used as core feature, just for some elegant decisions.
  */
 export function unsubscribeFromSignals(listener: TSignalListener<TSignalType, any>): void {
+  log.info("Unsubscribe from signals api:", listener);
+
   SIGNAL_LISTENERS.delete(listener);
 }
 
@@ -61,6 +83,7 @@ export function onMetadataListenerCalled<T extends TSignalType, D>(
   this: ContextManager<any>,
   signal: ISignal<T, D>
 ): void {
+  log.info("Calling metadata signal api listener:", this.constructor.name);
   /**
    * Ignore own signals.
    */
@@ -86,6 +109,8 @@ export function rememberMethodSignal(
   const selector = Array.isArray(signal)
     ? (type: TSignalType) => signal.includes(type)
     : (type: TSignalType) => type === signal;
+
+  log.info("Signal metadata written for context manager:", managerConstructor.name, signal, method);
 
   managerConstructor[SIGNAL_LISTENER_LIST_KEY].push([ method, selector ]);
 }

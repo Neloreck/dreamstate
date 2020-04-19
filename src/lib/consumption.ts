@@ -22,6 +22,8 @@ import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./intern
 import { ContextManager } from "./management";
 import { CONTEXT_STATES_REGISTRY, subscribeToManager, unsubscribeFromManager } from "./registry";
 
+import { log } from "../macroses/log.macro";
+
 declare const IS_DEV: boolean;
 
 /**
@@ -114,7 +116,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
           );
         }
 
-        if (source.take === null) {
+        if (!source.take) {
           throw new TypeError(
             "Specified 'take' param should be a valid selector. Selectors can be functional, string or array. " +
             `Supplied type: '${typeof source}'. Check '${target.name}' component.`
@@ -142,7 +144,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
           typeof source === "object" && (
             (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager)) ||
             (typeof source.as !== "undefined" && typeof source.as !== "string") ||
-            source.take === null
+            !source.take
           )
         )
         ||
@@ -260,6 +262,8 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
     Consumer.displayName = "DS.Consumer";
   }
 
+  log.info("Created consumer:", Consumer.displayName);
+
   return Consumer;
 }
 
@@ -271,11 +275,13 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
 export const Consume: IConsumeDecorator = function(...sources: Array<TConsumable<any>>): any {
   // Higher order decorator to reserve params.
   return function(classOrDescriptor: ComponentType) {
-
+    // Legacy decorators and ES proposal.
     if (typeof classOrDescriptor === "function") {
+      log.info(`Creating legacy consume decorator for ${sources.length} sources. Target:`, classOrDescriptor.name);
       return hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor);
     } else {
       (classOrDescriptor as MethodDescriptor).finisher = function (wrappedComponent: ComponentType) {
+        log.info(`Creating proposal consume decorator for ${sources.length} sources. Target:`, wrappedComponent.name);
         return hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent);
       } as any;
 
