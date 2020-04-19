@@ -10,18 +10,17 @@ import {
 import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 
 import {
-  ClassDescriptor,
   IConsume,
   IConsumeDecorator,
   IContextManagerConstructor,
-  IStringIndexed,
+  IStringIndexed, MethodDescriptor,
   TConsumable,
   TTakeContextSelector,
   TUpdateSubscriber
 } from "./types";
 import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
-import { ContextManager } from "./ContextManager";
-import { subscribeToManager, unsubscribeFromManager, STORE_REGISTRY } from "./registry";
+import { ContextManager } from "./management";
+import { CONTEXT_STATES_REGISTRY, subscribeToManager, unsubscribeFromManager } from "./registry";
 
 declare const IS_DEV: boolean;
 
@@ -34,7 +33,7 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   depsSelector: (context: T) => Array<any>
 ): D["prototype"]["context"] {
   const [ state, setState ] = useState(function() {
-    return STORE_REGISTRY.CONTEXT_STATES[managerConstructor[IDENTIFIER_KEY]];
+    return CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
   });
   const observed: MutableRefObject<Array<any>> = useRef(depsSelector(state));
 
@@ -71,7 +70,7 @@ export function useManager<T extends object, D extends IContextManagerConstructo
   if (depsSelector) {
     return useContextWithMemo(managerConstructor, depsSelector);
   } else {
-    return useContext(managerConstructor.getContextType());
+    return useContext(managerConstructor.REACT_CONTEXT);
   }
 }
 
@@ -272,14 +271,16 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
 export const Consume: IConsumeDecorator = function(...sources: Array<TConsumable<any>>): any {
   // Higher order decorator to reserve params.
   return function(classOrDescriptor: ComponentType) {
-    // Support legacy and proposal decorators.
-    return ((typeof classOrDescriptor === "function"))
-      ? hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor)
-      : ({
-        ...(classOrDescriptor as ClassDescriptor),
-        finisher: (wrappedComponent: ComponentType) =>
-          hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent)
-      });
+
+    if (typeof classOrDescriptor === "function") {
+      return hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor);
+    } else {
+      (classOrDescriptor as MethodDescriptor).finisher = function (wrappedComponent: ComponentType) {
+        return hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent);
+      } as any;
+
+      return classOrDescriptor;
+    }
   };
 } as any;
 

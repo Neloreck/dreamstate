@@ -1,8 +1,8 @@
 import { Context } from "react";
 
-import { ContextManager } from "../src/ContextManager";
+import { ContextManager } from "../src/management";
 import { IDENTIFIER_KEY } from "../src/internals";
-import { STORE_REGISTRY } from "../src/registry";
+import { CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, CONTEXT_STATES_REGISTRY } from "../src/registry";
 
 describe("Context store creation test.", () => {
   class TestContextManager extends ContextManager<object> {
@@ -20,7 +20,7 @@ describe("Context store creation test.", () => {
     expect(testContextManager.context).toBeInstanceOf(Object);
 
     // Test to detect API changes of ContextManager class.
-    expect(TestContextManager["IS_SINGLETON"]).toBeFalsy();
+    expect(TestContextManager["IS_SINGLE"]).toBeFalsy();
 
     expect(typeof testContextManager.setContext).toBe("function");
     expect(typeof testContextManager.forceUpdate).toBe("function");
@@ -29,17 +29,16 @@ describe("Context store creation test.", () => {
     expect(typeof testContextManager["onProvisionStarted"]).toBe("function");
     expect(typeof testContextManager["onProvisionEnded"]).toBe("function");
 
-    expect(typeof TestContextManager.getSetter).toBe("function");
-    expect(typeof TestContextManager.getContextType).toBe("function");
-    expect(typeof TestContextManager.currentContext).toBe("function");
-    expect(typeof TestContextManager.current).toBe("function");
+    expect(typeof TestContextManager.REACT_CONTEXT).toBe("object");
+    expect(typeof TestContextManager.REACT_CONTEXT.Provider).toBe("object");
+    expect(typeof TestContextManager.REACT_CONTEXT.Consumer).toBe("object");
 
     expect(Object.keys(TestContextManager)).toHaveLength(0);
     expect(Object.keys(TestContextManager.prototype)).toHaveLength(1);
     expect(Object.keys(testContextManager)).toHaveLength(1);
 
     // Base class has all methods included.
-    expect(Object.keys(ContextManager.prototype)).toHaveLength(8);
+    expect(Object.keys(ContextManager.prototype)).toHaveLength(7);
   });
 
   it("Context ID symbol should generate properly with registry resolving.", () => {
@@ -47,13 +46,13 @@ describe("Context store creation test.", () => {
 
     expect(typeof id).toBe("symbol");
 
-    expect(STORE_REGISTRY.CONTEXT_OBSERVERS[id as any]).not.toBeUndefined();
-    expect(STORE_REGISTRY.MANAGERS[id as any]).toBeUndefined();
-    expect(typeof STORE_REGISTRY.CONTEXT_STATES[id as any]).toBe("object");
+    expect(CONTEXT_OBSERVERS_REGISTRY[id as any]).not.toBeUndefined();
+    expect(CONTEXT_MANAGERS_REGISTRY[id as any]).toBeUndefined();
+    expect(typeof CONTEXT_STATES_REGISTRY[id as any]).toBe("object");
   });
 
   it("Related react context should be lazily initialized correctly with changed displayName.", () => {
-    const contextType: Context<object> = TestContextManager.getContextType();
+    const contextType: Context<object> = TestContextManager.REACT_CONTEXT;
 
     expect(contextType).not.toBeUndefined();
     expect(contextType.Consumer).not.toBeUndefined();

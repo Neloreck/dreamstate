@@ -1,7 +1,11 @@
 import { Context, createContext } from "react";
 
 import {
-  EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, SIGNAL_LISTENER_KEY, SIGNAL_LISTENER_LIST_KEY
+  EMPTY_STRING,
+  IDENTIFIER_KEY,
+  MANAGER_REGEX,
+  SIGNAL_LISTENER_KEY,
+  SIGNAL_LISTENER_LIST_KEY
 } from "./internals";
 import {
   IContextManagerConstructor,
@@ -10,10 +14,39 @@ import {
   TSignalType
 } from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
-import { STORE_REGISTRY } from "./registry";
 import { emitSignal } from "./signals";
+import {
+  CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_STATES_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY
+} from "./registry";
 
 declare const IS_DEV: boolean;
+
+/**
+ * Setter method factory.
+ * !Strictly typed generic method with 'update' lifecycle.
+ */
+export function createSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
+  return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
+    if (IS_DEV) {
+      if ((typeof next !== "function" && typeof next !== "object") || next === null) {
+        console.warn(
+          "If you want to update specific non-object state variable, use setContext instead. " +
+          "Custom setters are intended to help with nested state objects. " +
+          `State updater should be an object or a function. Supplied value type: ${typeof next}.`
+        );
+      }
+    }
+
+    return manager.setContext({
+      [key]: Object.assign(
+        {},
+        manager.context[key],
+        typeof next === "function" ? next(manager.context[key]) : next)
+    } as any);
+  };
+}
 
 /**
  * Abstract class.
@@ -22,99 +55,56 @@ declare const IS_DEV: boolean;
  */
 export abstract class ContextManager<T extends object> {
 
-  // Lazy initialization for IDENTIFIER KEY.
-  public static get [IDENTIFIER_KEY](): any {
+  /*
+   * Internal.
+   * Lazy initialization for IDENTIFIER KEY and manager related registry.
+   */
+  public static get [IDENTIFIER_KEY](): symbol {
     const id: symbol = Symbol(IS_DEV ? this.name : "");
 
     // Lazy preparation of state and observers internal storage.
-    STORE_REGISTRY.CONTEXT_STATES[id as any] = {};
-    STORE_REGISTRY.CONTEXT_OBSERVERS[id as any] = new Set();
-    STORE_REGISTRY.CONTEXT_SUBSCRIBERS[id as any] = new Set();
+    CONTEXT_STATES_REGISTRY[id as any] = {};
+    CONTEXT_OBSERVERS_REGISTRY[id as any] = new Set();
+    CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
 
     return id;
   }
 
-  public static [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs = [];
+  /**
+   * Lazy initialization, even for static resolving before anything from ContextManager is used.
+   * Allows to get related React.Context for manual renders.
+   */
+  public static get REACT_CONTEXT() {
+    const reactContext: Context<any> = createContext(null as any); // todo: Correct typing for get accessors?
+
+    if (IS_DEV) {
+      reactContext.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+    } else {
+      reactContext.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+    }
+
+    Object.defineProperty(
+      this,
+      "REACT_CONTEXT",
+      { value: reactContext, writable: false, configurable: false }
+    );
+
+    return reactContext;
+  }
 
   /**
    * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
    * Singleton objects will never be destroyed once created.
    * Non-singleton objects are destroyed if all observers are removed.
    */
-  protected static IS_SINGLETON: boolean = false;
+  protected static IS_SINGLE: boolean = false;
 
   /**
-   * Setter method factory.
-   * !Strictly typed generic method with 'update' lifecycle.
-   * Helps to avoid boilerplate code with manual 'update' transactional updates for simple methods.
+   * Internal signals listeners for current context manager instance.
    */
-  public static getSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
-    return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
-      if (IS_DEV) {
-        if ((typeof next !== "function" && typeof next !== "object") || next === null) {
-          console.warn(
-            "If you want to update specific non-object state variable, use setContext instead. " +
-            "Custom setters are intended to help with nested state objects. " +
-            `State updater should be an object or a function. Supplied value type: ${typeof next}.`
-          );
-        }
-      }
-
-      return manager.setContext({
-        [key]: Object.assign(
-          {},
-          manager.context[key],
-          typeof next === "function" ? next(manager.context[key]) : next)
-      } as any);
-    };
-  }
-
-  // todo: Solve typing problem here: Should we check undefined?
-
-  /**
-   * Get current provided manager.
-   */
-  public static current<S extends object, T extends ContextManager<S>>(
-    this: IContextManagerConstructor<S> & { new(): T }
-  ): T {
-    return STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
-  }
-
-  /**
-   * Get current provided manager context.
-   */
-  public static currentContext<S extends object, T extends ContextManager<S>>(
-    this: IContextManagerConstructor<S> & { new(): T }
-  ): T["context"] {
-    const manager: T = STORE_REGISTRY.MANAGERS[this[IDENTIFIER_KEY]] as T;
-
-    return manager ? manager.context : undefined as any;
-  }
-
-  /**
-   * Utility getter.
-   * Lazy initialization, even for static resolving before anything from ContextManager is used.
-   * Allows to get related React.Context for manual renders.
-   */
-  public static getContextType<T extends object>(): Context<T> {
-    const reactContextType: Context<T> = createContext(null as any);
-
-    if (IS_DEV) {
-      reactContextType.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-    } else {
-      reactContextType.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-    }
-
-    Object.defineProperty(
-      this,
-      "getContextType",
-      { value: function () { return reactContextType; }, writable: false, configurable: false }
-    );
-
-    return this.getContextType();
-  }
+  public static [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs = [];
 
   /**
    * Bound signal listener in private property.
@@ -127,14 +117,10 @@ export abstract class ContextManager<T extends object> {
     data: D,
     emitter: ContextManager<any>
   ): void {
+    /**
+     * Ignore own signals.
+     */
     if (emitter !== this) {
-      /**
-       * Main signal handler is always first.
-       */
-      this.onSignal(type, data, emitter);
-      /**
-       * Handle subscribers from metadata.
-       */
       for (
         const [ method, selector ] of (this.constructor as IContextManagerConstructor<T>)[SIGNAL_LISTENER_LIST_KEY]
       ) {
@@ -233,15 +219,8 @@ export abstract class ContextManager<T extends object> {
   }
 
   /**
-   * Signals.
+   * Emit signal for other managers and subscribers.
    */
-
-  protected onSignal<D>(type: TSignalType, data: D | undefined, emitter: ContextManager<any>) {
-    /**
-     * For inheritance.
-     */
-  }
-
   protected emitSignal<D>(type: TSignalType, data?: D): void {
     emitSignal(type, data, this);
   }

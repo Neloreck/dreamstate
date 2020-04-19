@@ -1,17 +1,27 @@
 import { ComponentType, createElement, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
-import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, MUTABLE_KEY } from "./internals";
+import {
+  EMPTY_ARR,
+  EMPTY_STRING,
+  IDENTIFIER_KEY,
+  MANAGER_REGEX,
+  MUTABLE_KEY } from "./internals";
 import {
   IContextManagerConstructor,
-  IStringIndexed, TAnyContextManagerConstructor, TConsumable,
-  TUpdateObserver, TUpdateSubscriber,
+  IStringIndexed,
+  TAnyContextManagerConstructor,
+  TConsumable,
+  TUpdateObserver,
+  TUpdateSubscriber,
 } from "./types";
-import { ContextManager } from "./ContextManager";
+import { ContextManager } from "./management";
 import {
   addManagerObserverToRegistry,
+  CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_STATES_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY,
   registerManager,
   removeManagerObserverFromRegistry,
-  STORE_REGISTRY
 } from "./registry";
 
 const shallowEqualObjects = require("shallow-equal").shallowEqualObjects;
@@ -45,8 +55,8 @@ export function provideSubTree(
     current >= sources.length
       ? bottom
       : createElement(
-        sources[current].getContextType().Provider,
-        { value: STORE_REGISTRY.CONTEXT_STATES[sources[current][IDENTIFIER_KEY]] },
+        sources[current].REACT_CONTEXT.Provider,
+        { value: CONTEXT_STATES_REGISTRY[sources[current][IDENTIFIER_KEY]] },
         provideSubTree(current + 1, bottom, sources)
       )
   );
@@ -92,7 +102,7 @@ export function shouldObserversUpdate<T extends object>(
   manager: ContextManager<T>, nextContext: IStringIndexed<any>
 ): boolean {
   const previousContext: IStringIndexed<any> =
-    STORE_REGISTRY.CONTEXT_STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
+    CONTEXT_STATES_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
 
   return Object
     .keys(nextContext)
@@ -118,15 +128,15 @@ export function notifyObservers<T extends IStringIndexed<any>>(
   manager: ContextManager<T>,
   nextContext: T
 ): void {
-  STORE_REGISTRY.CONTEXT_STATES[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
-  STORE_REGISTRY.CONTEXT_OBSERVERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]]
+  CONTEXT_STATES_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]] = nextContext;
+  CONTEXT_OBSERVERS_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]]
     .forEach(function(it: TUpdateObserver) { it(); });
   /**
    * Async execution for subscribers.
    * There will be small amount of observers that work by the rules, but we cannot tell anything about subs.
    * Subscribers should not block code there with CPU usage/unhandled exceptions.
    */
-  STORE_REGISTRY.CONTEXT_SUBSCRIBERS[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].
+  CONTEXT_SUBSCRIBERS_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].
     forEach(function(it: TUpdateSubscriber<T>) {
       setTimeout(function () {
         it(nextContext);

@@ -1,6 +1,6 @@
 import { ComponentType, Context } from "react";
 
-import { ContextManager } from "./ContextManager";
+import { ContextManager } from "./management";
 import { IDENTIFIER_KEY, MUTABLE_KEY, SIGNAL_LISTENER_LIST_KEY } from "./internals";
 
 export interface IStringIndexed<T> {
@@ -12,7 +12,7 @@ export interface IContextManagerConstructor<T extends object> {
   [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs;
   prototype: ContextManager<T>;
   new(): ContextManager<T>;
-  getContextType(): Context<T>;
+  REACT_CONTEXT: Context<T>;
 }
 
 export type TPartialTransformer<T> = (value: T) => Partial<T>;
@@ -138,4 +138,4 @@ export type TSignalType = symbol | string | number;
 export type TSignalListener<T extends object> =
   (type: TSignalType, data: T, emitter: ContextManager<any>) => void;
 
-export type TSignalSubs = Array<[ string, (signal: TSignalType) => boolean ]>;
+export type TSignalSubs = Array<[ string | symbol, (signal: TSignalType) => boolean ]>;

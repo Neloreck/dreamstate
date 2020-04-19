@@ -1,19 +1,16 @@
 import { MethodDescriptor, TAnyContextManagerConstructor, TSignalListener, TSignalType } from "./types";
-import { ContextManager } from "./ContextManager";
-import { SIGNAL_LISTENER_LIST_KEY } from "./internals";
+import { ContextManager } from "./management";
+import { EMPTY_ARR, SIGNAL_LISTENER_LIST_KEY } from "./internals";
+import { useEffect } from "react";
 
-export const SIGNAL_REGISTRY: {
-  LISTENERS: Set<TSignalListener<any>>;
-} = {
-  LISTENERS: new Set()
-};
+const SIGNAL_LISTENERS: Set<TSignalListener<any>> = new Set();
 
 export function emitSignal<T>(
   type: TSignalType,
   data: T | undefined,
   emitter: ContextManager<any>
 ): void {
-  SIGNAL_REGISTRY.LISTENERS.forEach(function (it: TSignalListener<any>) {
+  SIGNAL_LISTENERS.forEach(function (it: TSignalListener<any>) {
     // Async query.
     setTimeout(function () {
       it(type, data, emitter);
@@ -27,7 +24,7 @@ export function emitSignal<T>(
  * Not intended to be used as core feature, just for some elegant decisions.
  */
 export function subscribeToSignals(listener: TSignalListener<any>): void {
-  SIGNAL_REGISTRY.LISTENERS.add(listener);
+  SIGNAL_LISTENERS.add(listener);
 }
 
 /**
@@ -35,12 +32,15 @@ export function subscribeToSignals(listener: TSignalListener<any>): void {
  * Not intended to be used as core feature, just for some elegant decisions.
  */
 export function unsubscribeFromSignals(listener: TSignalListener<any>): void {
-  SIGNAL_REGISTRY.LISTENERS.delete(listener);
+  SIGNAL_LISTENERS.delete(listener);
 }
 
+/**
+ * Write signal filter and bound method to class metadata.
+ */
 export function rememberMethodSignal(
   signal: Array<TSignalType> | TSignalType,
-  method: string,
+  method: string | symbol,
   managerConstructor: TAnyContextManagerConstructor
 ): void {
   const selector = Array.isArray(signal)
@@ -50,14 +50,14 @@ export function rememberMethodSignal(
   managerConstructor[SIGNAL_LISTENER_LIST_KEY].push([ method, selector ]);
 }
 
-export function Signal(signal: Array<TSignalType> | TSignalType) {
+export function Signal(signal: Array<TSignalType> | TSignalType): MethodDecorator {
   if (typeof signal !== "string" && !Array.isArray(signal)) {
     throw new Error("Signal decorator expects exact signal type string or array of signal type strings.");
   }
 
   return function (
-    prototypeOrDescriptor: TAnyContextManagerConstructor["prototype"] | MethodDescriptor,
-    method: string
+    prototypeOrDescriptor: object,
+    method: string | symbol
   ) {
     if (prototypeOrDescriptor && method) {
       rememberMethodSignal(signal, method, prototypeOrDescriptor.constructor as TAnyContextManagerConstructor);
@@ -75,4 +75,16 @@ export function Signal(signal: Array<TSignalType> | TSignalType) {
       return prototypeOrDescriptor;
     }
   };
+}
+
+/**
+ * Hook for signals listening and custom UI handling.
+ */
+export function useSignal(subscriber: TSignalListener<any>): void {
+  useEffect(function () {
+    subscribeToSignals(subscriber);
+    return function () {
+      unsubscribeFromSignals(subscriber);
+    };
+  }, EMPTY_ARR);
 }
