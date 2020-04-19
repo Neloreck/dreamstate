@@ -14,8 +14,9 @@ export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurre
 
 export { createProvider, Provide, withProvision } from "./lib/provision";
 
+export { Signal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./lib/signals";
+
 export { useManager, Consume, withConsumption } from "./lib/consumption";
 
 export { Bind, createLoadable, createMutable, createSetter } from "./lib/utils";
 
-export { Signal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./lib/signals";

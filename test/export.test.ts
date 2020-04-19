@@ -1,37 +1,40 @@
 describe("Library exported API test.", () => {
   const libRoot = require("../src");
 
-  it("Should export ContextManager class.", () => {
-    expect(libRoot.ContextManager).toBeDefined();
-  });
+  const expectedExports: Array<string> = [
+    // Management.
+    "ContextManager",
+    // Registry.
+    "subscribeToManager",
+    "unsubscribeFromManager",
+    "getCurrentContext",
+    "getCurrentManager",
+    // Provision.
+    "Provide",
+    "withProvision",
+    "createProvider",
+    // Consumption.
+    "Consume",
+    "withConsumption",
+    "useManager",
+    // Signals.
+    "Signal",
+    "unsubscribeFromSignals",
+    "subscribeToSignals",
+    "useSignal",
+    // Utils.
+    "createMutable",
+    "createLoadable",
+    "createSetter",
+    "Bind",
+  ];
 
-  it("Should export provision methods.", () => {
-    expect(libRoot.Provide).toBeDefined();
-    expect(libRoot.withProvision).toBeDefined();
-    expect(libRoot.createProvider).toBeDefined();
-  });
+  it("Should export correct API methods", () => {
+    expect(expectedExports).toHaveLength(19);
+    expect(Object.keys(libRoot)).toHaveLength(expectedExports.length);
 
-  it("Should export consumption methods.", () => {
-    expect(libRoot.Consume).toBeDefined();
-    expect(libRoot.withConsumption).toBeDefined();
-    expect(libRoot.useManager).toBeDefined();
-  });
-
-  it("Should export signals methods.", () => {
-    expect(libRoot.Signal).toBeDefined();
-    expect(libRoot.unsubscribeFromSignals).toBeDefined();
-    expect(libRoot.subscribeToSignals).toBeDefined();
-  });
-
-  it("Should export utils.", () => {
-    expect(libRoot.createMutable).toBeDefined();
-    expect(libRoot.createLoadable).toBeDefined();
-    expect(libRoot.Bind).toBeDefined();
-  });
-
-  it("Should export context subscription methods.", () => {
-    expect(libRoot.subscribeToManager).toBeDefined();
-    expect(libRoot.createLoadable).toBeDefined();
-    expect(libRoot.unsubscribeFromManager).toBeDefined();
+    Object.keys(libRoot).forEach((it: string) => {
+      expect(expectedExports.includes(it)).toBeTruthy();
+    });
   });
 });
