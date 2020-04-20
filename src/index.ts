@@ -3,10 +3,17 @@
  * 'https://github.com/Neloreck/dreamstate'
  *
  * OOP style context store for react.
- * Based on observing and using as small tree components count as possible.
+ * Based on observing and using as small react tree components count as possible.
  */
 
-export { ILoadable, TLoadable, TMutable, TStateSetter, TConsumable, ISignal, IBaseSignal } from "./lib/types";
+export {
+  ILoadable as Loadable,
+  TMutable as Mutable,
+  TStateSetter as StateSetter,
+  TConsumable as Consumable,
+  ISignalEvent as SignalEvent,
+  ISignal as Signal
+} from "./lib/types";
 
 export { ContextManager } from "./lib/management";
 
@@ -14,7 +21,7 @@ export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurre
 
 export { createProvider, Provide, withProvision } from "./lib/provision";
 
-export { Signal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./lib/signals";
+export { OnSignal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./lib/signals";
 
 export { useManager, Consume, withConsumption } from "./lib/consumption";
 

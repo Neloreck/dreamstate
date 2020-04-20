@@ -1,18 +1,21 @@
 import { Context } from "react";
 
-import { ContextManager } from "../src/lib/management";
-import { IDENTIFIER_KEY } from "../src/lib/internals";
+import { ContextManager } from "../lib/management";
 import {
-  addManagerObserverToRegistry,
+  IDENTIFIER_KEY,
   CONTEXT_MANAGERS_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY, removeManagerObserverFromRegistry
-} from "../src/lib/registry";
-import { TAnyContextManagerConstructor } from "../src/lib/types";
+  CONTEXT_STATES_REGISTRY
+} from "../lib/internals";
+import {
+  addManagerObserverToRegistry,
+  removeManagerObserverFromRegistry
+} from "../lib/registry";
+import { TAnyContextManagerConstructor } from "../lib/types";
 
 import { registerManagerClass } from "./helpers";
 
-describe("Context store creation test.", () => {
+describe("Context store creation tests.", () => {
   interface ITestContext {
     first: string;
     second: number;

@@ -1,8 +1,6 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
     "strict": true,
     "sourceMap": true,
     "declaration": true,
@@ -29,6 +27,7 @@
   ],
   "exclude": [
     "switch.ts",
+    "tests/",
     "node_modules"
   ]
 }

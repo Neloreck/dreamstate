@@ -41,7 +41,7 @@ module.exports = api => {
       ],
       plugins: [
         "macros",
-        [ "@babel/plugin-proposal-class-properties", { loose: true } ]
+        [ "@babel/plugin-proposal-class-properties", { loose: false } ]
       ]
     }
   }

@@ -5,22 +5,19 @@ import {
   IDENTIFIER_KEY,
   MANAGER_REGEX,
   SIGNAL_LISTENER_KEY,
-  SIGNAL_LISTENER_LIST_KEY
+  CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY,
+  CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_STATES_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY
 } from "./internals";
 import {
-  IBaseSignal,
+  ISignal,
   TPartialTransformer,
   TSignalListener,
-  TSignalSubs,
   TSignalType
 } from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
 import { emitSignal, onMetadataListenerCalled } from "./signals";
-import {
-  CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY,
-  CONTEXT_SUBSCRIBERS_REGISTRY
-} from "./registry";
 
 import { log } from "../macroses/log.macro";
 
@@ -53,7 +50,7 @@ export abstract class ContextManager<T extends object> {
       reactContext.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
     }
 
-    log.info("Context manager context declared:", this, reactContext.displayName);
+    log.info("Context manager context declared:", this.name, reactContext.displayName);
 
     Object.defineProperty(
       this,
@@ -75,18 +72,14 @@ export abstract class ContextManager<T extends object> {
     CONTEXT_STATES_REGISTRY[id as any] = {};
     CONTEXT_OBSERVERS_REGISTRY[id as any] = new Set();
     CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
+    CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY[id as any] = [];
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
 
-    log.info("Context manager id defined:", this, id);
+    log.info("Context manager id defined:", this.name, id);
 
     return id;
   }
-
-  /**
-   * Internal signals listeners for current context manager instance.
-   */
-  public static [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs = [];
 
   /**
    * Bound signal listener in private property.
@@ -188,7 +181,9 @@ export abstract class ContextManager<T extends object> {
   /**
    * Emit signal for other managers and subscribers.
    */
-  protected emitSignal<T extends TSignalType, D>(baseSignal: IBaseSignal<T, D>): void {
+  protected emitSignal<D = undefined, T extends TSignalType = TSignalType>(baseSignal: ISignal<D, T>): void {
+    log.info("Context manager emitting signal:", this.constructor.name, baseSignal);
+
     emitSignal(baseSignal, this);
   }
 

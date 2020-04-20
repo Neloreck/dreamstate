@@ -58,14 +58,14 @@ function log({ references, babel, state }) {
 
         const millisPaddedExpression = types.callExpression(
           types.memberExpression(millisStringExpression, types.identifier("padStart")),
-          [ types.numericLiteral(3) ]
+          [ types.numericLiteral(3), types.stringLiteral("0") ]
         );
 
         const prefixExpression = types.templateLiteral(
           [
-            types.templateElement({ raw: "%c" }),
-            types.templateElement({ raw: ":" }),
-            types.templateElement({ raw: " [DS]" }),
+            types.templateElement({ raw: "%c", cooked: "%c" }),
+            types.templateElement({ raw: ":", cooked: ":" }),
+            types.templateElement({ raw: " [DS]", cooked: " [DS]" }),
           ],
           [
             timeExpression,

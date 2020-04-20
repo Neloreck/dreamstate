@@ -1,34 +1,20 @@
 import {
   IContextManagerConstructor,
-  IStringIndexed, TAnyContextManagerConstructor,
+  TAnyContextManagerConstructor,
   TUpdateObserver,
   TUpdateSubscriber
 } from "./types";
 import { ContextManager } from "./management";
-import { IDENTIFIER_KEY, SIGNAL_LISTENER_KEY } from "./internals";
+import {
+  CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_STATES_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY,
+  IDENTIFIER_KEY,
+  SIGNAL_LISTENER_KEY
+} from "./internals";
 import { subscribeToSignals, unsubscribeFromSignals } from "./signals";
 
 import { log } from "../macroses/log.macro";
-
-declare const IS_DEBUG: boolean;
-
-export const CONTEXT_MANAGERS_REGISTRY: IStringIndexed<ContextManager<any>> = {};
-export const CONTEXT_OBSERVERS_REGISTRY: IStringIndexed<Set<TUpdateObserver>> = {};
-export const CONTEXT_SUBSCRIBERS_REGISTRY: IStringIndexed<Set<TUpdateSubscriber<any>>> = {};
-export const CONTEXT_STATES_REGISTRY: IStringIndexed<any> = {};
-
-/**
- * Expose internal registry references for debugging.
- */
-if (IS_DEBUG) {
-  // @ts-ignore debug-only declaration.
-  window.__DREAMSTATE_CONTEXT_REGISTRY__ = {
-    CONTEXT_MANAGERS_REGISTRY,
-    CONTEXT_OBSERVERS_REGISTRY,
-    CONTEXT_SUBSCRIBERS_REGISTRY,
-    CONTEXT_STATES_REGISTRY
-  };
-}
 
 /**
  * Register context manager entry.

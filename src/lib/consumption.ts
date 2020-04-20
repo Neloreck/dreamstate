@@ -7,7 +7,6 @@ import {
   useRef,
   useState
 } from "react";
-import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 
 import {
   IConsume,
@@ -18,11 +17,14 @@ import {
   TTakeContextSelector,
   TUpdateSubscriber
 } from "./types";
-import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
+import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, CONTEXT_STATES_REGISTRY } from "./internals";
 import { ContextManager } from "./management";
-import { CONTEXT_STATES_REGISTRY, subscribeToManager, unsubscribeFromManager } from "./registry";
+import { subscribeToManager, unsubscribeFromManager } from "./registry";
 
 import { log } from "../macroses/log.macro";
+
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const hoistNonReactStatics = require("hoist-non-react-statics").default;
 
 declare const IS_DEV: boolean;
 
@@ -271,6 +273,8 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
  * Decorator factory.
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
+ *
+ * todo: Stricter component typing.
  */
 export const Consume: IConsumeDecorator = function(...sources: Array<TConsumable<any>>): any {
   // Higher order decorator to reserve params.

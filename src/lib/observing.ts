@@ -5,7 +5,11 @@ import {
   EMPTY_STRING,
   IDENTIFIER_KEY,
   MANAGER_REGEX,
-  MUTABLE_KEY } from "./internals";
+  MUTABLE_KEY,
+  CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_STATES_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY
+} from "./internals";
 import {
   IContextManagerConstructor,
   IStringIndexed,
@@ -17,9 +21,6 @@ import {
 import { ContextManager } from "./management";
 import {
   addManagerObserverToRegistry,
-  CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY,
-  CONTEXT_SUBSCRIBERS_REGISTRY,
   registerManager,
   removeManagerObserverFromRegistry,
 } from "./registry";

@@ -1,18 +1,20 @@
 import { ComponentType, Context } from "react";
 
 import { ContextManager } from "./management";
-import { IDENTIFIER_KEY, MUTABLE_KEY, SIGNAL_LISTENER_LIST_KEY } from "./internals";
+import { IDENTIFIER_KEY, MUTABLE_KEY } from "./internals";
 
 export interface IStringIndexed<T> {
   [index: string]: T;
 }
 
 export interface IContextManagerConstructor<T extends object> {
+  // Unique identifier for context manager.
   [IDENTIFIER_KEY]: any;
-  [SIGNAL_LISTENER_LIST_KEY]: TSignalSubs;
+  // Related react context object.
+  REACT_CONTEXT: Context<T>;
+  // Basic constructor props.
   prototype: ContextManager<T>;
   new(): ContextManager<T>;
-  REACT_CONTEXT: Context<T>;
 }
 
 export type TPartialTransformer<T> = (value: T) => Partial<T>;
@@ -57,8 +59,6 @@ export interface ILoadable<T, E = Error> {
   asReady(value: T): ILoadable<T, E>;
   asUpdated(value: T): ILoadable<T, E>;
 }
-
-export type TLoadable<T, E = Error> = ILoadable<T, E>;
 
 export interface IMutable<T> {
   [MUTABLE_KEY]: boolean;
@@ -133,7 +133,7 @@ export interface MethodDescriptor extends ClassElement {
   descriptor: PropertyDescriptor;
 }
 
-export interface IBaseSignal<T extends TSignalType, D>{
+export interface ISignal<D = undefined, T extends TSignalType = TSignalType> {
   /**
    * Type of current signal.
    */
@@ -144,7 +144,7 @@ export interface IBaseSignal<T extends TSignalType, D>{
   data?: D;
 }
 
-export interface ISignal<T extends TSignalType, D> extends IBaseSignal<T, D> {
+export interface ISignalEvent<D = undefined, T extends TSignalType = TSignalType> extends ISignal<D, T> {
   /**
    * Signal sender.
    */
@@ -161,6 +161,6 @@ export interface ISignal<T extends TSignalType, D> extends IBaseSignal<T, D> {
 
 export type TSignalType = symbol | string | number;
 
-export type TSignalListener<T extends TSignalType, D> = (signal: ISignal<T, D>) => void;
+export type TSignalListener<D = undefined, T extends TSignalType = TSignalType> = (signal: ISignalEvent<D, T>) => void;
 
 export type TSignalSubs = Array<[ string | symbol, (signal: TSignalType) => boolean ]>;

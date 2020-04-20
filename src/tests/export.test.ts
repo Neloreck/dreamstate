@@ -1,15 +1,15 @@
-describe("Library exported API test.", () => {
-  const libRoot = require("../src");
+describe("Library exported API tests.", () => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const libRoot = require("../index");
 
   const expectedExports: Array<string> = [
     // Types.
-    "ILoadable",
-    "TLoadable",
-    "TMutable",
-    "TStateSetter",
-    "TConsumable",
-    "ISignal",
-    "IBaseSignal",
+    "Loadable",
+    "Mutable",
+    "StateSetter",
+    "Consumable",
+    "SignalEvent",
+    "Signal",
     // Management.
     "ContextManager",
     // Registry.
@@ -26,7 +26,7 @@ describe("Library exported API test.", () => {
     "withConsumption",
     "useManager",
     // Signals.
-    "Signal",
+    "OnSignal",
     "unsubscribeFromSignals",
     "subscribeToSignals",
     "useSignal",
@@ -38,7 +38,7 @@ describe("Library exported API test.", () => {
   ];
 
   it("Should export correct API methods", () => {
-    expect(expectedExports).toHaveLength(26);
+    expect(expectedExports).toHaveLength(25);
     expect(Object.keys(libRoot)).toHaveLength(expectedExports.length);
 
     Object.keys(libRoot).forEach((it: string) => {

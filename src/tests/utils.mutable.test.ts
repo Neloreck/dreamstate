@@ -1,6 +1,6 @@
-import { TMutable } from "../src/lib/types";
-import { createMutable } from "../src/lib/utils";
-import { MUTABLE_KEY } from "../src/lib/internals";
+import { TMutable } from "../lib/types";
+import { createMutable } from "../lib/utils";
+import { MUTABLE_KEY } from "../lib/internals";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {

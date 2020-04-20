@@ -1,7 +1,7 @@
-import { Signal, subscribeToSignals, unsubscribeFromSignals } from "../src/lib/signals";
-import { ContextManager } from "../src/lib/management";
-import { SIGNAL_LISTENER_LIST_KEY } from "../src/lib/internals";
-import { ISignal, TSignalType } from "../src/lib/types";
+import { OnSignal, subscribeToSignals, unsubscribeFromSignals } from "../lib/signals";
+import { ContextManager } from "../lib/management";
+import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubs, TSignalType } from "../lib/types";
+import { IDENTIFIER_KEY, CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY } from "../lib/internals";
 
 import { nextAsyncQuery, registerManagerClass } from "./helpers";
 
@@ -16,18 +16,18 @@ describe("Signals and signaling.", () => {
 
     public context: object = {};
 
-    @Signal(ESignal.NUMBER_SIGNAL)
-    public onNumberSignal(signal: ISignal<TSignalType, number>): void {
+    @OnSignal(ESignal.NUMBER_SIGNAL)
+    public onNumberSignal(signal: ISignalEvent<TSignalType, number>): void {
       return;
     }
 
-    @Signal([ ESignal.STRING_SIGNAL ])
-    public onStringSignal(signal: ISignal<TSignalType, string>): void {
+    @OnSignal([ ESignal.STRING_SIGNAL ])
+    public onStringSignal(signal: ISignalEvent<TSignalType, string>): void {
       return;
     }
 
-    @Signal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
-    public onStringOrNumberSignal(signal: ISignal<TSignalType, number | string>): void {
+    @OnSignal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
+    public onStringOrNumberSignal(signal: ISignalEvent<TSignalType, number | string>): void {
       return;
     }
 
@@ -52,31 +52,35 @@ describe("Signals and signaling.", () => {
   }
 
   it("Signal decorator should properly add metadata.", () => {
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY]).toBeInstanceOf(Array);
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY]).toHaveLength(3);
+    const signalListenersList: TSignalSubs = CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY[
+      (SubscribedContextManager as TAnyContextManagerConstructor)[IDENTIFIER_KEY]
+    ];
 
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][0]).toBeInstanceOf(Array);
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][0]).toHaveLength(2);
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][1]).toBeInstanceOf(Array);
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][1]).toHaveLength(2);
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][2]).toBeInstanceOf(Array);
-    expect(SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][2]).toHaveLength(2);
+    expect(signalListenersList).toBeInstanceOf(Array);
+    expect(signalListenersList).toHaveLength(3);
 
-    const [ firstMethod, firstFilter ] = SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][0];
+    expect(signalListenersList).toBeInstanceOf(Array);
+    expect(signalListenersList[0]).toHaveLength(2);
+    expect(signalListenersList[1]).toBeInstanceOf(Array);
+    expect(signalListenersList[1]).toHaveLength(2);
+    expect(signalListenersList[2]).toBeInstanceOf(Array);
+    expect(signalListenersList[2]).toHaveLength(2);
+
+    const [ firstMethod, firstFilter ] = signalListenersList[0];
 
     expect(firstMethod).toBe("onNumberSignal");
     expect(firstFilter(ESignal.NUMBER_SIGNAL)).toBeTruthy();
     expect(firstFilter(ESignal.STRING_SIGNAL)).toBeFalsy();
     expect(firstFilter(ESignal.EMPTY_SIGNAL)).toBeFalsy();
 
-    const [ secondMethod, secondFilter ] = SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][1];
+    const [ secondMethod, secondFilter ] = signalListenersList[1];
 
     expect(secondMethod).toBe("onStringSignal");
     expect(secondFilter(ESignal.NUMBER_SIGNAL)).toBeFalsy();
     expect(secondFilter(ESignal.STRING_SIGNAL)).toBeTruthy();
     expect(secondFilter(ESignal.EMPTY_SIGNAL)).toBeFalsy();
 
-    const [ thirdMethod, thirdFilter ] = SubscribedContextManager[SIGNAL_LISTENER_LIST_KEY][2];
+    const [ thirdMethod, thirdFilter ] = signalListenersList[2];
 
     expect(thirdMethod).toBe("onStringOrNumberSignal");
     expect(thirdFilter(ESignal.NUMBER_SIGNAL)).toBeTruthy();
@@ -127,13 +131,13 @@ describe("Signals and signaling.", () => {
   it("Signal subscribers should properly listen managers signals.", async () => {
     const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
 
-    const numberSubscriber = jest.fn((signal: ISignal<TSignalType, number>) => {
+    const numberSubscriber = jest.fn((signal: ISignalEvent<TSignalType, number>) => {
       expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
       expect(typeof signal.data).toBe("number");
       expect(signal.emitter).toBe(emittingManager);
     });
 
-    const stringSubscriber = jest.fn((signal: ISignal<TSignalType, string>) => {
+    const stringSubscriber = jest.fn((signal: ISignalEvent<TSignalType, string>) => {
       expect(signal.type).toBe(ESignal.STRING_SIGNAL);
       expect(typeof signal.data).toBe("string");
       expect(signal.emitter).toBe(emittingManager);
@@ -163,7 +167,7 @@ describe("Signals and signaling.", () => {
     const subscribedManager: SubscribedContextManager = registerManagerClass(SubscribedContextManager);
 
     subscribedManager.onStringSignal = jest.fn();
-    subscribedManager.onStringOrNumberSignal = jest.fn((signal: ISignal<TSignalType, any>) => signal.cancel());
+    subscribedManager.onStringOrNumberSignal = jest.fn((signal: ISignalEvent<TSignalType, any>) => signal.cancel());
 
     const firstSubscriber = jest.fn(() => {});
     const secondSubscriber = jest.fn(() => {});
