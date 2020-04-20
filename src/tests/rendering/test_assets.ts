@@ -1,6 +1,5 @@
 import { createElement, PureComponent, ReactElement, ReactNode } from "react";
 import { Consume, ContextManager, createProvider, Provide, useManager, withConsumption } from "../..";
-import exp = require("constants");
 
 /**
  * Utils for react tree testing.
