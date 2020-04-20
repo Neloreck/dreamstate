@@ -39,8 +39,8 @@ export type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
 export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<T> | T;
 
 export interface IConsumePick<
-  TContextConstructor extends TAnyContextManagerConstructor, TContextState extends object =
-  TContextConstructor["prototype"]["context"]
+  TContextConstructor extends IContextManagerConstructor<any>,
+  TContextState extends object = TContextConstructor["prototype"]["context"]
 >{
   from: TContextConstructor;
   take?: TTakeContextSelector<TContextState>;
@@ -73,19 +73,19 @@ export type TMutable<T> = T & IMutable<T>;
  */
 export interface IConsume {
   // Mock for variadic selectors.
-  <A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor,
+  <
+    A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor,
     C extends TAnyContextManagerConstructor, D extends TAnyContextManagerConstructor,
     E extends TAnyContextManagerConstructor, F extends TAnyContextManagerConstructor
   >(
-    a: TConsumable<A>,
-    b?: TConsumable<B>,
-    c?: TConsumable<C>,
-    d?: TConsumable<D>,
-    e?: TConsumable<E>,
-    f?: TConsumable<F>,
-  ): <T>(component: ComponentType<T>) => ComponentType<T>;
+    managersOrSelectors:
+      [ TConsumable<A> ] |
+      [ TConsumable<A>, TConsumable<B> ] |
+      [ TConsumable<A>, TConsumable<B>, TConsumable<C>, TConsumable<D> ] |
+      [ TConsumable<A>, TConsumable<B>, TConsumable<C>, TConsumable<D>, TConsumable<F> ]
+  ): <P>(component: ComponentType<P>) => ComponentType<P>;
   // Default usage with context managers.
-  (...managers: Array<TAnyContextManagerConstructor>): <T>(component: ComponentType<T>) => ComponentType<T>;
+  (managersOrSelectors: Array<TAnyContextManagerConstructor>): <T>(component: ComponentType<T>) => ComponentType<T>;
 }
 
 /**
@@ -94,19 +94,24 @@ export interface IConsume {
  */
 export interface IConsumeDecorator {
   // Mock for variadic selectors.
-  <A extends TAnyContextManagerConstructor, B extends TAnyContextManagerConstructor,
-    C extends TAnyContextManagerConstructor, D extends TAnyContextManagerConstructor,
-    E extends TAnyContextManagerConstructor, F extends TAnyContextManagerConstructor
+  <
+    A extends TAnyContextManagerConstructor,
+    B extends TAnyContextManagerConstructor,
+    C extends TAnyContextManagerConstructor,
+    D extends TAnyContextManagerConstructor,
+    E extends TAnyContextManagerConstructor,
+    F extends TAnyContextManagerConstructor
   >(
-    a: TConsumable<A>,
-    b?: TConsumable<B>,
-    c?: TConsumable<C>,
-    d?: TConsumable<D>,
-    e?: TConsumable<E>,
-    f?: TConsumable<F>,
+    managersOrSelectors:
+    [ TConsumable<A> ] |
+    [ TConsumable<A>, TConsumable<B> ] |
+    [ TConsumable<A>, TConsumable<B>, TConsumable<C> ] |
+    [ TConsumable<A>, TConsumable<B>, TConsumable<C>, TConsumable<D> ] |
+    [ TConsumable<A>, TConsumable<B>, TConsumable<C>, TConsumable<D>, TConsumable<E> ] |
+    [ TConsumable<A>, TConsumable<B>, TConsumable<C>, TConsumable<D>, TConsumable<E>, TConsumable<F> ]
   ): ClassDecorator;
   // Default usage with context managers.
-  (...managers: Array<TAnyContextManagerConstructor>): ClassDecorator;
+  (managersOrSelectors: Array<TAnyContextManagerConstructor>): ClassDecorator;
 }
 
 /**
@@ -120,12 +125,6 @@ export interface ClassElement {
   extras?: ClassElement[];
   finisher?: <T>(clazz: TConstructor<T>) => void | undefined | TConstructor<T>;
   descriptor?: PropertyDescriptor;
-}
-
-export interface ClassDescriptor {
-  kind: "class";
-  elements: ClassElement[];
-  finisher?: <T>(clazz: TConstructor<T>) => void | TConstructor<T>;
 }
 
 export interface MethodDescriptor extends ClassElement {

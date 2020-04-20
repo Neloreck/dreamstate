@@ -24,7 +24,7 @@ import { subscribeToManager, unsubscribeFromManager } from "./registry";
 import { log } from "../macroses/log.macro";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const hoistNonReactStatics = require("hoist-non-react-statics").default;
+const hoistNonReactStatics = require("hoist-non-react-statics");
 
 declare const IS_DEV: boolean;
 
@@ -90,6 +90,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
   if (IS_DEV) {
     // Warn about too big consume count.
     if (sources.length > 5) {
+      // todo: Think about query API here?
       console.warn("Seems like your component tries to consume more than 5 stores at once, more than 5 can" +
         " lead to slower rendering for big components. Separate consuming by using multiple Consume decorators/hocs " +
         "for one component or review your components structure.",
@@ -118,7 +119,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
           );
         }
 
-        if (!source.take) {
+        if (typeof source.take === "object") {
           throw new TypeError(
             "Specified 'take' param should be a valid selector. Selectors can be functional, string or array. " +
             `Supplied type: '${typeof source}'. Check '${target.name}' component.`
@@ -146,7 +147,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
           typeof source === "object" && (
             (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager)) ||
             (typeof source.as !== "undefined" && typeof source.as !== "string") ||
-            !source.take
+            typeof source.take === "object"
           )
         )
         ||
@@ -276,7 +277,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
  *
  * todo: Stricter component typing.
  */
-export const Consume: IConsumeDecorator = function(...sources: Array<TConsumable<any>>): any {
+export const Consume: IConsumeDecorator = function (sources: Array<TConsumable<any>>): any {
   // Higher order decorator to reserve params.
   return function(classOrDescriptor: ComponentType) {
     // Legacy decorators and ES proposal.

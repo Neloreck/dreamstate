@@ -6,7 +6,7 @@ import { createManagersObserver } from "./observing";
 import { log } from "../macroses/log.macro";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const hoistNonReactStatics = require("hoist-non-react-statics").default;
+const hoistNonReactStatics = require("hoist-non-react-statics");
 
 /**
  * Decorator factory.
@@ -15,7 +15,7 @@ const hoistNonReactStatics = require("hoist-non-react-statics").default;
  *
  * Creates legacy or proposal decorator based on used environment.
  */
-export function Provide (...sources: Array<TAnyContextManagerConstructor>) {
+export function Provide (sources: Array<TAnyContextManagerConstructor>) {
   // Support legacy and proposal decorators. Create observer of requested managers.
   return function(classOrDescriptor: ComponentType<any>) {
     if (typeof classOrDescriptor === "function") {
@@ -41,7 +41,7 @@ export const withProvision = Provide;
  * Create component for manual provision without HOC/Decorator-like api.
  * Useful if your root is functional component or you are using createComponent api without JSX.
  */
-export function createProvider (...sources: Array<TAnyContextManagerConstructor>): FunctionComponent<{}> {
+export function createProvider (sources: Array<TAnyContextManagerConstructor>): FunctionComponent<{}> {
   log.info(`Creating functional provider for ${sources.length} sources.`);
 
   return createManagersObserver(null, sources);

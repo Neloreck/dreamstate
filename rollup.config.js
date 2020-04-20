@@ -111,5 +111,4 @@ const createBrowserConfig = () => {
   return config;
 };
 
-// export default createCjsConfig();
 export default [ createCjsConfig(), createBrowserConfig() ];
