@@ -10,6 +10,8 @@ describe("Library exported API tests.", () => {
     "Consumable",
     "SignalEvent",
     "Signal",
+    "QueryRequest",
+    "QueryResponse",
     // Management.
     "ContextManager",
     // Registry.
@@ -30,6 +32,9 @@ describe("Library exported API tests.", () => {
     "unsubscribeFromSignals",
     "subscribeToSignals",
     "useSignal",
+    "emitSignal",
+    // Queries.
+    "OnQuery",
     // Utils.
     "createMutable",
     "createLoadable",
@@ -38,11 +43,7 @@ describe("Library exported API tests.", () => {
   ];
 
   it("Should export correct API methods", () => {
-    expect(expectedExports).toHaveLength(25);
+    Object.keys(libRoot).forEach((it: string) => expect(expectedExports.includes(it)).toBeTruthy());
     expect(Object.keys(libRoot)).toHaveLength(expectedExports.length);
-
-    Object.keys(libRoot).forEach((it: string) => {
-      expect(expectedExports.includes(it)).toBeTruthy();
-    });
   });
 });

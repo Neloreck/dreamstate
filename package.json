@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "2.5.0-beta.12",
+  "version": "2.5.0-beta.18",
   "description": "Store management library based on context and observers.",
   "sideEffects": false,
   "private": false,
@@ -16,7 +16,6 @@
   ],
   "main": "./cjs/index.js",
   "unpkg": "umd/dreamstate.production.js",
-  "module": "es/dreamstate.production.js",
   "types": "./types/",
   "scripts": {
     "clean": "npx rimraf ./cjs && npx rimraf ./umd && npx rimraf ./types && npx rimraf ./iife && npx rimraf ./index.js",
@@ -29,7 +28,7 @@
     "build": "npm run clean && npm run build:dev && npm run build:debug && npm run build:prod && npm run build:switcher && npm run build:dts",
     "=============================": "================================================================================",
     "lint": "npx eslint src/ --ext .ts",
-    "test": "jest --coverage",
+    "test": "jest",
     "===============================": "==============================================================================",
     "prepublishOnly": "npm run lint && npm test && npm run build"
   },

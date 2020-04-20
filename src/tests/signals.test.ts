@@ -1,7 +1,7 @@
 import { OnSignal, subscribeToSignals, unsubscribeFromSignals } from "../lib/signals";
 import { ContextManager } from "../lib/management";
-import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubs, TSignalType } from "../lib/types";
-import { IDENTIFIER_KEY, CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY } from "../lib/internals";
+import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "../lib/types";
+import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../lib/internals";
 
 import { nextAsyncQuery, registerManagerClass } from "./helpers";
 
@@ -52,7 +52,7 @@ describe("Signals and signaling.", () => {
   }
 
   it("Signal decorator should properly add metadata.", () => {
-    const signalListenersList: TSignalSubs = CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY[
+    const signalListenersList: TSignalSubscriptionMetadata = CONTEXT_SIGNAL_METADATA_REGISTRY[
       (SubscribedContextManager as TAnyContextManagerConstructor)[IDENTIFIER_KEY]
     ];
 
@@ -66,26 +66,23 @@ describe("Signals and signaling.", () => {
     expect(signalListenersList[2]).toBeInstanceOf(Array);
     expect(signalListenersList[2]).toHaveLength(2);
 
-    const [ firstMethod, firstFilter ] = signalListenersList[0];
+    const [ firstMethod, firstSubscribed ] = signalListenersList[0];
 
     expect(firstMethod).toBe("onNumberSignal");
-    expect(firstFilter(ESignal.NUMBER_SIGNAL)).toBeTruthy();
-    expect(firstFilter(ESignal.STRING_SIGNAL)).toBeFalsy();
-    expect(firstFilter(ESignal.EMPTY_SIGNAL)).toBeFalsy();
+    expect(firstSubscribed).toBe(ESignal.NUMBER_SIGNAL);
 
-    const [ secondMethod, secondFilter ] = signalListenersList[1];
+    const [ secondMethod, secondSubscribed ] = signalListenersList[1];
 
     expect(secondMethod).toBe("onStringSignal");
-    expect(secondFilter(ESignal.NUMBER_SIGNAL)).toBeFalsy();
-    expect(secondFilter(ESignal.STRING_SIGNAL)).toBeTruthy();
-    expect(secondFilter(ESignal.EMPTY_SIGNAL)).toBeFalsy();
+    expect(secondSubscribed).toHaveLength(1);
+    expect((secondSubscribed as Array<TSignalType>).includes(ESignal.STRING_SIGNAL)).toBeTruthy();
 
-    const [ thirdMethod, thirdFilter ] = signalListenersList[2];
+    const [ thirdMethod, thirdSubscribed ] = signalListenersList[2];
 
     expect(thirdMethod).toBe("onStringOrNumberSignal");
-    expect(thirdFilter(ESignal.NUMBER_SIGNAL)).toBeTruthy();
-    expect(thirdFilter(ESignal.STRING_SIGNAL)).toBeTruthy();
-    expect(thirdFilter(ESignal.EMPTY_SIGNAL)).toBeFalsy();
+    expect(thirdSubscribed).toHaveLength(2);
+    expect((thirdSubscribed as Array<TSignalType>).includes(ESignal.STRING_SIGNAL)).toBeTruthy();
+    expect((thirdSubscribed as Array<TSignalType>).includes(ESignal.NUMBER_SIGNAL)).toBeTruthy();
   });
 
   it("Signal decorator should properly add metadata.", async () => {

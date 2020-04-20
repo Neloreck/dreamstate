@@ -1,25 +1,21 @@
 import { Context, createContext } from "react";
 
+import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
 import {
-  EMPTY_STRING,
-  IDENTIFIER_KEY,
-  MANAGER_REGEX,
-  SIGNAL_LISTENER_KEY,
-  CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY,
-  CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY,
-  CONTEXT_SUBSCRIBERS_REGISTRY
-} from "./internals";
-import {
+  IQueryRequest,
+  IQueryResponse,
   ISignal,
+  TAnyContextManagerConstructor,
   TPartialTransformer,
-  TSignalListener,
+  TQueryType,
   TSignalType
 } from "./types";
 import { notifyObservers, shouldObserversUpdate } from "./observing";
-import { emitSignal, onMetadataListenerCalled } from "./signals";
+import { emitSignal } from "./signals";
 
 import { log } from "../macroses/log.macro";
+import { sendQuery } from "./query";
+import { createManagerId } from "./registry";
 
 declare const IS_DEV: boolean;
 
@@ -42,13 +38,11 @@ export abstract class ContextManager<T extends object> {
    * Allows to get related React.Context for manual renders.
    */
   public static get REACT_CONTEXT() {
-    const reactContext: Context<any> = createContext(null as any); // todo: Correct typing for get accessors?
+    const reactContext: Context<any> = createContext(null as any);
 
-    if (IS_DEV) {
-      reactContext.displayName = "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-    } else {
-      reactContext.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
-    }
+    reactContext.displayName = IS_DEV
+      ? "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING)
+      : "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
 
     log.info("Context manager context declared:", this.name, reactContext.displayName);
 
@@ -66,35 +60,20 @@ export abstract class ContextManager<T extends object> {
    * Lazy initialization for IDENTIFIER KEY and manager related registry.
    */
   public static get [IDENTIFIER_KEY](): symbol {
-    const id: symbol = Symbol(IS_DEV ? this.name : "");
-
-    // Lazy preparation of state and observers internal storage.
-    CONTEXT_STATES_REGISTRY[id as any] = {};
-    CONTEXT_OBSERVERS_REGISTRY[id as any] = new Set();
-    CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
-    CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY[id as any] = [];
+    const id: symbol = createManagerId(IS_DEV ? this.name : "");
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
-
-    log.info("Context manager id defined:", this.name, id);
 
     return id;
   }
 
   /**
-   * Bound signal listener in private property.
-   */
-  public [SIGNAL_LISTENER_KEY]: TSignalListener<TSignalType, any> = onMetadataListenerCalled.bind(this);
-
-  /**
    * Abstract store/actions bundle.
-   * Left for generic implementation.
    */
   public abstract context: T;
 
   /**
-   * Force React.Provider update.
-   * Calls lifecycle methods.
+   * Forces update and render of subscribed components.
    */
   public forceUpdate(): void {
     log.info("Forcing context manager update:", this.constructor.name);
@@ -140,43 +119,27 @@ export abstract class ContextManager<T extends object> {
    * Lifecycle.
    * First provider was injected into DOM.
    */
-  protected onProvisionStarted(): void {
-    /**
-     * For inheritance.
-     */
-  }
+  protected onProvisionStarted(): void {}
 
   /**
    * Lifecycle.
    * Last provider was removed from DOM.
    */
-  protected onProvisionEnded(): void {
-    /**
-     * For inheritance.
-     */
-  }
+  protected onProvisionEnded(): void {}
 
   /**
    * Lifecycle.
    * Before update lifecycle event.
    * Also shared for 'getSetter' methods.
    */
-  protected beforeUpdate(nextContext: T): void {
-    /**
-     * For inheritance.
-     */
-  }
+  protected beforeUpdate(nextContext: T): void {}
 
   /**
    * Lifecycle.
    * After update lifecycle event.
    * Also shared for 'getSetter' methods.
    */
-  protected afterUpdate(previousContext: T): void {
-    /**
-     * For inheritance.
-     */
-  }
+  protected afterUpdate(previousContext: T): void {}
 
   /**
    * Emit signal for other managers and subscribers.
@@ -185,6 +148,17 @@ export abstract class ContextManager<T extends object> {
     log.info("Context manager emitting signal:", this.constructor.name, baseSignal);
 
     emitSignal(baseSignal, this);
+  }
+
+  protected sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
+    queryRequest: { type: T; data?: D }
+  ): Promise<IQueryResponse<R, T> | null> {
+    log.info("Context manager sending query:", this.constructor.name, queryRequest);
+
+    return sendQuery(
+      queryRequest as IQueryRequest<D, T>,
+      (this.constructor as TAnyContextManagerConstructor)[IDENTIFIER_KEY]
+    );
   }
 
 }

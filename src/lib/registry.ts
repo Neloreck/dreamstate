@@ -6,15 +6,36 @@ import {
 } from "./types";
 import { ContextManager } from "./management";
 import {
-  CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_MANAGERS_REGISTRY,
+  CONTEXT_OBSERVERS_REGISTRY, CONTEXT_QUERY_METADATA_REGISTRY,
+  CONTEXT_SIGNAL_HANDLERS_REGISTRY, CONTEXT_SIGNAL_METADATA_REGISTRY,
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SUBSCRIBERS_REGISTRY,
   IDENTIFIER_KEY,
-  SIGNAL_LISTENER_KEY
 } from "./internals";
-import { subscribeToSignals, unsubscribeFromSignals } from "./signals";
+import { onMetadataSignalListenerCalled, subscribeToSignals, unsubscribeFromSignals } from "./signals";
 
 import { log } from "../macroses/log.macro";
+
+/**
+ * Create manager ID and init related registry data.
+ */
+export function createManagerId(description: string): symbol {
+  const id: symbol = Symbol(description);
+
+  /**
+   * After manager ID resolving all related data should be initialized.
+   */
+  CONTEXT_STATES_REGISTRY[id as any] = {};
+  CONTEXT_OBSERVERS_REGISTRY[id as any] = new Set();
+  CONTEXT_SUBSCRIBERS_REGISTRY[id as any] = new Set();
+  CONTEXT_SIGNAL_METADATA_REGISTRY[id as any] = [];
+  CONTEXT_QUERY_METADATA_REGISTRY[id as any] = [];
+
+  log.info("Context manager id defined:", id, description);
+
+  return id;
+}
 
 /**
  * Register context manager entry.
@@ -31,8 +52,10 @@ export function registerManager<T extends object>(
 
     CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]] = instance.context;
     CONTEXT_MANAGERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]] = instance;
+    CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]]
+      = onMetadataSignalListenerCalled.bind(instance);
 
-    subscribeToSignals(instance[SIGNAL_LISTENER_KEY]);
+    subscribeToSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]]);
 
     log.info("Context manager registered:", managerConstructor.name);
   } else {
@@ -55,10 +78,11 @@ export function unRegisterManager<T extends object>(
 
     // @ts-ignore
     if (!managerConstructor["IS_SINGLE"]) {
-      unsubscribeFromSignals(instance[SIGNAL_LISTENER_KEY]);
+      unsubscribeFromSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]]);
 
       delete CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
       delete CONTEXT_MANAGERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
+      delete CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
 
       log.info("Context manager instance disposed:", managerConstructor.name);
     } else {

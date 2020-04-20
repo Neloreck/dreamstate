@@ -12,7 +12,9 @@ export {
   TStateSetter as StateSetter,
   TConsumable as Consumable,
   ISignalEvent as SignalEvent,
-  ISignal as Signal
+  ISignal as Signal,
+  IQueryResponse as QueryResponse,
+  IQueryRequest as QueryRequest
 } from "./lib/types";
 
 export { ContextManager } from "./lib/management";
@@ -21,7 +23,9 @@ export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurre
 
 export { createProvider, Provide, withProvision } from "./lib/provision";
 
-export { OnSignal, useSignal, unsubscribeFromSignals, subscribeToSignals } from "./lib/signals";
+export { OnSignal, useSignal, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "./lib/signals";
+
+export { OnQuery } from "./lib/query";
 
 export { useManager, Consume, withConsumption } from "./lib/consumption";
 

@@ -1,7 +1,7 @@
-import { ComponentType, Context } from "react";
+import type { ComponentType, Context } from "react";
 
-import { ContextManager } from "./management";
-import { IDENTIFIER_KEY, MUTABLE_KEY } from "./internals";
+import type { IDENTIFIER_KEY, MUTABLE_KEY } from "./internals";
+import type { ContextManager } from "./management";
 
 export interface IStringIndexed<T> {
   [index: string]: T;
@@ -162,4 +162,28 @@ export type TSignalType = symbol | string | number;
 
 export type TSignalListener<D = undefined, T extends TSignalType = TSignalType> = (signal: ISignalEvent<D, T>) => void;
 
-export type TSignalSubs = Array<[ string | symbol, (signal: TSignalType) => boolean ]>;
+export type TSignalSubscriptionMetadata = Array<[ string | symbol, TSignalType | Array<TSignalType> ]>;
+
+export interface IQueryRequest<D = undefined, T extends TSignalType = TSignalType> {
+  /**
+   * Query key type for search matching.
+   */
+  type: T;
+  /**
+   * Query requested data params.
+   */
+  data: D;
+}
+
+
+export type TQueryType = symbol | string | number;
+
+export type TQuerySubscriptionMetadata = Array<[ string | symbol, TSignalType ]>;
+
+export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType> {
+  type: T;
+  data: D;
+  answerer: ContextManager<any>;
+}
+
+export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = null | IQueryResponse<D, T>;

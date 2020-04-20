@@ -84,5 +84,4 @@ export const ExampleContextHocConsumer = withConsumption([ { from: ExampleContex
     }
 
   }
-
 );

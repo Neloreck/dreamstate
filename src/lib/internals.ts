@@ -1,8 +1,8 @@
 import type {
   IStringIndexed,
+  TQuerySubscriptionMetadata,
   TSignalListener,
-  TSignalSubs,
-  TSignalType,
+  TSignalSubscriptionMetadata,
   TUpdateObserver,
   TUpdateSubscriber
 } from "./types";
@@ -17,7 +17,6 @@ export const MANAGER_REGEX: RegExp = /Manager$/;
 
 export const IDENTIFIER_KEY: unique symbol = Symbol(IS_DEV ? "DS_ID" : "");
 export const MUTABLE_KEY: unique symbol = Symbol(IS_DEV ? "DS_MUTABLE" : "");
-export const SIGNAL_LISTENER_KEY: unique symbol = Symbol(IS_DEV ? "DS_SG_SUBSCRIBER" : "");
 
 /**
  * Store related constants.
@@ -27,9 +26,11 @@ export const CONTEXT_MANAGERS_REGISTRY: IStringIndexed<ContextManager<any>> = {}
 export const CONTEXT_OBSERVERS_REGISTRY: IStringIndexed<Set<TUpdateObserver>> = {};
 export const CONTEXT_SUBSCRIBERS_REGISTRY: IStringIndexed<Set<TUpdateSubscriber<any>>> = {};
 export const CONTEXT_STATES_REGISTRY: IStringIndexed<any> = {};
+export const CONTEXT_SIGNAL_METADATA_REGISTRY: IStringIndexed<TSignalSubscriptionMetadata> = {};
+export const CONTEXT_SIGNAL_HANDLERS_REGISTRY: IStringIndexed<TSignalListener<any>> = {};
+export const CONTEXT_QUERY_METADATA_REGISTRY: IStringIndexed<TQuerySubscriptionMetadata> = {};
 
-export const SIGNAL_LISTENERS: Set<TSignalListener<any>> = new Set();
-export const CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY: IStringIndexed<TSignalSubs> = {};
+export const SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any>> = new Set();
 
 /**
  * Expose internal registry references for debugging.
@@ -41,7 +42,9 @@ if (IS_DEBUG) {
     CONTEXT_OBSERVERS_REGISTRY,
     CONTEXT_SUBSCRIBERS_REGISTRY,
     CONTEXT_STATES_REGISTRY,
-    CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY,
-    SIGNAL_LISTENERS
+    CONTEXT_SIGNAL_METADATA_REGISTRY,
+    CONTEXT_SIGNAL_HANDLERS_REGISTRY,
+    CONTEXT_QUERY_METADATA_REGISTRY,
+    SIGNAL_LISTENERS_REGISTRY
   };
 }

@@ -8,6 +8,7 @@ declare const IS_DEV: boolean;
 
 /**
  * Create loadable value utility.
+ * todo: Think about size impact of this utils and how to reuse some code.
  */
 export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T, E> {
   log.info("Created loadable entity:", initialValue);
@@ -129,9 +130,9 @@ export function createSetter<S extends object, D extends keyof S>(manager: Conte
  * Decorator factory.
  * Modifies method descriptor, so it will be bound to prototype instance once.
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
+ * Modified for proposal support.
  */
 export function Bind(): MethodDecorator {
-  // Higher order decorator to reserve closure parameters for future.
   return function<T>(
     targetOrDescriptor: object | MethodDescriptor,
     propertyKey: PropertyKey | undefined,
@@ -139,29 +140,12 @@ export function Bind(): MethodDecorator {
   ) {
     // Different behaviour for legacy and proposal decorators.
     if (propertyKey && descriptor) {
-      log.info("Creating legacy Bind decorator.");
-      // If it is legacy method decorator.
-      if (typeof descriptor.value !== "function") {
-        throw new TypeError(`Only methods can be decorated with @Bind. ${propertyKey.toString()} is not a method.`);
-      } else {
-        return createBoundDescriptor(descriptor, propertyKey);
-      }
+      return createBoundDescriptor(descriptor, propertyKey);
     } else {
-      log.info("Creating proposal Bind decorator.");
-      // If it is not proposal method decorator.
-      if ((targetOrDescriptor as MethodDescriptor).kind !== "method") {
-        throw new TypeError(
-          "Only methods can be decorated with @Bind. Not a method supplied:" +
-          (targetOrDescriptor as MethodDescriptor).key.toString()
-        );
-      } else {
-        (targetOrDescriptor as MethodDescriptor).descriptor = createBoundDescriptor(
-          (targetOrDescriptor as MethodDescriptor).descriptor,
-          (targetOrDescriptor as MethodDescriptor).key
-        );
-
-        return targetOrDescriptor;
-      }
+      (targetOrDescriptor as MethodDescriptor).descriptor = createBoundDescriptor(
+        (targetOrDescriptor as MethodDescriptor).descriptor,
+        (targetOrDescriptor as MethodDescriptor).key
+      );
     }
   };
 }

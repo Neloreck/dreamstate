@@ -86,13 +86,9 @@ export function createManagersObserver(
     return provideSubTree(0, (children ? createElement(children, props) : props.children), sources);
   }
 
-  if (IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer.[${
-      sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING))
-    }]`;
-  } else {
-    Observer.displayName = "DS.Observer";
-  }
+  Observer.displayName = IS_DEV
+    ? `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING))}]`
+    : "DS.Observer";
 
   log.info("Context manager observer created:", Observer.displayName);
 

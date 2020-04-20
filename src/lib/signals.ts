@@ -1,16 +1,27 @@
+import { useEffect } from "react";
+
 import {
   ISignal,
   ISignalEvent,
-  MethodDescriptor,
   TAnyContextManagerConstructor,
   TSignalListener,
   TSignalType
 } from "./types";
-import { EMPTY_ARR, IDENTIFIER_KEY, CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY, SIGNAL_LISTENERS } from "./internals";
-import { useEffect } from "react";
+import {
+  CONTEXT_SIGNAL_METADATA_REGISTRY,
+  EMPTY_ARR,
+  IDENTIFIER_KEY,
+  SIGNAL_LISTENERS_REGISTRY
+} from "./internals";
 import { ContextManager } from "./management";
-import { log } from "../macroses/log.macro";
 
+import { log } from "../macroses/log.macro";
+import { createMethodDecorator } from "./polyfills/decorate";
+
+/**
+ * Emit signal and notify all subscribers in async query.
+ * If event is cancelled, stop its propagation to next handlers.
+ */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: ISignal<D, T>,
   emitter: ContextManager<any> | null = null
@@ -26,7 +37,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
 
   log.info("Signal API emit signal:", base, emitter ? emitter.constructor.name : null);
 
-  SIGNAL_LISTENERS.forEach(function (it: TSignalListener<D, T>) {
+  SIGNAL_LISTENERS_REGISTRY.forEach(function (it: TSignalListener<D, T>) {
     // Async query.
     setTimeout(function () {
       // todo: Check if cancel will work?
@@ -45,9 +56,9 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
  * Not intended to be used as core feature, just for some elegant decisions.
  */
 export function subscribeToSignals(listener: TSignalListener<TSignalType, any>): void {
-  log.info("Subscribe to signals api:", SIGNAL_LISTENERS.size + 1);
+  log.info("Subscribe to signals api:", SIGNAL_LISTENERS_REGISTRY.size + 1);
 
-  SIGNAL_LISTENERS.add(listener);
+  SIGNAL_LISTENERS_REGISTRY.add(listener);
 }
 
 /**
@@ -55,15 +66,15 @@ export function subscribeToSignals(listener: TSignalListener<TSignalType, any>):
  * Not intended to be used as core feature, just for some elegant decisions.
  */
 export function unsubscribeFromSignals(listener: TSignalListener<TSignalType, any>): void {
-  log.info("Unsubscribe from signals api:", SIGNAL_LISTENERS.size - 1);
+  log.info("Unsubscribe from signals api:", SIGNAL_LISTENERS_REGISTRY.size - 1);
 
-  SIGNAL_LISTENERS.delete(listener);
+  SIGNAL_LISTENERS_REGISTRY.delete(listener);
 }
 
 /**
  * Listen signal and call related metadata listeners of this manager.
  */
-export function onMetadataListenerCalled<D = undefined, T extends TSignalType = TSignalType>(
+export function onMetadataSignalListenerCalled<D = undefined, T extends TSignalType = TSignalType>(
   this: ContextManager<any>,
   signal: ISignalEvent<D, T>
 ): void {
@@ -74,10 +85,10 @@ export function onMetadataListenerCalled<D = undefined, T extends TSignalType = 
     log.info("Calling metadata signal api listener:", this.constructor.name);
 
     for (
-      const [ method, selector ] of
-      CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY[(this.constructor as TAnyContextManagerConstructor)[IDENTIFIER_KEY]]
+      const [ method, subscribed ] of
+      CONTEXT_SIGNAL_METADATA_REGISTRY[(this.constructor as TAnyContextManagerConstructor)[IDENTIFIER_KEY]]
     ) {
-      if (selector(signal.type)) {
+      if (Array.isArray(subscribed) ? subscribed.includes(signal.type) : signal.type === subscribed) {
         log.info("Found signal listener:", signal.type, this.constructor.name, method);
         (this as any)[method](signal);
       }
@@ -88,45 +99,15 @@ export function onMetadataListenerCalled<D = undefined, T extends TSignalType = 
 /**
  * Write signal filter and bound method to class metadata.
  */
-export function rememberMethodSignal(
-  signal: Array<TSignalType> | TSignalType,
-  method: string | symbol,
-  managerConstructor: TAnyContextManagerConstructor
-): void {
-  const selector = Array.isArray(signal)
-    ? (type: TSignalType) => signal.includes(type)
-    : (type: TSignalType) => type === signal;
+export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDecorator {
+  return createMethodDecorator<TAnyContextManagerConstructor>(function (
+    method: string | symbol,
+    managerConstructor: TAnyContextManagerConstructor
+  ): void {
+    log.info("Signal metadata written for context manager:", managerConstructor.name, signalType, method);
 
-  log.info("Signal metadata written for context manager:", managerConstructor.name, signal, method);
-
-  CONTEXT_MANAGERS_SIGNAL_LISTENERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]].push([ method, selector ]);
-}
-
-export function OnSignal(signal: Array<TSignalType> | TSignalType): MethodDecorator {
-  if (typeof signal !== "string" && !Array.isArray(signal)) {
-    throw new Error("Signal decorator expects exact signal type string or array of signal type strings.");
-  }
-
-  return function (
-    prototypeOrDescriptor: object,
-    method: string | symbol
-  ) {
-    if (prototypeOrDescriptor && method) {
-      rememberMethodSignal(signal, method, prototypeOrDescriptor.constructor as TAnyContextManagerConstructor);
-
-      return prototypeOrDescriptor;
-    } else {
-      if ((prototypeOrDescriptor as MethodDescriptor).kind !== "method") {
-        throw new TypeError("Only methods can be decorated with Signal decorator.");
-      }
-
-      (prototypeOrDescriptor as MethodDescriptor).finisher = function (targetClass: any) {
-        rememberMethodSignal(signal, (prototypeOrDescriptor as MethodDescriptor).key as string, targetClass);
-      };
-
-      return prototypeOrDescriptor;
-    }
-  };
+    CONTEXT_SIGNAL_METADATA_REGISTRY[managerConstructor[IDENTIFIER_KEY]].push([ method, signalType ]);
+  });
 }
 
 /**
