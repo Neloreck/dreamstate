@@ -1,3 +1,4 @@
+import type { ContextManager } from "./management";
 import type {
   IStringIndexed,
   TQuerySubscriptionMetadata,
@@ -6,7 +7,6 @@ import type {
   TUpdateObserver,
   TUpdateSubscriber
 } from "./types";
-import type { ContextManager } from "./management";
 
 export const EMPTY_STRING: string = "";
 export const MANAGER_REGEX: RegExp = /Manager$/;

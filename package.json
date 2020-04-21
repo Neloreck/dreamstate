@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "3.0.0-experimental.4",
+  "version": "3.0.0-experimental.6",
   "description": "Store management library based on context and observers.",
   "sideEffects": false,
   "private": false,
@@ -84,6 +84,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-import": "^2.20.2",
     "jest": "^25.3.0",
+    "react": "^16.13.1",
     "react-dom": ">=16.8.0",
     "rimraf": "^3.0.2",
     "rollup": "^2.6.1",
