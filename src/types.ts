@@ -1,6 +1,6 @@
 import type { ComponentType, Context } from "react";
 
-import type { IDENTIFIER_KEY, MUTABLE_KEY } from "./internals";
+import type { IDENTIFIER_KEY, NESTED_STORE_KEY } from "./internals";
 import type { ContextManager } from "./management";
 
 export interface IStringIndexed<T> {
@@ -48,12 +48,12 @@ export interface IConsumePick<
 }
 
 export interface ILoadable<T, E = Error> {
+  [NESTED_STORE_KEY]: boolean;
   // Data.
   error: E | null;
   isLoading: boolean;
   value: T | null;
   // Methods.
-  asInitial(): ILoadable<T, E>;
   asFailed(error: E, value?: T): ILoadable<T, E>;
   asLoading(value?: T): ILoadable<T, E>;
   asReady(value: T): ILoadable<T, E>;
@@ -61,7 +61,7 @@ export interface ILoadable<T, E = Error> {
 }
 
 export interface IMutable<T> {
-  [MUTABLE_KEY]: boolean;
+  [NESTED_STORE_KEY]: boolean;
   asMerged(state: Partial<T>): TMutable<T>;
 }
 

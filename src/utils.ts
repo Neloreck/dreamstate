@@ -1,58 +1,70 @@
 import { ILoadable, MethodDescriptor, TMutable, TPartialTransformer } from "./types";
-import { MUTABLE_KEY } from "./internals";
+import { NESTED_STORE_KEY } from "./internals";
 import { ContextManager } from "./management";
 
 import { log } from "./macroses/log.macro";
 
 /**
+ * Util for loadable.
+ */
+export function asLoading<T, E>(value?: T): ILoadable<T, E> {
+  return Object.assign(
+    {},
+    this,
+    { value: arguments.length ? value as T : this.value, error: null, isLoading: true }
+  );
+}
+
+/**
+ * Util for loadable.
+ */
+export function asFailed<T, E>(error: E | null, value?: T): ILoadable<T, E> {
+  return Object.assign(
+    {},
+    this,
+    { error, isLoading: false, value: arguments.length > 1 ? value as T : this.value }
+  );
+}
+
+/**
+ * Util for loadable.
+ */
+export function asReady<T, E>(value: T | null): ILoadable<T, E> {
+  return Object.assign(
+    {},
+    this,
+    { error: null, isLoading: false, value }
+  );
+}
+
+/**
+ * Util for loadable.
+ */
+export function asUpdated<T, E>(value: T | null): ILoadable<T, E> {
+  return Object.assign(
+    {},
+    this,
+    { value }
+  );
+}
+
+/**
  * Create loadable value utility.
- * todo: Think about size impact of this utils and how to reuse some code.
  */
 export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T, E> {
   log.info("Created loadable entity:", initialValue);
 
   return ({
+    [NESTED_STORE_KEY]: true,
     // Data.
     error: null,
     isLoading: false,
     value: initialValue,
-    // todo: Object.assign
     // Methods.
-    asInitial(): ILoadable<T, E> {
-      return Object.assign(
-        {},
-        this,
-        { error: null, isLoading: false, value: initialValue }
-      );
-    },
-    asLoading(value?: T): ILoadable<T, E> {
-      return Object.assign(
-        {},
-        this,
-        { value: arguments.length ? value as T : this.value, error: null, isLoading: true }
-      );
-    },
-    asFailed(error: E | null, value?: T): ILoadable<T, E> {
-      return Object.assign(
-        {},
-        this,
-        { error, isLoading: false, value: arguments.length > 1 ? value as T : this.value }
-      );
-    },
-    asReady(value: T | null): ILoadable<T, E> {
-      return Object.assign(
-        {},
-        this,
-        { error: null, isLoading: false, value }
-      );
-    },
-    asUpdated(value: T | null): ILoadable<T, E> {
-      return Object.assign(
-        {},
-        this,
-        { value }
-      );
-    }
+    asLoading: asLoading,
+    asFailed: asFailed,
+    asReady: asReady,
+    asUpdated: asUpdated
   });
 }
 
@@ -70,7 +82,7 @@ export function createMutable<T extends object>(initialValue: T): TMutable<T> {
     {},
     initialValue,
     {
-      [MUTABLE_KEY]: true,
+      [NESTED_STORE_KEY]: true,
       asMerged: asMerged as any
     }
   );

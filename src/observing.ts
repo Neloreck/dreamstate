@@ -4,7 +4,7 @@ import { shallowEqualObjects } from "shallow-equal";
 import {
   EMPTY_ARR,
   IDENTIFIER_KEY,
-  MUTABLE_KEY,
+  NESTED_STORE_KEY,
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SUBSCRIBERS_REGISTRY
@@ -108,7 +108,7 @@ export function shouldObserversUpdate<T extends object>(
        *
        * todo: Check if one object is mutable, but next is not and print warnings.
        */
-      return nextValue !== null && typeof nextValue === "object" && nextValue[MUTABLE_KEY]
+      return nextValue !== null && typeof nextValue === "object" && nextValue[NESTED_STORE_KEY]
         ? !shallowEqualObjects(nextValue, previousContext[key])
         : nextValue !== previousContext[key];
     });

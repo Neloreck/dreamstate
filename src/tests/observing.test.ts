@@ -1,5 +1,5 @@
 import { shouldObserversUpdate } from "../observing";
-import { createMutable } from "../utils";
+import { createLoadable, createMutable } from "../utils";
 
 describe("Observing utils and methods.", () => {
   it("Should notifiers update must check properly same nested primitives and objects.", () => {
@@ -46,9 +46,6 @@ describe("Observing utils and methods.", () => {
     next.nested.b = 5;
 
     expect(shouldObserversUpdate(base, next)).toBeFalsy();
-
-    base = { nested: { ...base.nested } };
-    next = { ...base };
   });
 
   it("Should run shallow check for createMutable objects.", () => {
@@ -72,7 +69,7 @@ describe("Observing utils and methods.", () => {
     expect(shouldObserversUpdate(base, next)).toBeFalsy();
 
     base = { nested: createMutable({ a: 1, b: 2, c: 3 }) };
-    next = { nested: createMutable({ a: 1, b: 2, c: 3 }) };
+    next = { nested: base.nested };
 
     expect(shouldObserversUpdate(base, next)).toBeFalsy();
 
@@ -83,5 +80,31 @@ describe("Observing utils and methods.", () => {
     next.nested = next.nested.asMerged({ a: 2 });
 
     expect(shouldObserversUpdate(base, next)).toBeTruthy();
+  });
+
+  it("Should properly compare initial SUBSTORE objects.", () => {
+    const firstMutable = { nested: createMutable({ a: 1, b: 2 }) };
+    const secondMutable = { nested: createMutable({ a: 1, b: 2 }) };
+
+    expect(shouldObserversUpdate(firstMutable, secondMutable)).toBeFalsy();
+
+    const firstLoadable = { nested: createLoadable("test") };
+    const secondLoadable = { nested: createLoadable("test") };
+
+    expect(shouldObserversUpdate(firstLoadable, secondLoadable)).toBeFalsy();
+  });
+
+  it("Should properly compare mutables with same stored value.", () => {
+    const firstLoadableInlineObj = { nested: createLoadable({ a: 1 }) };
+    const secondLoadableInlineObj = { nested: createLoadable({ a: 1 }) };
+
+    expect(shouldObserversUpdate(firstLoadableInlineObj, secondLoadableInlineObj)).toBeTruthy();
+
+    const obj: object = { a: 15 };
+
+    const firstLoadableObj = { nested: createLoadable(obj) };
+    const secondLoadableObj = { nested: createLoadable(obj) };
+
+    expect(shouldObserversUpdate(firstLoadableObj, secondLoadableObj)).toBeFalsy();
   });
 });

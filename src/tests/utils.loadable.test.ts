@@ -1,36 +1,22 @@
 import { ILoadable } from "../types";
 import { createLoadable } from "../utils";
+import { NESTED_STORE_KEY } from "../internals";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {
     const loadableValue: number = 10;
     const loadable: ILoadable<number> = createLoadable(loadableValue);
 
-    expect(Object.keys(loadable)).toHaveLength(8);
+    expect(Object.keys(loadable)).toHaveLength(7);
 
     expect(loadable.error).toBeNull();
     expect(loadable.isLoading).toBeFalsy();
     expect(loadable.value).toBe(loadableValue);
 
-    expect(typeof loadable.asInitial).toBe("function");
     expect(typeof loadable.asFailed).toBe("function");
     expect(typeof loadable.asLoading).toBe("function");
     expect(typeof loadable.asReady).toBe("function");
     expect(typeof loadable.asUpdated).toBe("function");
-  });
-
-  it("Should properly shallow clone objects and return asInitial.", () => {
-    const loadableValue: string = "test";
-    const loadable: ILoadable<string> = createLoadable(loadableValue);
-
-    const initial: ILoadable<string> = loadable.asInitial();
-
-    expect(initial).not.toBe(loadable);
-
-    for (const it in initial) {
-      // @ts-ignore index.
-      expect(initial[it]).toBe(loadable[it]);
-    }
   });
 
   it("Should properly return ready values.", () => {
@@ -113,5 +99,15 @@ describe("Loadable util.", () => {
     const ready: ILoadable<string> = updated.asReady("any");
 
     expect(ready.error).toBeNull();
+  });
+
+  it("Should properly declare loadable objects flags.", () => {
+    const mutable: ILoadable<{ test: boolean }> = createLoadable({ test: true });
+
+    expect(mutable[NESTED_STORE_KEY]).toBeTruthy();
+
+    const next: ILoadable<{ test: boolean }> = mutable.asUpdated({ test: false });
+
+    expect(next[NESTED_STORE_KEY]).toBeTruthy();
   });
 });

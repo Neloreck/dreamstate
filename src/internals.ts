@@ -13,7 +13,7 @@ export const MANAGER_REGEX: RegExp = /Manager$/;
 export const EMPTY_ARR: [] = [];
 
 export const IDENTIFIER_KEY: unique symbol = Symbol();
-export const MUTABLE_KEY: unique symbol = Symbol();
+export const NESTED_STORE_KEY: unique symbol = Symbol();
 
 /**
  * Store related constants.

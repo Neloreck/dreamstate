@@ -1,6 +1,6 @@
 import { TMutable } from "../types";
 import { createMutable } from "../utils";
-import { MUTABLE_KEY } from "../internals";
+import { NESTED_STORE_KEY } from "../internals";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {
@@ -18,13 +18,13 @@ describe("Loadable util.", () => {
     expect(next.test).toBeFalsy();
   });
 
-  it("Should properly declare mutable objects flaga.", () => {
+  it("Should properly declare mutable objects flags.", () => {
     const mutable: TMutable<{ test: boolean }> = createMutable({ test: true });
 
-    expect(mutable[MUTABLE_KEY]).toBeTruthy();
+    expect(mutable[NESTED_STORE_KEY]).toBeTruthy();
 
     const next: TMutable<{ test: boolean }> = mutable.asMerged({ test: false });
 
-    expect(next[MUTABLE_KEY]).toBeTruthy();
+    expect(next[NESTED_STORE_KEY]).toBeTruthy();
   });
 });
