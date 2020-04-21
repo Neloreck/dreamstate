@@ -2,7 +2,9 @@ import {
   ComponentType,
   createElement,
   MutableRefObject,
-  useCallback, useContext,
+  ReactElement,
+  useCallback,
+  useContext,
   useLayoutEffect,
   useRef,
   useState
@@ -13,16 +15,15 @@ import {
   IConsume,
   IConsumeDecorator,
   IContextManagerConstructor,
-  IStringIndexed, MethodDescriptor,
+  IStringIndexed,
   TConsumable,
   TTakeContextSelector,
   TUpdateSubscriber
 } from "./types";
-import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, CONTEXT_STATES_REGISTRY } from "./internals";
+import { EMPTY_ARR, IDENTIFIER_KEY, CONTEXT_STATES_REGISTRY } from "./internals";
 import { ContextManager } from "./management";
 import { subscribeToManager, unsubscribeFromManager } from "./registry";
-
-import { log } from "./macroses/log.macro";
+import { createClassWrapDecorator } from "./polyfills/decorate";
 
 /**
  * Use manager hook with subscribed updates.
@@ -76,22 +77,30 @@ export function useManager<T extends object, D extends IContextManagerConstructo
 
 /**
  * Function for consume wrappers that maps selectors and allows class components to consume store data.
+ * todo: Should we warn if no alias and no selector provided?
  */
 export function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
-  // todo: Should we warn if no alias and no selector provided?
-  // todo: Should we warn if provided empty array-selector?
   for (const source of sources) {
     if (
+      // Is null.
+      source === null
+      ||
+      // Not prototype and not selector
       (typeof source !== "object" && typeof source !== "function")
       ||
+      // Validate selector object.
       (
         typeof source === "object" && (
+          // Should have correct 'from' selector.
           (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager)) ||
+          // Should have correct alias or undefined.
           (typeof source.as !== "undefined" && typeof source.as !== "string") ||
+          // Should have anything for key-mapping except objects and nulls.
           typeof source.take === "object"
         )
       )
       ||
+      // Validate provided constructor.
       typeof source === "function" && !(source.prototype instanceof ContextManager)
     ) {
       throw new TypeError("Wrong context-consume parameter supplied.");
@@ -102,14 +111,14 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
    * Create selectors once to prevent checks on every render.
    * Optimization on resolving + additional checks.
    */
-  const selectors: Array<(accumulator: IStringIndexed<any>) => void> = new Array(sources.length);
+  const mutators: Array<(accumulator: IStringIndexed<any>) => IStringIndexed<any>> = new Array(sources.length);
 
-  for (let it = 0; it < selectors.length; it ++) {
+  for (let it = 0; it < mutators.length; it ++) {
     const source: TConsumable<any> = sources[it];
 
     // Is context manager.
     if (source.prototype instanceof ContextManager) {
-      selectors[it] = (accumulator: IStringIndexed<any>) => Object.assign(accumulator, useManager(source));
+      mutators[it] = (accumulator: IStringIndexed<any>) => Object.assign(accumulator, useManager(source));
     } else {
       const take: TTakeContextSelector<any> = source.take;
       const alias: string | undefined = source.as;
@@ -117,12 +126,13 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
       // No selector, only alias.
       if (take === undefined) {
         if (alias) {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[source.as] = useManager(source.from);
+            return accumulator;
           };
         } else {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
-            Object.assign(accumulator, useManager(source.from));
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
+            return Object.assign(accumulator, useManager(source.from));
           };
         }
       } else if (Array.isArray(take)) {
@@ -135,19 +145,23 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
         };
 
         if (alias) {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             const context: IStringIndexed<any> = useManager(source.from, memoCheck);
 
             accumulator[alias] = (take as Array<string>).reduce((a: IStringIndexed<any>, e: string) =>
               (a[e] = context[e], a), {});
+
+            return accumulator;
           };
         } else {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             const context: IStringIndexed<any> = useManager(source.from, memoCheck);
 
-            Object.assign(accumulator, (take as Array<string>).reduce(function(a: IStringIndexed<any>, e: string) {
-              return (a[e] = context[e], a);
-            }, {}));
+            return Object.assign(
+              accumulator,
+              (take as Array<string>).reduce(function(a: IStringIndexed<any>, e: string) {
+                return (a[e] = context[e], a);
+              }, {}));
           };
         }
       } else if (typeof take === "function") {
@@ -157,27 +171,31 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
         };
 
         if (alias) {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[alias] = take(useManager(source.from, memoCheck));
+            return accumulator;
           };
         } else {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
-            Object.assign(accumulator, take(useManager(source.from, memoCheck)));
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
+            return Object.assign(accumulator, take(useManager(source.from, memoCheck)));
           };
         }
-      } else if (typeof take === "string") {
+        // Fallback to indexing. Strings, boolean, numbers, symbols etc.
+      } else {
         // Pick only selected key prop. Using memo-selector here.
         const memoCheck = function(current: IStringIndexed<any>) {
-          return [ current[take] ];
+          return [ current[take as any] ];
         };
 
         if (alias) {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
-            accumulator[alias] = useManager(source.from, memoCheck)[take];
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
+            accumulator[alias as any] = useManager(source.from, memoCheck)[take];
+            return accumulator;
           };
         } else {
-          selectors[it] = function(accumulator: IStringIndexed<any>) {
-            accumulator[take] = useManager(source.from, memoCheck)[take] ;
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
+            accumulator[take as any] = useManager(source.from, memoCheck)[take] ;
+            return accumulator;
           };
         }
       }
@@ -185,20 +203,20 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
   }
 
   // HOC component to pick props and provide needed/selected.
-  function Consumer(ownProps: object) {
-    const consumed: IStringIndexed<any> = {};
-
-    // todo: Array.reduce or for-of?
-    for (const selector of selectors) {
-      selector(consumed);
-    }
-
-    return createElement(target as any, Object.assign(consumed, ownProps));
+  function Consumer(ownProps: object): ReactElement {
+    return createElement(
+      target,
+      Object.assign(
+        mutators.reduce(
+          function (acc: IStringIndexed<any>, mutator: (acc: IStringIndexed<any>) => IStringIndexed<any>) {
+            return mutator(acc);
+          }, {}),
+        ownProps
+      )
+    );
   }
 
   Consumer.displayName = "DS.Consumer";
-
-  log.info("Created consumer:", Consumer.displayName);
 
   return Consumer;
 }
@@ -210,23 +228,13 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
  *
  * todo: Stricter component typing.
  */
-export const Consume: IConsumeDecorator = function (sources: Array<TConsumable<any>>): any {
-  // Higher order decorator to reserve params.
-  return function(classOrDescriptor: ComponentType) {
-    // Legacy decorators and ES proposal.
-    if (typeof classOrDescriptor === "function") {
-      log.info(`Creating legacy consume decorator for ${sources.length} sources. Target:`, classOrDescriptor.name);
-      return hoistNonReactStatics(createManagersConsumer(classOrDescriptor, sources), classOrDescriptor);
-    } else {
-      (classOrDescriptor as MethodDescriptor).finisher = function (wrappedComponent: ComponentType) {
-        log.info(`Creating proposal consume decorator for ${sources.length} sources. Target:`, wrappedComponent.name);
-        return hoistNonReactStatics(createManagersConsumer(wrappedComponent, sources), wrappedComponent);
-      } as any;
-
-      return classOrDescriptor;
-    }
-  };
-} as any;
+export const Consume: IConsumeDecorator = function(
+  sources: Array<TConsumable<any>>
+): ClassDecorator {
+  return createClassWrapDecorator(function (targetClass) {
+    return hoistNonReactStatics(createManagersConsumer(targetClass as any, sources), targetClass as ComponentType);
+  });
+};
 
 /**
  * HOC alias for @Consume.

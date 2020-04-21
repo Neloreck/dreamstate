@@ -127,6 +127,12 @@ export interface ClassElement {
   descriptor?: PropertyDescriptor;
 }
 
+export interface ClassDescriptor {
+  kind: "class";
+  elements: ClassElement[];
+  finisher?: <T>(clazz: TConstructor<T>) => void | TConstructor<T>;
+}
+
 export interface MethodDescriptor extends ClassElement {
   kind: "method";
   descriptor: PropertyDescriptor;

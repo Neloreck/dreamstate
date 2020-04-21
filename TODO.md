@@ -3,7 +3,6 @@
 1) Unit tests - more
 2) Better typing for decorators
 4) Class decorators check as separated util.
-5) Bind - shared decorator util usage?
 
 ?) Test utils and separated scoping for testing?
 ?) Proxy manager instances references to prevent ref saving of old ones? Better memory cleanup + like synthetic react events work.

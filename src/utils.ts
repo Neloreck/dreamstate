@@ -7,7 +7,7 @@ import { log } from "./macroses/log.macro";
 /**
  * Util for loadable.
  */
-export function asLoading<T, E>(value?: T): ILoadable<T, E> {
+export function asLoading<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, E> {
   return Object.assign(
     {},
     this,
@@ -18,7 +18,7 @@ export function asLoading<T, E>(value?: T): ILoadable<T, E> {
 /**
  * Util for loadable.
  */
-export function asFailed<T, E>(error: E | null, value?: T): ILoadable<T, E> {
+export function asFailed<T, E>(this: ILoadable<T, E>, error: E | null, value?: T): ILoadable<T, E> {
   return Object.assign(
     {},
     this,
@@ -29,7 +29,7 @@ export function asFailed<T, E>(error: E | null, value?: T): ILoadable<T, E> {
 /**
  * Util for loadable.
  */
-export function asReady<T, E>(value: T | null): ILoadable<T, E> {
+export function asReady<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E> {
   return Object.assign(
     {},
     this,
@@ -40,7 +40,7 @@ export function asReady<T, E>(value: T | null): ILoadable<T, E> {
 /**
  * Util for loadable.
  */
-export function asUpdated<T, E>(value: T | null): ILoadable<T, E> {
+export function asUpdated<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E> {
   return Object.assign(
     {},
     this,
@@ -68,7 +68,7 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
   });
 }
 
-export function asMerged<T extends object>(state: Partial<T>): T {
+export function asMerged<T extends object>(this: TMutable<T>, state: Partial<T>): T {
   return Object.assign({}, this as TMutable<T>, state);
 }
 
