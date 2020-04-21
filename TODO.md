@@ -1,8 +1,9 @@
 ## todo:
 
 1) Unit tests - more
-2) Better typing for decorators
-4) Class decorators check as separated util.
+2) OnQuery handling both for sync and async methods.
+
+N) Better typing for decorators --> Is it possible now?
 
 ?) Test utils and separated scoping for testing?
 ?) Proxy manager instances references to prevent ref saving of old ones? Better memory cleanup + like synthetic react events work.
