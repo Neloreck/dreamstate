@@ -1,7 +1,6 @@
-const path = require("path");
 const { createMacro } = require("babel-plugin-macros");
 
-const IS_DEV = (process.env.NODE_ENV === "debug");
+const IS_DEBUG = (process.env.NODE_ENV === "debug");
 const PREFIX_COLOR = "color: #bada53";
 
 function log({ references, babel, state }) {
@@ -13,7 +12,7 @@ function log({ references, babel, state }) {
       const expression = reference.parentPath.parentPath;
 
       // Handle logging only in dev mode.
-      if (IS_DEV) {
+      if (IS_DEBUG) {
         const method = reference.parent.property.name;
         const args = expression.node.arguments;
 

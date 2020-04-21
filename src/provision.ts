@@ -1,12 +1,10 @@
 import { ComponentType, FunctionComponent } from "react";
+import hoistNonReactStatics from "hoist-non-react-statics";
 
 import { MethodDescriptor, TAnyContextManagerConstructor } from "./types";
 import { createManagersObserver } from "./observing";
 
-import { log } from "../macroses/log.macro";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const hoistNonReactStatics = require("hoist-non-react-statics");
+import { log } from "./macroses/log.macro";
 
 /**
  * Decorator factory.

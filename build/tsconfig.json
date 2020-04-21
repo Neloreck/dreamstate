@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
     "target": "es5",
     "strict": true,
     "sourceMap": true,
     "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "rootDir": "./src",
+    "rootDir": "../src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "jsx": "react",
@@ -23,11 +25,10 @@
     ]
   },
   "include": [
-    "./src"
+    "../src"
   ],
   "exclude": [
-    "switch.ts",
-    "tests/",
+    "../src/tests",
     "node_modules"
   ]
 }

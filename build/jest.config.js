@@ -5,11 +5,11 @@ module.exports = {
   snapshotSerializers: [
     "enzyme-to-json/serializer"
   ],
+  rootDir: "../",
   transform: {
-    "^.+\\.[t|j]sx?$": "babel-jest"
+    "^.+\\.[t|j]sx?$": [ "babel-jest", { configFile: "./build/babel.test.config.js" } ]
   },
   globals: {
-    IS_DEV: false,
     IS_DEBUG: false
   }
 };

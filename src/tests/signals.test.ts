@@ -1,7 +1,7 @@
-import { OnSignal, subscribeToSignals, unsubscribeFromSignals } from "../lib/signals";
-import { ContextManager } from "../lib/management";
-import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "../lib/types";
-import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../lib/internals";
+import { OnSignal, subscribeToSignals, unsubscribeFromSignals } from "../signals";
+import { ContextManager } from "../management";
+import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "../types";
+import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 
 import { nextAsyncQuery, registerManagerClass } from "./helpers";
 

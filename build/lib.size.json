@@ -1,0 +1,74 @@
+{
+  "../lib/esm/dreamstate.production.js": {
+    "bundled": 26041,
+    "minified": 10523,
+    "gzipped": 2920,
+    "treeshaked": {
+      "rollup": {
+        "code": 2200,
+        "import_statements": 122
+      },
+      "webpack": {
+        "code": 3265
+      }
+    }
+  },
+  "../lib/cjs/dreamstate.production.js": {
+    "bundled": 26488,
+    "minified": 11129,
+    "gzipped": 3032
+  },
+  "../lib/umd/dreamstate.production.js": {
+    "bundled": 46727,
+    "minified": 14676,
+    "gzipped": 4629
+  },
+  "../lib/esm/dreamstate.development.js": {
+    "bundled": 28900,
+    "minified": 12627,
+    "gzipped": 3550,
+    "treeshaked": {
+      "rollup": {
+        "code": 2450,
+        "import_statements": 122
+      },
+      "webpack": {
+        "code": 3515
+      }
+    }
+  },
+  "../lib/cjs/dreamstate.development.js": {
+    "bundled": 29591,
+    "minified": 13238,
+    "gzipped": 3667
+  },
+  "../lib/umd/dreamstate.development.js": {
+    "bundled": 55049,
+    "minified": 16709,
+    "gzipped": 5274
+  },
+  "../lib/esm/dreamstate.debug.js": {
+    "bundled": 39724,
+    "minified": 22152,
+    "gzipped": 4490,
+    "treeshaked": {
+      "rollup": {
+        "code": 5714,
+        "import_statements": 122
+      },
+      "webpack": {
+        "code": 6770
+      }
+    }
+  },
+  "../lib/cjs/dreamstate.debug.js": {
+    "bundled": 40415,
+    "minified": 22763,
+    "gzipped": 4614
+  },
+  "../lib/umd/dreamstate.debug.js": {
+    "bundled": 66099,
+    "minified": 25876,
+    "gzipped": 6282
+  }
+}

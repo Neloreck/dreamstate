@@ -14,9 +14,9 @@ import {
   SIGNAL_LISTENERS_REGISTRY
 } from "./internals";
 import { ContextManager } from "./management";
-
-import { log } from "../macroses/log.macro";
 import { createMethodDecorator } from "./polyfills/decorate";
+
+import { log } from "./macroses/log.macro";
 
 /**
  * Emit signal and notify all subscribers in async query.

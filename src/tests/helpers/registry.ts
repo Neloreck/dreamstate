@@ -1,7 +1,7 @@
-import { registerManager } from "../../lib/registry";
-import { IContextManagerConstructor } from "../../lib/types";
-import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "../../lib/internals";
-import { ContextManager } from "../../lib/management";
+import { registerManager } from "../../registry";
+import { IContextManagerConstructor } from "../../types";
+import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "../../internals";
+import { ContextManager } from "../../management";
 
 export function registerManagerClass<T extends IContextManagerConstructor<any>>(managerClass: T): InstanceType<T> {
   registerManager(managerClass);

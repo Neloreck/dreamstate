@@ -7,6 +7,7 @@ import {
   useRef,
   useState
 } from "react";
+import hoistNonReactStatics from "hoist-non-react-statics";
 
 import {
   IConsume,
@@ -21,12 +22,7 @@ import { EMPTY_ARR, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX, CONTEXT_STATES_
 import { ContextManager } from "./management";
 import { subscribeToManager, unsubscribeFromManager } from "./registry";
 
-import { log } from "../macroses/log.macro";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const hoistNonReactStatics = require("hoist-non-react-statics");
-
-declare const IS_DEV: boolean;
+import { log } from "./macroses/log.macro";
 
 /**
  * Use manager hook with subscribed updates.
@@ -84,77 +80,21 @@ export function useManager<T extends object, D extends IContextManagerConstructo
 export function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
   // todo: Should we warn if no alias and no selector provided?
   // todo: Should we warn if provided empty array-selector?
-  /**
-   * Extended assistance for DEV bundle.
-   */
-  if (IS_DEV) {
-    // Warn about too big consume count.
-    if (sources.length > 5) {
-      // todo: Think about query API here?
-      console.warn("Seems like your component tries to consume more than 5 stores at once, more than 5 can" +
-        " lead to slower rendering for big components. Separate consuming by using multiple Consume decorators/hocs " +
-        "for one component or review your components structure.",
-      `Source: '${target.name}'.`
-      );
-    }
-
-    // Validate input sources.
-    for (const source of sources) {
-      if (typeof source === "object") {
-        if (!source.from || typeof source.from !== "function") {
-          throw new TypeError(
-            "Specified 'from' selector should point to correct context manager. Supplied type: " +
-            `'${typeof source.from}'. Check '${target.name}' component.`
-          );
-        } else if (!(source.from.prototype instanceof ContextManager)) {
-          throw new TypeError(
-            "Specified consume target should inherit 'ContextManager', seems like you have forgotten to extend your " +
-            `manager class. Wrong parameter: '${source.from.name || "anonymous."}'. Check '${target.name}' component.`);
-        }
-
-        if (typeof source.as !== "undefined" && typeof source.as !== "string") {
-          throw new TypeError(
-            "Specified 'as' param should point to string component property key. Supplied type: " +
-            `'${typeof source.as}'. Check '${target.name}' component.`
-          );
-        }
-
-        if (typeof source.take === "object") {
-          throw new TypeError(
-            "Specified 'take' param should be a valid selector. Selectors can be functional, string or array. " +
-            `Supplied type: '${typeof source}'. Check '${target.name}' component.`
-          );
-        }
-      } else if (typeof source === "function") {
-        if (!(source.prototype instanceof ContextManager)) {
-          throw new TypeError(
-            "Specified consume target should inherit 'ContextManager', seems like you forgot to extend your manager " +
-            `class. Wrong parameter: '${source.name || "anonymous function"}'. Check '${target.name}' component.`);
-        }
-      } else {
-        throw new TypeError(
-          "Specified consume source is not selector or context manager." +
-          `Supplied type: '${typeof source}'. Check '${target.name}' component.`
-        );
-      }
-    }
-  } else {
-    for (const source of sources) {
-      if (
-        (typeof source !== "object" && typeof source !== "function")
-        ||
-        (
-          typeof source === "object" && (
-            (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager)) ||
-            (typeof source.as !== "undefined" && typeof source.as !== "string") ||
-            typeof source.take === "object"
-          )
+  for (const source of sources) {
+    if (
+      (typeof source !== "object" && typeof source !== "function")
+      ||
+      (
+        typeof source === "object" && (
+          (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager)) ||
+          (typeof source.as !== "undefined" && typeof source.as !== "string") ||
+          typeof source.take === "object"
         )
-        ||
-        typeof source === "function" && !(source.prototype instanceof ContextManager)
-      ) {
-        throw new TypeError("Wrong context-consume parameter supplied.");
-      }
+      )
+      ||
+      typeof source === "function" && !(source.prototype instanceof ContextManager)
+    ) {
+      throw new TypeError("Wrong context-consume parameter supplied.");
     }
   }
 
@@ -256,14 +196,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
     return createElement(target as any, Object.assign(consumed, ownProps));
   }
 
-  if (IS_DEV) {
-    Consumer.displayName = `Dreamstate.Consumer.[${sources.map((it: TConsumable<any>) =>
-      it.prototype instanceof ContextManager
-        ? it.name.replace(MANAGER_REGEX, EMPTY_STRING)
-        : `${it.from.name.replace(MANAGER_REGEX, EMPTY_STRING)}{${it.take}}`)}]`;
-  } else {
-    Consumer.displayName = "DS.Consumer";
-  }
+  Consumer.displayName = "DS.Consumer";
 
   log.info("Created consumer:", Consumer.displayName);
 
@@ -299,3 +232,4 @@ export const Consume: IConsumeDecorator = function (sources: Array<TConsumable<a
  * HOC alias for @Consume.
  */
 export const withConsumption: IConsume = Consume as IConsume;
+

@@ -11,7 +11,7 @@ import {
 } from "./internals";
 import { ContextManager } from "./management";
 
-import { log } from "../macroses/log.macro";
+import { log } from "./macroses/log.macro";
 import { createMethodDecorator } from "./polyfills/decorate";
 
 /**

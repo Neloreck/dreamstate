@@ -1,17 +1,17 @@
 import { Context } from "react";
 
-import { ContextManager } from "../lib/management";
+import { ContextManager } from "../management";
 import {
   IDENTIFIER_KEY,
   CONTEXT_MANAGERS_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_STATES_REGISTRY
-} from "../lib/internals";
+} from "../internals";
 import {
   addManagerObserverToRegistry,
   removeManagerObserverFromRegistry
-} from "../lib/registry";
-import { TAnyContextManagerConstructor } from "../lib/types";
+} from "../registry";
+import { TAnyContextManagerConstructor } from "../types";
 
 import { registerManagerClass } from "./helpers";
 

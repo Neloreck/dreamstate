@@ -1,7 +1,8 @@
 import { Context, createContext } from "react";
 
-import { EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
+import { CONTEXT_STATES_REGISTRY, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "./internals";
 import {
+  IContextManagerConstructor,
   IQueryRequest,
   IQueryResponse,
   ISignal,
@@ -13,11 +14,9 @@ import {
 import { notifyObservers, shouldObserversUpdate } from "./observing";
 import { emitSignal } from "./signals";
 
-import { log } from "../macroses/log.macro";
-import { sendQuery } from "./query";
+import { log } from "./macroses/log.macro";
+import { sendQuery } from "./queries";
 import { createManagerId } from "./registry";
-
-declare const IS_DEV: boolean;
 
 /**
  * Abstract class.
@@ -40,9 +39,7 @@ export abstract class ContextManager<T extends object> {
   public static get REACT_CONTEXT() {
     const reactContext: Context<any> = createContext(null as any);
 
-    reactContext.displayName = IS_DEV
-      ? "Dreamstate." + this.name.replace(MANAGER_REGEX, EMPTY_STRING)
-      : "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
+    reactContext.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
 
     log.info("Context manager context declared:", this.name, reactContext.displayName);
 
@@ -60,7 +57,7 @@ export abstract class ContextManager<T extends object> {
    * Lazy initialization for IDENTIFIER KEY and manager related registry.
    */
   public static get [IDENTIFIER_KEY](): symbol {
-    const id: symbol = createManagerId(IS_DEV ? this.name : "");
+    const id: symbol = createManagerId("");
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
 
@@ -80,7 +77,7 @@ export abstract class ContextManager<T extends object> {
     // Force updates and common lifecycle with same params.
     this.beforeUpdate(this.context);
     this.context = Object.assign({}, this.context);
-    notifyObservers(this, this.context);
+    notifyObservers(this);
     this.afterUpdate(this.context);
   }
 
@@ -89,13 +86,6 @@ export abstract class ContextManager<T extends object> {
    * Calls lifecycle methods.
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
-    if (IS_DEV) {
-      if ((typeof next !== "function" && typeof next !== "object") || next === null) {
-        console.warn("Seems like wrong prop was supplied to the 'setContext' method. Context state updater " +
-          "should be an object or a function. Supplied value type:", typeof next);
-      }
-    }
-
     const previousContext: T = this.context;
     const nextContext: T = Object.assign(
       {},
@@ -103,12 +93,17 @@ export abstract class ContextManager<T extends object> {
       typeof next === "function" ? next(previousContext) : next
     );
 
-    if (shouldObserversUpdate(this, nextContext)) {
+    /**
+     * Compare current context with saved for observing one.
+     */
+    if (shouldObserversUpdate(
+      CONTEXT_STATES_REGISTRY[(this.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]], nextContext
+    )) {
       log.info("Updating context manager:", this.constructor.name);
 
       this.beforeUpdate(nextContext);
       this.context = nextContext;
-      notifyObservers(this, nextContext);
+      notifyObservers(this);
       this.afterUpdate(previousContext);
     } else {
       log.info("Context manager update cancelled, state is same:", this.constructor.name);

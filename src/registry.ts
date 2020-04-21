@@ -15,7 +15,7 @@ import {
 } from "./internals";
 import { onMetadataSignalListenerCalled, subscribeToSignals, unsubscribeFromSignals } from "./signals";
 
-import { log } from "../macroses/log.macro";
+import { log } from "./macroses/log.macro";
 
 /**
  * Create manager ID and init related registry data.

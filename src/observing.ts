@@ -1,10 +1,9 @@
 import { ComponentType, createElement, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import { shallowEqualObjects } from "shallow-equal";
 
 import {
   EMPTY_ARR,
-  EMPTY_STRING,
   IDENTIFIER_KEY,
-  MANAGER_REGEX,
   MUTABLE_KEY,
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
@@ -14,7 +13,6 @@ import {
   IContextManagerConstructor,
   IStringIndexed,
   TAnyContextManagerConstructor,
-  TConsumable,
   TUpdateObserver,
   TUpdateSubscriber,
 } from "./types";
@@ -25,11 +23,7 @@ import {
   removeManagerObserverFromRegistry,
 } from "./registry";
 
-import { log } from "../macroses/log.macro";
-
-const shallowEqualObjects = require("shallow-equal").shallowEqualObjects;
-
-declare const IS_DEV: boolean;
+import { log } from "./macroses/log.macro";
 
 /**
  * Initialize context manager once before tree mount and use memo.
@@ -86,9 +80,7 @@ export function createManagersObserver(
     return provideSubTree(0, (children ? createElement(children, props) : props.children), sources);
   }
 
-  Observer.displayName = IS_DEV
-    ? `Dreamstate.Observer.[${sources.map((it: TConsumable<any>) => it.name.replace(MANAGER_REGEX, EMPTY_STRING))}]`
-    : "DS.Observer";
+  Observer.displayName = "DS.Observer";
 
   log.info("Context manager observer created:", Observer.displayName);
 
@@ -100,11 +92,8 @@ export function createManagersObserver(
  * Compare context manager state diff with shallow check + nested objects check.
  */
 export function shouldObserversUpdate<T extends object>(
-  manager: ContextManager<T>, nextContext: IStringIndexed<any>
+  previousContext: IStringIndexed<any>, nextContext: IStringIndexed<any>
 ): boolean {
-  const previousContext: IStringIndexed<any> =
-    CONTEXT_STATES_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]];
-
   // If previous context is registered and current supplied.
   return !previousContext || Object
     .keys(nextContext)
@@ -116,6 +105,8 @@ export function shouldObserversUpdate<T extends object>(
        * Optimization for sub-states to prevent pollution of context and improve performance.
        * We cannot guess about each object because it is (1) not obvious, (2) can be unwanted and (3) will not work for
        * some objects like native MediaStream/MediaStreamTrack.
+       *
+       * todo: Check if one object is mutable, but next is not and print warnings.
        */
       return nextValue !== null && typeof nextValue === "object" && nextValue[MUTABLE_KEY]
         ? !shallowEqualObjects(nextValue, previousContext[key])
@@ -126,10 +117,9 @@ export function shouldObserversUpdate<T extends object>(
 /**
  * Notify observers and check if update is needed.
  */
-export function notifyObservers<T extends IStringIndexed<any>>(
-  manager: ContextManager<T>,
-  nextContext: T
-): void {
+export function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<T>): void {
+  const nextContext: T = manager.context;
+
   log.info(
     "Context manager notify observers and subscribers:",
     manager.constructor.name,

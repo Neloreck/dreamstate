@@ -8,15 +8,12 @@ import type {
 } from "./types";
 import type { ContextManager } from "./management";
 
-declare const IS_DEV: boolean;
-declare const IS_DEBUG: boolean;
-
 export const EMPTY_STRING: string = "";
-export const EMPTY_ARR: Array<never> = [];
 export const MANAGER_REGEX: RegExp = /Manager$/;
+export const EMPTY_ARR: [] = [];
 
-export const IDENTIFIER_KEY: unique symbol = Symbol(IS_DEV ? "DS_ID" : "");
-export const MUTABLE_KEY: unique symbol = Symbol(IS_DEV ? "DS_MUTABLE" : "");
+export const IDENTIFIER_KEY: unique symbol = Symbol();
+export const MUTABLE_KEY: unique symbol = Symbol();
 
 /**
  * Store related constants.
@@ -35,6 +32,8 @@ export const SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any>> = new Set();
 /**
  * Expose internal registry references for debugging.
  */
+declare const IS_DEBUG: boolean;
+
 if (IS_DEBUG) {
   // @ts-ignore debug-only declaration.
   window.__DREAMSTATE_DEBUG_INTERNALS__ = {

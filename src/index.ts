@@ -15,19 +15,19 @@ export {
   ISignal as Signal,
   IQueryResponse as QueryResponse,
   IQueryRequest as QueryRequest
-} from "./lib/types";
+} from "./types";
 
-export { ContextManager } from "./lib/management";
+export { ContextManager } from "./management";
 
-export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurrentManager } from "./lib/registry";
+export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurrentManager } from "./registry";
 
-export { createProvider, Provide, withProvision } from "./lib/provision";
+export { createProvider, Provide, withProvision } from "./provision";
 
-export { OnSignal, useSignal, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "./lib/signals";
+export { OnSignal, useSignal, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "./signals";
 
-export { OnQuery } from "./lib/query";
+export { OnQuery } from "./queries";
 
-export { useManager, Consume, withConsumption } from "./lib/consumption";
+export { useManager, Consume, withConsumption } from "./consumption";
 
-export { Bind, createLoadable, createMutable, createSetter } from "./lib/utils";
+export { Bind, createLoadable, createMutable, createSetter } from "./utils";
 

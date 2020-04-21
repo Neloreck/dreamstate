@@ -2,9 +2,7 @@ import { ILoadable, MethodDescriptor, TMutable, TPartialTransformer } from "./ty
 import { MUTABLE_KEY } from "./internals";
 import { ContextManager } from "./management";
 
-import { log } from "../macroses/log.macro";
-
-declare const IS_DEV: boolean;
+import { log } from "./macroses/log.macro";
 
 /**
  * Create loadable value utility.
@@ -58,6 +56,10 @@ export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T
   });
 }
 
+export function asMerged<T extends object>(state: Partial<T>): T {
+  return Object.assign({}, this as TMutable<T>, state);
+}
+
 /**
  * Create mutable sub-state.
  */
@@ -69,9 +71,7 @@ export function createMutable<T extends object>(initialValue: T): TMutable<T> {
     initialValue,
     {
       [MUTABLE_KEY]: true,
-      asMerged(state: Partial<T>): TMutable<T> {
-        return Object.assign({}, this as TMutable<T>, state);
-      }
+      asMerged: asMerged as any
     }
   );
 }
@@ -107,16 +107,6 @@ export function createSetter<S extends object, D extends keyof S>(manager: Conte
   log.info("Created context setter for:", manager.constructor.name, key);
 
   return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
-    if (IS_DEV) {
-      if ((typeof next !== "function" && typeof next !== "object") || next === null) {
-        console.warn(
-          "If you want to update specific non-object state variable, use setContext instead. " +
-          "Custom setters are intended to help with nested state objects. " +
-          `State updater should be an object or a function. Supplied value type: ${typeof next}.`
-        );
-      }
-    }
-
     return manager.setContext({
       [key]: Object.assign(
         {},
