@@ -15,17 +15,15 @@ React API with common observer pattern and nothing more.
 Library allows you to create shared context stores for your application without spaghetti-coded providers and simplifies cases when your contexts should reference each other. <br/>
 It includes react-like lifecycle, lazy management of memory allocation, global signaling and queries  between store instances. <br/>
 
-<hr/>
+<br/>
 
  - [x] Tree shaking
- - [x] Fast 
- - [x] Simple 
- - [x] Compact lib
  - [x] Strictly typed
  - [x] No boilerplate code
  - [x] Lazy memory management
+ - [x] Fast 
+ - [x] Simple 
  - [x] Easy to test [testing utils in nearest future]
-
 
 ## Installation
 
