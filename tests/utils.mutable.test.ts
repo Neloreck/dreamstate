@@ -27,4 +27,8 @@ describe("Loadable util.", () => {
 
     expect(next[NESTED_STORE_KEY]).toBeTruthy();
   });
+
+  it("Should properly throw error for non-objects.", () => {
+    expect(() => createMutable(5 as any)).toThrow(TypeError);
+  });
 });

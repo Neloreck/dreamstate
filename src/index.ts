@@ -13,8 +13,8 @@ export {
   TConsumable as Consumable,
   ISignalEvent as SignalEvent,
   ISignal as Signal,
-  IQueryResponse as QueryResponse,
-  IQueryRequest as QueryRequest
+  TQueryResponse as QueryResponse,
+  TQueryRequest as QueryRequest
 } from "./types";
 
 export { ContextManager } from "./management";

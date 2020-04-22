@@ -1,4 +1,4 @@
-import { registerManager } from "../../src/registry";
+import { registerManager, unRegisterManager } from "../../src/registry";
 import { IContextManagerConstructor } from "../../src/types";
 import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "../../src/internals";
 import { ContextManager } from "../../src/management";
@@ -13,5 +13,9 @@ export function registerManagerClass<T extends IContextManagerConstructor<any>>(
   }
 
   return instance as InstanceType<T>;
+}
+
+export function unRegisterManagerClass<T extends IContextManagerConstructor<any>>(managerClass: T): InstanceType<T> {
+  unRegisterManager(managerClass);
 }
 

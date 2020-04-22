@@ -1,43 +1,14 @@
 import { Context } from "react";
 
 import { ContextManager } from "../src/management";
-import {
-  IDENTIFIER_KEY,
-  CONTEXT_MANAGERS_REGISTRY,
-  CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY
-} from "../src/internals";
-import {
-  addManagerObserverToRegistry,
-  removeManagerObserverFromRegistry
-} from "../src/registry";
+import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, CONTEXT_STATES_REGISTRY } from "../src/internals";
+import { addManagerObserverToRegistry, removeManagerObserverFromRegistry } from "../src/registry";
 import { TAnyContextManagerConstructor } from "../src/types";
 
 import { registerManagerClass } from "./helpers";
+import { ITestContext, TestContextManager, TestSingleContextManager } from "./assets";
 
 describe("Context store creation tests.", () => {
-  interface ITestContext {
-    first: string;
-    second: number;
-  }
-
-  class TestContextManager extends ContextManager<ITestContext> {
-
-    public readonly context: ITestContext = {
-      first: "first",
-      second: 2
-    };
-
-  }
-
-  class TestSingleContextManager extends ContextManager<object> {
-
-    protected static IS_SINGLE: boolean = true;
-
-    public readonly context: object = {};
-
-  }
-
   it("Should initialize extended class without any exceptions.", () => {
     const testContextManagerInit = (ManagerConstructor: TAnyContextManagerConstructor, isSingle: boolean = false) => {
       const manager = new ManagerConstructor();

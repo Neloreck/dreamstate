@@ -1,55 +1,21 @@
-import { OnSignal, subscribeToSignals, unsubscribeFromSignals } from "../src/signals";
-import { ContextManager } from "../src/management";
+import { subscribeToSignals, unsubscribeFromSignals } from "../src/signals";
 import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "../src/types";
 import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../src/internals";
+import { getCurrentManager } from "../src/registry";
 
-import { nextAsyncQuery, registerManagerClass } from "./helpers";
+import { nextAsyncQuery, registerManagerClass, unRegisterManagerClass } from "./helpers";
+import { EmittingContextManager, ESignal, SubscribedContextManager } from "./assets";
 
 describe("Signals and signaling.", () => {
-  enum ESignal {
-    NUMBER_SIGNAL = "NUMBER",
-    STRING_SIGNAL = "STRING_SIGNAL",
-    EMPTY_SIGNAL = "EMPTY_SIGNAL"
-  }
+  beforeEach(() => {
+    registerManagerClass(SubscribedContextManager);
+    registerManagerClass(EmittingContextManager);
+  });
 
-  class SubscribedContextManager extends ContextManager<object> {
-
-    public context: object = {};
-
-    @OnSignal(ESignal.NUMBER_SIGNAL)
-    public onNumberSignal(signal: ISignalEvent<number, TSignalType>): void {
-      return;
-    }
-
-    @OnSignal([ ESignal.STRING_SIGNAL ])
-    public onStringSignal(signal: ISignalEvent<string, TSignalType>): void {
-      return;
-    }
-
-    @OnSignal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
-    public onStringOrNumberSignal(signal: ISignalEvent<number | string, TSignalType>): void {
-      return;
-    }
-
-  }
-
-  class EmittingContextManager extends ContextManager<object> {
-
-    public context: object = {};
-
-    public sendNumberSignal(): void {
-      this.emitSignal({ type: ESignal.NUMBER_SIGNAL, data: Math.random() });
-    }
-
-    public sendStringSignal(): void {
-      this.emitSignal({ type: ESignal.STRING_SIGNAL, data: "random-" + Math.random() });
-    }
-
-    public sendEmptySignal(): void {
-      this.emitSignal({ type: ESignal.EMPTY_SIGNAL });
-    }
-
-  }
+  afterEach(() => {
+    unRegisterManagerClass(SubscribedContextManager);
+    unRegisterManagerClass(EmittingContextManager);
+  });
 
   it("Signal decorator should properly add metadata.", () => {
     const signalListenersList: TSignalSubscriptionMetadata = CONTEXT_SIGNAL_METADATA_REGISTRY[
@@ -86,8 +52,8 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal decorator should properly add metadata.", async () => {
-    const subscribedManager: SubscribedContextManager = registerManagerClass(SubscribedContextManager);
-    const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
+    const subscribedManager: SubscribedContextManager = getCurrentManager(SubscribedContextManager)!;
+    const emittingManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
 
     subscribedManager.onNumberSignal = jest.fn();
     subscribedManager.onStringSignal = jest.fn();
@@ -126,7 +92,7 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal subscribers should properly listen managers signals.", async () => {
-    const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
+    const emittingManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
 
     const numberSubscriber = jest.fn((signal: ISignalEvent<TSignalType, number>) => {
       expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
@@ -159,9 +125,8 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal subscribers should properly cancel events and called in declared order.", async () => {
-    const emittingManager: EmittingContextManager = registerManagerClass(EmittingContextManager);
-
-    const subscribedManager: SubscribedContextManager = registerManagerClass(SubscribedContextManager);
+    const emittingManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
+    const subscribedManager: SubscribedContextManager = getCurrentManager(SubscribedContextManager)!;
 
     subscribedManager.onStringSignal = jest.fn();
     subscribedManager.onStringOrNumberSignal = jest.fn((signal: ISignalEvent<TSignalType, any>) => signal.cancel());

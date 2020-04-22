@@ -15,6 +15,9 @@ function asMerged<T extends object>(this: TMutable<T>, state: Partial<T>): T {
  */
 export function createMutable<T extends object>(initialValue: T): TMutable<T> {
   log.info("Created mutable entity from:", initialValue);
+  if (initialValue === null || typeof initialValue !== "object") {
+    throw new TypeError("Mutable values can be created for non-null object parameter only.");
+  }
 
   return Object.assign(
     {},

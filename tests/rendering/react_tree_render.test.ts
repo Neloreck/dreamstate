@@ -1,11 +1,12 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
+
 import {
   ExampleContextClassConsumer,
   ExampleContextDecoratedProvider,
   ExampleContextFunctionalConsumer,
   ExampleContextFunctionalProvider
-} from "./test_assets";
+} from "../assets";
 
 describe("React tree for provided and consumed components.", () => {
   it("Should correctly provide manager context from functional provider.", () => {
