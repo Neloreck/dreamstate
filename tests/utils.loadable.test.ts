@@ -5,6 +5,7 @@ import { NESTED_STORE_KEY } from "../src/internals";
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {
     const loadableValue: number = 10;
+    const loadableError: Error = new Error("testError");
     const loadable: ILoadable<number> = createLoadable(loadableValue);
 
     expect(Object.keys(loadable)).toHaveLength(7);
@@ -17,6 +18,23 @@ describe("Loadable util.", () => {
     expect(typeof loadable.asLoading).toBe("function");
     expect(typeof loadable.asReady).toBe("function");
     expect(typeof loadable.asUpdated).toBe("function");
+
+    const loadableWithOtherDefaults: ILoadable<number> = createLoadable(loadableValue, true);
+
+    expect(Object.keys(loadableWithOtherDefaults)).toHaveLength(7);
+
+    expect(loadableWithOtherDefaults.error).toBeNull();
+    expect(loadableWithOtherDefaults.isLoading).toBeTruthy();
+    expect(loadableWithOtherDefaults.value).toBe(loadableValue);
+
+    const loadableWithErrorDefaults: ILoadable<number> = createLoadable(loadableValue, true, loadableError);
+
+    expect(Object.keys(loadableWithErrorDefaults)).toHaveLength(7);
+
+    expect(loadableWithErrorDefaults.error).toBeInstanceOf(Error);
+    expect(loadableWithErrorDefaults.isLoading).toBeTruthy();
+    expect(loadableWithErrorDefaults.value).toBe(loadableValue);
+    expect(loadableWithErrorDefaults.error).toBe(loadableError);
   });
 
   it("Should properly return ready values.", () => {

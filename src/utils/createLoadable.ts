@@ -50,15 +50,19 @@ function asUpdated<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E
 /**
  * Create loadable value utility.
  */
-export function createLoadable<T, E>(initialValue: T | null = null): ILoadable<T, E> {
-  log.info("Created loadable entity:", initialValue);
+export function createLoadable<T, E>(
+  value: T | null = null,
+  isLoading: boolean = false,
+  error: E | null = null
+): ILoadable<T, E> {
+  log.info("Created loadable entity:", value);
 
   return ({
     [NESTED_STORE_KEY]: true,
     // Data.
-    error: null,
-    isLoading: false,
-    value: initialValue,
+    error,
+    isLoading,
+    value,
     // Methods.
     asLoading: asLoading,
     asFailed: asFailed,

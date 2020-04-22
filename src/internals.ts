@@ -31,6 +31,7 @@ export const SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any>> = new Set();
 
 /**
  * Expose internal registry references for debugging.
+ * Included nly for debug bundle.
  */
 declare const IS_DEBUG: boolean;
 
