@@ -5,22 +5,46 @@ import { log } from "../../build/macroses/log.macro";
 /**
  * Bind decorator wrappers factory for methods binding.
  */
-function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey) {
+function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey): PropertyDescriptor {
   log.info("Created bound descriptor for:", property);
 
-  // Descriptor with lazy binding.
+  // Todo: Wait for autobind merge with fix of shared callbacks issue and other.
+  let fn: T = from.value as T;
+  let definingProperty: boolean = false;
+
   return ({
     configurable: true,
     get(this: object): T {
+      if (
+        definingProperty ||
+        // this === target.prototype || - will it fire? Check parent prototypes?
+        Object.prototype.hasOwnProperty.call(this, property) ||
+        typeof fn !== "function"
+      ) {
+        return fn;
+      }
+
       const bound: T = (from as any).value.bind(this);
 
+      definingProperty = true;
+
       Object.defineProperty(this, property, {
-        value: bound,
         configurable: true,
-        writable: true
+        get() {
+          return bound;
+        },
+        set(value) {
+          fn = value;
+          delete this[property];
+        }
       });
 
+      definingProperty = false;
+
       return bound;
+    },
+    set(value: any) {
+      fn = value;
     }
   });
 }

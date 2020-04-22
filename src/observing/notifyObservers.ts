@@ -32,8 +32,6 @@ export function notifyObservers<T extends IStringIndexed<any>>(manager: ContextM
    */
   CONTEXT_SUBSCRIBERS_REGISTRY[(manager.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]].
     forEach(function(it: TUpdateSubscriber<T>) {
-      setTimeout(function () {
-        it(nextContext);
-      });
+      setTimeout(it, 0, nextContext);
     });
 }
