@@ -17,17 +17,17 @@ describe("Signals and signaling.", () => {
     public context: object = {};
 
     @OnSignal(ESignal.NUMBER_SIGNAL)
-    public onNumberSignal(signal: ISignalEvent<TSignalType, number>): void {
+    public onNumberSignal(signal: ISignalEvent<number, TSignalType>): void {
       return;
     }
 
     @OnSignal([ ESignal.STRING_SIGNAL ])
-    public onStringSignal(signal: ISignalEvent<TSignalType, string>): void {
+    public onStringSignal(signal: ISignalEvent<string, TSignalType>): void {
       return;
     }
 
     @OnSignal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
-    public onStringOrNumberSignal(signal: ISignalEvent<TSignalType, number | string>): void {
+    public onStringOrNumberSignal(signal: ISignalEvent<number | string, TSignalType>): void {
       return;
     }
 

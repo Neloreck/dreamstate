@@ -13,7 +13,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   senderId: symbol
 ): Promise<TQueryResponse<R, T> | null> {
   return new Promise(
-    function (resolve: (response: IQueryResponse<R, T> | null) => void , reject: (error: Error) => void): void {
+    function (resolve: (response: IQueryResponse<R, T> | null) => void , reject: (error: Error) => void): any {
       const managersIDs: Array<symbol> = Object.getOwnPropertySymbols(CONTEXT_MANAGERS_REGISTRY);
 
       log.info("Possible query resolvers:", managersIDs.length);
@@ -41,11 +41,24 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
               answerer.constructor.name, managerMeta[jt][0]
             );
 
-            return (answerer as any)[managerMeta[jt][0]](query)
-              .then(function (data: any): void {
-                resolve({ answerer, type: query.type, data });
-              })
-              .catch(reject);
+            /**
+             * Promisify query handler.
+             * If it is async, add then and catch handlers then.
+             * If it is sync - return value or reject on catch.
+             */
+            try {
+              const result: any = (answerer as any)[managerMeta[jt][0]](query);
+
+              if (result instanceof Promise) {
+                return result
+                  .then(function (data: any): void { resolve({ answerer, type: query.type, data }); })
+                  .catch(reject);
+              } else {
+                return resolve({ answerer, type: query.type, data: result });
+              }
+            } catch (error) {
+              reject(error);
+            }
           } else {
             log.info("Skipping query resolver match:", managerId, managerMeta[jt]);
           }
@@ -53,7 +66,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
       }
 
       log.info("Query resolver was not found, returning null:", senderId, query);
-      resolve(null);
+      return resolve(null);
     }
   );
 }
