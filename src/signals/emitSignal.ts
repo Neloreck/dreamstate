@@ -13,7 +13,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   emitter: ContextManager<any> | null = null
 ): void {
   const signal: ISignalEvent<D, T> = Object.assign(
-    base,
+    base as { data: D; type: T },
     {
       emitter,
       cancel: function (): void {
