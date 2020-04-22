@@ -14,11 +14,14 @@ export class TestContextManager extends ContextManager<ITestContext> {
 
 }
 
-export class TestSingleContextManager extends ContextManager<object> {
+export class TestSingleContextManager extends ContextManager<ITestContext> {
 
   protected static IS_SINGLE: boolean = true;
 
-  public readonly context: object = {};
+  public readonly context: ITestContext = {
+    first: "first",
+    second: 2
+  };
 
 }
 

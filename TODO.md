@@ -1,6 +1,6 @@
 ## todo:
 
-1) Unit tests - more
+1) Unit tests - Consume.ts, useManager.ts, Bind.ts.
 2) OnQuery handling both for sync and async methods.
 
 N) Better typing for decorators --> Is it possible now?
@@ -11,4 +11,4 @@ N) Better typing for decorators --> Is it possible now?
 
 - Think about actions/state separation.
 - Better dev assistance with logs and warnings for development bundle.
-- Better docs with change log after v3
+- Better docs with change log after v3 + docs

@@ -15,7 +15,10 @@ export function registerManagerClass<T extends IContextManagerConstructor<any>>(
   return instance as InstanceType<T>;
 }
 
-export function unRegisterManagerClass<T extends IContextManagerConstructor<any>>(managerClass: T): InstanceType<T> {
-  unRegisterManager(managerClass);
+export function unRegisterManagerClass<T extends IContextManagerConstructor<any>>(
+  managerClass: T,
+  forceUnregister: boolean = false,
+): void {
+  unRegisterManager(managerClass, forceUnregister);
 }
 

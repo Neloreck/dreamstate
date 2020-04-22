@@ -2,10 +2,14 @@ import { Context } from "react";
 
 import { ContextManager } from "../src/management";
 import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, CONTEXT_STATES_REGISTRY } from "../src/internals";
-import { addManagerObserverToRegistry, removeManagerObserverFromRegistry } from "../src/registry";
+import {
+  addManagerObserverToRegistry, getCurrentContext, getCurrentManager,
+  removeManagerObserverFromRegistry, subscribeToManager,
+  unsubscribeFromManager
+} from "../src/registry";
 import { TAnyContextManagerConstructor } from "../src/types";
 
-import { registerManagerClass } from "./helpers";
+import { nextAsyncQuery, registerManagerClass, unRegisterManagerClass } from "./helpers";
 import { ITestContext, TestContextManager, TestSingleContextManager } from "./assets";
 
 describe("Context store creation tests.", () => {
@@ -197,4 +201,99 @@ describe("Context store creation tests.", () => {
     expect(manager["beforeUpdate"]).toBeCalled();
     expect(manager["afterUpdate"]).toBeCalled();
   });
+
+  it("Should properly subscribe to manager and unsubscribe.", async () => {
+    const manager: TestContextManager = registerManagerClass(TestContextManager);
+
+    const initialMockFn = jest.fn();
+    const withCheckParamsMockFn = jest.fn((context: ITestContext) => {
+      expect(context.first).toBe("example");
+      expect(context.second).toBe(100);
+    });
+
+    subscribeToManager(TestContextManager, initialMockFn, true);
+    subscribeToManager(TestContextManager, withCheckParamsMockFn);
+
+    expect(initialMockFn).toBeCalledWith(manager.context);
+    expect(withCheckParamsMockFn).not.toBeCalled();
+
+    initialMockFn.mockClear();
+
+    manager.setContext(({ first: "example", second: 100 }));
+
+    await nextAsyncQuery();
+
+    expect(initialMockFn).toBeCalled();
+    expect(initialMockFn).toBeCalled();
+
+    initialMockFn.mockClear();
+
+    unsubscribeFromManager(TestContextManager, withCheckParamsMockFn);
+    unsubscribeFromManager(TestContextManager, initialMockFn);
+
+    manager.setContext(({ first: "d", second: 35 }));
+
+    await nextAsyncQuery();
+    expect(initialMockFn).not.toBeCalled();
+
+    unRegisterManagerClass(TestContextManager);
+  });
+
+  it("Should correctly register context and get current context/manager.", () => {
+    expect(getCurrentManager(TestContextManager)).toBeNull();
+    expect(getCurrentContext(TestContextManager)).toBeNull();
+
+    registerManagerClass(TestContextManager);
+
+    expect(getCurrentManager(TestContextManager)).not.toBeNull();
+    expect(getCurrentContext(TestContextManager)).not.toBeNull();
+
+    unRegisterManagerClass(TestContextManager);
+
+    expect(getCurrentManager(TestContextManager)).toBeNull();
+    expect(getCurrentContext(TestContextManager)).toBeNull();
+  });
+
+  it("Should correctly create new managers after provision restart.", () => {
+    registerManagerClass(TestContextManager);
+
+    getCurrentManager(TestContextManager)!.setContext({ first: "15", second: 15 });
+
+    expect(getCurrentContext(TestContextManager)!.first).toBe("15");
+    expect(getCurrentContext(TestContextManager)!.second).toBe(15);
+
+    unRegisterManagerClass(TestContextManager);
+
+    registerManagerClass(TestContextManager);
+
+    expect(getCurrentContext(TestContextManager)!.first).toBe("first");
+    expect(getCurrentContext(TestContextManager)!.second).toBe(2);
+
+    unRegisterManagerClass(TestContextManager);
+  });
+
+  it("Should correctly save singleton managers state after provision restart and force unregister.", () => {
+    registerManagerClass(TestSingleContextManager);
+
+    getCurrentManager(TestSingleContextManager)!.setContext({ first: "15", second: 15 });
+
+    expect(getCurrentContext(TestSingleContextManager)!.first).toBe("15");
+    expect(getCurrentContext(TestSingleContextManager)!.second).toBe(15);
+
+    unRegisterManagerClass(TestSingleContextManager);
+
+    registerManagerClass(TestSingleContextManager);
+
+    expect(getCurrentContext(TestSingleContextManager)!.first).toBe("15");
+    expect(getCurrentContext(TestSingleContextManager)!.second).toBe(15);
+
+    unRegisterManagerClass(TestSingleContextManager, true);
+
+    registerManagerClass(TestSingleContextManager);
+
+    expect(getCurrentContext(TestSingleContextManager)!.first).toBe("first");
+    expect(getCurrentContext(TestSingleContextManager)!.second).toBe(2);
+
+    unRegisterManagerClass(TestSingleContextManager, true);
+  })
 });

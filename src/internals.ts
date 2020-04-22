@@ -27,7 +27,7 @@ export const CONTEXT_SIGNAL_METADATA_REGISTRY: IStringIndexed<TSignalSubscriptio
 export const CONTEXT_SIGNAL_HANDLERS_REGISTRY: IStringIndexed<TSignalListener<any>> = {};
 export const CONTEXT_QUERY_METADATA_REGISTRY: IStringIndexed<TQuerySubscriptionMetadata> = {};
 
-export const SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any>> = new Set();
+export const SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any, any>> = new Set();
 
 /**
  * Expose internal registry references for debugging.

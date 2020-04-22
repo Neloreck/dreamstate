@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 1`] = `
+<UsingSignalFunction
+  onInternalSignal={[MockFunction]}
+>
+  <div>
+    initial
+  </div>
+</UsingSignalFunction>
+`;
+
+exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 2`] = `
+<UsingSignalFunction
+  onInternalSignal={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          Object {
+            "cancel": [Function],
+            "data": "newValue",
+            "emitter": EmittingContextManager {
+              "context": Object {},
+            },
+            "type": "STRING_SIGNAL",
+          },
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+>
+  <div>
+    newValue
+  </div>
+</UsingSignalFunction>
+`;

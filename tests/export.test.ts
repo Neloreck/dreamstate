@@ -10,8 +10,10 @@ describe("Library exported API tests.", () => {
     "Consumable",
     "SignalEvent",
     "Signal",
+    "SignalType",
     "QueryRequest",
     "QueryResponse",
+    "QueryType",
     // Management.
     "ContextManager",
     // Registry.
@@ -31,7 +33,7 @@ describe("Library exported API tests.", () => {
     "OnSignal",
     "unsubscribeFromSignals",
     "subscribeToSignals",
-    "useSignal",
+    "useSignals",
     "emitSignal",
     // Queries.
     "OnQuery",

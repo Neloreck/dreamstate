@@ -13,8 +13,10 @@ export {
   TConsumable as Consumable,
   ISignalEvent as SignalEvent,
   ISignal as Signal,
+  TSignalType as SignalType,
   TQueryResponse as QueryResponse,
-  TQueryRequest as QueryRequest
+  TQueryRequest as QueryRequest,
+  TQueryType as QueryType
 } from "./types";
 
 export { ContextManager } from "./management";
@@ -23,7 +25,7 @@ export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurre
 
 export { createProvider, Provide, withProvision } from "./provision";
 
-export { OnSignal, useSignal, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "./signals";
+export { OnSignal, useSignals, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "./signals";
 
 export { OnQuery } from "./queries";
 

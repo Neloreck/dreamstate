@@ -12,6 +12,7 @@ import { log } from "../../build/macroses/log.macro";
 
 export function unRegisterManager<T extends object>(
   managerConstructor: IContextManagerConstructor<T>,
+  forceUnregister: boolean = false
 ): void {
   const instance: ContextManager<T> | undefined = CONTEXT_MANAGERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
 
@@ -24,7 +25,7 @@ export function unRegisterManager<T extends object>(
     log.info("Context manager provision ended:", managerConstructor.name);
 
     // @ts-ignore
-    if (!managerConstructor["IS_SINGLE"]) {
+    if (!managerConstructor["IS_SINGLE"] || forceUnregister) {
       unsubscribeFromSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]]);
 
       delete CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
