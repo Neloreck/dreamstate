@@ -3,7 +3,7 @@ import { ComponentType, createElement, memo, ReactElement, useCallback, useState
 import { EMPTY_ARR, } from "../internals";
 import { IStringIndexed, TAnyContextManagerConstructor, } from "../types";
 import { useLazyInitializeManager } from "./useLazyInitializeManager";
-import { provideSubTree } from "./provideSubTree";
+import { provideSubTreeRecursive } from "./provideSubTreeRecursive";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -25,7 +25,7 @@ export function createManagersObserver(
       useLazyInitializeManager(sources[it], updateProviders);
     }
 
-    return provideSubTree(0, (children ? createElement(children, props) : props.children), sources);
+    return provideSubTreeRecursive(0, (children ? createElement(children, props) : props.children), sources);
   }
 
   Observer.displayName = "DS.Observer";
