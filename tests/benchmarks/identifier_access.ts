@@ -1,15 +1,38 @@
 import { Event, Suite } from "benchmark";
 
-import { registerManagerClass, unRegisterManagerClass } from "../helpers";
-import { TestContextManager } from "../assets";
-import { IDENTIFIER_KEY } from "../../src/internals";
-
 const testSuite: Suite = new Suite();
+const key: any = Symbol();
+const nestedKey: any = Symbol();
+
+const nested = {
+  [nestedKey]: key
+};
+
+const testObjectA = {
+  [key]: 15
+};
+
+const testObjectB = {
+  [key]: "1"
+};
+
+const testObjectC = {
+  [key]: false
+};
 
 testSuite
-  .add("Direct indexed reference with lazy init.", () => TestContextManager[IDENTIFIER_KEY])
-  .on("start", () => registerManagerClass(TestContextManager))
-  .on("complete", () => unRegisterManagerClass(TestContextManager))
+  .add("Saved constant reference.", () => {
+    const scoped: any = key;
+
+    testObjectA[scoped];
+    testObjectB[scoped];
+    testObjectC[scoped];
+  })
+  .add("Each time access reference.", () => {
+    testObjectA[nested[nestedKey]];
+    testObjectB[nested[nestedKey]];
+    testObjectC[nested[nestedKey]];
+  })
   .on("complete", () => console.log("Fastest is " + testSuite.filter("fastest").map("name" as any)))
   .on("cycle", (event: Event) => console.log(String(event.target)))
   .run({ "async": true });
