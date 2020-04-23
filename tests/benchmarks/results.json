@@ -15,5 +15,17 @@
       "1,641,389 ops/sec ±1.54%",
       "1,646,970 ops/sec ±1.56%"
     ]
+  },
+  "recursion_vs_iterative_create_element": {
+    "recursion": [
+      "73,354 ops/sec ±1.04%",
+      "75,315 ops/sec ±1.27%",
+      "75,600 ops/sec ±1.14%"
+    ],
+    "iterative": [
+      "75,315 ops/sec ±1.28%",
+      "72,598 ops/sec ±1.90%",
+      "76,614 ops/sec ±1.04%"
+    ]
   }
 }

@@ -14,7 +14,7 @@ export function provideSubTreeIterative(
 ): ReactElement {
   let acc: ReactElement = bottom;
 
-  for (let it = sources.length; it >= 0; it --) {
+  for (let it = sources.length - 1; it >= 0; it --) {
     acc = createElement(
       sources[it].REACT_CONTEXT.Provider,
       { value: CONTEXT_STATES_REGISTRY[sources[it][IDENTIFIER_KEY]] },
