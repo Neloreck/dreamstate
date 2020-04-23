@@ -1,7 +1,8 @@
 ## todo:
 
-1) Unit tests - Consume.ts, useManager.ts, Bind.ts.
+1) Unit tests - Consume.ts, Bind.ts.
 2) OnQuery handling both for sync and async methods.
+3) Think about inheritance and how to implement it/warn about it without performance degradation.
 
 N) Better typing for decorators --> Is it possible now?
 
