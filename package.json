@@ -22,7 +22,7 @@
     "build:dts": "npx tsc -d -p ./build --outDir ./lib/types --emitDeclarationOnly",
     "build": "npm run clean && npm run build:esm && npm run build:prod && npm run build:dts",
     "=============================": "================================================================================",
-    "lint": "npx eslint src/ --ext .ts",
+    "lint": "npx eslint src/ tests/ --ext .ts",
     "test": "jest --config ./build/jest.config.js",
     "===============================": "==============================================================================",
     "prepublishOnly": "npm run lint && npm test && npm run build"

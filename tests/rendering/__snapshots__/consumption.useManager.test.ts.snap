@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UseManager subscription and rendering. Functional components should properly subscribe to managers with diff-checking cb. 1`] = `
+<Memo(DS.Observer)>
+  <ExampleContextFunctionalConsumerWithUseEffect
+    onCheckContextDiff={[Function]}
+    onUpdate={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+  >
+    <div>
+      {"exampleActions":{},"exampleNumber":0,"exampleString":"initial"}
+    </div>
+  </ExampleContextFunctionalConsumerWithUseEffect>
+</Memo(DS.Observer)>
+`;
+
+exports[`UseManager subscription and rendering. Functional components should properly subscribe to managers without diff-checking cb. 1`] = `
+<Memo(DS.Observer)>
+  <ExampleContextFunctionalConsumerWithUseEffect
+    onUpdate={
+      [MockFunction] {
+        "calls": Array [
+          Array [],
+        ],
+        "results": Array [
+          Object {
+            "type": "return",
+            "value": undefined,
+          },
+        ],
+      }
+    }
+  >
+    <div>
+      {"exampleActions":{},"exampleNumber":0,"exampleString":"initial"}
+    </div>
+  </ExampleContextFunctionalConsumerWithUseEffect>
+</Memo(DS.Observer)>
+`;

@@ -1,4 +1,4 @@
-import { createElement, PureComponent, ReactElement, ReactNode } from "react";
+import { createElement, PureComponent, ReactElement, ReactNode, useEffect } from "react";
 import {
   Consume,
   ContextManager,
@@ -92,3 +92,18 @@ export const ExampleContextHocConsumer = withConsumption([ { from: ExampleContex
 
   }
 );
+
+export function ExampleContextFunctionalConsumerWithUseEffect({
+  onUpdate,
+  onCheckContextDiff
+}: {
+  onUpdate: () => void;
+  onCheckContextDiff?: (context: IExampleContext) => Array<any>;
+}
+): ReactElement {
+  const context: IExampleContext = useManager(ExampleContextManager, onCheckContextDiff);
+
+  useEffect(onUpdate);
+
+  return createElement("div", {}, JSON.stringify(context));
+}

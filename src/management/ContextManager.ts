@@ -1,6 +1,11 @@
 import { Context, createContext } from "react";
 
-import { CONTEXT_STATES_REGISTRY, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "../internals";
+import {
+  CONTEXT_STATES_REGISTRY,
+  EMPTY_STRING,
+  IDENTIFIER_KEY,
+  MANAGER_REGEX
+} from "../internals";
 import {
   IContextManagerConstructor,
   IQueryRequest,
@@ -37,6 +42,10 @@ export abstract class ContextManager<T extends object> {
    * Allows to get related React.Context for manual renders.
    */
   public static get REACT_CONTEXT() {
+    if (this === ContextManager) {
+      throw new Error("Cannot reference to ContextManager statics directly. Only inherited classes allowed.");
+    }
+
     const reactContext: Context<any> = createContext(null as any);
 
     reactContext.displayName = "DS." + this.name.replace(MANAGER_REGEX, EMPTY_STRING);
@@ -57,6 +66,10 @@ export abstract class ContextManager<T extends object> {
    * Lazy initialization for IDENTIFIER KEY and manager related registry.
    */
   public static get [IDENTIFIER_KEY](): symbol {
+    if (this === ContextManager) {
+      throw new Error("Cannot reference to ContextManager statics directly. Only inherited classes allowed.");
+    }
+
     const id: symbol = createManagerId("");
 
     Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });

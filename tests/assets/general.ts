@@ -14,6 +14,14 @@ export class TestContextManager extends ContextManager<ITestContext> {
 
 }
 
+export class ExtendingTestContextManager extends TestContextManager {
+
+  public concat(): string {
+    return this.context.first + this.context.second;
+  }
+
+}
+
 export class TestSingleContextManager extends ContextManager<ITestContext> {
 
   protected static IS_SINGLE: boolean = true;
@@ -22,6 +30,14 @@ export class TestSingleContextManager extends ContextManager<ITestContext> {
     first: "first",
     second: 2
   };
+
+}
+
+export class ExtendingTestSingleContextManager extends TestSingleContextManager {
+
+  public concat(): string {
+    return this.context.first + this.context.second;
+  }
 
 }
 
