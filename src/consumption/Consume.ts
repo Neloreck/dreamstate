@@ -140,13 +140,15 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
     return createElement(
       target,
       Object.assign(
-        mutators.reduce(function (
-          acc: IStringIndexed<any>,
-          mutator: (acc: IStringIndexed<any>) => IStringIndexed<any>
-        ) {
-          return mutator(acc);
-        },
-        {}),
+        mutators.reduce(
+          function (
+            acc: IStringIndexed<any>,
+            mutator: (acc: IStringIndexed<any>) => IStringIndexed<any>
+          ) {
+            return mutator(acc);
+          },
+          {}
+        ),
         ownProps
       )
     );
