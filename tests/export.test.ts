@@ -48,4 +48,9 @@ describe("Library exported API tests.", () => {
     Object.keys(libRoot).forEach((it: string) => expect(expectedExports.includes(it)).toBeTruthy());
     expect(Object.keys(libRoot)).toHaveLength(expectedExports.length);
   });
+
+  it("Should not declare debug varibles for production.", () => {
+    expect((global as any).IS_DEBUG).toBeFalsy();
+    expect((window as any).__DREAMSTATE_DEBUG_INTERNALS).toBeUndefined();
+  });
 });

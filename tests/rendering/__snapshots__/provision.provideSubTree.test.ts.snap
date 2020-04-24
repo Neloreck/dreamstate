@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ProvideSubTree should properly render in declared order. Implementations must return same results. 1`] = `
+<div>
+  <ContextProvider
+    value={
+      Object {
+        "first": "first",
+        "second": 2,
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "first": Object {
+            "a": 1,
+            "b": 2,
+          },
+          "second": Object {
+            "c": 3,
+            "d": 4,
+          },
+        }
+      }
+    >
+      <ContextProvider
+        value={
+          Object {
+            "first": "first",
+            "second": 2,
+          }
+        }
+      >
+        <div>
+          bottom
+        </div>
+      </ContextProvider>
+    </ContextProvider>
+  </ContextProvider>
+</div>
+`;
+
+exports[`ProvideSubTree should properly render in declared order. Implementations must return same results. 2`] = `
+<div>
+  <ContextProvider
+    value={
+      Object {
+        "first": "first",
+        "second": 2,
+      }
+    }
+  >
+    <ContextProvider
+      value={
+        Object {
+          "first": Object {
+            "a": 1,
+            "b": 2,
+          },
+          "second": Object {
+            "c": 3,
+            "d": 4,
+          },
+        }
+      }
+    >
+      <ContextProvider
+        value={
+          Object {
+            "first": "first",
+            "second": 2,
+          }
+        }
+      >
+        <div>
+          bottom
+        </div>
+      </ContextProvider>
+    </ContextProvider>
+  </ContextProvider>
+</div>
+`;

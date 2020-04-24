@@ -1,4 +1,6 @@
 import { ContextManager } from "../../src/management";
+import { createProvider } from "../../src/provision";
+import { createElement, PropsWithChildren, ReactElement } from "react";
 
 export interface ITestContext {
   first: string;
@@ -13,6 +15,8 @@ export class TestContextManager extends ContextManager<ITestContext> {
   };
 
 }
+
+export const TextContextManagerProvider = createProvider([ TestContextManager ]);
 
 export class ExtendingTestContextManager extends TestContextManager {
 
@@ -65,4 +69,15 @@ export class NestedContextManager extends ContextManager<INestedContext> {
     }
   };
 
+}
+
+export class BasicClassExample {
+
+  public a: number = 15;
+  public b: string = "example";
+
+}
+
+export function PropsRenderer(props: PropsWithChildren<object>): ReactElement {
+  return createElement("div", {}, JSON.stringify(props));
 }

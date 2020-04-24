@@ -27,7 +27,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
           // Should have correct alias or undefined.
           (typeof source.as !== "undefined" && typeof source.as !== "string") ||
           // Should have anything for key-mapping except objects and nulls.
-          typeof source.take === "object"
+          (!Array.isArray(source.take) && typeof source.take === "object")
         )
       )
       ||
@@ -101,6 +101,9 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
           return Object.values(take(current));
         };
 
+        /**
+         * todo: Is there any necessary to check return value: is it object or not?
+         */
         if (alias) {
           mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[alias] = take(useManager(source.from, memoCheck));

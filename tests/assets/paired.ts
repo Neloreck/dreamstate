@@ -107,3 +107,7 @@ export function ExampleContextFunctionalConsumerWithUseEffect({
 
   return createElement("div", {}, JSON.stringify(context));
 }
+
+export function ExamplePureFunctionalComponent(props: object): ReactElement {
+  return createElement("div", {} , "pure");
+}

@@ -8,7 +8,6 @@ import { TAnyContextManagerConstructor } from "../types";
  * Iterative impl.
  */
 export function provideSubTreeIterative(
-  current: number,
   bottom: ReactElement,
   sources: Array<TAnyContextManagerConstructor>
 ): ReactElement {
