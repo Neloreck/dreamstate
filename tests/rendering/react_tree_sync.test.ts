@@ -9,9 +9,7 @@ import { ExampleContextClassConsumer, ExampleContextFunctionalProvider, ExampleC
 describe("React tree for provided and consumed components.", () => {
   it("Should correctly update subscribed to functional provider elements view.", () => {
     const reactTree = mount(
-      createElement(ExampleContextFunctionalProvider,
-        {} as any,
-        createElement(ExampleContextClassConsumer))
+      createElement(ExampleContextFunctionalProvider, {} as any, createElement(ExampleContextClassConsumer))
     );
 
     expect(reactTree).toMatchSnapshot("Initial state.");

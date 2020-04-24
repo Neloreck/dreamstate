@@ -19,12 +19,8 @@ export function createMutable<T extends object>(initialValue: T): TMutable<T> {
     throw new TypeError("Mutable values can be created for non-null object parameter only.");
   }
 
-  return Object.assign(
-    {},
-    initialValue,
-    {
-      [NESTED_STORE_KEY]: true,
-      asMerged: asMerged as any
-    }
-  );
+  return Object.assign({}, initialValue, {
+    [NESTED_STORE_KEY]: true,
+    asMerged: asMerged as any
+  });
 }

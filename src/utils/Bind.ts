@@ -11,13 +11,13 @@ import { log } from "../../build/macroses/log.macro";
  * I would rather tell people to use another approach with instance binding than running into issues
  * with incorrect ES inheritance after runtime modification of base class.
  */
-function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: PropertyKey): PropertyDescriptor {
+function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: PropertyKey): PropertyDescriptor {
   log.info("Created bound descriptor for:", property);
 
   // Todo: Wait for autobind merge with fix of shared callbacks issue and other.
   let definingProperty: boolean = false;
 
-  return ({
+  return {
     configurable: true,
     get(this: object): T {
       if (
@@ -46,7 +46,7 @@ function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: P
     set() {
       throw new Error("Direct runtime modification of decorated in a declarative way method is not allowed.");
     }
-  });
+  };
 }
 
 /**
@@ -56,7 +56,7 @@ function createBoundDescriptor <T>(from: TypedPropertyDescriptor<T>, property: P
  * Modified for proposal support.
  */
 export function Bind(): MethodDecorator {
-  return function<T>(
+  return function <T> (
     targetOrDescriptor: object | MethodDescriptor,
     propertyKey: PropertyKey | undefined,
     descriptor: TypedPropertyDescriptor<T> | undefined

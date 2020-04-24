@@ -32,4 +32,3 @@ export { OnQuery } from "./queries";
 export { useManager, Consume, withConsumption } from "./consumption";
 
 export { Bind, createLoadable, createMutable, createSetter } from "./utils";
-

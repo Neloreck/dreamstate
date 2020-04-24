@@ -9,11 +9,10 @@ describe("@Bind method decorator.", () => {
     public method(): this {
       return this;
     }
-
+  
   }
 
-  class Extending extends Base {
-  }
+  class Extending extends Base {}
 
   it("Should correctly bind methods to instances.", () => {
     const first: Base = new Base();
@@ -39,7 +38,7 @@ describe("@Bind method decorator.", () => {
     expect(base.method()).toBe(base);
 
     // It will ignore later references since it is not writable.
-    expect(() => base.method = () => 1 as any).toThrow(TypeError);
+    expect(() => (base.method = () => 1 as any)).toThrow(TypeError);
 
     expect(base.method()).toBe(base);
     expect(base.method.call(null)).toBe(base);
@@ -52,12 +51,15 @@ describe("@Bind method decorator.", () => {
   it("Should allow to re-assign method before first usage. Special case - testing of classes", () => {
     const base: Base = new Base();
 
-    expect(() => base.method = () => 1 as any).toThrow();
+    expect(() => (base.method = () => 1 as any)).toThrow();
     expect(base.method()).toBe(base);
-    expect(() => base.method = () => 2 as any).toThrow();
+    expect(() => (base.method = () => 2 as any)).toThrow();
 
     expect(() => {
-      Object.defineProperty(base, "method", { value: () => 50, writable: false });
+      Object.defineProperty(base, "method", {
+        value: () => 50,
+        writable: false
+      });
     }).not.toThrow();
 
     expect(base.method()).toBe(50);

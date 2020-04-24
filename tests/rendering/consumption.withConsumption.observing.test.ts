@@ -5,12 +5,7 @@ import { act } from "react-dom/test-utils";
 import { withConsumption } from "../../src/consumption";
 import { getCurrentManager } from "../../src/registry";
 
-import {
-  ITestContext,
-  RenderCallbacker,
-  TestContextManager,
-  TextContextManagerProvider
-} from "../assets";
+import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "../assets";
 import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "../helpers";
 
 describe("HoC @Consume and withConsumption selector observing.", () => {
@@ -152,7 +147,10 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
   it("Should properly observe selector picked props and prevent odd updates.", async () => {
     const manager: TestContextManager = getCurrentManager(TestContextManager)!;
     const Observer = withConsumption([
-      { from: TestContextManager, take: (context: ITestContext) => ({ prop: context.second }) }
+      {
+        from: TestContextManager,
+        take: (context: ITestContext) => ({ prop: context.second })
+      }
     ])(RenderCallbacker);
     const onRender = jest.fn();
 

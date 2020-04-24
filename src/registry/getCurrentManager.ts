@@ -12,5 +12,5 @@ export function getCurrentManager<T extends TAnyContextManagerConstructor>(
 ): InstanceType<T> | null {
   log.info("Requested current manager:", managerConstructor.name);
 
-  return CONTEXT_MANAGERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]] as InstanceType<T> || null;
+  return (CONTEXT_MANAGERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]] as InstanceType<T>) || null;
 }

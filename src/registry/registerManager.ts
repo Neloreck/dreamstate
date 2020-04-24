@@ -5,7 +5,7 @@ import {
   CONTEXT_MANAGERS_REGISTRY,
   CONTEXT_SIGNAL_HANDLERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
-  IDENTIFIER_KEY,
+  IDENTIFIER_KEY
 } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";
@@ -13,9 +13,7 @@ import { log } from "../../build/macroses/log.macro";
 /**
  * Register context manager entry.
  */
-export function registerManager<T extends object>(
-  managerConstructor: IContextManagerConstructor<T>,
-): void {
+export function registerManager<T extends object>(managerConstructor: IContextManagerConstructor<T>): void {
   // Only if registry is empty -> create new instance, remember its context and save it to registry.
   if (
     !Object.prototype.hasOwnProperty.call(managerConstructor, IDENTIFIER_KEY) ||
@@ -25,8 +23,9 @@ export function registerManager<T extends object>(
 
     CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]] = instance.context;
     CONTEXT_MANAGERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]] = instance;
-    CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]]
-      = onMetadataSignalListenerCalled.bind(instance);
+    CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]] = onMetadataSignalListenerCalled.bind(
+      instance
+    );
 
     subscribeToSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]]);
 

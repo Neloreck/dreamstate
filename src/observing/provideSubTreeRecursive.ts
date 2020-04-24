@@ -12,13 +12,11 @@ export function provideSubTreeRecursive(
   bottom: ReactElement,
   sources: Array<TAnyContextManagerConstructor>
 ): ReactElement {
-  return (
-    current >= sources.length
-      ? bottom
-      : createElement(
-        sources[current].REACT_CONTEXT.Provider,
-        { value: CONTEXT_STATES_REGISTRY[sources[current][IDENTIFIER_KEY]] },
-        provideSubTreeRecursive(current + 1, bottom, sources)
-      )
-  );
+  return current >= sources.length
+    ? bottom
+    : createElement(
+      sources[current].REACT_CONTEXT.Provider,
+      { value: CONTEXT_STATES_REGISTRY[sources[current][IDENTIFIER_KEY]] },
+      provideSubTreeRecursive(current + 1, bottom, sources)
+    );
 }

@@ -8,7 +8,8 @@ import { nextAsyncQueue } from "../helpers";
 import {
   ExampleContextFunctionalConsumerWithUseEffect,
   ExampleContextFunctionalProvider,
-  ExampleContextManager, IExampleContext
+  ExampleContextManager,
+  IExampleContext
 } from "../assets";
 
 describe("UseManager subscription and rendering.", () => {
@@ -18,7 +19,9 @@ describe("UseManager subscription and rendering.", () => {
       createElement(
         ExampleContextFunctionalProvider,
         {},
-        createElement(ExampleContextFunctionalConsumerWithUseEffect, { onUpdate: mockFn })
+        createElement(ExampleContextFunctionalConsumerWithUseEffect, {
+          onUpdate: mockFn
+        })
       )
     );
 
@@ -64,10 +67,10 @@ describe("UseManager subscription and rendering.", () => {
       createElement(
         ExampleContextFunctionalProvider,
         {},
-        createElement(
-          ExampleContextFunctionalConsumerWithUseEffect,
-          { onUpdate: mockFn, onCheckContextDiff: (context: IExampleContext) => [ context.exampleString ] }
-        )
+        createElement(ExampleContextFunctionalConsumerWithUseEffect, {
+          onUpdate: mockFn,
+          onCheckContextDiff: (context: IExampleContext) => [ context.exampleString ]
+        })
       )
     );
 

@@ -70,13 +70,13 @@ describe("HoC @Consume and withConsumption selector validation.", () => {
 
   it("Should properly select array properties with or without alias.", () => {
     const TestComponentWithNoProps = withConsumption([ { from: TestContextManager, take: [] } ])(PropsRenderer);
-    const TestComponentWithNoPropsAliased = withConsumption([{ from: TestContextManager, take: [] }])(PropsRenderer);
-    const TestComponentWithSecondProp = withConsumption([
-      { from: TestContextManager, take: [ "second" ] }
-    ])(PropsRenderer);
-    const TestComponentWithAllProps = withConsumption([
-      { from: TestContextManager, take: [ "first", "second" ] }
-    ])(PropsRenderer);
+    const TestComponentWithNoPropsAliased = withConsumption([ { from: TestContextManager, take: [] } ])(PropsRenderer);
+    const TestComponentWithSecondProp = withConsumption([ { from: TestContextManager, take: [ "second" ] } ])(
+      PropsRenderer
+    );
+    const TestComponentWithAllProps = withConsumption([ { from: TestContextManager, take: [ "first", "second" ] } ])(
+      PropsRenderer
+    );
     const TestComponentWithAllPropsAliased = withConsumption([
       { from: TestContextManager, take: [ "first", "second" ], as: "alias" }
     ])(PropsRenderer);
@@ -93,13 +93,27 @@ describe("HoC @Consume and withConsumption selector validation.", () => {
       { from: TestContextManager, take: (context: ITestContext) => context }
     ])(PropsRenderer);
     const TestComponentWithAllPropsAliased = withConsumption([
-      { from: TestContextManager, take: (context: ITestContext) => context, as: "custom" }
+      {
+        from: TestContextManager,
+        take: (context: ITestContext) => context,
+        as: "custom"
+      }
     ])(PropsRenderer);
     const TestComponentWithCustomSelector = withConsumption([
-      { from: TestContextManager, take: (context: ITestContext) => ({ a: context.first, b: context.second }) }
+      {
+        from: TestContextManager,
+        take: (context: ITestContext) => ({
+          a: context.first,
+          b: context.second
+        })
+      }
     ])(PropsRenderer);
     const TestComponentWithCustomSelectorAliased = withConsumption([
-      { from: TestContextManager, take: (context: ITestContext) => ({ a: context.first }), as: "custom" }
+      {
+        from: TestContextManager,
+        take: (context: ITestContext) => ({ a: context.first }),
+        as: "custom"
+      }
     ])(PropsRenderer);
 
     expect(mountProvided(TestComponentWithAllProps)).toMatchSnapshot();

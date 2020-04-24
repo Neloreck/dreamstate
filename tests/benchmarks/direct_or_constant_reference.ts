@@ -12,4 +12,4 @@ testSuite
   .on("complete", () => unRegisterManagerClass(TestContextManager))
   .on("complete", () => console.log("Fastest is " + testSuite.filter("fastest").map("name" as any)))
   .on("cycle", (event: Event) => console.log(String(event.target)))
-  .run({ "async": true });
+  .run({ async: true });

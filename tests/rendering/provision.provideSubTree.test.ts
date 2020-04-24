@@ -3,11 +3,7 @@ import { shallow } from "enzyme";
 
 import { provideSubTreeIterative, provideSubTreeRecursive } from "../../src/observing";
 
-import {
-  NestedContextManager,
-  TestContextManager,
-  TestSingleContextManager
-} from "../assets";
+import { NestedContextManager, TestContextManager, TestSingleContextManager } from "../assets";
 import { registerManagerClass, unRegisterManagerClass } from "../helpers";
 
 describe("ProvideSubTree should properly render in declared order.", () => {
@@ -28,21 +24,22 @@ describe("ProvideSubTree should properly render in declared order.", () => {
       createElement(
         "div",
         {},
-        provideSubTreeIterative(
-          createElement("div", {}, "bottom"),
-          [ TestContextManager, NestedContextManager, TestContextManager ]
-        )
+        provideSubTreeIterative(createElement("div", {}, "bottom"), [
+          TestContextManager,
+          NestedContextManager,
+          TestContextManager
+        ])
       )
     );
     const recursive = shallow(
       createElement(
         "div",
         {},
-        provideSubTreeRecursive(
-          0,
-          createElement("div", {}, "bottom"),
-          [ TestContextManager, NestedContextManager, TestContextManager ]
-        )
+        provideSubTreeRecursive(0, createElement("div", {}, "bottom"), [
+          TestContextManager,
+          NestedContextManager,
+          TestContextManager
+        ])
       )
     );
 

@@ -41,7 +41,7 @@ describe("Library exported API tests.", () => {
     "createMutable",
     "createLoadable",
     "createSetter",
-    "Bind",
+    "Bind"
   ];
 
   it("Should export correct API methods", () => {

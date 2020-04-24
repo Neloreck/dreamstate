@@ -7,7 +7,7 @@ export interface IContextManagerConstructor<T extends object> {
   [IDENTIFIER_KEY]: any;
   REACT_CONTEXT: Context<T>;
   prototype: ContextManager<T>;
-  new(): ContextManager<T>;
+  new (): ContextManager<T>;
 }
 
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any>;

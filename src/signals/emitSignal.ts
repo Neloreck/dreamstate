@@ -12,14 +12,12 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: ISignal<D, T>,
   emitter: ContextManager<any> | null = null
 ): void {
-  const signal: ISignalEvent<D, T> = Object.assign(
-    base as { data: D; type: T },
-    {
-      emitter,
-      cancel: function (): void {
-        (this as ISignalEvent<D, T>).cancelled = true;
-      }
-    });
+  const signal: ISignalEvent<D, T> = Object.assign(base as { data: D; type: T }, {
+    emitter,
+    cancel: function (): void {
+      (this as ISignalEvent<D, T>).cancelled = true;
+    }
+  });
 
   log.info("Signal API emit signal:", base, emitter ? emitter.constructor.name : null);
 

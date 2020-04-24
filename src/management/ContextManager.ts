@@ -1,11 +1,6 @@
 import { Context, createContext } from "react";
 
-import {
-  CONTEXT_STATES_REGISTRY,
-  EMPTY_STRING,
-  IDENTIFIER_KEY,
-  MANAGER_REGEX
-} from "../internals";
+import { CONTEXT_STATES_REGISTRY, EMPTY_STRING, IDENTIFIER_KEY, MANAGER_REGEX } from "../internals";
 import {
   IContextManagerConstructor,
   IQueryRequest,
@@ -52,11 +47,11 @@ export abstract class ContextManager<T extends object> {
 
     log.info("Context manager context declared:", this.name, reactContext.displayName);
 
-    Object.defineProperty(
-      this,
-      "REACT_CONTEXT",
-      { value: reactContext, writable: false, configurable: false }
-    );
+    Object.defineProperty(this, "REACT_CONTEXT", {
+      value: reactContext,
+      writable: false,
+      configurable: false
+    });
 
     return reactContext;
   }
@@ -72,7 +67,11 @@ export abstract class ContextManager<T extends object> {
 
     const id: symbol = createManagerId("");
 
-    Object.defineProperty(this, IDENTIFIER_KEY, { value: id, writable: false, configurable: false });
+    Object.defineProperty(this, IDENTIFIER_KEY, {
+      value: id,
+      writable: false,
+      configurable: false
+    });
 
     return id;
   }
@@ -109,9 +108,12 @@ export abstract class ContextManager<T extends object> {
     /**
      * Compare current context with saved for observing one.
      */
-    if (shouldObserversUpdate(
-      CONTEXT_STATES_REGISTRY[(this.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]], nextContext
-    )) {
+    if (
+      shouldObserversUpdate(
+        CONTEXT_STATES_REGISTRY[(this.constructor as IContextManagerConstructor<T>)[IDENTIFIER_KEY]],
+        nextContext
+      )
+    ) {
       log.info("Updating context manager:", this.constructor.name);
 
       this.beforeUpdate(nextContext);
@@ -158,9 +160,10 @@ export abstract class ContextManager<T extends object> {
     emitSignal(baseSignal, this);
   }
 
-  protected sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
-    queryRequest: { type: T; data?: D }
-  ): Promise<IQueryResponse<R, T> | null> {
+  protected sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: {
+    type: T;
+    data?: D;
+  }): Promise<IQueryResponse<R, T> | null> {
     log.info("Context manager sending query:", this.constructor.name, queryRequest);
 
     return sendQuery(

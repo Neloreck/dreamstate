@@ -7,12 +7,13 @@ import { IStringIndexed } from "../types";
  * Compare context manager state diff with shallow check + nested objects check.
  */
 export function shouldObserversUpdate<T extends object>(
-  previousContext: IStringIndexed<any>, nextContext: IStringIndexed<any>
+  previousContext: IStringIndexed<any>,
+  nextContext: IStringIndexed<any>
 ): boolean {
   // If previous context is registered and current supplied.
-  return !previousContext || Object
-    .keys(nextContext)
-    .some(function (key: string): boolean {
+  return (
+    !previousContext ||
+    Object.keys(nextContext).some(function (key: string): boolean {
       const nextValue: any = nextContext[key];
 
       /**
@@ -26,5 +27,6 @@ export function shouldObserversUpdate<T extends object>(
       return nextValue !== null && typeof nextValue === "object" && nextValue[NESTED_STORE_KEY]
         ? !shallowEqualObjects(nextValue, previousContext[key])
         : nextValue !== previousContext[key];
-    });
+    })
+  );
 }

@@ -1,7 +1,10 @@
 import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "../src/internals";
 import {
-  addManagerObserverToRegistry, getCurrentContext, getCurrentManager,
-  removeManagerObserverFromRegistry, subscribeToManager,
+  addManagerObserverToRegistry,
+  getCurrentContext,
+  getCurrentManager,
+  removeManagerObserverFromRegistry,
+  subscribeToManager,
   unsubscribeFromManager
 } from "../src/registry";
 
@@ -87,18 +90,22 @@ describe("Context store creation tests.", () => {
   it("Should properly handle setContext and forceUpdate method update with prev/next props.", () => {
     const manager: TestContextManager = new TestContextManager();
 
-    manager["beforeUpdate"] = jest.fn(function (this: TestContextManager, nextContext: ITestContext) {
-      expect(nextContext.first).toBe("updated");
-      expect(nextContext.second).toBe(22);
-      expect(this.context.first).toBe("first");
-      expect(this.context.second).toBe(2);
-    }.bind(manager));
-    manager["afterUpdate"] = jest.fn(function (this: TestContextManager, prevContext: ITestContext) {
-      expect(this.context.first).toBe("updated");
-      expect(this.context.second).toBe(22);
-      expect(prevContext.first).toBe("first");
-      expect(prevContext.second).toBe(2);
-    }.bind(manager));
+    manager["beforeUpdate"] = jest.fn(
+      function (this: TestContextManager, nextContext: ITestContext) {
+        expect(nextContext.first).toBe("updated");
+        expect(nextContext.second).toBe(22);
+        expect(this.context.first).toBe("first");
+        expect(this.context.second).toBe(2);
+      }.bind(manager)
+    );
+    manager["afterUpdate"] = jest.fn(
+      function (this: TestContextManager, prevContext: ITestContext) {
+        expect(this.context.first).toBe("updated");
+        expect(this.context.second).toBe(22);
+        expect(prevContext.first).toBe("first");
+        expect(prevContext.second).toBe(2);
+      }.bind(manager)
+    );
 
     expect(manager.context.first).toBe("first");
     expect(manager.context.second).toBe(2);
@@ -127,18 +134,22 @@ describe("Context store creation tests.", () => {
      * Should force updates correctly.
      */
 
-    manager["beforeUpdate"] = jest.fn(function (this: TestContextManager, nextContext: ITestContext) {
-      expect(nextContext.first).toBe("updated");
-      expect(nextContext.second).toBe(22);
-      expect(this.context.first).toBe("updated");
-      expect(this.context.second).toBe(22);
-    }.bind(manager));
-    manager["afterUpdate"] = jest.fn(function (this: TestContextManager, prevContext: ITestContext) {
-      expect(this.context.first).toBe("updated");
-      expect(this.context.second).toBe(22);
-      expect(prevContext.first).toBe("updated");
-      expect(prevContext.second).toBe(22);
-    }.bind(manager));
+    manager["beforeUpdate"] = jest.fn(
+      function (this: TestContextManager, nextContext: ITestContext) {
+        expect(nextContext.first).toBe("updated");
+        expect(nextContext.second).toBe(22);
+        expect(this.context.first).toBe("updated");
+        expect(this.context.second).toBe(22);
+      }.bind(manager)
+    );
+    manager["afterUpdate"] = jest.fn(
+      function (this: TestContextManager, prevContext: ITestContext) {
+        expect(this.context.first).toBe("updated");
+        expect(this.context.second).toBe(22);
+        expect(prevContext.first).toBe("updated");
+        expect(prevContext.second).toBe(22);
+      }.bind(manager)
+    );
 
     manager.forceUpdate();
 
@@ -163,7 +174,7 @@ describe("Context store creation tests.", () => {
 
     initialMockFn.mockClear();
 
-    manager.setContext(({ first: "example", second: 100 }));
+    manager.setContext({ first: "example", second: 100 });
 
     await nextAsyncQueue();
 
@@ -175,7 +186,7 @@ describe("Context store creation tests.", () => {
     unsubscribeFromManager(TestContextManager, withCheckParamsMockFn);
     unsubscribeFromManager(TestContextManager, initialMockFn);
 
-    manager.setContext(({ first: "d", second: 35 }));
+    manager.setContext({ first: "d", second: 35 });
 
     await nextAsyncQueue();
     expect(initialMockFn).not.toBeCalled();
@@ -201,7 +212,10 @@ describe("Context store creation tests.", () => {
   it("Should correctly create new managers after provision restart.", () => {
     registerManagerClass(TestContextManager);
 
-    getCurrentManager(TestContextManager)!.setContext({ first: "15", second: 15 });
+    getCurrentManager(TestContextManager)!.setContext({
+      first: "15",
+      second: 15
+    });
 
     expect(getCurrentContext(TestContextManager)!.first).toBe("15");
     expect(getCurrentContext(TestContextManager)!.second).toBe(15);
@@ -219,7 +233,10 @@ describe("Context store creation tests.", () => {
   it("Should correctly save singleton managers state after provision restart and force unregister.", () => {
     registerManagerClass(TestSingleContextManager);
 
-    getCurrentManager(TestSingleContextManager)!.setContext({ first: "15", second: 15 });
+    getCurrentManager(TestSingleContextManager)!.setContext({
+      first: "15",
+      second: 15
+    });
 
     expect(getCurrentContext(TestSingleContextManager)!.first).toBe("15");
     expect(getCurrentContext(TestSingleContextManager)!.second).toBe(15);

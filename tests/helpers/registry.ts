@@ -17,8 +17,7 @@ export function registerManagerClass<T extends IContextManagerConstructor<any>>(
 
 export function unRegisterManagerClass<T extends IContextManagerConstructor<any>>(
   managerClass: T,
-  forceUnregister: boolean = false,
+  forceUnregister: boolean = false
 ): void {
   unRegisterManager(managerClass, forceUnregister);
 }
-

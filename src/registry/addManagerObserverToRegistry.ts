@@ -1,4 +1,4 @@
-import { IContextManagerConstructor, TUpdateObserver, } from "../types";
+import { IContextManagerConstructor, TUpdateObserver } from "../types";
 import { CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, IDENTIFIER_KEY } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";

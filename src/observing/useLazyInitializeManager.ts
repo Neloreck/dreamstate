@@ -9,9 +9,12 @@ import { addManagerObserverToRegistry, registerManager, removeManagerObserverFro
  * Subscribe to adding/removing observers on mount/unmount.
  */
 export function useLazyInitializeManager<T extends object>(
-  managerConstructor: IContextManagerConstructor<T>, updateObserver: () => void
+  managerConstructor: IContextManagerConstructor<T>,
+  updateObserver: () => void
 ): void {
-  useMemo(function (): void { registerManager(managerConstructor); }, EMPTY_ARR);
+  useMemo(function (): void {
+    registerManager(managerConstructor);
+  }, EMPTY_ARR);
 
   useEffect(() => {
     addManagerObserverToRegistry(managerConstructor, updateObserver);

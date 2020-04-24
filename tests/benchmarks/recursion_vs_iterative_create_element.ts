@@ -8,34 +8,17 @@ function Tested(props: { children: ReactNode; value: number }): ReactElement {
 const testSuite: Suite = new Suite();
 const src = [ Tested, Tested, Tested, Tested, Tested, Tested, Tested, Tested, Tested, Tested, Tested ];
 
-function provideSubTreeRecursive(
-  current: number,
-  bottom: ReactElement,
-  sources: Array<any>
-): ReactElement {
-  return (
-    current >= sources.length
-      ? bottom
-      : createElement(
-        sources[current],
-        { value: 1 } as any,
-        provideSubTreeRecursive(current + 1, bottom, sources)
-      )
-  );
+function provideSubTreeRecursive(current: number, bottom: ReactElement, sources: Array<any>): ReactElement {
+  return current >= sources.length
+    ? bottom
+    : createElement(sources[current], { value: 1 } as any, provideSubTreeRecursive(current + 1, bottom, sources));
 }
 
-function provideSubTreeIterative(
-  bottom: ReactElement,
-  sources: Array<any>
-): ReactElement {
+function provideSubTreeIterative(bottom: ReactElement, sources: Array<any>): ReactElement {
   let acc: ReactElement = bottom;
 
   for (let it = sources.length - 1; it >= 0; it --) {
-    acc = createElement(
-      sources[it],
-      { value: 1 } as any,
-      acc
-    );
+    acc = createElement(sources[it], { value: 1 } as any, acc);
   }
 
   return acc;
@@ -50,4 +33,4 @@ testSuite
   })
   .on("complete", () => console.log("Fastest is " + testSuite.filter("fastest").map("name" as any)))
   .on("cycle", (event: Event) => console.log(String(event.target)))
-  .run({ "async": true });
+  .run({ async: true });

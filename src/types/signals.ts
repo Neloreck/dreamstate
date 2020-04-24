@@ -34,5 +34,4 @@ export type TSignalType = symbol | string | number;
 
 export type TSignalListener<D = undefined, T extends TSignalType = TSignalType> = (signal: ISignalEvent<D, T>) => void;
 
-export type TSignalSubscriptionMetadata = Array<[ string | symbol, TSignalType | Array<TSignalType> ]>;
-
+export type TSignalSubscriptionMetadata = Array<[string | symbol, TSignalType | Array<TSignalType>]>;

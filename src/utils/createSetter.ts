@@ -16,10 +16,7 @@ export function createSetter<S extends object, D extends keyof S>(manager: Conte
 
   return (next: Partial<S[D]> | TPartialTransformer<S[D]>): void => {
     return manager.setContext({
-      [key]: Object.assign(
-        {},
-        manager.context[key],
-        typeof next === "function" ? next(manager.context[key]) : next)
+      [key]: Object.assign({}, manager.context[key], typeof next === "function" ? next(manager.context[key]) : next)
     } as any);
   };
 }

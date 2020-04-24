@@ -1,12 +1,5 @@
 import { createElement, PureComponent, ReactElement, ReactNode, useEffect } from "react";
-import {
-  Consume,
-  ContextManager,
-  createProvider,
-  Provide,
-  useManager,
-  withConsumption
-} from "../../src";
+import { Consume, ContextManager, createProvider, Provide, useManager, withConsumption } from "../../src";
 
 /**
  * Utils for react tree testing.
@@ -30,7 +23,7 @@ export class ExampleContextManager extends ContextManager<IExampleContext> {
       setExampleString: this.setExampleString.bind(this)
     },
     exampleNumber: 0,
-    exampleString: "initial",
+    exampleString: "initial"
   };
 
   public setExampleNumber(value: number): void {
@@ -75,7 +68,9 @@ export function ExampleContextFunctionalConsumer(): ReactElement {
 }
 
 @Consume([ { from: ExampleContextManager, as: "exampleContext" } ])
-export class ExampleContextClassConsumer extends PureComponent<{ exampleContext: IExampleContext }> {
+export class ExampleContextClassConsumer extends PureComponent<{
+  exampleContext: IExampleContext;
+}> {
 
   public render(): ReactNode {
     return createElement("span", {}, JSON.stringify(this.props.exampleContext));
@@ -84,12 +79,14 @@ export class ExampleContextClassConsumer extends PureComponent<{ exampleContext:
 }
 
 export const ExampleContextHocConsumer = withConsumption([ { from: ExampleContextManager, as: "exampleContext" } ])(
-  class ExampleHoCedComponent extends PureComponent<{ exampleContext: IExampleContext }> {
+  class ExampleHoCedComponent extends PureComponent<{
+    exampleContext: IExampleContext;
+  }> {
 
     public render(): ReactNode {
       return createElement("span", {}, JSON.stringify(this.props.exampleContext));
     }
-
+  
   }
 );
 
@@ -99,8 +96,7 @@ export function ExampleContextFunctionalConsumerWithUseEffect({
 }: {
   onUpdate: () => void;
   onCheckContextDiff?: (context: IExampleContext) => Array<any>;
-}
-): ReactElement {
+}): ReactElement {
   const context: IExampleContext = useManager(ExampleContextManager, onCheckContextDiff);
 
   useEffect(onUpdate);
@@ -109,5 +105,5 @@ export function ExampleContextFunctionalConsumerWithUseEffect({
 }
 
 export function ExamplePureFunctionalComponent(props: object): ReactElement {
-  return createElement("div", {} , "pure");
+  return createElement("div", {}, "pure");
 }

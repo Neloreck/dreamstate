@@ -3,7 +3,7 @@ import { MethodDescriptor, TConstructor } from "../types";
 // Todo: Wait for proper proposal decorators.
 
 export function createMethodDecorator<T extends TConstructor<any>>(
-  resolver: (method: string | symbol, constructor: T) => void,
+  resolver: (method: string | symbol, constructor: T) => void
 ): MethodDecorator {
   return function (prototypeOrDescriptor: object, method: string | symbol) {
     if (prototypeOrDescriptor && method) {

@@ -15,7 +15,7 @@ export interface IQueryRequest<D = undefined, T extends TQueryType = TQueryType>
 
 export type TQueryRequest<D = undefined, T extends TQueryType = TQueryType> = IQueryRequest<D, T>;
 
-export type TQuerySubscriptionMetadata = Array<[ string | symbol, TQueryType ]>;
+export type TQuerySubscriptionMetadata = Array<[string | symbol, TQueryType]>;
 
 export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType> {
   type: T;

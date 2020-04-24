@@ -18,9 +18,8 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal decorator should properly add metadata.", () => {
-    const signalListenersList: TSignalSubscriptionMetadata = CONTEXT_SIGNAL_METADATA_REGISTRY[
-      (SubscribedContextManager as TAnyContextManagerConstructor)[IDENTIFIER_KEY]
-    ];
+    const signalListenersList: TSignalSubscriptionMetadata =
+      CONTEXT_SIGNAL_METADATA_REGISTRY[(SubscribedContextManager as TAnyContextManagerConstructor)[IDENTIFIER_KEY]];
 
     expect(signalListenersList).toBeInstanceOf(Array);
     expect(signalListenersList).toHaveLength(3);

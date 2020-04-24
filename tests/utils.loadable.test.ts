@@ -120,11 +120,15 @@ describe("Loadable util.", () => {
   });
 
   it("Should properly declare loadable objects flags.", () => {
-    const mutable: ILoadable<{ test: boolean }> = createLoadable({ test: true });
+    const mutable: ILoadable<{ test: boolean }> = createLoadable({
+      test: true
+    });
 
     expect(mutable[NESTED_STORE_KEY]).toBeTruthy();
 
-    const next: ILoadable<{ test: boolean }> = mutable.asUpdated({ test: false });
+    const next: ILoadable<{ test: boolean }> = mutable.asUpdated({
+      test: false
+    });
 
     expect(next[NESTED_STORE_KEY]).toBeTruthy();
   });

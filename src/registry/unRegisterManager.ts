@@ -5,7 +5,7 @@ import {
   CONTEXT_MANAGERS_REGISTRY,
   CONTEXT_SIGNAL_HANDLERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
-  IDENTIFIER_KEY,
+  IDENTIFIER_KEY
 } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";

@@ -24,11 +24,15 @@ export function notifyObservers<T extends IStringIndexed<any>>(manager: ContextM
   );
 
   CONTEXT_STATES_REGISTRY[id] = nextContext;
-  CONTEXT_OBSERVERS_REGISTRY[id].forEach(function(it: TUpdateObserver) { it(); });
+  CONTEXT_OBSERVERS_REGISTRY[id].forEach(function (it: TUpdateObserver) {
+    it();
+  });
   /**
    * Async execution for subscribers.
    * There will be small amount of observers that work by the rules, but we cannot tell anything about subs.
    * Subscribers should not block code there with CPU usage/unhandled exceptions.
    */
-  CONTEXT_SUBSCRIBERS_REGISTRY[id].forEach(function(it: TUpdateSubscriber<T>) { setTimeout(it, 0, nextContext); });
+  CONTEXT_SUBSCRIBERS_REGISTRY[id].forEach(function (it: TUpdateSubscriber<T>) {
+    setTimeout(it, 0, nextContext);
+  });
 }
