@@ -5,13 +5,15 @@ import { createElement, PropsWithChildren, ReactElement } from "react";
 export interface ITestContext {
   first: string;
   second: number;
+  third: boolean;
 }
 
 export class TestContextManager extends ContextManager<ITestContext> {
 
   public readonly context: ITestContext = {
     first: "first",
-    second: 2
+    second: 2,
+    third: false
   };
 
 }
@@ -80,4 +82,9 @@ export class BasicClassExample {
 
 export function PropsRenderer(props: PropsWithChildren<object>): ReactElement {
   return createElement("div", {}, JSON.stringify(props));
+}
+
+export function RenderCallbacker({ onRender, ...rest }: { onRender: <T>(props: T) => void }): ReactElement {
+  onRender(rest);
+  return createElement("div", {}, JSON.stringify(rest));
 }

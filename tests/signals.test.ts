@@ -3,7 +3,7 @@ import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadat
 import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../src/internals";
 import { getCurrentManager } from "../src/registry";
 
-import { nextAsyncQuery, registerManagerClass, unRegisterManagerClass } from "./helpers";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "./helpers";
 import { EmittingContextManager, ESignal, SubscribedContextManager } from "./assets";
 
 describe("Signals and signaling.", () => {
@@ -66,7 +66,7 @@ describe("Signals and signaling.", () => {
     };
 
     emittingManager.sendNumberSignal();
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(subscribedManager.onNumberSignal).toBeCalled();
     expect(subscribedManager.onStringOrNumberSignal).toBeCalled();
@@ -75,7 +75,7 @@ describe("Signals and signaling.", () => {
     clearMocks();
 
     emittingManager.sendStringSignal();
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(subscribedManager.onNumberSignal).not.toBeCalled();
     expect(subscribedManager.onStringOrNumberSignal).toBeCalled();
@@ -84,7 +84,7 @@ describe("Signals and signaling.", () => {
     clearMocks();
 
     emittingManager.sendEmptySignal();
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(subscribedManager.onNumberSignal).not.toBeCalled();
     expect(subscribedManager.onStringOrNumberSignal).not.toBeCalled();
@@ -109,7 +109,7 @@ describe("Signals and signaling.", () => {
     subscribeToSignals(numberSubscriber);
 
     emittingManager.sendNumberSignal();
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(numberSubscriber).toBeCalled();
 
@@ -117,7 +117,7 @@ describe("Signals and signaling.", () => {
     subscribeToSignals(stringSubscriber);
 
     emittingManager.sendStringSignal();
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(stringSubscriber).toBeCalled();
 
@@ -138,7 +138,7 @@ describe("Signals and signaling.", () => {
     subscribeToSignals(secondSubscriber);
 
     emittingManager.sendStringSignal();
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(subscribedManager.onStringSignal).toBeCalled();
     expect(subscribedManager.onStringOrNumberSignal).toBeCalled();

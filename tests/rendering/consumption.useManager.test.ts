@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 
 import { getCurrentManager } from "../../src/registry";
 
-import { nextAsyncQuery } from "../helpers";
+import { nextAsyncQueue } from "../helpers";
 import {
   ExampleContextFunctionalConsumerWithUseEffect,
   ExampleContextFunctionalProvider,
@@ -31,7 +31,7 @@ describe("UseManager subscription and rendering.", () => {
 
     await act(async () => {
       manager.setContext({ exampleNumber: manager.context.exampleNumber });
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     expect(mockFn).not.toBeCalled();
@@ -40,7 +40,7 @@ describe("UseManager subscription and rendering.", () => {
 
     await act(async () => {
       manager.setContext({ exampleNumber: 100 });
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     expect(mockFn).toBeCalled();
@@ -49,7 +49,7 @@ describe("UseManager subscription and rendering.", () => {
 
     await act(async () => {
       manager.setContext({ exampleString: "anotherString" });
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     expect(mockFn).toBeCalled();
@@ -80,7 +80,7 @@ describe("UseManager subscription and rendering.", () => {
 
     await act(async () => {
       manager.setContext({ exampleString: manager.context.exampleString });
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     expect(mockFn).not.toBeCalled();
@@ -89,7 +89,7 @@ describe("UseManager subscription and rendering.", () => {
 
     await act(async () => {
       manager.setContext({ exampleNumber: 100 });
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     expect(mockFn).not.toBeCalled();
@@ -97,7 +97,7 @@ describe("UseManager subscription and rendering.", () => {
 
     await act(async () => {
       manager.setContext({ exampleString: "anotherString" });
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     expect(mockFn).toBeCalled();

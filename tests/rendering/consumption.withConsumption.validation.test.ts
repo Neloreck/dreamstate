@@ -11,7 +11,7 @@ import {
   TextContextManagerProvider
 } from "../assets";
 
-describe("HoC @Consume and withConsumption selector work.", () => {
+describe("HoC @Consume and withConsumption selector validation.", () => {
   function mountProvided(element: ComponentType<object>): ReactWrapper {
     return mount(createElement(TextContextManagerProvider, {}, createElement(element, {})));
   }
@@ -107,6 +107,4 @@ describe("HoC @Consume and withConsumption selector work.", () => {
     expect(mountProvided(TestComponentWithCustomSelector)).toMatchSnapshot();
     expect(mountProvided(TestComponentWithCustomSelectorAliased)).toMatchSnapshot();
   });
-
-  // todo: Internal updates + memo checks.
 });

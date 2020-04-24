@@ -1,3 +1,3 @@
-export function nextAsyncQuery(): Promise<void> {
+export function nextAsyncQueue(): Promise<void> {
   return new Promise((resolve: () => void) => setTimeout(resolve));
 }

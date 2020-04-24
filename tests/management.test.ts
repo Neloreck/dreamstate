@@ -5,7 +5,7 @@ import {
   unsubscribeFromManager
 } from "../src/registry";
 
-import { nextAsyncQuery, registerManagerClass, unRegisterManagerClass } from "./helpers";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "./helpers";
 import { ExtendingTestContextManager, ITestContext, TestContextManager, TestSingleContextManager } from "./assets";
 import { ContextManager } from "../src/management";
 
@@ -165,7 +165,7 @@ describe("Context store creation tests.", () => {
 
     manager.setContext(({ first: "example", second: 100 }));
 
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(initialMockFn).toBeCalled();
     expect(initialMockFn).toBeCalled();
@@ -177,7 +177,7 @@ describe("Context store creation tests.", () => {
 
     manager.setContext(({ first: "d", second: 35 }));
 
-    await nextAsyncQuery();
+    await nextAsyncQueue();
     expect(initialMockFn).not.toBeCalled();
 
     unRegisterManagerClass(TestContextManager);

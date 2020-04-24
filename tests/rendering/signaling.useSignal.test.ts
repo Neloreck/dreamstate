@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 
 import { getCurrentManager } from "../../src/registry";
 
-import { nextAsyncQuery, registerManagerClass, unRegisterManagerClass } from "../helpers";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "../helpers";
 import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "../assets";
 
 describe("Signals and signaling.", () => {
@@ -31,7 +31,7 @@ describe("Signals and signaling.", () => {
     await act(async () => {
       emittingContextManager.sendStringSignal("newValue");
 
-      await nextAsyncQuery();
+      await nextAsyncQueue();
     });
 
     tree.update();
@@ -44,7 +44,7 @@ describe("Signals and signaling.", () => {
     tree.unmount();
 
     emittingContextManager.sendStringSignal("newValue");
-    await nextAsyncQuery();
+    await nextAsyncQueue();
 
     expect(mockFn).not.toBeCalled();
   });

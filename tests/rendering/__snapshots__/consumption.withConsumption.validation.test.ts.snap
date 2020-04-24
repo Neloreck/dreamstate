@@ -1,21 +1,22 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select all properties with or without alias. 1`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select all properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
       first="first"
       second={2}
+      third={false}
     >
       <div>
-        {"first":"first","second":2}
+        {"first":"first","second":2,"third":false}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select all properties with or without alias. 2`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select all properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -23,33 +24,35 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
         Object {
           "first": "first",
           "second": 2,
+          "third": false,
         }
       }
     >
       <div>
-        {"aliased":{"first":"first","second":2}}
+        {"aliased":{"first":"first","second":2,"third":false}}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select all properties with or without alias. 3`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select all properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
       first="first"
       second={2}
+      third={false}
     >
       <div>
-        {"first":"first","second":2}
+        {"first":"first","second":2,"third":false}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select array properties with or without alias. 1`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select array properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer>
@@ -61,7 +64,7 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select array properties with or without alias. 2`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select array properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer>
@@ -73,7 +76,7 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select array properties with or without alias. 3`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select array properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -87,7 +90,7 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select array properties with or without alias. 4`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select array properties with or without alias. 4`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -102,7 +105,7 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select array properties with or without alias. 5`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select array properties with or without alias. 5`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -121,22 +124,23 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select selector properties with or without alias. 1`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select selector properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
       first="first"
       second={2}
+      third={false}
     >
       <div>
-        {"first":"first","second":2}
+        {"first":"first","second":2,"third":false}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select selector properties with or without alias. 2`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select selector properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -144,18 +148,19 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
         Object {
           "first": "first",
           "second": 2,
+          "third": false,
         }
       }
     >
       <div>
-        {"custom":{"first":"first","second":2}}
+        {"custom":{"first":"first","second":2,"third":false}}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select selector properties with or without alias. 3`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select selector properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -170,7 +175,7 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select selector properties with or without alias. 4`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select selector properties with or without alias. 4`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -188,37 +193,39 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select string properties with or without alias. 1`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select string properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
       first="first"
       second={2}
+      third={false}
     >
       <div>
-        {"first":"first","second":2}
+        {"first":"first","second":2,"third":false}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select string properties with or without alias. 2`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select string properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
       first="first"
       second={2}
+      third={false}
     >
       <div>
-        {"first":"first","second":2}
+        {"first":"first","second":2,"third":false}
       </div>
     </PropsRenderer>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and withConsumption selector work. Should properly select string properties with or without alias. 3`] = `
+exports[`HoC @Consume and withConsumption selector validation. Should properly select string properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -226,11 +233,12 @@ exports[`HoC @Consume and withConsumption selector work. Should properly select 
         Object {
           "first": "first",
           "second": 2,
+          "third": false,
         }
       }
     >
       <div>
-        {"aliased":{"first":"first","second":2}}
+        {"aliased":{"first":"first","second":2,"third":false}}
       </div>
     </PropsRenderer>
   </DS.Consumer>
