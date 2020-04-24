@@ -67,7 +67,7 @@ describe("UseManager subscription and rendering.", () => {
         createElement(
           ExampleContextFunctionalConsumerWithUseEffect,
           { onUpdate: mockFn, onCheckContextDiff: (context: IExampleContext) => [ context.exampleString ] }
-          )
+        )
       )
     );
 

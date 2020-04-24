@@ -40,7 +40,7 @@ export class EmittingContextManager extends ContextManager<object> {
     this.emitSignal({ type: ESignal.NUMBER_SIGNAL, data: Math.random() });
   }
 
-  public sendStringSignal(data: string = "random-" + Math.random()  ): void {
+  public sendStringSignal(data: string = "random-" + Math.random()): void {
     this.emitSignal({ type: ESignal.STRING_SIGNAL, data });
   }
 
@@ -61,5 +61,5 @@ export function UsingSignalFunction({ onInternalSignal }: { onInternalSignal: (s
     }
   });
 
-  return createElement("div", {}, value)
+  return createElement("div", {}, value);
 }

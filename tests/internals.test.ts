@@ -1,7 +1,12 @@
 import { Context } from "react";
 
 import { ContextManager } from "../src/management";
-import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, CONTEXT_STATES_REGISTRY } from "../src/internals";
+import {
+  IDENTIFIER_KEY,
+  CONTEXT_MANAGERS_REGISTRY,
+  CONTEXT_OBSERVERS_REGISTRY,
+  CONTEXT_STATES_REGISTRY
+} from "../src/internals";
 import { TAnyContextManagerConstructor } from "../src/types";
 
 import { TestContextManager, TestSingleContextManager } from "./assets";

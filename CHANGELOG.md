@@ -37,3 +37,5 @@
   * added check for base class, ID and REACT_TYPE references will throw error now
   * better @Consume performance, shouldUpdate checks for selectors
   * @Provide and @Consume now require array parameter, not variadic parameters
+  * @Bind decorator does not allow direct property re-writing on runtime now
+  * @Bind decorator still can be modified with Object.defineProperty for testing and 'special' cases
