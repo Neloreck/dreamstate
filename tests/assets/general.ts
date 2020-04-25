@@ -35,7 +35,8 @@ export class TestSingleContextManager extends ContextManager<ITestContext> {
 
   public readonly context: ITestContext = {
     first: "first",
-    second: 2
+    second: 2,
+    third: false
   };
 
 }

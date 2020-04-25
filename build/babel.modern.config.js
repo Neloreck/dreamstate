@@ -4,15 +4,6 @@ export const BABEL_CONFIG = {
     "@babel/preset-typescript"
   ],
   plugins: [
-    "macros",
-    [
-      "module-resolver",
-      {
-        "root": [ "./" ],
-        "alias": {
-          "@Build": "./build"
-        }
-      }
-    ]
+    "macros"
   ]
 };

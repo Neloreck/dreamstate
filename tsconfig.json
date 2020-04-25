@@ -21,8 +21,8 @@
       "dom"
     ],
     "paths": {
+      "@Lib": [ "src/index.ts" ],
       "@Lib/*": [ "src/*" ],
-      "@Build/*": [ "build/*" ],
       "@Tests/*": [ "tests/*" ]
     }
   },

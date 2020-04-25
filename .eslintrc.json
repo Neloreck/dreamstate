@@ -4,9 +4,6 @@
     "node": true
   },
   "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
   "extends": [
     "eslint:recommended",
     "plugin:jest/style",
@@ -34,6 +31,9 @@
     "keyword-spacing": 2,
     "indent": [ 2, 2 ],
     "brace-style": 2,
+    "spaced-comment": [ 2, "always" ],
+    "template-tag-spacing": [ 2, "never" ],
+    "newline-per-chained-call": [ 2 ],
     "array-element-newline": [ 2, "consistent" ],
     "function-paren-newline": [ 2, "multiline-arguments" ],
     "space-before-function-paren": [ 2, { "anonymous": "always", "named": "never" } ],
@@ -44,6 +44,7 @@
     "max-len": [ 2, { "code": 120 } ],
     "key-spacing": [ 2, { "beforeColon": false, "afterColon": true } ],
     "object-curly-newline": [ 2, { "consistent": true } ],
+    "object-property-newline": [ 2, { "allowAllPropertiesOnSameLine": true } ],
     "no-constructor-return": 2,
     "arrow-spacing": 2,
     "camelcase": 2,

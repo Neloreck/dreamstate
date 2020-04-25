@@ -1,8 +1,9 @@
 import { getCurrentManager } from "@Lib/registry";
 import { createLoadable, createMutable, createSetter } from "@Lib/utils";
+import { ContextManager } from "@Lib/management";
 
-import { NestedContextManager } from "../assets";
-import { registerManagerClass, unRegisterManagerClass } from "../helpers";
+import { NestedContextManager } from "@Tests/assets";
+import { registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {
@@ -14,9 +15,10 @@ describe("CreateSetter util.", () => {
   });
 
   it("Should properly declare create setters.", () => {
-    const nestedManager: NestedContextManager = getCurrentManager(NestedContextManager)!;
+    const nestedManager: NestedContextManager =
+      getCurrentManager(NestedContextManager)!;
 
-    const firstSetter = createSetter(nestedManager, "first");
+    const firstSetter = createSetter(nestedManager,"first");
     const secondSetter = createSetter(nestedManager, "second");
 
     expect(nestedManager.context.first.a).toBe(1);
@@ -78,11 +80,15 @@ describe("CreateSetter util.", () => {
       }
     };
 
-    expect(() => createSetter(mockManagerWithContext as any, "loadable")).not.toThrow(Error);
-    expect(() => createSetter(mockManagerWithContext as any, "mutable")).not.toThrow(Error);
+    type TContext = typeof mockManagerWithContext.context;
 
-    expect(() => createSetter(mockManagerWithContext as any, "string")).toThrow(TypeError);
-    expect(() => createSetter(mockManagerWithContext as any, "number")).toThrow(TypeError);
-    expect(() => createSetter(mockManagerWithContext as any, "undefined prop")).toThrow(TypeError);
+    expect(() => createSetter(mockManagerWithContext as ContextManager<TContext>, "loadable")).not.toThrow(Error);
+    expect(() => createSetter(mockManagerWithContext as ContextManager<TContext>, "mutable")).not.toThrow(Error);
+
+    expect(() => createSetter(mockManagerWithContext as ContextManager<TContext>, "string")).toThrow(TypeError);
+    expect(() => createSetter(mockManagerWithContext as ContextManager<TContext>, "number")).toThrow(TypeError);
+    expect(
+      () => createSetter(mockManagerWithContext as ContextManager<TContext>, "undefined prop" as any)
+    ).toThrow(TypeError);
   });
 });

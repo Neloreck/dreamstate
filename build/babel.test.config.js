@@ -16,17 +16,6 @@ module.exports = {
     "macros",
     "@babel/plugin-transform-modules-commonjs",
     [ "@babel/plugin-proposal-decorators", { legacy: true } ],
-    [ "@babel/plugin-proposal-class-properties", { loose: true } ],
-    [
-      "module-resolver",
-      {
-        "root": [ "./" ],
-        "alias": {
-          "@Build": "./build",
-          "@Lib": "./src",
-          "@Tests": "./tests"
-        }
-      }
-    ]
+    [ "@babel/plugin-proposal-class-properties", { loose: true } ]
   ]
 };
