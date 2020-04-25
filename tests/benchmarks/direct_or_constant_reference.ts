@@ -1,8 +1,9 @@
 import { Event, Suite } from "benchmark";
 
-import { registerManagerClass, unRegisterManagerClass } from "../helpers";
-import { TestContextManager } from "../assets";
-import { IDENTIFIER_KEY } from "../../src/internals";
+import { IDENTIFIER_KEY } from "@Lib/internals";
+
+import { registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { TestContextManager } from "@Tests/assets";
 
 const testSuite: Suite = new Suite();
 

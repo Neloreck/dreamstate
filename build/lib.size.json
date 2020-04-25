@@ -1,13 +1,13 @@
 {
   "../lib/cjs/dreamstate.production.js": {
-    "bundled": 29078,
-    "minified": 12049,
-    "gzipped": 3344
+    "bundled": 29930,
+    "minified": 12095,
+    "gzipped": 3353
   },
   "../lib/umd/dreamstate.production.js": {
-    "bundled": 49309,
-    "minified": 15505,
-    "gzipped": 4929
+    "bundled": 50161,
+    "minified": 15551,
+    "gzipped": 4939
   },
   "../lib/cjs/dreamstate.development.js": {
     "bundled": 29591,

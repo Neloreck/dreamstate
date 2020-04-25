@@ -1,6 +1,6 @@
-import { TMutable } from "../src/types";
-import { createMutable } from "../src/utils";
-import { NESTED_STORE_KEY } from "../src/internals";
+import { TMutable } from "@Lib/types";
+import { createMutable } from "@Lib/utils";
+import { NESTED_STORE_KEY } from "@Lib/internals";
 
 describe("Mutable util.", () => {
   it("Should properly create muable objects.", () => {

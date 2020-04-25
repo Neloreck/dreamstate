@@ -1,10 +1,10 @@
 import { createElement } from "react";
 import { shallow } from "enzyme";
 
-import { provideSubTreeIterative, provideSubTreeRecursive } from "../../src/observing";
+import { provideSubTreeIterative, provideSubTreeRecursive } from "@Lib/observing";
 
-import { NestedContextManager, TestContextManager, TestSingleContextManager } from "../assets";
-import { registerManagerClass, unRegisterManagerClass } from "../helpers";
+import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/assets";
+import { registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
 
 describe("ProvideSubTree should properly render in declared order.", () => {
   beforeAll(() => {

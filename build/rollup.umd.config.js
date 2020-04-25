@@ -44,7 +44,7 @@ export const UMD_CONFIG = {
       IS_DEBUG: IS_DEBUG
     }),
     typescript({
-      tsconfig: path.resolve(__dirname, "./tsconfig.json"),
+      tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
       declaration: false
     })
   ].concat(

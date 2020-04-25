@@ -1,6 +1,7 @@
-import { ContextManager } from "../../src/management";
-import { createProvider } from "../../src/provision";
 import { createElement, PropsWithChildren, ReactElement } from "react";
+
+import { ContextManager } from "@Lib/management";
+import { createProvider } from "@Lib/provision";
 
 export interface ITestContext {
   first: string;

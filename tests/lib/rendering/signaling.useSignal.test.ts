@@ -2,10 +2,10 @@ import { createElement } from "react";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { getCurrentManager } from "../../src/registry";
+import { getCurrentManager } from "@Lib/registry";
 
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "../helpers";
-import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "../assets";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {

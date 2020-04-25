@@ -5,12 +5,11 @@
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "project": "./build/tsconfig.test.json"
+    "project": "./tsconfig.json"
   },
   "extends": [
     "eslint:recommended",
     "plugin:jest/style",
-    "plugin:json/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
@@ -78,7 +77,6 @@
       }
     ],
     "import/no-unresolved": 0,
-    "import/default": 0,
-    "json/*": [ 1, "allowComments" ]
+    "import/default": 0
   }
 }

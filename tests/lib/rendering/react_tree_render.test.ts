@@ -6,7 +6,7 @@ import {
   ExampleContextDecoratedProvider,
   ExampleContextFunctionalConsumer,
   ExampleContextFunctionalProvider
-} from "../assets";
+} from "@Tests/assets";
 
 describe("React tree for provided and consumed components.", () => {
   it("Should correctly provide manager context from functional provider.", () => {

@@ -1,4 +1,4 @@
-import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "../src/internals";
+import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "@Lib/internals";
 import {
   addManagerObserverToRegistry,
   getCurrentContext,
@@ -6,11 +6,11 @@ import {
   removeManagerObserverFromRegistry,
   subscribeToManager,
   unsubscribeFromManager
-} from "../src/registry";
+} from "@Lib/registry";
+import { ContextManager } from "@Lib/management";
 
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "./helpers";
-import { ExtendingTestContextManager, ITestContext, TestContextManager, TestSingleContextManager } from "./assets";
-import { ContextManager } from "../src/management";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { ExtendingTestContextManager, ITestContext, TestContextManager, TestSingleContextManager } from "@Tests/assets";
 
 describe("Context store creation tests.", () => {
   it("Should properly handle onProvisionStarted and onProvision ended for context managers.", () => {

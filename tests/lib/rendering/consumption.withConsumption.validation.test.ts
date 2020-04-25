@@ -1,7 +1,7 @@
 import { ComponentType, createElement, PureComponent } from "react";
 import { mount, ReactWrapper } from "enzyme";
 
-import { Consume, withConsumption } from "../../src/consumption";
+import { Consume, withConsumption } from "@Lib/consumption";
 import {
   BasicClassExample,
   ExampleContextManager,
@@ -9,7 +9,7 @@ import {
   PropsRenderer,
   TestContextManager,
   TextContextManagerProvider
-} from "../assets";
+} from "@Tests/assets";
 
 describe("HoC @Consume and withConsumption selector validation.", () => {
   function mountProvided(element: ComponentType<object>): ReactWrapper {

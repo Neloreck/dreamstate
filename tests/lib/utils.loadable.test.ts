@@ -1,6 +1,6 @@
-import { ILoadable } from "../src/types";
-import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "../src/utils";
-import { NESTED_STORE_KEY } from "../src/internals";
+import { ILoadable } from "@Lib/types";
+import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "@Lib/utils";
+import { NESTED_STORE_KEY } from "@Lib/internals";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {

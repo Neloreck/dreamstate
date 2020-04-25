@@ -1,5 +1,5 @@
-import { shouldObserversUpdate } from "../src/observing";
-import { createLoadable, createMutable } from "../src/utils";
+import { shouldObserversUpdate } from "@Lib/observing";
+import { createLoadable, createMutable } from "@Lib/utils";
 
 describe("Observing utils and methods.", () => {
   it("Should notifiers update must check properly same nested primitives and objects.", () => {

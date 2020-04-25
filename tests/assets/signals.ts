@@ -1,7 +1,8 @@
-import { ContextManager } from "../../src/management";
-import { OnSignal, useSignals } from "../../src/signals";
-import { SignalEvent, SignalType } from "../../src";
 import { createElement, useState } from "react";
+
+import { ContextManager } from "@Lib/management";
+import { OnSignal, useSignals } from "@Lib/signals";
+import { SignalEvent, SignalType } from "@Lib";
 
 export enum ESignal {
   NUMBER_SIGNAL = "NUMBER",

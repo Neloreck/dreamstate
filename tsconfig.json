@@ -8,26 +8,25 @@
     "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "rootDir": "../src",
+    "rootDir": ".",
+    "baseUrl": ".",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
     "types": [
-      "jest",
-      "node"
+      "node",
+      "jest"
     ],
     "lib": [
       "es2017",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@Lib/*": [ "src/*" ],
+      "@Build/*": [ "build/*" ],
+      "@Tests/*": [ "tests/*" ]
+    }
   },
-  "include": [
-    "../src"
-  ],
   "exclude": [
-    "../tests",
     "node_modules"
   ]
 }

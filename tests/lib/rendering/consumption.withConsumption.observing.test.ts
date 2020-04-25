@@ -2,11 +2,11 @@ import { ComponentType, createElement } from "react";
 import { mount, ReactWrapper } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { withConsumption } from "../../src/consumption";
-import { getCurrentManager } from "../../src/registry";
+import { withConsumption } from "@Lib/consumption";
+import { getCurrentManager } from "@Lib/registry";
 
-import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "../assets";
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "../helpers";
+import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/assets";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
 
 describe("HoC @Consume and withConsumption selector observing.", () => {
   function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {

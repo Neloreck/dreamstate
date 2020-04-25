@@ -2,15 +2,15 @@ import { createElement } from "react";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { getCurrentManager } from "../../src/registry";
+import { getCurrentManager } from "@Lib/registry";
 
-import { nextAsyncQueue } from "../helpers";
+import { nextAsyncQueue } from "@Tests/helpers";
 import {
   ExampleContextFunctionalConsumerWithUseEffect,
   ExampleContextFunctionalProvider,
   ExampleContextManager,
   IExampleContext
-} from "../assets";
+} from "@Tests/assets";
 
 describe("UseManager subscription and rendering.", () => {
   it("Functional components should properly subscribe to managers without diff-checking cb.", async () => {

@@ -1,8 +1,8 @@
-import { getCurrentManager } from "../src/registry";
-import { createLoadable, createMutable, createSetter } from "../src/utils";
+import { getCurrentManager } from "@Lib/registry";
+import { createLoadable, createMutable, createSetter } from "@Lib/utils";
 
-import { NestedContextManager } from "./assets";
-import { registerManagerClass, unRegisterManagerClass } from "./helpers";
+import { NestedContextManager } from "../assets";
+import { registerManagerClass, unRegisterManagerClass } from "../helpers";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {

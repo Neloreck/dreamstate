@@ -1,5 +1,6 @@
 import { createElement, PureComponent, ReactElement, ReactNode, useEffect } from "react";
-import { Consume, ContextManager, createProvider, Provide, useManager, withConsumption } from "../../src";
+
+import { Consume, ContextManager, createProvider, Provide, useManager, withConsumption } from "@Lib";
 
 /**
  * Utils for react tree testing.

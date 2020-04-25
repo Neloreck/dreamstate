@@ -1,10 +1,10 @@
-import { emitSignal, subscribeToSignals, unsubscribeFromSignals } from "../src/signals";
-import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "../src/types";
-import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../src/internals";
-import { getCurrentManager } from "../src/registry";
+import { emitSignal, subscribeToSignals, unsubscribeFromSignals } from "@Lib/signals";
+import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "@Lib/types";
+import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
+import { getCurrentManager } from "@Lib/registry";
 
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "./helpers";
-import { EmittingContextManager, ESignal, SubscribedContextManager } from "./assets";
+import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { EmittingContextManager, ESignal, SubscribedContextManager } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {

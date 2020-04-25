@@ -1,16 +1,16 @@
 import { Context } from "react";
 
-import { ContextManager } from "../src/management";
+import { ContextManager } from "@Lib/management";
 import {
   IDENTIFIER_KEY,
   CONTEXT_MANAGERS_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_STATES_REGISTRY
-} from "../src/internals";
-import { TAnyContextManagerConstructor } from "../src/types";
+} from "@Lib/internals";
+import { TAnyContextManagerConstructor } from "@Lib/types";
+import { unRegisterManager } from "@Lib/registry";
 
-import { TestContextManager, TestSingleContextManager } from "./assets";
-import { unRegisterManager } from "../src/registry";
+import { TestContextManager, TestSingleContextManager } from "@Tests/assets";
 
 describe("Context store creation tests.", () => {
   it("Should initialize extended class without any exceptions.", () => {

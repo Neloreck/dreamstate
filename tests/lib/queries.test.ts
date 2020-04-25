@@ -1,7 +1,7 @@
-import { getCurrentManager, QueryResponse } from "../src";
+import { getCurrentManager, QueryResponse } from "@Lib";
 
-import { registerManagerClass, unRegisterManagerClass } from "./helpers";
-import { RequestingContextManager, RespondingContextManager } from "./assets";
+import { registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { RequestingContextManager, RespondingContextManager } from "@Tests/assets";
 
 describe("Queries and queries processing.", () => {
   beforeEach(() => {
