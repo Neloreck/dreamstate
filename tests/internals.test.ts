@@ -68,7 +68,7 @@ describe("Context store creation tests.", () => {
 
   it("Should throw errors if trying to unregister not existing instance.", () => {
     expect(CONTEXT_MANAGERS_REGISTRY[TestContextManager[IDENTIFIER_KEY] as any]).toBeUndefined();
-    expect(() => unRegisterManager(TestContextManager)).toThrowError();
-    expect(() => unRegisterManager(TestContextManager, true)).toThrowError();
+    expect(() => unRegisterManager(TestContextManager)).toThrow();
+    expect(() => unRegisterManager(TestContextManager, true)).toThrow();
   });
 });

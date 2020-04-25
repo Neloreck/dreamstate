@@ -1,9 +1,13 @@
 import { Bind } from "../src/utils";
 
-describe("@Bind method decorator.", () => {
+describe("@Bind decorator.", () => {
   class Base {
 
     public field: number = 0;
+
+    // @ts-ignore case for pure JS.
+    @Bind()
+    public boundValue: string = "bound";
 
     @Bind()
     public method(): this {
@@ -64,4 +68,6 @@ describe("@Bind method decorator.", () => {
 
     expect(base.method()).toBe(50);
   });
+
+  // todo: Test both proposal and legacy decoration.
 });

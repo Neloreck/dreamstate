@@ -21,15 +21,18 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
     configurable: true,
     get(this: object): T {
       if (
-        definingProperty ||
-        // this === target.prototype || - will it fire? Check parent prototypes?
-        Object.prototype.hasOwnProperty.call(this, property) ||
-        typeof from.value !== "function"
+        definingProperty
+        /*
+          this === target.prototype || - will it fire? Check parent prototypes?
+          Object.prototype.hasOwnProperty.call(this, property) ||
+          typeof from.value !== "function"
+         */
       ) {
         return from.value as any;
       }
 
-      const bound: T = from.value.bind(this);
+      // Expect only functions to be called, throw errors on other cases.
+      const bound: T = (from.value as any).bind(this);
 
       definingProperty = true;
 

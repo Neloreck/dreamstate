@@ -25,7 +25,7 @@ function log({ references, babel, state }) {
               [
                 types.stringLiteral("%c=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="),
                 types.stringLiteral(PREFIX_COLOR)
-              ],
+              ]
             )
           );
 
@@ -80,7 +80,7 @@ function log({ references, babel, state }) {
               prefixExpression,
               types.stringLiteral(PREFIX_COLOR),
               ...args
-            ],
+            ]
           )
         );
 

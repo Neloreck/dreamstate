@@ -1,6 +1,6 @@
 ## todo:
 
-1) Unit tests - Consume.ts (memo checks)
+1) Unit tests - 100% coverage
 2) Think about inheritance and how to implement it/warn about it without performance degradation.
 3) Think about query api name
 4) Interceptor classes for 'queries' and signals

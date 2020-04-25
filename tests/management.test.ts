@@ -20,8 +20,8 @@ describe("Context store creation tests.", () => {
     const testManager: TestContextManager = registerManagerClass(TestContextManager);
     const testSingleManager: TestSingleContextManager = registerManagerClass(TestSingleContextManager);
 
-    const firstObserver: jest.Mock<any> = jest.fn();
-    const secondObserver: jest.Mock<any> = jest.fn();
+    const firstObserver: jest.Mock = jest.fn();
+    const secondObserver: jest.Mock = jest.fn();
 
     testManager["onProvisionStarted"] = jest.fn();
     testManager["onProvisionEnded"] = jest.fn();

@@ -13,7 +13,7 @@ describe("CreateSetter util.", () => {
     unRegisterManagerClass(NestedContextManager);
   });
 
-  it("Should properly declare mutable objects flags.", () => {
+  it("Should properly declare create setters.", () => {
     const nestedManager: NestedContextManager = getCurrentManager(NestedContextManager)!;
 
     const firstSetter = createSetter(nestedManager, "first");
@@ -54,7 +54,7 @@ describe("CreateSetter util.", () => {
     expect(nestedManager.setContext).toHaveBeenCalled();
   });
 
-  it("Should properly work with functional getters.", () => {
+  it("Should properly work with functional setters.", () => {
     const nestedManager: NestedContextManager = getCurrentManager(NestedContextManager)!;
     const setter = createSetter(nestedManager, "second");
 
@@ -68,7 +68,7 @@ describe("CreateSetter util.", () => {
     expect(nestedManager.setContext).toHaveBeenCalled();
   });
 
-  it("Should not allow create setters for non-objects.", () => {
+  it("Should not allow create setters for non-object values.", () => {
     const mockManagerWithContext = {
       context: {
         loadable: createLoadable("example"),

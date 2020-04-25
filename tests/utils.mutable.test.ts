@@ -2,8 +2,8 @@ import { TMutable } from "../src/types";
 import { createMutable } from "../src/utils";
 import { NESTED_STORE_KEY } from "../src/internals";
 
-describe("Loadable util.", () => {
-  it("Should properly create loadable objects.", () => {
+describe("Mutable util.", () => {
+  it("Should properly create muable objects.", () => {
     const mutable: TMutable<{ test: boolean }> = createMutable({ test: true });
 
     expect(Object.keys(mutable)).toHaveLength(2);
@@ -28,7 +28,7 @@ describe("Loadable util.", () => {
     expect(next[NESTED_STORE_KEY]).toBeTruthy();
   });
 
-  it("Should properly throw error for non-objects.", () => {
+  it("Should properly throw error for non-objects initial values.", () => {
     expect(() => createMutable(5 as any)).toThrow(TypeError);
   });
 });
