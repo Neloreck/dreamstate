@@ -1,4 +1,4 @@
-import { subscribeToSignals, unsubscribeFromSignals } from "../src/signals";
+import { emitSignal, subscribeToSignals, unsubscribeFromSignals } from "../src/signals";
 import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "../src/types";
 import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "../src/internals";
 import { getCurrentManager } from "../src/registry";
@@ -146,5 +146,21 @@ describe("Signals and signaling.", () => {
 
     unsubscribeFromSignals(firstSubscriber);
     unsubscribeFromSignals(secondSubscriber);
+  });
+
+  it("Should properly listen external signals.", async () => {
+    const subscribedManager: SubscribedContextManager = getCurrentManager(SubscribedContextManager)!;
+
+    subscribedManager.onStringSignal = jest.fn((signal: ISignalEvent<string>) => {
+      expect(signal.emitter).toBeNull();
+      expect(signal.type).toBe(ESignal.STRING_SIGNAL);
+      expect(signal.data).toBe("next");
+    });
+
+    emitSignal({ type: ESignal.STRING_SIGNAL, data: "next" });
+
+    await nextAsyncQueue();
+
+    expect(subscribedManager.onStringSignal).toHaveBeenCalled();
   });
 });

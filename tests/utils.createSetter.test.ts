@@ -54,6 +54,20 @@ describe("CreateSetter util.", () => {
     expect(nestedManager.setContext).toHaveBeenCalled();
   });
 
+  it("Should properly work with functional getters.", () => {
+    const nestedManager: NestedContextManager = getCurrentManager(NestedContextManager)!;
+    const setter = createSetter(nestedManager, "second");
+
+    const originalC: number = nestedManager.context.second.c;
+
+    nestedManager.setContext = jest.fn(nestedManager.setContext.bind(nestedManager));
+
+    setter(({ c }) => ({ c: c * 2 }));
+
+    expect(nestedManager.context.second.c).toBe(originalC * 2);
+    expect(nestedManager.setContext).toHaveBeenCalled();
+  });
+
   it("Should not allow create setters for non-objects.", () => {
     const mockManagerWithContext = {
       context: {

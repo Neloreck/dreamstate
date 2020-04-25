@@ -49,8 +49,9 @@ describe("Library exported API tests.", () => {
     expect(Object.keys(libRoot)).toHaveLength(expectedExports.length);
   });
 
-  it("Should not declare debug varibles for production.", () => {
+  it("Should not declare debug variables for production.", () => {
+    // @ts-ignore
+    expect(window.__DREAMSTATE_DEBUG_INTERNALS__).toBeUndefined();
     expect((global as any).IS_DEBUG).toBeFalsy();
-    expect((window as any).__DREAMSTATE_DEBUG_INTERNALS).toBeUndefined();
   });
 });

@@ -10,6 +10,7 @@ import {
 import { TAnyContextManagerConstructor } from "../src/types";
 
 import { TestContextManager, TestSingleContextManager } from "./assets";
+import { unRegisterManager } from "../src/registry";
 
 describe("Context store creation tests.", () => {
   it("Should initialize extended class without any exceptions.", () => {
@@ -63,5 +64,11 @@ describe("Context store creation tests.", () => {
     expect(contextType.Consumer).not.toBeUndefined();
     expect(contextType.Provider).not.toBeUndefined();
     expect(contextType.displayName).toBe("DS.TestContext");
+  });
+
+  it("Should throw errors if trying to unregister not existing instance.", () => {
+    expect(CONTEXT_MANAGERS_REGISTRY[TestContextManager[IDENTIFIER_KEY] as any]).toBeUndefined();
+    expect(() => unRegisterManager(TestContextManager)).toThrowError();
+    expect(() => unRegisterManager(TestContextManager, true)).toThrowError();
   });
 });

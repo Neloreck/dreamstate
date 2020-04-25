@@ -59,13 +59,17 @@ describe("HoC @Consume and withConsumption selector validation.", () => {
   });
 
   it("Should properly select string properties with or without alias.", () => {
-    const TestComponent = withConsumption([ TestContextManager ])(PropsRenderer);
-    const TestComponentWithSelector = withConsumption([ { from: TestContextManager } ])(PropsRenderer);
-    const TestComponentWithAlias = withConsumption([ { from: TestContextManager, as: "aliased" } ])(PropsRenderer);
+    const TestComponentWithSelector = withConsumption([ { from: TestContextManager, take: "first" } ])(PropsRenderer);
+    const TestComponentWithAlias = withConsumption([
+      { from: TestContextManager, take: "second", as: "aliased" }
+    ])(PropsRenderer);
+    const TestComponentWithFallbackSelector = withConsumption([
+      { from: TestContextManager, take: 55 as any }
+    ])(PropsRenderer);
 
-    expect(mountProvided(TestComponent)).toMatchSnapshot();
     expect(mountProvided(TestComponentWithSelector)).toMatchSnapshot();
     expect(mountProvided(TestComponentWithAlias)).toMatchSnapshot();
+    expect(mountProvided(TestComponentWithFallbackSelector)).toMatchSnapshot();
   });
 
   it("Should properly select array properties with or without alias.", () => {

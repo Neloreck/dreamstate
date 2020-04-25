@@ -1,4 +1,8 @@
 module.exports = {
+  "coveragePathIgnorePatterns": [
+    "node_modules",
+    "<rootDir>/tests/"
+  ],
   setupFilesAfterEnv: [
     "<rootDir>tests/helpers/setup/index.js"
   ],

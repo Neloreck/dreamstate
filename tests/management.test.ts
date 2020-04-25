@@ -110,7 +110,7 @@ describe("Context store creation tests.", () => {
     expect(manager.context.first).toBe("first");
     expect(manager.context.second).toBe(2);
 
-    manager.setContext({ first: "updated", second: 22 });
+    manager.setContext(() => ({ first: "updated", second: 22 }));
 
     expect(manager["beforeUpdate"]).toHaveBeenCalled();
     expect(manager["afterUpdate"]).toHaveBeenCalled();

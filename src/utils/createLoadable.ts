@@ -6,7 +6,7 @@ import { log } from "../../build/macroses/log.macro";
 /**
  * Util for loadable.
  */
-function asLoading<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, E> {
+export function asLoading<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, E> {
   return Object.assign({}, this, {
     value: arguments.length ? (value as T) : this.value,
     error: null,
@@ -17,7 +17,7 @@ function asLoading<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, E> {
 /**
  * Util for loadable.
  */
-function asFailed<T, E>(this: ILoadable<T, E>, error: E | null, value?: T): ILoadable<T, E> {
+export function asFailed<T, E>(this: ILoadable<T, E>, error: E | null, value?: T): ILoadable<T, E> {
   return Object.assign({}, this, {
     error,
     isLoading: false,
@@ -28,14 +28,14 @@ function asFailed<T, E>(this: ILoadable<T, E>, error: E | null, value?: T): ILoa
 /**
  * Util for loadable.
  */
-function asReady<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E> {
+export function asReady<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E> {
   return Object.assign({}, this, { error: null, isLoading: false, value });
 }
 
 /**
  * Util for loadable.
  */
-function asUpdated<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E> {
+export function asUpdated<T, E>(this: ILoadable<T, E>, value: T | null): ILoadable<T, E> {
   return Object.assign({}, this, { value });
 }
 
@@ -51,11 +51,9 @@ export function createLoadable<T, E>(
 
   return {
     [NESTED_STORE_KEY]: true,
-    // Data.
     error,
     isLoading,
     value,
-    // Methods.
     asLoading: asLoading,
     asFailed: asFailed,
     asReady: asReady,

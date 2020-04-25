@@ -198,11 +198,9 @@ exports[`HoC @Consume and withConsumption selector validation. Should properly s
   <DS.Consumer>
     <PropsRenderer
       first="first"
-      second={2}
-      third={false}
     >
       <div>
-        {"first":"first","second":2,"third":false}
+        {"first":"first"}
       </div>
     </PropsRenderer>
   </DS.Consumer>
@@ -213,12 +211,10 @@ exports[`HoC @Consume and withConsumption selector validation. Should properly s
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
-      first="first"
-      second={2}
-      third={false}
+      aliased={2}
     >
       <div>
-        {"first":"first","second":2,"third":false}
+        {"aliased":2}
       </div>
     </PropsRenderer>
   </DS.Consumer>
@@ -228,17 +224,9 @@ exports[`HoC @Consume and withConsumption selector validation. Should properly s
 exports[`HoC @Consume and withConsumption selector validation. Should properly select string properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
-    <PropsRenderer
-      aliased={
-        Object {
-          "first": "first",
-          "second": 2,
-          "third": false,
-        }
-      }
-    >
+    <PropsRenderer>
       <div>
-        {"aliased":{"first":"first","second":2,"third":false}}
+        {}
       </div>
     </PropsRenderer>
   </DS.Consumer>
