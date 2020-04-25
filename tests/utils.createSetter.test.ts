@@ -30,7 +30,7 @@ describe("CreateSetter util.", () => {
 
     firstSetter({ a: 11 });
 
-    expect(nestedManager.setContext).toBeCalled();
+    expect(nestedManager.setContext).toHaveBeenCalled();
     expect(nestedManager.context.first.a).toBe(11);
     expect(nestedManager.context.first.b).toBe(2);
     expect(nestedManager.context.second).toBe(initialSecond);
@@ -39,7 +39,7 @@ describe("CreateSetter util.", () => {
 
     firstSetter({ b: 22 });
 
-    expect(nestedManager.setContext).toBeCalled();
+    expect(nestedManager.setContext).toHaveBeenCalled();
     expect(nestedManager.context.first.a).toBe(11);
     expect(nestedManager.context.first.b).toBe(22);
     expect(nestedManager.context.second).toBe(initialSecond);
@@ -51,7 +51,7 @@ describe("CreateSetter util.", () => {
     expect(nestedManager.context.second).not.toBe(initialSecond);
     expect(nestedManager.context.second.c).toBe(3);
     expect(nestedManager.context.second.d).toBe(4);
-    expect(nestedManager.setContext).toBeCalled();
+    expect(nestedManager.setContext).toHaveBeenCalled();
   });
 
   it("Should not allow create setters for non-objects.", () => {

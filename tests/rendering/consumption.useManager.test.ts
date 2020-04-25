@@ -25,7 +25,7 @@ describe("UseManager subscription and rendering.", () => {
       )
     );
 
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
     expect(tree).toMatchSnapshot();
 
     mockFn.mockClear();
@@ -37,7 +37,7 @@ describe("UseManager subscription and rendering.", () => {
       await nextAsyncQueue();
     });
 
-    expect(mockFn).not.toBeCalled();
+    expect(mockFn).not.toHaveBeenCalled();
 
     mockFn.mockClear();
 
@@ -46,7 +46,7 @@ describe("UseManager subscription and rendering.", () => {
       await nextAsyncQueue();
     });
 
-    expect(mockFn).toBeCalled();
+    expect(mockFn).toHaveBeenCalled();
 
     mockFn.mockClear();
 
@@ -55,7 +55,7 @@ describe("UseManager subscription and rendering.", () => {
       await nextAsyncQueue();
     });
 
-    expect(mockFn).toBeCalled();
+    expect(mockFn).toHaveBeenCalled();
 
     mockFn.mockClear();
     tree.unmount();
@@ -75,7 +75,7 @@ describe("UseManager subscription and rendering.", () => {
     );
 
     expect(tree).toMatchSnapshot();
-    expect(mockFn).toBeCalledTimes(1);
+    expect(mockFn).toHaveBeenCalledTimes(1);
 
     mockFn.mockClear();
 
@@ -86,7 +86,7 @@ describe("UseManager subscription and rendering.", () => {
       await nextAsyncQueue();
     });
 
-    expect(mockFn).not.toBeCalled();
+    expect(mockFn).not.toHaveBeenCalled();
 
     mockFn.mockClear();
 
@@ -95,7 +95,7 @@ describe("UseManager subscription and rendering.", () => {
       await nextAsyncQueue();
     });
 
-    expect(mockFn).not.toBeCalled();
+    expect(mockFn).not.toHaveBeenCalled();
     mockFn.mockClear();
 
     await act(async () => {
@@ -103,7 +103,7 @@ describe("UseManager subscription and rendering.", () => {
       await nextAsyncQueue();
     });
 
-    expect(mockFn).toBeCalled();
+    expect(mockFn).toHaveBeenCalled();
 
     mockFn.mockClear();
     tree.unmount();

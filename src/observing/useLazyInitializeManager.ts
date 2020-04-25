@@ -18,6 +18,7 @@ export function useLazyInitializeManager<T extends object>(
 
   useEffect(() => {
     addManagerObserverToRegistry(managerConstructor, updateObserver);
+
     return () => removeManagerObserverFromRegistry(managerConstructor, updateObserver);
   }, EMPTY_ARR);
 }

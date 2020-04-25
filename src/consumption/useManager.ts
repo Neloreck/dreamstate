@@ -25,6 +25,7 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
       if (observed.current[it] !== nextObserved[it]) {
         observed.current = nextObserved;
         setState(nextContext);
+
         return;
       }
     }
@@ -32,6 +33,7 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
 
   useLayoutEffect(function () {
     subscribeToManager(managerConstructor, updateMemoState);
+
     return function () {
       unsubscribeFromManager(managerConstructor, updateMemoState);
     };

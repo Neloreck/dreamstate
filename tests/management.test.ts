@@ -42,28 +42,28 @@ describe("Context store creation tests.", () => {
 
     addManagerObserverToRegistry(TestContextManager, firstObserver);
 
-    expect(testManager["onProvisionStarted"]).toBeCalled();
-    expect(testManager["onProvisionEnded"]).not.toBeCalled();
+    expect(testManager["onProvisionStarted"]).toHaveBeenCalled();
+    expect(testManager["onProvisionEnded"]).not.toHaveBeenCalled();
     expect(CONTEXT_MANAGERS_REGISTRY[TestSingleContextManager[IDENTIFIER_KEY] as any]).toBeDefined();
     clearMocks();
 
     addManagerObserverToRegistry(TestContextManager, secondObserver);
-    expect(testManager["onProvisionStarted"]).not.toBeCalled();
-    expect(testManager["onProvisionEnded"]).not.toBeCalled();
+    expect(testManager["onProvisionStarted"]).not.toHaveBeenCalled();
+    expect(testManager["onProvisionEnded"]).not.toHaveBeenCalled();
     expect(CONTEXT_MANAGERS_REGISTRY[TestContextManager[IDENTIFIER_KEY] as any]).toBeDefined();
     clearMocks();
 
     removeManagerObserverFromRegistry(TestContextManager, secondObserver);
 
-    expect(testManager["onProvisionStarted"]).not.toBeCalled();
-    expect(testManager["onProvisionEnded"]).not.toBeCalled();
+    expect(testManager["onProvisionStarted"]).not.toHaveBeenCalled();
+    expect(testManager["onProvisionEnded"]).not.toHaveBeenCalled();
     expect(CONTEXT_MANAGERS_REGISTRY[TestContextManager[IDENTIFIER_KEY] as any]).toBeDefined();
     clearMocks();
 
     removeManagerObserverFromRegistry(TestContextManager, firstObserver);
 
-    expect(testManager["onProvisionStarted"]).not.toBeCalled();
-    expect(testManager["onProvisionEnded"]).toBeCalled();
+    expect(testManager["onProvisionStarted"]).not.toHaveBeenCalled();
+    expect(testManager["onProvisionEnded"]).toHaveBeenCalled();
     expect(CONTEXT_MANAGERS_REGISTRY[TestContextManager[IDENTIFIER_KEY] as any]).toBeUndefined();
     clearMocks();
 
@@ -74,15 +74,15 @@ describe("Context store creation tests.", () => {
 
     addManagerObserverToRegistry(TestSingleContextManager, firstObserver);
 
-    expect(testSingleManager["onProvisionStarted"]).toBeCalled();
-    expect(testSingleManager["onProvisionEnded"]).not.toBeCalled();
+    expect(testSingleManager["onProvisionStarted"]).toHaveBeenCalled();
+    expect(testSingleManager["onProvisionEnded"]).not.toHaveBeenCalled();
     expect(CONTEXT_MANAGERS_REGISTRY[TestSingleContextManager[IDENTIFIER_KEY] as any]).toBeDefined();
     clearMocks();
 
     removeManagerObserverFromRegistry(TestSingleContextManager, firstObserver);
 
-    expect(testSingleManager["onProvisionStarted"]).not.toBeCalled();
-    expect(testSingleManager["onProvisionEnded"]).toBeCalled();
+    expect(testSingleManager["onProvisionStarted"]).not.toHaveBeenCalled();
+    expect(testSingleManager["onProvisionEnded"]).toHaveBeenCalled();
     expect(CONTEXT_MANAGERS_REGISTRY[TestSingleContextManager[IDENTIFIER_KEY] as any]).toBeDefined();
     clearMocks();
   });
@@ -112,8 +112,8 @@ describe("Context store creation tests.", () => {
 
     manager.setContext({ first: "updated", second: 22 });
 
-    expect(manager["beforeUpdate"]).toBeCalled();
-    expect(manager["afterUpdate"]).toBeCalled();
+    expect(manager["beforeUpdate"]).toHaveBeenCalled();
+    expect(manager["afterUpdate"]).toHaveBeenCalled();
 
     expect(manager.context.first).toBe("updated");
     expect(manager.context.second).toBe(22);
@@ -127,8 +127,8 @@ describe("Context store creation tests.", () => {
 
     manager.setContext({ first: "updated", second: 22 });
 
-    expect(manager["beforeUpdate"]).not.toBeCalled();
-    expect(manager["afterUpdate"]).not.toBeCalled();
+    expect(manager["beforeUpdate"]).not.toHaveBeenCalled();
+    expect(manager["afterUpdate"]).not.toHaveBeenCalled();
 
     /**
      * Should force updates correctly.
@@ -153,8 +153,8 @@ describe("Context store creation tests.", () => {
 
     manager.forceUpdate();
 
-    expect(manager["beforeUpdate"]).toBeCalled();
-    expect(manager["afterUpdate"]).toBeCalled();
+    expect(manager["beforeUpdate"]).toHaveBeenCalled();
+    expect(manager["afterUpdate"]).toHaveBeenCalled();
   });
 
   it("Should properly subscribe to manager and unsubscribe.", async () => {
@@ -169,8 +169,8 @@ describe("Context store creation tests.", () => {
     subscribeToManager(TestContextManager, initialMockFn, true);
     subscribeToManager(TestContextManager, withCheckParamsMockFn);
 
-    expect(initialMockFn).toBeCalledWith(manager.context);
-    expect(withCheckParamsMockFn).not.toBeCalled();
+    expect(initialMockFn).toHaveBeenCalledWith(manager.context);
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
 
     initialMockFn.mockClear();
 
@@ -178,8 +178,8 @@ describe("Context store creation tests.", () => {
 
     await nextAsyncQueue();
 
-    expect(initialMockFn).toBeCalled();
-    expect(initialMockFn).toBeCalled();
+    expect(initialMockFn).toHaveBeenCalled();
+    expect(initialMockFn).toHaveBeenCalled();
 
     initialMockFn.mockClear();
 
@@ -189,7 +189,7 @@ describe("Context store creation tests.", () => {
     manager.setContext({ first: "d", second: 35 });
 
     await nextAsyncQueue();
-    expect(initialMockFn).not.toBeCalled();
+    expect(initialMockFn).not.toHaveBeenCalled();
 
     unRegisterManagerClass(TestContextManager);
   });

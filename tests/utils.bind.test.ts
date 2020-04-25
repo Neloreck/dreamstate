@@ -9,7 +9,7 @@ describe("@Bind method decorator.", () => {
     public method(): this {
       return this;
     }
-  
+
   }
 
   class Extending extends Base {}

@@ -29,7 +29,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     const tree = mountProvided(Observer, { onRender });
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalledTimes(1);
+    expect(onRender).toHaveBeenCalledTimes(1);
 
     onRender.mockClear();
 
@@ -41,7 +41,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalledTimes(1);
+    expect(onRender).toHaveBeenCalledTimes(1);
 
     onRender.mockClear();
 
@@ -56,7 +56,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).not.toBeCalled();
+    expect(onRender).not.toHaveBeenCalled();
 
     onRender.mockClear();
 
@@ -71,7 +71,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).not.toBeCalled();
+    expect(onRender).not.toHaveBeenCalled();
   });
 
   it("Should properly observe array selected props and prevent odd updates.", async () => {
@@ -82,7 +82,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     const tree = mountProvided(Observer, { onRender });
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalledTimes(1);
+    expect(onRender).toHaveBeenCalledTimes(1);
 
     onRender.mockClear();
 
@@ -94,7 +94,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalledTimes(1);
+    expect(onRender).toHaveBeenCalledTimes(1);
 
     onRender.mockClear();
 
@@ -109,7 +109,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).not.toBeCalled();
+    expect(onRender).not.toHaveBeenCalled();
 
     onRender.mockClear();
 
@@ -124,7 +124,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).not.toBeCalled();
+    expect(onRender).not.toHaveBeenCalled();
 
     onRender.mockClear();
 
@@ -139,7 +139,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalledTimes(1);
+    expect(onRender).toHaveBeenCalledTimes(1);
 
     onRender.mockClear();
   });
@@ -157,7 +157,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     const tree = mountProvided(Observer, { onRender });
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalledTimes(1);
+    expect(onRender).toHaveBeenCalledTimes(1);
 
     onRender.mockClear();
 
@@ -169,7 +169,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).not.toBeCalled();
+    expect(onRender).not.toHaveBeenCalled();
 
     onRender.mockClear();
 
@@ -181,7 +181,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(onRender).toBeCalled();
+    expect(onRender).toHaveBeenCalled();
 
     onRender.mockClear();
   });

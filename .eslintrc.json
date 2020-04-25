@@ -1,10 +1,16 @@
 {
+  "env": {
+    "browser": true,
+    "node": true
+  },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./build/tsconfig.test.json"
   },
   "extends": [
     "eslint:recommended",
+    "plugin:jest/style",
+    "plugin:json/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/errors",
@@ -12,27 +18,56 @@
   ],
   "plugins": [
     "@typescript-eslint",
+    "jest",
     "import"
   ],
-  "settings": {
-  },
   "rules": {
-    "indent": [ "error", 2 ],
-    "function-paren-newline": [ "error", "multiline-arguments" ],
-    "space-before-function-paren": [ "error", { "anonymous": "always", "named": "never" } ],
-    "array-bracket-spacing": [ "error", "always" ],
-    "comma-dangle": [ "error", "never" ],
-    "eol-last": [ "error", "always" ],
-    "no-duplicate-imports": "error",
-    "max-len": [ "error", { "code": 120 } ],
+    "@typescript-eslint/explicit-member-accessibility": [ 2 ],
+    "@typescript-eslint/ban-ts-ignore": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-inferrable-types": 0,
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/interface-name-prefix": [ 2, "always" ],
+    "@typescript-eslint/no-empty-interface": 0,
+    "@typescript-eslint/no-empty-function": 0,
+    "@typescript-eslint/no-unused-vars": 0,
+    "keyword-spacing": 2,
+    "indent": [ 2, 2 ],
+    "brace-style": 2,
+    "array-element-newline": [ 2, "consistent" ],
+    "function-paren-newline": [ 2, "multiline-arguments" ],
+    "space-before-function-paren": [ 2, { "anonymous": "always", "named": "never" } ],
+    "array-bracket-spacing": [ 2, "always" ],
+    "comma-dangle": [ 2, "never" ],
+    "eol-last": [ 2, "always" ],
+    "no-duplicate-imports": 2,
+    "max-len": [ 2, { "code": 120 } ],
     "key-spacing": [ 2, { "beforeColon": false, "afterColon": true } ],
-    "no-constructor-return": "error",
-    "arrow-spacing": "error",
-    "camelcase": "error",
-    "yoda": "error",
-    "arrow-parens": [ "error", "always" ],
+    "no-constructor-return": 2,
+    "arrow-spacing": 2,
+    "camelcase": 2,
+    "yoda": 2,
+    "arrow-parens": [ 2, "always" ],
+    "no-multiple-empty-lines": 2,
+    "no-trailing-spaces": 2,
+    "no-multi-spaces": 2,
+    "object-curly-spacing": [ 2, "always" ],
+    "space-in-parens": [ 2, "never" ],
+    "func-call-spacing": [ 2, "never" ],
+    "padded-blocks": [ 2, { "blocks": "never", "classes": "always" } ],
+    "semi": 2,
+    "quotes": [ 2, "double" ],
+    "padding-line-between-statements": [
+      2,
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "expression", "next": [ "const", "let", "var" ] },
+      { "blankLine": "always", "prev": [ "const", "let", "var" ], "next": "*" },
+      { "blankLine": "always", "prev": [ "for", "if", "while", "do", "with" ], "next": "*" },
+      { "blankLine": "any", "prev": [ "const", "let", "var" ], "next": [ "const", "let", "var" ] }
+    ],
     "space-unary-ops": [
-      "error", {
+      2, {
         "words": true,
         "nonwords": false,
         "overrides": {
@@ -41,32 +76,8 @@
         }
       }
     ],
-    "no-multiple-empty-lines": "error",
-    "no-multi-spaces": "error",
-    "object-curly-spacing": [ "error", "always" ],
-    "space-in-parens": [ "error", "never" ],
-    "func-call-spacing": [ "error", "never" ],
-    "padded-blocks": [ "error", { "blocks": "never", "classes": "always" } ],
-    "semi": "error",
-    "quotes": [ "error", "double" ],
     "import/no-unresolved": 0,
     "import/default": 0,
-    "padding-line-between-statements": [
-      "error",
-      { "blankLine": "always", "prev": "directive", "next": "*" },
-      { "blankLine": "any", "prev": "directive", "next": "directive" },
-      { "blankLine": "always", "prev": [ "const", "let", "var" ], "next": "*" },
-      { "blankLine": "always", "prev": [ "for", "if", "while", "do", "with" ], "next": "*" },
-      { "blankLine": "any", "prev": [ "const", "let", "var" ], "next": [ "const", "let", "var" ] }
-    ],
-    "@typescript-eslint/ban-ts-ignore": 0,
-    "@typescript-eslint/no-non-null-assertion": 0,
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-inferrable-types": 0,
-    "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/interface-name-prefix": 0,
-    "@typescript-eslint/no-empty-interface": 0,
-    "@typescript-eslint/no-empty-function": 0,
-    "@typescript-eslint/no-unused-vars": 0
+    "json/*": [ 1, "allowComments" ]
   }
 }

@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createMacro } = require("babel-plugin-macros");
 
 const IS_DEBUG = (process.env.NODE_ENV === "debug");
@@ -23,7 +24,7 @@ function log({ references, babel, state }) {
               types.memberExpression(types.identifier("console"), types.identifier("info")),
               [
                 types.stringLiteral("%c=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="),
-                types.stringLiteral(PREFIX_COLOR),
+                types.stringLiteral(PREFIX_COLOR)
               ],
             )
           );
@@ -64,7 +65,7 @@ function log({ references, babel, state }) {
           [
             types.templateElement({ raw: "%c", cooked: "%c" }),
             types.templateElement({ raw: ":", cooked: ":" }),
-            types.templateElement({ raw: " [DS]", cooked: " [DS]" }),
+            types.templateElement({ raw: " [DS]", cooked: " [DS]" })
           ],
           [
             timeExpression,

@@ -55,6 +55,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
         if (alias) {
           mutators[it] = function (accumulator: IStringIndexed<any>) {
             accumulator[source.as] = useManager(source.from);
+
             return accumulator;
           };
         } else {
@@ -106,6 +107,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
         if (alias) {
           mutators[it] = function (accumulator: IStringIndexed<any>) {
             accumulator[alias] = take(useManager(source.from, memoCheck));
+
             return accumulator;
           };
         } else {
@@ -123,11 +125,13 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
         if (alias) {
           mutators[it] = function (accumulator: IStringIndexed<any>) {
             accumulator[alias as any] = useManager(source.from, memoCheck)[take];
+
             return accumulator;
           };
         } else {
           mutators[it] = function (accumulator: IStringIndexed<any>) {
             accumulator[take as any] = useManager(source.from, memoCheck)[take];
+
             return accumulator;
           };
         }

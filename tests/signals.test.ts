@@ -67,27 +67,27 @@ describe("Signals and signaling.", () => {
     emittingManager.sendNumberSignal();
     await nextAsyncQueue();
 
-    expect(subscribedManager.onNumberSignal).toBeCalled();
-    expect(subscribedManager.onStringOrNumberSignal).toBeCalled();
-    expect(subscribedManager.onStringSignal).not.toBeCalled();
+    expect(subscribedManager.onNumberSignal).toHaveBeenCalled();
+    expect(subscribedManager.onStringOrNumberSignal).toHaveBeenCalled();
+    expect(subscribedManager.onStringSignal).not.toHaveBeenCalled();
 
     clearMocks();
 
     emittingManager.sendStringSignal();
     await nextAsyncQueue();
 
-    expect(subscribedManager.onNumberSignal).not.toBeCalled();
-    expect(subscribedManager.onStringOrNumberSignal).toBeCalled();
-    expect(subscribedManager.onStringSignal).toBeCalled();
+    expect(subscribedManager.onNumberSignal).not.toHaveBeenCalled();
+    expect(subscribedManager.onStringOrNumberSignal).toHaveBeenCalled();
+    expect(subscribedManager.onStringSignal).toHaveBeenCalled();
 
     clearMocks();
 
     emittingManager.sendEmptySignal();
     await nextAsyncQueue();
 
-    expect(subscribedManager.onNumberSignal).not.toBeCalled();
-    expect(subscribedManager.onStringOrNumberSignal).not.toBeCalled();
-    expect(subscribedManager.onStringSignal).not.toBeCalled();
+    expect(subscribedManager.onNumberSignal).not.toHaveBeenCalled();
+    expect(subscribedManager.onStringOrNumberSignal).not.toHaveBeenCalled();
+    expect(subscribedManager.onStringSignal).not.toHaveBeenCalled();
   });
 
   it("Signal subscribers should properly listen managers signals.", async () => {
@@ -110,7 +110,7 @@ describe("Signals and signaling.", () => {
     emittingManager.sendNumberSignal();
     await nextAsyncQueue();
 
-    expect(numberSubscriber).toBeCalled();
+    expect(numberSubscriber).toHaveBeenCalled();
 
     unsubscribeFromSignals(numberSubscriber);
     subscribeToSignals(stringSubscriber);
@@ -118,7 +118,7 @@ describe("Signals and signaling.", () => {
     emittingManager.sendStringSignal();
     await nextAsyncQueue();
 
-    expect(stringSubscriber).toBeCalled();
+    expect(stringSubscriber).toHaveBeenCalled();
 
     unsubscribeFromSignals(stringSubscriber);
   });
@@ -139,10 +139,10 @@ describe("Signals and signaling.", () => {
     emittingManager.sendStringSignal();
     await nextAsyncQueue();
 
-    expect(subscribedManager.onStringSignal).toBeCalled();
-    expect(subscribedManager.onStringOrNumberSignal).toBeCalled();
-    expect(firstSubscriber).not.toBeCalled();
-    expect(secondSubscriber).not.toBeCalled();
+    expect(subscribedManager.onStringSignal).toHaveBeenCalled();
+    expect(subscribedManager.onStringOrNumberSignal).toHaveBeenCalled();
+    expect(firstSubscriber).not.toHaveBeenCalled();
+    expect(secondSubscriber).not.toHaveBeenCalled();
 
     unsubscribeFromSignals(firstSubscriber);
     unsubscribeFromSignals(secondSubscriber);

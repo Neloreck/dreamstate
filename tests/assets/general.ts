@@ -86,5 +86,6 @@ export function PropsRenderer(props: PropsWithChildren<object>): ReactElement {
 
 export function RenderCallbacker({ onRender, ...rest }: { onRender: <T>(props: T) => void }): ReactElement {
   onRender(rest);
+
   return createElement("div", {}, JSON.stringify(rest));
 }

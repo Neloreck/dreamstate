@@ -11,6 +11,7 @@ export function createClassWrapDecorator<D>(resolver: (c: D) => D): ClassDecorat
       ((classOrDescriptor as any) as ClassDescriptor).finisher = function (wrappedComponent: T) {
         return resolver(wrappedComponent as any);
       } as any;
+
       return classOrDescriptor as any;
     }
   };

@@ -14,6 +14,6 @@ export const BABEL_CONFIG = {
     "@babel/preset-typescript"
   ],
   plugins: [
-    "macros",
+    "macros"
   ]
 };

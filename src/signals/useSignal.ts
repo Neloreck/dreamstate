@@ -13,6 +13,7 @@ export function useSignals<D = undefined, T extends TSignalType = TSignalType>(
 ): void {
   useEffect(function () {
     subscribeToSignals(subscriber);
+
     return function () {
       unsubscribeFromSignals(subscriber);
     };

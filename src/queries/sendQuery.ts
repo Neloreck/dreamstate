@@ -29,6 +29,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
       }
 
       log.info("Checking metadata for:", managerId, query);
+
       const managerMeta: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY[managerId as any];
 
       for (let jt = 0; jt < managerMeta.length; jt ++) {
@@ -71,6 +72,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
     }
 
     log.info("Query resolver was not found, returning null:", senderId, query);
+
     return resolve(null);
   });
 }

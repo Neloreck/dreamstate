@@ -86,7 +86,7 @@ export const ExampleContextHocConsumer = withConsumption([ { from: ExampleContex
     public render(): ReactNode {
       return createElement("span", {}, JSON.stringify(this.props.exampleContext));
     }
-  
+
   }
 );
 

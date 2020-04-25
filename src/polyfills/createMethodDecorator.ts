@@ -8,11 +8,13 @@ export function createMethodDecorator<T extends TConstructor<any>>(
   return function (prototypeOrDescriptor: object, method: string | symbol) {
     if (prototypeOrDescriptor && method) {
       resolver(method, prototypeOrDescriptor.constructor as T);
+
       return prototypeOrDescriptor;
     } else {
       (prototypeOrDescriptor as MethodDescriptor).finisher = function (targetClass: any) {
         resolver((prototypeOrDescriptor as MethodDescriptor).key as string, targetClass as T);
       };
+
       return prototypeOrDescriptor;
     }
   };

@@ -37,7 +37,7 @@ describe("Signals and signaling.", () => {
     tree.update();
 
     expect(tree).toMatchSnapshot();
-    expect(mockFn).toBeCalled();
+    expect(mockFn).toHaveBeenCalled();
 
     mockFn.mockClear();
 
@@ -46,6 +46,6 @@ describe("Signals and signaling.", () => {
     emittingContextManager.sendStringSignal("newValue");
     await nextAsyncQueue();
 
-    expect(mockFn).not.toBeCalled();
+    expect(mockFn).not.toHaveBeenCalled();
   });
 });
