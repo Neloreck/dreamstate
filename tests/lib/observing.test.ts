@@ -1,5 +1,6 @@
-import { shouldObserversUpdate } from "@Lib/observing";
+import { createManagersObserver, shouldObserversUpdate } from "@Lib/observing";
 import { createLoadable, createMutable } from "@Lib/utils";
+import { TestContextInterceptor, TestContextManager } from "@Tests/assets";
 
 describe("Observing utils and methods.", () => {
   it("Should notifiers update must check properly same nested primitives and objects.", () => {
@@ -106,5 +107,18 @@ describe("Observing utils and methods.", () => {
     const secondLoadableObj = { nested: createLoadable(obj) };
 
     expect(shouldObserversUpdate(firstLoadableObj, secondLoadableObj)).toBeFalsy();
+  });
+
+  it("Should create observers for context workers only.", () => {
+    expect(() => createManagersObserver(null, undefined as any)).toThrow();
+    expect(() => createManagersObserver(null, [ 1 as any ])).toThrow();
+    expect(() => createManagersObserver(null, [ {} as any ])).toThrow();
+    expect(() => createManagersObserver(null, [ null as any ])).toThrow();
+    expect(() => createManagersObserver(null, [ "123" as any ])).toThrow();
+    expect(() => createManagersObserver(null, [ true as any ])).toThrow();
+
+    expect(() => createManagersObserver(null, [])).not.toThrow();
+    expect(() => createManagersObserver(null, [ TestContextManager ])).not.toThrow();
+    expect(() => createManagersObserver(null, [ TestContextInterceptor ])).not.toThrow();
   });
 });
