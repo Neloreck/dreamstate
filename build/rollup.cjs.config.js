@@ -15,7 +15,7 @@ const IS_PRODUCTION = ENV === "production";
 const IS_DEBUG = ENV === "debug";
 
 export const CJS_CONFIG = {
-  external: [ "react", "shallow-equal", "hoist-non-react-statics" ],
+  external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
   input: "./src/index.ts",
   output: {
     compact: IS_PRODUCTION,

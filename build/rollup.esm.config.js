@@ -14,7 +14,7 @@ const IS_PRODUCTION = ENV === "production";
 const IS_DEBUG = ENV === "debug";
 
 export const ESM_CONFIG = {
-  external: [ "react", "shallow-equal", "hoist-non-react-statics" ],
+  external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
   input: "./src/index.ts",
   preserveModules: true,
   output: {
