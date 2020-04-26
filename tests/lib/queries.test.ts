@@ -1,6 +1,6 @@
 import { getCurrent, QueryResponse } from "@Lib";
+import { registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
-import { registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 import { RequestingContextManager, RespondingContextManager, RespondingInterceptor } from "@Tests/assets";
 
 describe("Queries and queries processing.", () => {

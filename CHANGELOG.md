@@ -2,7 +2,7 @@
   * Tests added, stricter check of library for production builds
   * Included UMD, CJS and ESM bundles into library
   * Tree shaking introduced
-  * Some benchmark tests introduced
+  * Added "dreamstate/test-utils"
   * Signals API added
     * OnSignal decorator added
     * useSignals hook added

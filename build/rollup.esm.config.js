@@ -19,7 +19,7 @@ export const ESM_CONFIG = {
   preserveModules: true,
   output: {
     compact: IS_PRODUCTION,
-    dir: "./lib/esm/",
+    dir: "./esm/",
     name: `dreamstate.${ENV}.js`,
     sourcemap: true,
     format: "es"

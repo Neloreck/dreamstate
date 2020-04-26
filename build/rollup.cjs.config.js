@@ -6,7 +6,7 @@ import { default as replace } from "@rollup/plugin-replace";
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import { sizeSnapshot } from "rollup-plugin-size-snapshot";
+import { default as multiinput } from "rollup-plugin-multi-input";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
@@ -16,18 +16,17 @@ const IS_DEBUG = ENV === "debug";
 
 export const CJS_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
-  input: "./src/index.ts",
+  input: [ "./src/index.ts", "./src/test-utils.ts" ],
   output: {
+    chunkFileNames: "cjs/[name]-[hash].js",
     compact: IS_PRODUCTION,
-    file: `./lib/cjs/dreamstate.${ENV}.js`,
+    dir: "./",
     name: `dreamstate.${ENV}.js`,
     sourcemap: true,
     format: "cjs"
   },
   plugins: [
-    sizeSnapshot({
-      snapshotPath: "./build/lib.size.json"
-    }),
+    multiinput(),
     commonjs({
       namedExports: {
         react: Object.keys(react)

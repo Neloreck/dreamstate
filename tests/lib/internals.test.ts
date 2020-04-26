@@ -14,9 +14,9 @@ import {
 import { ContextManager } from "@Lib/management";
 import { TAnyContextManagerConstructor } from "@Lib/types";
 import { unRegisterWorker } from "@Lib/registry";
+import { registerWorkerClass } from "@Lib/test-utils";
 
 import { TestContextManager, TestSingleContextManager } from "@Tests/assets";
-import { registerWorkerClass } from "@Tests/helpers";
 
 describe("Context store creation tests.", () => {
   it("Context internals should not exist until first register.", () => {
@@ -66,12 +66,6 @@ describe("Context store creation tests.", () => {
     expect(contextType.Consumer).not.toBeUndefined();
     expect(contextType.Provider).not.toBeUndefined();
     expect(contextType.displayName).toBe("DS.TestContext");
-  });
-
-  it("Should throw errors if trying to unregister not existing instance.", () => {
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
-    expect(() => unRegisterWorker(TestContextManager)).toThrow();
-    expect(() => unRegisterWorker(TestContextManager, true)).toThrow();
   });
 
   it("Should initialize managers classes without any exceptions.", () => {

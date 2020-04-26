@@ -3,8 +3,8 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 import { getCurrent } from "@Lib/registry";
+import { nextAsyncQueue, registerWorkerClass } from "@Lib/test-utils";
 
-import { nextAsyncQueue, registerWorkerClass } from "@Tests/helpers";
 import {
   ExampleContextFunctionalConsumer,
   ExampleContextFunctionalConsumerWithMemo,

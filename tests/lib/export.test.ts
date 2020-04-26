@@ -1,8 +1,10 @@
 describe("Library exported API tests.", () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const libRoot = require("@Lib");
+  const libRoot = require("@Lib/index");
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const testUtilsRoot = require("@Lib/test-utils");
 
-  const expectedExports: Array<string> = [
+  const expectedLibExports: Array<string> = [
     // Types.
     "Loadable",
     "Mutable",
@@ -43,9 +45,23 @@ describe("Library exported API tests.", () => {
     "Bind"
   ];
 
-  it("Should export correct API methods", () => {
-    Object.keys(libRoot).forEach((it: string) => expect(expectedExports.includes(it)).toBeTruthy());
-    expect(Object.keys(libRoot)).toHaveLength(expectedExports.length);
+  const expectedTestUtilsExports: Array<string> = [
+    "registerWorkerClass",
+    "unRegisterWorkerClass",
+    "getWorkerObserversCount",
+    "addManagerObserver",
+    "removeManagerObserver",
+    "nextAsyncQueue"
+  ];
+
+  it("Should export correct lib API methods", () => {
+    Object.keys(libRoot).forEach((it: string) => expect(expectedLibExports.includes(it)).toBeTruthy());
+    expect(Object.keys(libRoot)).toHaveLength(expectedLibExports.length);
+  });
+
+  it("Should export correct test-utils API methods", () => {
+    Object.keys(testUtilsRoot).forEach((it: string) => expect(expectedTestUtilsExports.includes(it)).toBeTruthy());
+    expect(Object.keys(testUtilsRoot)).toHaveLength(expectedTestUtilsExports.length);
   });
 
   it("Should not declare debug variables for production.", () => {

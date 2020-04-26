@@ -4,9 +4,9 @@ import { act } from "react-dom/test-utils";
 
 import { withConsumption } from "@Lib/consumption";
 import { getCurrent } from "@Lib/registry";
+import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
 import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/assets";
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 
 describe("HoC @Consume and withConsumption selector observing.", () => {
   function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {

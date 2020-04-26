@@ -8,8 +8,8 @@ import {
   unsubscribeFromManager
 } from "@Lib/registry";
 import { ContextManager } from "@Lib/management";
+import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 import { ExtendingTestContextManager, ITestContext, TestContextManager, TestSingleContextManager } from "@Tests/assets";
 
 describe("Context store creation tests.", () => {

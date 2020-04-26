@@ -23,7 +23,6 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   // Async processing of subscribed metadata.
   SIGNAL_LISTENERS_REGISTRY.forEach(function (it: TSignalListener<D, T>) {
     setTimeout(function () {
-      // todo: Check if cancel will work?
       if (!signal.cancelled) {
         it(signal);
       } else {

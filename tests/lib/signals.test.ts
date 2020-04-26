@@ -6,8 +6,8 @@ import {
 } from "@Lib/types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
 import { getCurrent } from "@Lib/registry";
+import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 import { EmittingContextManager, ESignal, SubscribedContextManager, SubscribedInterceptor } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {

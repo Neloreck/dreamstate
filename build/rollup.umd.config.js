@@ -7,7 +7,6 @@ import { default as babel } from "rollup-plugin-babel";
 import { default as resolve } from "@rollup/plugin-node-resolve";
 import { terser } from "rollup-plugin-terser";
 import { default as commonjs } from "rollup-plugin-commonjs";
-import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 import { BABEL_CONFIG } from "./babel.old.config";
 
@@ -20,7 +19,7 @@ export const UMD_CONFIG = {
   input: "./src/index.ts",
   output: {
     compact: IS_PRODUCTION,
-    file: `./lib/umd/dreamstate.${ENV}.js`,
+    file: `./umd/dreamstate.${ENV}.js`,
     name: `dreamstate.${ENV}.js`,
     sourcemap: true,
     globals: {
@@ -30,9 +29,6 @@ export const UMD_CONFIG = {
   },
   plugins: [
     resolve(),
-    sizeSnapshot({
-      snapshotPath: "./build/lib.size.json"
-    }),
     commonjs({
       namedExports: {
         react: Object.keys(react)

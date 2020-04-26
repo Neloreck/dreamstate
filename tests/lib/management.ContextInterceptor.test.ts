@@ -1,8 +1,8 @@
-import { TestContextInterceptor } from "@Tests/assets";
 import { CONTEXT_WORKERS_REGISTRY } from "@Lib/internals";
 import { addWorkerObserverToRegistry, removeWorkerObserverFromRegistry } from "@Lib/registry";
+import { registerWorkerClass } from "@Lib/test-utils";
 
-import { registerWorkerClass } from "@Tests/helpers";
+import { TestContextInterceptor } from "@Tests/assets";
 
 describe("ContextInterceptor creation and management of signals and queries.", () => {
   it("Should properly handle onProvisionStarted and onProvision ended for context interceptors.", () => {

@@ -1,9 +1,9 @@
 import { getCurrent } from "@Lib/registry";
 import { createLoadable, createMutable, createSetter } from "@Lib/utils";
 import { ContextManager } from "@Lib/management";
+import { registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
 import { NestedContextManager } from "@Tests/assets";
-import { registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {

@@ -2,9 +2,9 @@ import { createElement } from "react";
 import { shallow } from "enzyme";
 
 import { provideSubTreeIterative, provideSubTreeRecursive } from "@Lib/observing";
+import { registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
 import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/assets";
-import { registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 
 describe("ProvideSubTree should properly render in declared order.", () => {
   beforeAll(() => {
