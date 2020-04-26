@@ -1,9 +1,8 @@
 ## todo:
 
-1) Unit tests - 100% coverage
-2) Think about inheritance and how to implement it/warn about it without performance degradation.
-3) Think about query api name
-4) Interceptor classes for 'queries' and signals
+1) Think about query api name
+2) ContextInterceptor classes for 'queries' and signals
+3) Validation tests for createObserver
 
 N) Better typing for decorators --> Is it possible now?
 

@@ -1,5 +1,5 @@
-import { TAnyContextManagerConstructor, TSignalType } from "../types";
-import { CONTEXT_SIGNAL_METADATA_REGISTRY, IDENTIFIER_KEY } from "../internals";
+import { TAnyContextManagerConstructor, TConstructorKey, TSignalType } from "../types";
+import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { createMethodDecorator } from "../polyfills";
 
 import { log } from "../../build/macroses/log.macro";
@@ -14,6 +14,10 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
   ): void {
     log.info("Signal metadata written for context manager:", managerConstructor.name, signalType, method);
 
-    CONTEXT_SIGNAL_METADATA_REGISTRY[managerConstructor[IDENTIFIER_KEY]].push([ method, signalType ]);
+    if (!CONTEXT_SIGNAL_METADATA_REGISTRY.has(managerConstructor)) {
+      CONTEXT_SIGNAL_METADATA_REGISTRY.set(managerConstructor as TConstructorKey, []);
+    }
+
+    CONTEXT_SIGNAL_METADATA_REGISTRY.get(managerConstructor)!.push([ method, signalType ]);
   });
 }

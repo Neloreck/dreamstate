@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { createElement } from "react";
 
-import { getCurrentManager } from "@Lib";
+import { getCurrent } from "@Lib";
 
 import { ExampleContextClassConsumer, ExampleContextFunctionalProvider, ExampleContextManager } from "@Tests/assets";
 
@@ -14,7 +14,7 @@ describe("React tree for provided and consumed components.", () => {
 
     expect(reactTree).toMatchSnapshot("Initial state.");
 
-    const exampleContextManager: ExampleContextManager | null = getCurrentManager(ExampleContextManager);
+    const exampleContextManager: ExampleContextManager | null = getCurrent(ExampleContextManager);
 
     expect(exampleContextManager).not.toBeNull();
 

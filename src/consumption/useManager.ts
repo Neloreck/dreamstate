@@ -1,7 +1,7 @@
 import { MutableRefObject, useCallback, useContext, useLayoutEffect, useRef, useState } from "react";
 
 import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
-import { CONTEXT_STATES_REGISTRY, EMPTY_ARR, IDENTIFIER_KEY } from "../internals";
+import { CONTEXT_STATES_REGISTRY, EMPTY_ARR } from "../internals";
 import { subscribeToManager, unsubscribeFromManager } from "../registry";
 
 /**
@@ -13,7 +13,7 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   depsSelector: (context: T) => Array<any>
 ): D["prototype"]["context"] {
   const [ state, setState ] = useState(function () {
-    return CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]];
+    return CONTEXT_STATES_REGISTRY.get(managerConstructor) as T;
   });
   const observed: MutableRefObject<Array<any>> = useRef(depsSelector(state));
 

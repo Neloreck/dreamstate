@@ -2,26 +2,26 @@ import { createElement } from "react";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { getCurrentManager } from "@Lib/registry";
+import { getCurrent } from "@Lib/registry";
 
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {
-    registerManagerClass(EmittingContextManager);
+    registerWorkerClass(EmittingContextManager);
   });
 
   afterEach(() => {
-    unRegisterManagerClass(EmittingContextManager);
+    unRegisterWorkerClass(EmittingContextManager);
   });
 
   it("Functional components should properly subscribe to signals and update ui.", async () => {
-    const emittingContextManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
+    const emittingContextManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
 
     const mockFn = jest.fn((signalEvent: TStringSignalEvent) => {
       expect(signalEvent.type).toBe(ESignal.STRING_SIGNAL);
-      expect(signalEvent.emitter).toBe(emittingContextManager);
+      expect(signalEvent.emitter).toBe(EmittingContextManager);
       expect(signalEvent.data).toBe("newValue");
     });
     const tree = mount(createElement(UsingSignalFunction, { onInternalSignal: mockFn }));

@@ -1,6 +1,13 @@
-import { IQueryRequest, IQueryResponse, TQueryResponse, TQuerySubscriptionMetadata, TQueryType } from "../types";
-import { CONTEXT_MANAGERS_REGISTRY, CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
-import { ContextManager } from "../management";
+import {
+  IQueryRequest,
+  IQueryResponse,
+  TDreamstateWorker,
+  TQueryResponse,
+  TQuerySubscriptionMetadata,
+  TQueryType
+} from "../types";
+import { CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY, CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
+import { ContextWorker } from "../management";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -10,40 +17,44 @@ import { log } from "../../build/macroses/log.macro";
  */
 export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   query: IQueryRequest<D, T>,
-  senderId: symbol
+  sender: TDreamstateWorker
 ): Promise<TQueryResponse<R, T> | null> {
   return new Promise(function (
     resolve: (response: IQueryResponse<R, T> | null) => void,
     reject: (error: Error) => void
   ): any {
-    const managersIDs: Array<symbol> = Object.getOwnPropertySymbols(CONTEXT_MANAGERS_REGISTRY);
+    const workers: Set<TDreamstateWorker> = CONTEXT_WORKERS_ACTIVATED;
 
-    log.info("Possible query resolvers:", managersIDs.length);
+    log.info("Possible query resolvers:", workers.size);
     // Search each context manager metadata.
-    for (let it = 0; it < managersIDs.length; it ++) {
-      const managerId: symbol = managersIDs[it];
-
+    for (const worker of workers) {
       // Skip own metadata checking.
-      if ((managerId as unknown) === senderId) {
+      // Skip workers without metadata.
+      // Skip non-instantiated workers.
+      if (
+        worker === sender ||
+        !CONTEXT_QUERY_METADATA_REGISTRY.has(worker) ||
+        !CONTEXT_WORKERS_REGISTRY.has(worker)
+      ) {
         continue;
       }
 
-      log.info("Checking metadata for:", managerId, query);
+      log.info("Checking metadata for:", worker.name, query);
 
-      const managerMeta: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY[managerId as any];
+      const workerMeta: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(worker)!;
 
-      for (let jt = 0; jt < managerMeta.length; jt ++) {
-        if (managerMeta[jt][1] === query.type) {
-          const answerer: ContextManager<any> = CONTEXT_MANAGERS_REGISTRY[managerId as any];
-
+      for (let jt = 0; jt < workerMeta.length; jt ++) {
+        if (workerMeta[jt][1] === query.type) {
           log.info(
             "Query resolver was found, triggering callback:",
-            senderId,
+            sender.name,
             query,
             "=>",
-            answerer.constructor.name,
-            managerMeta[jt][0]
+            worker.name,
+            workerMeta[jt][0]
           );
+
+          const answerer: ContextWorker = CONTEXT_WORKERS_REGISTRY.get(worker)!;
 
           /**
            * Promisify query handler.
@@ -51,27 +62,27 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
            * If it is sync - return value or reject on catch.
            */
           try {
-            const result: any = (answerer as any)[managerMeta[jt][0]](query);
+            const result: any = (answerer as any)[workerMeta[jt][0]](query);
 
             if (result instanceof Promise) {
               return result
                 .then(function (data: any): void {
-                  resolve({ answerer, type: query.type, data });
+                  resolve({ answerer: worker, type: query.type, data });
                 })
                 .catch(reject);
             } else {
-              return resolve({ answerer, type: query.type, data: result });
+              return resolve({ answerer: worker, type: query.type, data: result });
             }
           } catch (error) {
             reject(error);
           }
         } else {
-          log.info("Skipping query resolver match:", managerId, managerMeta[jt]);
+          log.info("Skipping query resolver match:", worker.name, workerMeta[jt]);
         }
       }
     }
 
-    log.info("Query resolver was not found, returning null:", senderId, query);
+    log.info("Query resolver was not found, returning null:", sender.name, query);
 
     return resolve(null);
   });

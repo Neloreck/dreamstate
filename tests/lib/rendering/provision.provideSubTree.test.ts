@@ -4,19 +4,19 @@ import { shallow } from "enzyme";
 import { provideSubTreeIterative, provideSubTreeRecursive } from "@Lib/observing";
 
 import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/assets";
-import { registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 
 describe("ProvideSubTree should properly render in declared order.", () => {
   beforeAll(() => {
-    registerManagerClass(TestContextManager);
-    registerManagerClass(NestedContextManager);
-    registerManagerClass(TestSingleContextManager);
+    registerWorkerClass(TestContextManager);
+    registerWorkerClass(NestedContextManager);
+    registerWorkerClass(TestSingleContextManager);
   });
 
   afterAll(() => {
-    unRegisterManagerClass(TestContextManager);
-    unRegisterManagerClass(NestedContextManager);
-    unRegisterManagerClass(TestSingleContextManager, true);
+    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorkerClass(NestedContextManager);
+    unRegisterWorkerClass(TestSingleContextManager, true);
   });
 
   it("Implementations must return same results.", () => {

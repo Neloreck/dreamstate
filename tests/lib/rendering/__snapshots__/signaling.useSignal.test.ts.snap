@@ -19,9 +19,7 @@ exports[`Signals and signaling. Functional components should properly subscribe 
           Object {
             "cancel": [Function],
             "data": "newValue",
-            "emitter": EmittingContextManager {
-              "context": Object {},
-            },
+            "emitter": [Function],
             "type": "STRING_SIGNAL",
           },
         ],

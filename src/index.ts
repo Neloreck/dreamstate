@@ -19,9 +19,9 @@ export {
   TQueryType as QueryType
 } from "./types";
 
-export { ContextManager } from "./management";
+export { ContextManager, ContextInterceptor } from "./management";
 
-export { subscribeToManager, unsubscribeFromManager, getCurrentContext, getCurrentManager } from "./registry";
+export { getCurrentContext, getCurrent } from "./registry";
 
 export { createProvider, Provide, withProvision } from "./provision";
 

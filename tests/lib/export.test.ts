@@ -16,11 +16,10 @@ describe("Library exported API tests.", () => {
     "QueryType",
     // Management.
     "ContextManager",
+    "ContextInterceptor",
     // Registry.
-    "subscribeToManager",
-    "unsubscribeFromManager",
     "getCurrentContext",
-    "getCurrentManager",
+    "getCurrent",
     // Provision.
     "Provide",
     "withProvision",

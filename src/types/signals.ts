@@ -1,4 +1,4 @@
-import type { ContextManager } from "../management";
+import { TDreamstateWorker } from "../types/internal";
 
 export interface ISignal<D = undefined, T extends TSignalType = TSignalType> {
   /**
@@ -19,7 +19,7 @@ export interface ISignalEvent<D = any, T extends TSignalType = TSignalType> exte
   /**
    * Signal sender.
    */
-  emitter: ContextManager<any> | null;
+  emitter: TDreamstateWorker | null;
   /**
    * Stop signal handling by next listeners.
    */

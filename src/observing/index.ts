@@ -1,4 +1,4 @@
-export * from "./useLazyInitializeManager";
+export * from "./useLazyInitializeWorker";
 export * from "./notifyObservers";
 export * from "./provideSubTreeRecursive";
 export * from "./provideSubTreeIterative";

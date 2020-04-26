@@ -13,12 +13,12 @@
   * Query API added
     * OnQuery decorator added
     * ContextManager::sendQuery method added
+  * ContextInterceptors added
+    * Added abstract class for signals and queries observing
   * getCurrentContext method added
-  * getCurrentManager method added
+  * getCurrent method added
   * createSetter method added
   * createMutable method added with related type
-  * subscribeToManager method added
-  * unsubscribeFromManager method added
   * ContextManager::REACT_CONTEXT field added
   * ContextManager::IS_SINGLE field added for singleton instances
   * removed ContextManager::static::current method

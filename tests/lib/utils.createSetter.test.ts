@@ -1,22 +1,22 @@
-import { getCurrentManager } from "@Lib/registry";
+import { getCurrent } from "@Lib/registry";
 import { createLoadable, createMutable, createSetter } from "@Lib/utils";
 import { ContextManager } from "@Lib/management";
 
 import { NestedContextManager } from "@Tests/assets";
-import { registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {
-    registerManagerClass(NestedContextManager);
+    registerWorkerClass(NestedContextManager);
   });
 
   afterEach(() => {
-    unRegisterManagerClass(NestedContextManager);
+    unRegisterWorkerClass(NestedContextManager);
   });
 
   it("Should properly declare create setters.", () => {
     const nestedManager: NestedContextManager =
-      getCurrentManager(NestedContextManager)!;
+      getCurrent(NestedContextManager)!;
 
     const firstSetter = createSetter(nestedManager,"first");
     const secondSetter = createSetter(nestedManager, "second");
@@ -57,7 +57,7 @@ describe("CreateSetter util.", () => {
   });
 
   it("Should properly work with functional setters.", () => {
-    const nestedManager: NestedContextManager = getCurrentManager(NestedContextManager)!;
+    const nestedManager: NestedContextManager = getCurrent(NestedContextManager)!;
     const setter = createSetter(nestedManager, "second");
 
     const originalC: number = nestedManager.context.second.c;

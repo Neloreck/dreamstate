@@ -3,10 +3,10 @@ import { mount, ReactWrapper } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 import { withConsumption } from "@Lib/consumption";
-import { getCurrentManager } from "@Lib/registry";
+import { getCurrent } from "@Lib/registry";
 
 import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/assets";
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
+import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
 
 describe("HoC @Consume and withConsumption selector observing.", () => {
   function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {
@@ -14,15 +14,15 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
   }
 
   beforeEach(() => {
-    registerManagerClass(TestContextManager);
+    registerWorkerClass(TestContextManager);
   });
 
   afterEach(() => {
-    unRegisterManagerClass(TestContextManager);
+    unRegisterWorkerClass(TestContextManager);
   });
 
   it("Should properly observe only one property and prevent odd updates.", async () => {
-    const manager: TestContextManager = getCurrentManager(TestContextManager)!;
+    const manager: TestContextManager = getCurrent(TestContextManager)!;
     const Observer = withConsumption([ { from: TestContextManager, take: "first" } ])(RenderCallbacker);
     const onRender = jest.fn();
 
@@ -75,7 +75,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
   });
 
   it("Should properly observe array selected props and prevent odd updates.", async () => {
-    const manager: TestContextManager = getCurrentManager(TestContextManager)!;
+    const manager: TestContextManager = getCurrent(TestContextManager)!;
     const Observer = withConsumption([ { from: TestContextManager, take: [ "first", "third" ] } ])(RenderCallbacker);
     const onRender = jest.fn();
 
@@ -145,7 +145,7 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
   });
 
   it("Should properly observe selector picked props and prevent odd updates.", async () => {
-    const manager: TestContextManager = getCurrentManager(TestContextManager)!;
+    const manager: TestContextManager = getCurrent(TestContextManager)!;
     const Observer = withConsumption([
       {
         from: TestContextManager,

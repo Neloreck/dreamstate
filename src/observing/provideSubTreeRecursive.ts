@@ -1,6 +1,6 @@
 import { createElement, ReactElement } from "react";
 
-import { IDENTIFIER_KEY, CONTEXT_STATES_REGISTRY } from "../internals";
+import { CONTEXT_STATES_REGISTRY } from "../internals";
 import { TAnyContextManagerConstructor } from "../types";
 
 /**
@@ -16,7 +16,7 @@ export function provideSubTreeRecursive(
     ? bottom
     : createElement(
       sources[current].REACT_CONTEXT.Provider,
-      { value: CONTEXT_STATES_REGISTRY[sources[current][IDENTIFIER_KEY]] },
+      { value: CONTEXT_STATES_REGISTRY.get(sources[current]) },
       provideSubTreeRecursive(current + 1, bottom, sources)
     );
 }

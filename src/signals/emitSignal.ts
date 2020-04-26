@@ -1,6 +1,5 @@
-import { ISignal, ISignalEvent, TSignalListener, TSignalType } from "../types";
+import { ISignal, ISignalEvent, TDreamstateWorker, TSignalListener, TSignalType } from "../types";
 import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
-import { ContextManager } from "../management";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -10,7 +9,7 @@ import { log } from "../../build/macroses/log.macro";
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: ISignal<D, T>,
-  emitter: ContextManager<any> | null = null
+  emitter: TDreamstateWorker | null = null
 ): void {
   const signal: ISignalEvent<D, T> = Object.assign(base as { data: D; type: T }, {
     emitter,

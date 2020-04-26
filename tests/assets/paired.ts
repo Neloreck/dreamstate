@@ -1,6 +1,14 @@
 import { createElement, PureComponent, ReactElement, ReactNode, useEffect } from "react";
 
-import { Consume, ContextManager, createProvider, Provide, useManager, withConsumption } from "@Lib";
+import {
+  Consume,
+  ContextInterceptor,
+  ContextManager,
+  createProvider,
+  Provide,
+  useManager,
+  withConsumption
+} from "@Lib";
 
 /**
  * Utils for react tree testing.
@@ -37,6 +45,9 @@ export class ExampleContextManager extends ContextManager<IExampleContext> {
 
 }
 
+export class ProvidedInterceptor extends ContextInterceptor {
+}
+
 export interface IPlaceholderContext {
   placeholder: true;
 }
@@ -49,11 +60,11 @@ export class PlaceholderContextManager extends ContextManager<IPlaceholderContex
 
 }
 
-export const Provider = createProvider([ ExampleContextManager, PlaceholderContextManager ]);
+export const Provider = createProvider([ ExampleContextManager, PlaceholderContextManager, ProvidedInterceptor ]);
 
 export const ExampleContextFunctionalProvider = Provider;
 
-@Provide([ ExampleContextManager, PlaceholderContextManager ])
+@Provide([ ExampleContextManager, PlaceholderContextManager, ProvidedInterceptor ])
 export class ExampleContextDecoratedProvider extends PureComponent {
 
   public render(): ReactNode {
@@ -64,6 +75,12 @@ export class ExampleContextDecoratedProvider extends PureComponent {
 
 export function ExampleContextFunctionalConsumer(): ReactElement {
   const value: IExampleContext = useManager(ExampleContextManager);
+
+  return createElement("span", {}, JSON.stringify(value));
+}
+
+export function ExampleContextFunctionalConsumerWithMemo(): ReactElement {
+  const value: IExampleContext = useManager(ExampleContextManager, ({ exampleNumber }) => [ exampleNumber ]);
 
   return createElement("span", {}, JSON.stringify(value));
 }

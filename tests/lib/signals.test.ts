@@ -1,25 +1,31 @@
 import { emitSignal, subscribeToSignals, unsubscribeFromSignals } from "@Lib/signals";
-import { ISignalEvent, TAnyContextManagerConstructor, TSignalSubscriptionMetadata, TSignalType } from "@Lib/types";
-import { IDENTIFIER_KEY, CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
-import { getCurrentManager } from "@Lib/registry";
+import {
+  ISignalEvent,
+  TSignalSubscriptionMetadata,
+  TSignalType
+} from "@Lib/types";
+import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
+import { getCurrent } from "@Lib/registry";
 
-import { nextAsyncQueue, registerManagerClass, unRegisterManagerClass } from "@Tests/helpers";
-import { EmittingContextManager, ESignal, SubscribedContextManager } from "@Tests/assets";
+import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Tests/helpers";
+import { EmittingContextManager, ESignal, SubscribedContextManager, SubscribedInterceptor } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {
-    registerManagerClass(SubscribedContextManager);
-    registerManagerClass(EmittingContextManager);
+    registerWorkerClass(SubscribedContextManager);
+    registerWorkerClass(EmittingContextManager);
+    registerWorkerClass(SubscribedInterceptor);
   });
 
   afterEach(() => {
-    unRegisterManagerClass(SubscribedContextManager);
-    unRegisterManagerClass(EmittingContextManager);
+    unRegisterWorkerClass(SubscribedContextManager);
+    unRegisterWorkerClass(EmittingContextManager);
+    unRegisterWorkerClass(SubscribedInterceptor);
   });
 
   it("Signal decorator should properly add metadata.", () => {
     const signalListenersList: TSignalSubscriptionMetadata =
-      CONTEXT_SIGNAL_METADATA_REGISTRY[(SubscribedContextManager as TAnyContextManagerConstructor)[IDENTIFIER_KEY]];
+      CONTEXT_SIGNAL_METADATA_REGISTRY.get(SubscribedContextManager)!;
 
     expect(signalListenersList).toBeInstanceOf(Array);
     expect(signalListenersList).toHaveLength(3);
@@ -51,8 +57,8 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal decorator should properly add metadata.", async () => {
-    const subscribedManager: SubscribedContextManager = getCurrentManager(SubscribedContextManager)!;
-    const emittingManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
+    const subscribedManager: SubscribedContextManager = getCurrent(SubscribedContextManager)!;
+    const emittingManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
 
     subscribedManager.onNumberSignal = jest.fn();
     subscribedManager.onStringSignal = jest.fn();
@@ -91,18 +97,18 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal subscribers should properly listen managers signals.", async () => {
-    const emittingManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
+    const emittingManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
 
     const numberSubscriber = jest.fn((signal: ISignalEvent<TSignalType, number>) => {
       expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
       expect(typeof signal.data).toBe("number");
-      expect(signal.emitter).toBe(emittingManager);
+      expect(signal.emitter).toBe(EmittingContextManager);
     });
 
     const stringSubscriber = jest.fn((signal: ISignalEvent<TSignalType, string>) => {
       expect(signal.type).toBe(ESignal.STRING_SIGNAL);
       expect(typeof signal.data).toBe("string");
-      expect(signal.emitter).toBe(emittingManager);
+      expect(signal.emitter).toBe(EmittingContextManager);
     });
 
     subscribeToSignals(numberSubscriber);
@@ -124,8 +130,8 @@ describe("Signals and signaling.", () => {
   });
 
   it("Signal subscribers should properly cancel events and called in declared order.", async () => {
-    const emittingManager: EmittingContextManager = getCurrentManager(EmittingContextManager)!;
-    const subscribedManager: SubscribedContextManager = getCurrentManager(SubscribedContextManager)!;
+    const emittingManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
+    const subscribedManager: SubscribedContextManager = getCurrent(SubscribedContextManager)!;
 
     subscribedManager.onStringSignal = jest.fn();
     subscribedManager.onStringOrNumberSignal = jest.fn((signal: ISignalEvent<TSignalType, any>) => signal.cancel());
@@ -149,7 +155,7 @@ describe("Signals and signaling.", () => {
   });
 
   it("Should properly listen external signals.", async () => {
-    const subscribedManager: SubscribedContextManager = getCurrentManager(SubscribedContextManager)!;
+    const subscribedManager: SubscribedContextManager = getCurrent(SubscribedContextManager)!;
 
     subscribedManager.onStringSignal = jest.fn((signal: ISignalEvent<string>) => {
       expect(signal.emitter).toBeNull();
@@ -162,5 +168,29 @@ describe("Signals and signaling.", () => {
     await nextAsyncQueue();
 
     expect(subscribedManager.onStringSignal).toHaveBeenCalled();
+  });
+
+  it("Should properly trigger interceptors from contexts.", async () => {
+    const subscribedInterceptor: SubscribedInterceptor = getCurrent(SubscribedInterceptor)!;
+    const emittingContextManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
+
+    subscribedInterceptor.onNumberSignal = jest.fn();
+    emittingContextManager.sendNumberSignal();
+
+    await nextAsyncQueue();
+
+    expect(subscribedInterceptor.onNumberSignal).toHaveBeenCalled();
+  });
+
+  fit("Should properly trigger interceptors from external context.", async () => {
+    const subscribedInterceptor: SubscribedInterceptor = getCurrent(SubscribedInterceptor)!;
+
+    subscribedInterceptor.onNumberSignal = jest.fn();
+
+    emitSignal({ type: ESignal.NUMBER_SIGNAL });
+
+    await nextAsyncQueue();
+
+    expect(subscribedInterceptor.onNumberSignal).toHaveBeenCalled();
   });
 });

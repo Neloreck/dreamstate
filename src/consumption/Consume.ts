@@ -167,8 +167,6 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
  * Decorator factory.
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
- *
- * todo: Stricter component typing.
  */
 export const Consume: IConsumeDecorator = function (sources: Array<TConsumable<any>>): ClassDecorator {
   return createClassWrapDecorator(function (targetClass) {

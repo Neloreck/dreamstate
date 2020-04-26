@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "3.0.0-experimental.7",
+  "version": "3.0.0-experimental.8",
   "description": "Store management library based on context and observers.",
   "sideEffects": false,
   "private": false,
@@ -20,7 +20,7 @@
     "build:prod": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.bundle.config.js",
     "build:esm": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.config.js",
     "build:dts": "npx tsc -d -p ./build/tsconfig.build.json --outDir ./lib/types --emitDeclarationOnly",
-    "build": "npm run clean && npm run build:esm && npm run build:prod && npm run build:dts",
+    "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:prod",
     "=============================": "================================================================================",
     "lint": "npx eslint . --ext .ts,.js,",
     "test": "jest --config ./build/jest.config.js",

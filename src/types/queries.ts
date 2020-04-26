@@ -1,4 +1,4 @@
-import type { ContextManager } from "../management";
+import { TDreamstateWorker } from "./internal";
 
 export type TQueryType = symbol | string | number;
 
@@ -20,7 +20,7 @@ export type TQuerySubscriptionMetadata = Array<[string | symbol, TQueryType]>;
 export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType> {
   type: T;
   data: D;
-  answerer: ContextManager<any>;
+  answerer: TDreamstateWorker;
 }
 
 export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = null | IQueryResponse<D, T>;

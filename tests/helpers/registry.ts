@@ -1,16 +1,16 @@
-import { registerManager, unRegisterManager } from "@Lib/registry";
-import { IContextManagerConstructor } from "@Lib/types";
-import { IDENTIFIER_KEY, CONTEXT_MANAGERS_REGISTRY } from "@Lib/internals";
+import { registerWorker, unRegisterWorker } from "@Lib/registry";
+import { TDreamstateWorker } from "@Lib/types";
+import { CONTEXT_WORKERS_REGISTRY } from "@Lib/internals";
 
-export function registerManagerClass<T extends IContextManagerConstructor<any>>(managerClass: T): InstanceType<T> {
-  registerManager(managerClass);
+export function registerWorkerClass<T extends TDreamstateWorker>(workerClass: T): InstanceType<T> {
+  registerWorker(workerClass);
 
-  return CONTEXT_MANAGERS_REGISTRY[managerClass[IDENTIFIER_KEY]] as InstanceType<T>;
+  return CONTEXT_WORKERS_REGISTRY.get(workerClass) as InstanceType<T>;
 }
 
-export function unRegisterManagerClass<T extends IContextManagerConstructor<any>>(
-  managerClass: T,
+export function unRegisterWorkerClass<T extends TDreamstateWorker>(
+  workerClass: T,
   forceUnregister: boolean = false
 ): void {
-  unRegisterManager(managerClass, forceUnregister);
+  unRegisterWorker(workerClass, forceUnregister);
 }

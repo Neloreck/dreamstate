@@ -1,13 +1,13 @@
 {
   "../lib/cjs/dreamstate.production.js": {
-    "bundled": 29930,
-    "minified": 12095,
-    "gzipped": 3353
+    "bundled": 34063,
+    "minified": 14514,
+    "gzipped": 4429
   },
   "../lib/umd/dreamstate.production.js": {
-    "bundled": 50161,
-    "minified": 15551,
-    "gzipped": 4939
+    "bundled": 54294,
+    "minified": 17936,
+    "gzipped": 6005
   },
   "../lib/cjs/dreamstate.development.js": {
     "bundled": 29591,
@@ -20,13 +20,13 @@
     "gzipped": 5274
   },
   "../lib/cjs/dreamstate.debug.js": {
-    "bundled": 40415,
-    "minified": 22763,
-    "gzipped": 4614
+    "bundled": 43028,
+    "minified": 21359,
+    "gzipped": 4787
   },
   "../lib/umd/dreamstate.debug.js": {
-    "bundled": 66099,
-    "minified": 25876,
-    "gzipped": 6282
+    "bundled": 69336,
+    "minified": 25534,
+    "gzipped": 6841
   }
 }

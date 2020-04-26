@@ -32,10 +32,9 @@ It includes react-like lifecycle, lazy management of memory allocation, global s
   ##### Management [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/management)]
 
   - [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
-  - [getCurrentManager](https://github.com/Neloreck/dreamstate/wiki/getCurrentManager)
+  - [ContextInterceptor](https://github.com/Neloreck/dreamstate/wiki/ContextInterceptor)
+  - [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
   - [getCurrentContext](https://github.com/Neloreck/dreamstate/wiki/getCurrentContext)
-  - [subscribeToManager](https://github.com/Neloreck/dreamstate/wiki/subscribeToManager)
-  - [unsubscribeFromManager](https://github.com/Neloreck/dreamstate/wiki/unsubscribeFromManager)
 
   #### Provision [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/provision)]
 

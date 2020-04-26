@@ -1,5 +1,5 @@
 import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
-import { CONTEXT_STATES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, IDENTIFIER_KEY } from "../internals";
+import { CONTEXT_STATES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -12,11 +12,11 @@ export function subscribeToManager<T extends object, D extends IContextManagerCo
   subscriber: TUpdateSubscriber<T>,
   loadCurrent: boolean = false
 ): void {
-  CONTEXT_SUBSCRIBERS_REGISTRY[managerConstructor[IDENTIFIER_KEY]].add(subscriber);
+  CONTEXT_SUBSCRIBERS_REGISTRY.get(managerConstructor)!.add(subscriber);
 
   log.info("Context manager subscriber added:", managerConstructor.name, loadCurrent);
 
   if (loadCurrent) {
-    subscriber(CONTEXT_STATES_REGISTRY[managerConstructor[IDENTIFIER_KEY]]);
+    subscriber(CONTEXT_STATES_REGISTRY.get(managerConstructor) as T);
   }
 }

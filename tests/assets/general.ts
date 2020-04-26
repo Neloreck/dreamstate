@@ -1,6 +1,6 @@
 import { createElement, PropsWithChildren, ReactElement } from "react";
 
-import { ContextManager } from "@Lib/management";
+import { ContextInterceptor, ContextManager } from "@Lib/management";
 import { createProvider } from "@Lib/provision";
 
 export interface ITestContext {
@@ -20,6 +20,11 @@ export class TestContextManager extends ContextManager<ITestContext> {
 }
 
 export const TextContextManagerProvider = createProvider([ TestContextManager ]);
+
+export class TestContextInterceptor extends ContextInterceptor {
+}
+
+export const TestContextInterceptorProvider = createProvider([ TestContextInterceptor ]);
 
 export class ExtendingTestContextManager extends TestContextManager {
 

@@ -1,19 +1,80 @@
 import { Context } from "react";
 
-import { ContextManager } from "@Lib/management";
 import {
-  IDENTIFIER_KEY,
-  CONTEXT_MANAGERS_REGISTRY,
+  CONTEXT_WORKERS_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY
+  CONTEXT_QUERY_METADATA_REGISTRY,
+  CONTEXT_SIGNAL_METADATA_REGISTRY,
+  CONTEXT_STATES_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY,
+  SIGNAL_LISTENERS_REGISTRY,
+  CONTEXT_WORKERS_ACTIVATED,
+  CONTEXT_REACT_CONTEXTS_REGISTRY
 } from "@Lib/internals";
+import { ContextManager } from "@Lib/management";
 import { TAnyContextManagerConstructor } from "@Lib/types";
-import { unRegisterManager } from "@Lib/registry";
+import { unRegisterWorker } from "@Lib/registry";
 
 import { TestContextManager, TestSingleContextManager } from "@Tests/assets";
+import { registerWorkerClass } from "@Tests/helpers";
 
 describe("Context store creation tests.", () => {
-  it("Should initialize extended class without any exceptions.", () => {
+  it("Context internals should not exist until first register.", () => {
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_SIGNAL_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
+    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
+    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
+
+    registerWorkerClass(TestContextManager);
+
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_SIGNAL_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined(); // No signal listeners here.
+    expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined(); // No query listeners here.
+    expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(1);
+    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(1);
+    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
+
+    unRegisterWorker(TestContextManager);
+
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_SIGNAL_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
+    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(1);
+    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
+  });
+
+  it("Related react context should be lazily initialized correctly with changed displayName.", () => {
+    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
+
+    const contextType: Context<object> = TestContextManager.REACT_CONTEXT;
+
+    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeDefined();
+
+    expect(contextType).not.toBeUndefined();
+    expect(contextType.Consumer).not.toBeUndefined();
+    expect(contextType.Provider).not.toBeUndefined();
+    expect(contextType.displayName).toBe("DS.TestContext");
+  });
+
+  it("Should throw errors if trying to unregister not existing instance.", () => {
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(() => unRegisterWorker(TestContextManager)).toThrow();
+    expect(() => unRegisterWorker(TestContextManager, true)).toThrow();
+  });
+
+  it("Should initialize managers classes without any exceptions.", () => {
     const testContextManagerInit = (ManagerConstructor: TAnyContextManagerConstructor, isSingle: boolean = false) => {
       const manager = new ManagerConstructor();
 
@@ -31,6 +92,8 @@ describe("Context store creation tests.", () => {
       expect(typeof manager["afterUpdate"]).toBe("function");
       expect(typeof manager["onProvisionStarted"]).toBe("function");
       expect(typeof manager["onProvisionEnded"]).toBe("function");
+      expect(typeof manager["emitSignal"]).toBe("function");
+      expect(typeof manager["sendQuery"]).toBe("function");
 
       expect(typeof ManagerConstructor.REACT_CONTEXT).toBe("object");
       expect(typeof ManagerConstructor.REACT_CONTEXT.Provider).toBe("object");
@@ -39,36 +102,14 @@ describe("Context store creation tests.", () => {
       expect(Object.keys(ManagerConstructor)).toHaveLength(isSingle ? 1 : 0);
       expect(Object.keys(ManagerConstructor.prototype)).toHaveLength(0);
       expect(Object.keys(manager)).toHaveLength(1);
+
+      // Cleanup persistent REACT_CONTEXT ref.
+      CONTEXT_REACT_CONTEXTS_REGISTRY.delete(ManagerConstructor);
     };
 
     expect(Object.keys(ContextManager.prototype)).toHaveLength(0);
 
     testContextManagerInit(TestContextManager);
     testContextManagerInit(TestSingleContextManager, true);
-  });
-
-  it("Context ID symbol should generate properly with registry resolving.", () => {
-    const id: symbol = TestContextManager[IDENTIFIER_KEY];
-
-    expect(typeof id).toBe("symbol");
-
-    expect(CONTEXT_OBSERVERS_REGISTRY[id as any]).not.toBeUndefined();
-    expect(CONTEXT_MANAGERS_REGISTRY[id as any]).toBeUndefined();
-    expect(typeof CONTEXT_STATES_REGISTRY[id as any]).toBe("object");
-  });
-
-  it("Related react context should be lazily initialized correctly with changed displayName.", () => {
-    const contextType: Context<object> = TestContextManager.REACT_CONTEXT;
-
-    expect(contextType).not.toBeUndefined();
-    expect(contextType.Consumer).not.toBeUndefined();
-    expect(contextType.Provider).not.toBeUndefined();
-    expect(contextType.displayName).toBe("DS.TestContext");
-  });
-
-  it("Should throw errors if trying to unregister not existing instance.", () => {
-    expect(CONTEXT_MANAGERS_REGISTRY[TestContextManager[IDENTIFIER_KEY] as any]).toBeUndefined();
-    expect(() => unRegisterManager(TestContextManager)).toThrow();
-    expect(() => unRegisterManager(TestContextManager, true)).toThrow();
   });
 });

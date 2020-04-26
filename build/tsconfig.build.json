@@ -12,6 +12,7 @@
     "baseUrl": "../",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "downlevelIteration": true,
     "typeRoots": [
       "node_modules/@types"
     ],

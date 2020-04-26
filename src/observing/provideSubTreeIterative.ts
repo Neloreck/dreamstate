@@ -1,6 +1,6 @@
 import { createElement, ReactElement } from "react";
 
-import { IDENTIFIER_KEY, CONTEXT_STATES_REGISTRY } from "../internals";
+import { CONTEXT_STATES_REGISTRY } from "../internals";
 import { TAnyContextManagerConstructor } from "../types";
 
 /**
@@ -16,7 +16,7 @@ export function provideSubTreeIterative(
   for (let it = sources.length - 1; it >= 0; it --) {
     acc = createElement(
       sources[it].REACT_CONTEXT.Provider,
-      { value: CONTEXT_STATES_REGISTRY[sources[it][IDENTIFIER_KEY]] },
+      { value: CONTEXT_STATES_REGISTRY.get(sources[it]) },
       acc
     );
   }
