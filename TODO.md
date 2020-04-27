@@ -1,6 +1,7 @@
 ## todo:
 
-1) Think about query api name
+1) Tests for test-utils.
+2) Think about query api name.
 
 ?) Test utils and separated scoping for testing?
 ?) IE 11 support check + getOwnPropertySymbols support for IE

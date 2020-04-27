@@ -8,19 +8,19 @@ import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
 import { getCurrent } from "@Lib/registry";
 import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
-import { EmittingContextManager, ESignal, SubscribedContextManager, SubscribedInterceptor } from "@Tests/assets";
+import { EmittingContextManager, ESignal, SubscribedContextManager, SubscribedWorker } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {
     registerWorkerClass(SubscribedContextManager);
     registerWorkerClass(EmittingContextManager);
-    registerWorkerClass(SubscribedInterceptor);
+    registerWorkerClass(SubscribedWorker);
   });
 
   afterEach(() => {
     unRegisterWorkerClass(SubscribedContextManager);
     unRegisterWorkerClass(EmittingContextManager);
-    unRegisterWorkerClass(SubscribedInterceptor);
+    unRegisterWorkerClass(SubscribedWorker);
   });
 
   it("Signal decorator should properly add metadata.", () => {
@@ -171,7 +171,7 @@ describe("Signals and signaling.", () => {
   });
 
   it("Should properly trigger interceptors from contexts.", async () => {
-    const subscribedInterceptor: SubscribedInterceptor = getCurrent(SubscribedInterceptor)!;
+    const subscribedInterceptor: SubscribedWorker = getCurrent(SubscribedWorker)!;
     const emittingContextManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
 
     subscribedInterceptor.onNumberSignal = jest.fn();
@@ -183,7 +183,7 @@ describe("Signals and signaling.", () => {
   });
 
   fit("Should properly trigger interceptors from external context.", async () => {
-    const subscribedInterceptor: SubscribedInterceptor = getCurrent(SubscribedInterceptor)!;
+    const subscribedInterceptor: SubscribedWorker = getCurrent(SubscribedWorker)!;
 
     subscribedInterceptor.onNumberSignal = jest.fn();
 

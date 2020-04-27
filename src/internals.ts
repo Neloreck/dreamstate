@@ -6,7 +6,8 @@ import type {
   TSignalListener,
   TSignalSubscriptionMetadata,
   TUpdateObserver,
-  TUpdateSubscriber, TDreamstateWorker
+  TUpdateSubscriber,
+  TDreamstateWorker
 } from "./types";
 
 export const EMPTY_STRING: string = "";
@@ -24,11 +25,9 @@ export const CONTEXT_WORKERS_ACTIVATED: Set<TDreamstateWorker> = new Set();
 export const CONTEXT_REACT_CONTEXTS_REGISTRY: TWorkerMap<Context<any>> = new WeakMap();
 export const CONTEXT_WORKERS_REGISTRY: TWorkerMap<InstanceType<TDreamstateWorker>> = new WeakMap();
 export const CONTEXT_STATES_REGISTRY: TWorkerMap<object> = new WeakMap();
-
 export const CONTEXT_OBSERVERS_REGISTRY: TWorkerMap<Set<TUpdateObserver>> = new WeakMap();
 export const CONTEXT_SUBSCRIBERS_REGISTRY: TWorkerMap<Set<TUpdateSubscriber<any>>> = new WeakMap();
 export const CONTEXT_SIGNAL_HANDLERS_REGISTRY: TWorkerMap<TSignalListener<any>> = new WeakMap();
-
 export const CONTEXT_SIGNAL_METADATA_REGISTRY: TWorkerMap<TSignalSubscriptionMetadata> = new WeakMap();
 export const CONTEXT_QUERY_METADATA_REGISTRY: TWorkerMap<TQuerySubscriptionMetadata> = new WeakMap();
 

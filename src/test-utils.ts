@@ -27,16 +27,26 @@ export function unRegisterWorkerClass<T extends TDreamstateWorker>(
 }
 
 /**
- * Get current worker subscribers count or null if it is not registered.
+ * Get current worker observerrs count or null if it is not registered.
+ * Observers - all points that create react context provision.
  */
 export function getWorkerObserversCount<T extends TDreamstateWorker>(
   workerClass: T
 ): number | null {
-  if (CONTEXT_OBSERVERS_REGISTRY.has(workerClass) && CONTEXT_SUBSCRIBERS_REGISTRY.has(workerClass)) {
-    return CONTEXT_OBSERVERS_REGISTRY.get(workerClass)!.size + CONTEXT_SUBSCRIBERS_REGISTRY.get(workerClass)!.size;
+  if (CONTEXT_OBSERVERS_REGISTRY.has(workerClass)) {
+    return CONTEXT_OBSERVERS_REGISTRY.get(workerClass)!.size;
   } else {
     return null;
   }
+}
+
+/**
+ * Check if current worker is provided.
+ */
+export function isWorkerProvided<T extends TDreamstateWorker>(
+  workerClass: T
+): boolean {
+  return Boolean(getWorkerObserversCount(workerClass));
 }
 
 /**

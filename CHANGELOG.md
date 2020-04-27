@@ -13,8 +13,8 @@
   * Query API added
     * OnQuery decorator added
     * ContextManager::sendQuery method added
-  * ContextInterceptors added
-    * Added abstract class for signals and queries observing
+  * ContextWorker added
+    * Exposed base abstract class for signals and queries observing with provision lifecycle
   * getCurrentContext method added
   * getCurrent method added
   * createSetter method added

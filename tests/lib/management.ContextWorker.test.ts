@@ -2,13 +2,13 @@ import { CONTEXT_WORKERS_REGISTRY } from "@Lib/internals";
 import { addWorkerObserverToRegistry, removeWorkerObserverFromRegistry } from "@Lib/registry";
 import { registerWorkerClass } from "@Lib/test-utils";
 
-import { TestContextInterceptor } from "@Tests/assets";
+import { TestContextWorker } from "@Tests/assets";
 
 describe("ContextInterceptor creation and management of signals and queries.", () => {
   it("Should properly handle onProvisionStarted and onProvision ended for context interceptors.", () => {
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextInterceptor)).toBeUndefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeUndefined();
 
-    const testManager: TestContextInterceptor = registerWorkerClass(TestContextInterceptor);
+    const testManager: TestContextWorker = registerWorkerClass(TestContextWorker);
 
     const firstObserver: jest.Mock = jest.fn();
     const secondObserver: jest.Mock = jest.fn();
@@ -23,33 +23,33 @@ describe("ContextInterceptor creation and management of signals and queries.", (
       (testManager["onProvisionEnded"] as jest.Mocked<any>).mockClear();
     };
 
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextInterceptor)).toBeDefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeDefined();
 
-    addWorkerObserverToRegistry(TestContextInterceptor, firstObserver);
+    addWorkerObserverToRegistry(TestContextWorker, firstObserver);
 
     expect(testManager["onProvisionStarted"]).toHaveBeenCalled();
     expect(testManager["onProvisionEnded"]).not.toHaveBeenCalled();
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextInterceptor)).toBeDefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeDefined();
     clearMocks();
 
-    addWorkerObserverToRegistry(TestContextInterceptor, secondObserver);
+    addWorkerObserverToRegistry(TestContextWorker, secondObserver);
     expect(testManager["onProvisionStarted"]).not.toHaveBeenCalled();
     expect(testManager["onProvisionEnded"]).not.toHaveBeenCalled();
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextInterceptor)).toBeDefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeDefined();
     clearMocks();
 
-    removeWorkerObserverFromRegistry(TestContextInterceptor, secondObserver);
+    removeWorkerObserverFromRegistry(TestContextWorker, secondObserver);
 
     expect(testManager["onProvisionStarted"]).not.toHaveBeenCalled();
     expect(testManager["onProvisionEnded"]).not.toHaveBeenCalled();
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextInterceptor)).toBeDefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeDefined();
     clearMocks();
 
-    removeWorkerObserverFromRegistry(TestContextInterceptor, firstObserver);
+    removeWorkerObserverFromRegistry(TestContextWorker, firstObserver);
 
     expect(testManager["onProvisionStarted"]).not.toHaveBeenCalled();
     expect(testManager["onProvisionEnded"]).toHaveBeenCalled();
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextInterceptor)).toBeUndefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeUndefined();
     clearMocks();
   });
 });

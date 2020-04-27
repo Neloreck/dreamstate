@@ -2,8 +2,8 @@ import { createElement, PureComponent, ReactElement, ReactNode, useEffect } from
 
 import {
   Consume,
-  ContextInterceptor,
   ContextManager,
+  ContextWorker,
   createProvider,
   Provide,
   useManager,
@@ -45,7 +45,7 @@ export class ExampleContextManager extends ContextManager<IExampleContext> {
 
 }
 
-export class ProvidedInterceptor extends ContextInterceptor {
+export class ProvidedWorker extends ContextWorker {
 }
 
 export interface IPlaceholderContext {
@@ -60,11 +60,11 @@ export class PlaceholderContextManager extends ContextManager<IPlaceholderContex
 
 }
 
-export const Provider = createProvider([ ExampleContextManager, PlaceholderContextManager, ProvidedInterceptor ]);
+export const Provider = createProvider([ ExampleContextManager, PlaceholderContextManager, ProvidedWorker ]);
 
 export const ExampleContextFunctionalProvider = Provider;
 
-@Provide([ ExampleContextManager, PlaceholderContextManager, ProvidedInterceptor ])
+@Provide([ ExampleContextManager, PlaceholderContextManager, ProvidedWorker ])
 export class ExampleContextDecoratedProvider extends PureComponent {
 
   public render(): ReactNode {

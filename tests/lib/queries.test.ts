@@ -1,19 +1,19 @@
 import { getCurrent, QueryResponse } from "@Lib";
 import { registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
 
-import { RequestingContextManager, RespondingContextManager, RespondingInterceptor } from "@Tests/assets";
+import { RequestingContextManager, RespondingContextManager, RespondingWorker } from "@Tests/assets";
 
 describe("Queries and queries processing.", () => {
   beforeEach(() => {
     registerWorkerClass(RequestingContextManager);
     registerWorkerClass(RespondingContextManager);
-    registerWorkerClass(RespondingInterceptor);
+    registerWorkerClass(RespondingWorker);
   });
 
   afterEach(() => {
     unRegisterWorkerClass(RequestingContextManager);
     unRegisterWorkerClass(RespondingContextManager);
-    unRegisterWorkerClass(RespondingInterceptor);
+    unRegisterWorkerClass(RespondingWorker);
   });
 
   it("Should properly find async query responders or fallback to null.", async () => {
@@ -39,7 +39,7 @@ describe("Queries and queries processing.", () => {
 
     expect(interceptorResponse).not.toBeNull();
     expect(typeof interceptorResponse!.data).toBe("number");
-    expect(interceptorResponse!.answerer).toBe(RespondingInterceptor);
+    expect(interceptorResponse!.answerer).toBe(RespondingWorker);
 
     expect(undefinedResponse).toBeNull();
   });

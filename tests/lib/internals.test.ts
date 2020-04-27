@@ -51,7 +51,7 @@ describe("Context store creation tests.", () => {
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
-    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(1);
+    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
   });
 

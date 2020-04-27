@@ -1,16 +1,11 @@
 import type { Context } from "react";
 
-import type { ContextWorker, ContextManager, ContextInterceptor } from "../management";
+import type { ContextWorker, ContextManager } from "../management";
 
 export interface IContextManagerConstructor<T extends object> {
   REACT_CONTEXT: Context<T>;
   prototype: ContextManager<T>;
   new (): ContextManager<T>;
-}
-
-export interface IContextInterceptorConstructor {
-  prototype: ContextInterceptor;
-  new (): ContextInterceptor;
 }
 
 export interface IContextWorkerConstructor {

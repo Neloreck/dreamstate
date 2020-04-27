@@ -1,6 +1,6 @@
 import { createManagersObserver, shouldObserversUpdate } from "@Lib/observing";
 import { createLoadable, createMutable } from "@Lib/utils";
-import { TestContextInterceptor, TestContextManager } from "@Tests/assets";
+import { TestContextWorker, TestContextManager } from "@Tests/assets";
 
 describe("Observing utils and methods.", () => {
   it("Should notifiers update must check properly same nested primitives and objects.", () => {
@@ -119,6 +119,6 @@ describe("Observing utils and methods.", () => {
 
     expect(() => createManagersObserver(null, [])).not.toThrow();
     expect(() => createManagersObserver(null, [ TestContextManager ])).not.toThrow();
-    expect(() => createManagersObserver(null, [ TestContextInterceptor ])).not.toThrow();
+    expect(() => createManagersObserver(null, [ TestContextWorker ])).not.toThrow();
   });
 });

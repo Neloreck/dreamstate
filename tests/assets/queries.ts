@@ -1,4 +1,4 @@
-import { ContextInterceptor, ContextManager, OnQuery, QueryRequest, QueryResponse } from "@Lib";
+import { ContextWorker, ContextManager, OnQuery, QueryRequest, QueryResponse } from "@Lib";
 
 export enum EQuery {
   SYNC_BOOLEAN_QUERY = "SYNC_BOOLEAN_QUERY",
@@ -48,7 +48,7 @@ export class RespondingContextManager extends ContextManager<object> {
 
 }
 
-export class RespondingInterceptor extends ContextInterceptor {
+export class RespondingWorker extends ContextWorker {
 
   @OnQuery(EQuery.ASYNC_INTERCEPTOR_QUERY)
   public async onAsyncInterceptorQuery(queryRequest: TAsyncInterceptorQuery): Promise<number> {

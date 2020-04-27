@@ -1,6 +1,6 @@
 import { createElement, useState } from "react";
 
-import { ContextManager, ContextInterceptor } from "@Lib/management";
+import { ContextManager, ContextWorker } from "@Lib/management";
 import { OnSignal, useSignals } from "@Lib/signals";
 import { SignalEvent, SignalType } from "@Lib";
 
@@ -33,7 +33,7 @@ export class SubscribedContextManager extends ContextManager<object> {
 
 }
 
-export class SubscribedInterceptor extends ContextInterceptor {
+export class SubscribedWorker extends ContextWorker {
 
   @OnSignal(ESignal.NUMBER_SIGNAL)
   public onNumberSignal(): void {

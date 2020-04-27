@@ -18,7 +18,7 @@ describe("Library exported API tests.", () => {
     "QueryType",
     // Management.
     "ContextManager",
-    "ContextInterceptor",
+    "ContextWorker",
     // Registry.
     "getCurrentContext",
     "getCurrent",
