@@ -10,7 +10,6 @@ import type {
   TDreamstateWorker
 } from "./types";
 
-export const EMPTY_STRING: string = "";
 export const MANAGER_REGEX: RegExp = /Manager$/;
 export const EMPTY_ARR: [] = [];
 
