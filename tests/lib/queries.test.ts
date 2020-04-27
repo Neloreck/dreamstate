@@ -1,19 +1,19 @@
 import { getCurrent, QueryResponse } from "@Lib";
-import { registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
+import { registerWorker, unRegisterWorker } from "@Lib/test-utils";
 
 import { RequestingContextManager, RespondingContextManager, RespondingWorker } from "@Tests/assets";
 
 describe("Queries and queries processing.", () => {
   beforeEach(() => {
-    registerWorkerClass(RequestingContextManager);
-    registerWorkerClass(RespondingContextManager);
-    registerWorkerClass(RespondingWorker);
+    registerWorker(RequestingContextManager);
+    registerWorker(RespondingContextManager);
+    registerWorker(RespondingWorker);
   });
 
   afterEach(() => {
-    unRegisterWorkerClass(RequestingContextManager);
-    unRegisterWorkerClass(RespondingContextManager);
-    unRegisterWorkerClass(RespondingWorker);
+    unRegisterWorker(RequestingContextManager);
+    unRegisterWorker(RespondingContextManager);
+    unRegisterWorker(RespondingWorker);
   });
 
   it("Should properly find async query responders or fallback to null.", async () => {

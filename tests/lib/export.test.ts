@@ -46,12 +46,14 @@ describe("Library exported API tests.", () => {
   ];
 
   const expectedTestUtilsExports: Array<string> = [
-    "registerWorkerClass",
-    "unRegisterWorkerClass",
+    "registerWorker",
+    "unRegisterWorker",
     "getWorkerObserversCount",
     "isWorkerProvided",
     "addManagerObserver",
     "removeManagerObserver",
+    "getReactProvider",
+    "getReactConsumer",
     "nextAsyncQueue"
   ];
 

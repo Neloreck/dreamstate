@@ -6,21 +6,21 @@ import {
 } from "@Lib/types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
 import { getCurrent } from "@Lib/registry";
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/test-utils";
 
 import { EmittingContextManager, ESignal, SubscribedContextManager, SubscribedWorker } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {
-    registerWorkerClass(SubscribedContextManager);
-    registerWorkerClass(EmittingContextManager);
-    registerWorkerClass(SubscribedWorker);
+    registerWorker(SubscribedContextManager);
+    registerWorker(EmittingContextManager);
+    registerWorker(SubscribedWorker);
   });
 
   afterEach(() => {
-    unRegisterWorkerClass(SubscribedContextManager);
-    unRegisterWorkerClass(EmittingContextManager);
-    unRegisterWorkerClass(SubscribedWorker);
+    unRegisterWorker(SubscribedContextManager);
+    unRegisterWorker(EmittingContextManager);
+    unRegisterWorker(SubscribedWorker);
   });
 
   it("Signal decorator should properly add metadata.", () => {

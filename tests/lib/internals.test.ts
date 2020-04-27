@@ -14,7 +14,7 @@ import {
 import { ContextManager } from "@Lib/management";
 import { TAnyContextManagerConstructor } from "@Lib/types";
 import { unRegisterWorker } from "@Lib/registry";
-import { registerWorkerClass } from "@Lib/test-utils";
+import { registerWorker } from "@Lib/test-utils";
 
 import { TestContextManager, TestSingleContextManager } from "@Tests/assets";
 
@@ -30,7 +30,7 @@ describe("Context store creation tests.", () => {
     expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
 
-    registerWorkerClass(TestContextManager);
+    registerWorker(TestContextManager);
 
     expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeDefined();

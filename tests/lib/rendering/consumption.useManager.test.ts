@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 import { getCurrent } from "@Lib/registry";
-import { nextAsyncQueue, registerWorkerClass } from "@Lib/test-utils";
+import { nextAsyncQueue, registerWorker } from "@Lib/test-utils";
 
 import {
   ExampleContextFunctionalConsumer,
@@ -113,7 +113,7 @@ describe("UseManager subscription and rendering.", () => {
   });
 
   it("Should properly fire onProvisionStarted for functional observers.", async () => {
-    const manager: ExampleContextManager = registerWorkerClass(ExampleContextManager);
+    const manager: ExampleContextManager = registerWorker(ExampleContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
     manager["onProvisionEnded"] = jest.fn();
@@ -140,7 +140,7 @@ describe("UseManager subscription and rendering.", () => {
   });
 
   it("Should properly fire onProvisionStarted for functional subscribers.", async () => {
-    const manager: ExampleContextManager = registerWorkerClass(ExampleContextManager);
+    const manager: ExampleContextManager = registerWorker(ExampleContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
     manager["onProvisionEnded"] = jest.fn();

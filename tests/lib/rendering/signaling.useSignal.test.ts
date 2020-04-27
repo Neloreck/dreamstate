@@ -3,17 +3,17 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 import { getCurrent } from "@Lib/registry";
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/test-utils";
 
 import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Tests/assets";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {
-    registerWorkerClass(EmittingContextManager);
+    registerWorker(EmittingContextManager);
   });
 
   afterEach(() => {
-    unRegisterWorkerClass(EmittingContextManager);
+    unRegisterWorker(EmittingContextManager);
   });
 
   it("Functional components should properly subscribe to signals and update ui.", async () => {

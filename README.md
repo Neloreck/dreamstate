@@ -1,9 +1,10 @@
 # <a href='https://www.npmjs.com/package/dreamstate'> 🗻 dreamstate </a>
 
 [![npm version](https://img.shields.io/npm/v/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
-[![language-ts](https://img.shields.io/badge/language-typescript%3A%20100%25-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/search?l=typescript)<br/>
+[![language-ts](https://img.shields.io/badge/language-typescript%3A%20100%25-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/search?l=typescript)
+<br/>
 [![start with wiki](https://img.shields.io/badge/docs-wiki-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/wiki)
-                      [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/blob/master/LICENSE)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/redux-cbd/blob/master/LICENSE)
 <br/>
 [![npm downloads](https://img.shields.io/npm/dt/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
 
@@ -21,7 +22,8 @@ It includes react-like lifecycle, lazy management of memory allocation, global s
  - [x] Lazy memory management
  - [x] Fast 
  - [x] Simple 
- - [x] Easy to test [testing utils in nearest future]
+ - [x] Testable
+ <br/>
 
 ## Installation
 
@@ -31,8 +33,8 @@ It includes react-like lifecycle, lazy management of memory allocation, global s
 
   ##### Management [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/management)]
 
+  - [ContextWorker](https://github.com/Neloreck/dreamstate/wiki/ContextWorker)
   - [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
-  - [ContextInterceptor](https://github.com/Neloreck/dreamstate/wiki/ContextInterceptor)
   - [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
   - [getCurrentContext](https://github.com/Neloreck/dreamstate/wiki/getCurrentContext)
 
@@ -57,6 +59,7 @@ It includes react-like lifecycle, lazy management of memory allocation, global s
   - [useSignal](https://github.com/Neloreck/dreamstate/wiki/useSignal)
 
   #### Queries [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/queries)]
+
   - [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
 
   #### Utils [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/utils)]
@@ -66,13 +69,25 @@ It includes react-like lifecycle, lazy management of memory allocation, global s
   - [createMutable](https://github.com/Neloreck/dreamstate/wiki/createMutable)
   - [createSetter](https://github.com/Neloreck/dreamstate/wiki/createSetter)
 
+  #### Testing [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/testing)]
+
+  - [registerWorker](https://github.com/Neloreck/dreamstate/wiki/registerWorker)
+  - [unRegisterWorker](https://github.com/Neloreck/dreamstate/wiki/unRegisterWorker)
+  - [getWorkerObserversCount](https://github.com/Neloreck/dreamstate/wiki/getWorkerObserversCount)
+  - [isWorkerProvided](https://github.com/Neloreck/dreamstate/wiki/isWorkerProvided)
+  - [addManagerObserver](https://github.com/Neloreck/dreamstate/wiki/addManagerObserver)
+  - [removeManagerObserver](https://github.com/Neloreck/dreamstate/wiki/removeManagerObserver)
+  - [getReactConsumer](https://github.com/Neloreck/dreamstate/wiki/getReactConsumer)
+  - [getReactProvider](https://github.com/Neloreck/dreamstate/wiki/getReactProvider)
+  - [nextAsyncQueue](https://github.com/Neloreck/dreamstate/wiki/nextAsyncQueue)
+
 ## Documentation:
 
 Repository [wiki](https://github.com/Neloreck/dreamstate/wiki) includes docs and samples. <br/>
 
 ## Proposals and contribution:
 
-  Feel free to contibute or mail me with questions/proposals/issues (Neloreck@gmail.com). <br/>
+  Feel free to open PRs or issues. <br/>
 
 ## Licence
 

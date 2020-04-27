@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 
 import { withConsumption } from "@Lib/consumption";
 import { getCurrent } from "@Lib/registry";
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/test-utils";
 
 import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/assets";
 
@@ -14,11 +14,11 @@ describe("HoC @Consume and withConsumption selector observing.", () => {
   }
 
   beforeEach(() => {
-    registerWorkerClass(TestContextManager);
+    registerWorker(TestContextManager);
   });
 
   afterEach(() => {
-    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorker(TestContextManager);
   });
 
   it("Should properly observe only one property and prevent odd updates.", async () => {

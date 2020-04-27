@@ -8,7 +8,7 @@ import {
   unsubscribeFromManager
 } from "@Lib/registry";
 import { ContextManager } from "@Lib/management";
-import { nextAsyncQueue, registerWorkerClass, unRegisterWorkerClass } from "@Lib/test-utils";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/test-utils";
 
 import { ExtendingTestContextManager, ITestContext, TestContextManager, TestSingleContextManager } from "@Tests/assets";
 
@@ -17,8 +17,8 @@ describe("Context store creation tests.", () => {
     expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_WORKERS_REGISTRY.get(TestSingleContextManager)).toBeUndefined();
 
-    const testManager: TestContextManager = registerWorkerClass(TestContextManager);
-    const testSingleManager: TestSingleContextManager = registerWorkerClass(TestSingleContextManager);
+    const testManager: TestContextManager = registerWorker(TestContextManager);
+    const testSingleManager: TestSingleContextManager = registerWorker(TestSingleContextManager);
 
     const firstObserver: jest.Mock = jest.fn();
     const secondObserver: jest.Mock = jest.fn();
@@ -86,11 +86,11 @@ describe("Context store creation tests.", () => {
     expect(CONTEXT_WORKERS_REGISTRY.get(TestSingleContextManager)).toBeDefined();
     clearMocks();
 
-    unRegisterWorkerClass(TestSingleContextManager, true);
+    unRegisterWorker(TestSingleContextManager, true);
   });
 
   it("Should properly handle setContext and forceUpdate method update with prev/next props.", () => {
-    const manager: TestContextManager = registerWorkerClass(TestContextManager);
+    const manager: TestContextManager = registerWorker(TestContextManager);
 
     manager["beforeUpdate"] = jest.fn(
       function (this: TestContextManager, nextContext: ITestContext) {
@@ -158,11 +158,11 @@ describe("Context store creation tests.", () => {
     expect(manager["beforeUpdate"]).toHaveBeenCalled();
     expect(manager["afterUpdate"]).toHaveBeenCalled();
 
-    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorker(TestContextManager);
   });
 
   it("Should properly subscribe to manager and unsubscribe.", async () => {
-    const manager: TestContextManager = registerWorkerClass(TestContextManager);
+    const manager: TestContextManager = registerWorker(TestContextManager);
 
     const initialMockFn = jest.fn();
     const withCheckParamsMockFn = jest.fn((context: ITestContext) => {
@@ -195,26 +195,26 @@ describe("Context store creation tests.", () => {
     await nextAsyncQueue();
     expect(initialMockFn).not.toHaveBeenCalled();
 
-    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorker(TestContextManager);
   });
 
   it("Should correctly register context and get current context/manager.", () => {
     expect(getCurrent(TestContextManager)).toBeNull();
     expect(getCurrentContext(TestContextManager)).toBeNull();
 
-    registerWorkerClass(TestContextManager);
+    registerWorker(TestContextManager);
 
     expect(getCurrent(TestContextManager)).not.toBeNull();
     expect(getCurrentContext(TestContextManager)).not.toBeNull();
 
-    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorker(TestContextManager);
 
     expect(getCurrent(TestContextManager)).toBeNull();
     expect(getCurrentContext(TestContextManager)).toBeNull();
   });
 
   it("Should correctly create new managers after provision restart.", () => {
-    registerWorkerClass(TestContextManager);
+    registerWorker(TestContextManager);
 
     getCurrent(TestContextManager)!.setContext({
       first: "15",
@@ -224,18 +224,18 @@ describe("Context store creation tests.", () => {
     expect(getCurrentContext(TestContextManager)!.first).toBe("15");
     expect(getCurrentContext(TestContextManager)!.second).toBe(15);
 
-    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorker(TestContextManager);
 
-    registerWorkerClass(TestContextManager);
+    registerWorker(TestContextManager);
 
     expect(getCurrentContext(TestContextManager)!.first).toBe("first");
     expect(getCurrentContext(TestContextManager)!.second).toBe(2);
 
-    unRegisterWorkerClass(TestContextManager);
+    unRegisterWorker(TestContextManager);
   });
 
   it("Should correctly save singleton managers state after provision restart and force unregister.", () => {
-    registerWorkerClass(TestSingleContextManager);
+    registerWorker(TestSingleContextManager);
 
     getCurrent(TestSingleContextManager)!.setContext({
       first: "15",
@@ -245,21 +245,21 @@ describe("Context store creation tests.", () => {
     expect(getCurrentContext(TestSingleContextManager)!.first).toBe("15");
     expect(getCurrentContext(TestSingleContextManager)!.second).toBe(15);
 
-    unRegisterWorkerClass(TestSingleContextManager);
+    unRegisterWorker(TestSingleContextManager);
 
-    registerWorkerClass(TestSingleContextManager);
+    registerWorker(TestSingleContextManager);
 
     expect(getCurrentContext(TestSingleContextManager)!.first).toBe("15");
     expect(getCurrentContext(TestSingleContextManager)!.second).toBe(15);
 
-    unRegisterWorkerClass(TestSingleContextManager, true);
+    unRegisterWorker(TestSingleContextManager, true);
 
-    registerWorkerClass(TestSingleContextManager);
+    registerWorker(TestSingleContextManager);
 
     expect(getCurrentContext(TestSingleContextManager)!.first).toBe("first");
     expect(getCurrentContext(TestSingleContextManager)!.second).toBe(2);
 
-    unRegisterWorkerClass(TestSingleContextManager, true);
+    unRegisterWorker(TestSingleContextManager, true);
   });
 
   it("Should not allow base class identifier and REACT_CONTEXT.", () => {
@@ -270,12 +270,12 @@ describe("Context store creation tests.", () => {
     expect(getCurrent(ExtendingTestContextManager)).toBeNull();
     expect(getCurrent(TestContextManager)).toBeNull();
 
-    registerWorkerClass(TestContextManager);
+    registerWorker(TestContextManager);
 
     expect(getCurrent(TestContextManager)).not.toBeNull();
     expect(getCurrent(ExtendingTestContextManager)).toBeNull();
 
-    registerWorkerClass(ExtendingTestContextManager);
+    registerWorker(ExtendingTestContextManager);
 
     expect(getCurrent(TestContextManager)).not.toBeNull();
     expect(getCurrent(ExtendingTestContextManager)).not.toBeNull();
@@ -285,8 +285,8 @@ describe("Context store creation tests.", () => {
     expect(CONTEXT_WORKERS_REGISTRY.has(TestContextManager)).toBeTruthy();
     expect(CONTEXT_WORKERS_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
 
-    unRegisterWorkerClass(TestContextManager);
-    unRegisterWorkerClass(ExtendingTestContextManager);
+    unRegisterWorker(TestContextManager);
+    unRegisterWorker(ExtendingTestContextManager);
 
     expect(CONTEXT_WORKERS_REGISTRY.has(TestContextManager)).toBeFalsy();
     expect(CONTEXT_WORKERS_REGISTRY.has(ExtendingTestContextManager)).toBeFalsy();

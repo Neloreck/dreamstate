@@ -1,17 +1,19 @@
+import { Context } from "react";
+
 import { TAnyContextManagerConstructor, TDreamstateWorker, TUpdateObserver } from "./types";
 import {
   addWorkerObserverToRegistry,
-  registerWorker,
+  registerWorker as internalRegisterWorker,
   removeWorkerObserverFromRegistry,
-  unRegisterWorker
+  unRegisterWorker as internalUnRegisterWorker
 } from "./registry";
-import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "./internals";
+import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "./internals";
 
 /**
  * Register worker class.
  */
-export function registerWorkerClass<T extends TDreamstateWorker>(workerClass: T): InstanceType<T> {
-  registerWorker(workerClass);
+export function registerWorker<T extends TDreamstateWorker>(workerClass: T): InstanceType<T> {
+  internalRegisterWorker(workerClass);
 
   return CONTEXT_WORKERS_REGISTRY.get(workerClass) as InstanceType<T>;
 }
@@ -19,11 +21,11 @@ export function registerWorkerClass<T extends TDreamstateWorker>(workerClass: T)
 /**
  * Unregister worker.
  */
-export function unRegisterWorkerClass<T extends TDreamstateWorker>(
+export function unRegisterWorker<T extends TDreamstateWorker>(
   workerClass: T,
   forceUnregister: boolean = false
 ): void {
-  unRegisterWorker(workerClass, forceUnregister);
+  internalUnRegisterWorker(workerClass, forceUnregister);
 }
 
 /**
@@ -67,6 +69,24 @@ export function removeManagerObserver<T extends TAnyContextManagerConstructor>(
   observer: TUpdateObserver
 ) {
   removeWorkerObserverFromRegistry(managerConstructor, observer);
+}
+
+/**
+ * Get react provider of selected context manager.
+ */
+export function getReactConsumer<T extends TAnyContextManagerConstructor>(
+  managerConstructor: T
+): Context<T["prototype"]["context"]>["Consumer"] {
+  return managerConstructor.REACT_CONTEXT.Consumer;
+}
+
+/**
+ * Get react provider of selected context manager.
+ */
+export function getReactProvider<T extends TAnyContextManagerConstructor>(
+  managerConstructor: T
+): Context<T["prototype"]["context"]>["Provider"] {
+  return managerConstructor.REACT_CONTEXT.Provider;
 }
 
 /**
