@@ -14,8 +14,6 @@ export const EMPTY_STRING: string = "";
 export const MANAGER_REGEX: RegExp = /Manager$/;
 export const EMPTY_ARR: [] = [];
 
-export const NESTED_STORE_KEY: unique symbol = Symbol();
-
 /**
  * Store related constants.
  */

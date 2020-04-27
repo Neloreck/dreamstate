@@ -1,7 +1,4 @@
-import type { NESTED_STORE_KEY } from "../internals";
-
 export interface INestedStore {
-  [NESTED_STORE_KEY]: boolean;
 }
 
 export type TStateSetter<T extends object, K extends keyof T> = (value: Partial<T[K]>) => void;

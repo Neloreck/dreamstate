@@ -1,9 +1,8 @@
 import { TMutable } from "@Lib/types";
-import { createMutable } from "@Lib/utils";
-import { NESTED_STORE_KEY } from "@Lib/internals";
+import { createMutable, NestedStore } from "@Lib/utils";
 
 describe("Mutable util.", () => {
-  it("Should properly create muable objects.", () => {
+  it("Should properly create mutable objects.", () => {
     const mutable: TMutable<{ test: boolean }> = createMutable({ test: true });
 
     expect(Object.keys(mutable)).toHaveLength(2);
@@ -21,11 +20,11 @@ describe("Mutable util.", () => {
   it("Should properly declare mutable objects flags.", () => {
     const mutable: TMutable<{ test: boolean }> = createMutable({ test: true });
 
-    expect(mutable[NESTED_STORE_KEY]).toBeTruthy();
+    expect(mutable instanceof NestedStore).toBeTruthy();
 
     const next: TMutable<{ test: boolean }> = mutable.asMerged({ test: false });
 
-    expect(next[NESTED_STORE_KEY]).toBeTruthy();
+    expect(next instanceof NestedStore).toBeTruthy();
   });
 
   it("Should properly throw error for non-objects initial values.", () => {

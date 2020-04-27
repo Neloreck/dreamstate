@@ -49,18 +49,32 @@ describe("Library exported API tests.", () => {
     "registerWorkerClass",
     "unRegisterWorkerClass",
     "getWorkerObserversCount",
+    "isWorkerProvided",
     "addManagerObserver",
     "removeManagerObserver",
     "nextAsyncQueue"
   ];
 
+  const assertListIntersection = (first: Array<string>, second: Array<string>) => {
+    first.forEach((it: string) => {
+      if (!second.includes(it)) {
+        throw new Error("Item missing: " + it);
+      }
+    });
+    second.forEach((it: string) => {
+      if (!second.includes(it)) {
+        throw new Error("Item missing: " + it);
+      }
+    });
+  };
+
   it("Should export correct lib API methods", () => {
-    Object.keys(libRoot).forEach((it: string) => expect(expectedLibExports.includes(it)).toBeTruthy());
+    assertListIntersection(Object.keys(libRoot), expectedLibExports);
     expect(Object.keys(libRoot)).toHaveLength(expectedLibExports.length);
   });
 
   it("Should export correct test-utils API methods", () => {
-    Object.keys(testUtilsRoot).forEach((it: string) => expect(expectedTestUtilsExports.includes(it)).toBeTruthy());
+    assertListIntersection(Object.keys(testUtilsRoot), expectedTestUtilsExports);
     expect(Object.keys(testUtilsRoot)).toHaveLength(expectedTestUtilsExports.length);
   });
 

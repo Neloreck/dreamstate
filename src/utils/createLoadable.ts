@@ -1,5 +1,5 @@
 import { ILoadable } from "../types";
-import { NESTED_STORE_KEY } from "../internals";
+import { NestedStore } from "./NestedStore";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -9,7 +9,7 @@ import { log } from "../../build/macroses/log.macro";
  */
 export function asLoading<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, E> {
   return Object.assign(
-    {},
+    new NestedStore(),
     this,
     {
       value: arguments.length > 0 ? (value as T) : this.value,
@@ -25,7 +25,7 @@ export function asLoading<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, 
  */
 export function asFailed<T, E>(this: ILoadable<T, E>, error: E | null, value?: T): ILoadable<T, E> {
   return Object.assign(
-    {},
+    new NestedStore(),
     this,
     {
       error,
@@ -41,7 +41,7 @@ export function asFailed<T, E>(this: ILoadable<T, E>, error: E | null, value?: T
  */
 export function asReady<T, E>(this: ILoadable<T, E>, value?: T): ILoadable<T, E> {
   return Object.assign(
-    {},
+    new NestedStore(),
     this,
     {
       error: null,
@@ -62,7 +62,7 @@ export function asUpdated<T, E>(
   error?: E | null
 ): ILoadable<T, E> {
   return Object.assign(
-    {},
+    new NestedStore(),
     this,
     {
       value,
@@ -82,8 +82,7 @@ export function createLoadable<T, E>(
 ): ILoadable<T, E> {
   log.info("Created loadable entity:", value);
 
-  return {
-    [NESTED_STORE_KEY]: true,
+  return Object.assign(new NestedStore(), {
     error,
     isLoading,
     value,
@@ -91,5 +90,5 @@ export function createLoadable<T, E>(
     asFailed: asFailed,
     asReady: asReady,
     asUpdated: asUpdated
-  };
+  });
 }

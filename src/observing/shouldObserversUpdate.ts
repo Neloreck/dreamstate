@@ -1,6 +1,6 @@
 import { shallowEqualObjects } from "shallow-equal";
 
-import { NESTED_STORE_KEY } from "../internals";
+import { NestedStore } from "../utils";
 import { IStringIndexed } from "../types";
 
 /**
@@ -24,7 +24,7 @@ export function shouldObserversUpdate<T extends object>(
        *
        * todo: Check if one object is mutable, but next is not and print warnings.
        */
-      return nextValue !== null && typeof nextValue === "object" && nextValue[NESTED_STORE_KEY]
+      return nextValue !== null && typeof nextValue === "object" && nextValue instanceof NestedStore
         ? !shallowEqualObjects(nextValue, previousContext[key])
         : nextValue !== previousContext[key];
     })

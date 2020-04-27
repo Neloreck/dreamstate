@@ -1,6 +1,5 @@
 import { ILoadable } from "@Lib/types";
-import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "@Lib/utils";
-import { NESTED_STORE_KEY } from "@Lib/internals";
+import { asFailed, asLoading, asReady, asUpdated, createLoadable, NestedStore } from "@Lib/utils";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {
@@ -50,13 +49,13 @@ describe("Loadable util.", () => {
       test: true
     });
 
-    expect(mutable[NESTED_STORE_KEY]).toBeTruthy();
+    expect(mutable instanceof NestedStore).toBeTruthy();
 
     const next: ILoadable<{ test: boolean }> = mutable.asUpdated({
       test: false
     });
 
-    expect(next[NESTED_STORE_KEY]).toBeTruthy();
+    expect(next instanceof NestedStore).toBeTruthy();
   });
 
   it("Should properly compute new loadable values.", () => {

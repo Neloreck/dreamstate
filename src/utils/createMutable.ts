@@ -1,5 +1,5 @@
 import { TMutable } from "../types";
-import { NESTED_STORE_KEY } from "../internals";
+import { NestedStore } from "./NestedStore";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -7,7 +7,7 @@ import { log } from "../../build/macroses/log.macro";
  * Util for mutable.
  */
 function asMerged<T extends object>(this: TMutable<T>, state: Partial<T>): T {
-  return Object.assign({}, this as TMutable<T>, state);
+  return Object.assign(new NestedStore(), this as TMutable<T>, state);
 }
 
 /**
@@ -19,8 +19,5 @@ export function createMutable<T extends object>(initialValue: T): TMutable<T> {
     throw new TypeError("Mutable values can be created for non-null object parameter only.");
   }
 
-  return Object.assign({}, initialValue, {
-    [NESTED_STORE_KEY]: true,
-    asMerged: asMerged as any
-  });
+  return Object.assign(new NestedStore(), initialValue, { asMerged: asMerged as any });
 }
