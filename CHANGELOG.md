@@ -2,7 +2,7 @@
   * Tests added, stricter check of library for production builds
   * Included UMD, CJS and ESM bundles into library
   * Tree shaking introduced
-  * Added "dreamstate/test-utils"
+  * Added "dreamstate/test-utils" for lib testing
   * Signals API added
     * OnSignal decorator added
     * useSignals hook added
@@ -37,5 +37,6 @@
   * added check for base class, ID and REACT_TYPE references will throw error now
   * better @Consume performance, shouldUpdate checks for selectors
   * @Provide and @Consume now require array parameter, not variadic parameters
+  * @Provide and @Consume now correctly validate input parameters
   * @Bind decorator does not allow direct property re-writing on runtime now
   * @Bind decorator still can be modified with Object.defineProperty for testing and 'special' cases

@@ -10,10 +10,10 @@
 
 <hr/>
 
-Simple and laconic data management for react. <br/>
+Simple data management for react. <br/>
 <br/>
-Library helps to create context workers for react application without spaghetti-coded providers and view-data mixing. <br/>
-Each worker has react-like lifecycle, lazy management of memory allocation and global signaling. <br/>
+Helps to separate application view and data without spaghetti-coded providers and boilerplate code. <br/>
+Library gives opportunity to create small stores with react-like lifecycle, lazy management of memory allocation and signaling. <br/>
 
  - [x] Tree shaking
  - [x] Strictly typed
