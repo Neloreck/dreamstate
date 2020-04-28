@@ -22,7 +22,6 @@ Library gives opportunity to create small stores with react-like lifecycle, lazy
  - [x] Fast 
  - [x] Simple 
  - [x] Testable
- <br/>
 
 ## Installation
 - `npm install --save dreamstate`
@@ -30,7 +29,7 @@ Library gives opportunity to create small stores with react-like lifecycle, lazy
 ## Requirements
 - `react >= 16.8.0`
 
-## Documentation
+## [Documentation](https://github.com/Neloreck/dreamstate/wiki/Home)
 
 ##### Management [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/management)]
 - [ContextWorker](https://github.com/Neloreck/dreamstate/wiki/ContextWorker)
