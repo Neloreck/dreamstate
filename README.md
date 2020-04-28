@@ -23,7 +23,7 @@ Library gives opportunity to create small stores with react-like lifecycle, lazy
  - [x] Simple 
  - [x] Testable
 
-## Installation
+## Install
 - `npm install --save dreamstate`
 
 ## Requirements
@@ -31,39 +31,40 @@ Library gives opportunity to create small stores with react-like lifecycle, lazy
 
 ## [Documentation](https://github.com/Neloreck/dreamstate/wiki/Home)
 
-##### Management [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/management)]
+#### [Management](https://github.com/Neloreck/dreamstate/wiki/management)
 - [ContextWorker](https://github.com/Neloreck/dreamstate/wiki/ContextWorker)
 - [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
 - [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
 - [getCurrentContext](https://github.com/Neloreck/dreamstate/wiki/getCurrentContext)
 
-#### Provision [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/provision)]
+
+#### [Provision](https://github.com/Neloreck/dreamstate/wiki/provision)
 - [createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider)
 - [@Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide)
 - [withProvision](https://github.com/Neloreck/dreamstate/wiki/withProvision)
 
-#### Consumption [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/consumption)]
+#### [Consumption](https://github.com/Neloreck/dreamstate/wiki/consumption)
 - [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager)
 - [@Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume)
 - [withConsumption](https://github.com/Neloreck/dreamstate/wiki/withConsumption)
 
-#### Signals [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/signals)]
+#### [Signals](https://github.com/Neloreck/dreamstate/wiki/signals)
 - [emitSignal](https://github.com/Neloreck/dreamstate/wiki/emitSignal)
 - [subscribeToSignals](https://github.com/Neloreck/dreamstate/wiki/subscribeToSignals)
 - [unsubscribeFromSignals](https://github.com/Neloreck/dreamstate/wiki/unsubscribeFromSignals)
 - [@OnSignal](https://github.com/Neloreck/dreamstate/wiki/@OnSignal)
 - [useSignal](https://github.com/Neloreck/dreamstate/wiki/useSignal)
 
-#### Queries [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/queries)]
+#### [Queries](https://github.com/Neloreck/dreamstate/wiki/queries)
 - [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
 
-#### Utils [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/utils)]
+#### [Utils](https://github.com/Neloreck/dreamstate/wiki/utils)
 - [@Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind)
 - [createLoadable](https://github.com/Neloreck/dreamstate/wiki/createLoadable)
 - [createMutable](https://github.com/Neloreck/dreamstate/wiki/createMutable)
 - [createSetter](https://github.com/Neloreck/dreamstate/wiki/createSetter)
 
-#### Testing [[ABOUT](https://github.com/Neloreck/dreamstate/wiki/testing)]
+#### [Testing](https://github.com/Neloreck/dreamstate/wiki/testing)
 - [registerWorker](https://github.com/Neloreck/dreamstate/wiki/registerWorker)
 - [unRegisterWorker](https://github.com/Neloreck/dreamstate/wiki/unRegisterWorker)
 - [getWorkerObserversCount](https://github.com/Neloreck/dreamstate/wiki/getWorkerObserversCount)
