@@ -23,6 +23,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   }
 
   // Validate sources.
+  // todo: Validate duplicates for dev bundle.
   for (let it = 0; it < sources.length; it ++) {
     if (!(sources[it].prototype instanceof ContextWorker)) {
       throw new TypeError("Only classes extending ContextWorker can be supplied for provision.");

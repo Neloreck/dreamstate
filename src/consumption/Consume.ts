@@ -11,6 +11,10 @@ import { useManager } from "./useManager";
  * todo: Should we warn if no alias and no selector provided?
  */
 export function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+  if (!Array.isArray(sources)) {
+    throw new TypeError("Expecting 'source' parameter to be array type.");
+  }
+
   for (const source of sources) {
     if (
       // Is null.
@@ -20,13 +24,11 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
       // Validate selector object.
       (typeof source === "object" &&
         // Should have correct 'from' selector.
-        (!source.from ||
-          typeof source.from !== "function" ||
-          !(source.from.prototype instanceof ContextManager) ||
-          // Should have correct alias or undefined.
-          (typeof source.as !== "undefined" && typeof source.as !== "string") ||
-          // Should have anything for key-mapping except objects and nulls.
-          (!Array.isArray(source.take) && typeof source.take === "object"))) ||
+        (!source.from || typeof source.from !== "function" || !(source.from.prototype instanceof ContextManager) ||
+        // Should have correct alias or undefined.
+        (typeof source.as !== "undefined" && typeof source.as !== "string") ||
+        // Should have anything for key-mapping except objects and nulls.
+        (!Array.isArray(source.take) && typeof source.take === "object"))) ||
       // Validate provided constructor.
       (typeof source === "function" && !(source.prototype instanceof ContextManager))
     ) {
