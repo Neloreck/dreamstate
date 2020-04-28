@@ -11,7 +11,7 @@ import { sendQuery } from "../queries";
 
 import { log } from "../../build/macroses/log.macro";
 
-export class ContextWorker {
+export abstract class ContextWorker {
 
   /**
    * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
