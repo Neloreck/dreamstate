@@ -41,6 +41,9 @@ export class ContextWorker {
     emitSignal(baseSignal, this.constructor as TDreamstateWorker);
   }
 
+  /**
+   * Send context query to retrieve data from @OnQuery method with required typex.
+   */
   protected sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: {
     type: T;
     data?: D;

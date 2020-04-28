@@ -2,7 +2,7 @@ import { createElement, useState } from "react";
 
 import { ContextManager, ContextWorker } from "@Lib/management";
 import { OnSignal, useSignals } from "@Lib/signals";
-import { SignalEvent, SignalType } from "@Lib";
+import { SignalEvent } from "@Lib";
 
 export enum ESignal {
   NUMBER_SIGNAL = "NUMBER",
@@ -17,17 +17,17 @@ export class SubscribedContextManager extends ContextManager<object> {
   public context: object = {};
 
   @OnSignal(ESignal.NUMBER_SIGNAL)
-  public onNumberSignal(signal: SignalEvent<number, SignalType>): void {
+  public onNumberSignal(signal: SignalEvent<number>): void {
     return;
   }
 
   @OnSignal([ ESignal.STRING_SIGNAL ])
-  public onStringSignal(signal: SignalEvent<string, SignalType>): void {
+  public onStringSignal(signal: SignalEvent<string>): void {
     return;
   }
 
   @OnSignal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
-  public onStringOrNumberSignal(signal: SignalEvent<number | string, SignalType>): void {
+  public onStringOrNumberSignal(signal: SignalEvent<number | string>): void {
     return;
   }
 

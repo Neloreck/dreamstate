@@ -19,6 +19,11 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   query: IQueryRequest<D, T>,
   sender: TDreamstateWorker
 ): Promise<TQueryResponse<R, T> | null> {
+  // Validate query type.
+  if (!query || !query.type) {
+    throw new TypeError("Query must be an object with declared type.");
+  }
+
   return new Promise(function (
     resolve: (response: IQueryResponse<R, T> | null) => void,
     reject: (error: Error) => void
