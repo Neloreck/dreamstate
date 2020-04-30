@@ -18,6 +18,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
 
   const signal: ISignalEvent<D, T> = Object.assign(base as { data: D; type: T }, {
     emitter,
+    timestamp: Date.now(),
     cancel: function (): void {
       (this as ISignalEvent<D, T>).cancelled = true;
     }

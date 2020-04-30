@@ -2,7 +2,7 @@
 
 exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 1`] = `
 <UsingSignalFunction
-  onInternalSignal={[MockFunction]}
+  onInternalSignal={[Function]}
 >
   <div>
     initial
@@ -12,26 +12,7 @@ exports[`Signals and signaling. Functional components should properly subscribe 
 
 exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 2`] = `
 <UsingSignalFunction
-  onInternalSignal={
-    [MockFunction] {
-      "calls": Array [
-        Array [
-          Object {
-            "cancel": [Function],
-            "data": "newValue",
-            "emitter": [Function],
-            "type": "STRING_SIGNAL",
-          },
-        ],
-      ],
-      "results": Array [
-        Object {
-          "type": "return",
-          "value": undefined,
-        },
-      ],
-    }
-  }
+  onInternalSignal={[Function]}
 >
   <div>
     newValue

@@ -1,4 +1,4 @@
-import { CONTEXT_WORKERS_REGISTRY } from "@Lib/internals";
+import { CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "@Lib/internals";
 import {
   addWorkerObserverToRegistry,
   getCurrentContext,
@@ -10,7 +10,13 @@ import {
 import { ContextManager } from "@Lib/management";
 import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/test-utils";
 
-import { ExtendingTestContextManager, ITestContext, TestContextManager, TestSingleContextManager } from "@Tests/assets";
+import {
+  ExampleContextManager,
+  ExtendingTestContextManager,
+  ITestContext,
+  TestContextManager,
+  TestSingleContextManager
+} from "@Tests/assets";
 
 describe("Context store creation tests.", () => {
   it("Should properly handle onProvisionStarted and onProvision ended for context managers.", () => {
@@ -290,5 +296,53 @@ describe("Context store creation tests.", () => {
 
     expect(CONTEXT_WORKERS_REGISTRY.has(TestContextManager)).toBeFalsy();
     expect(CONTEXT_WORKERS_REGISTRY.has(ExtendingTestContextManager)).toBeFalsy();
+  });
+
+  it("Should properly add contextManagers subscribers.", () => {
+    const exampleSubscriber = () => {};
+
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBeUndefined();
+
+    registerWorker(ExampleContextManager);
+
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
+
+    subscribeToManager(ExampleContextManager, exampleSubscriber);
+
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(1);
+
+    unsubscribeFromManager(ExampleContextManager, exampleSubscriber);
+
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
+
+    unRegisterWorker(ExampleContextManager);
+
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
+  });
+
+  it("Should properly subscribe and unsubscribe only from contextManagers", () => {
+    class ExampleClass {}
+
+    class ExampleManagerClass extends ContextManager<object> {
+
+      public readonly context: object = {};
+
+    }
+
+    const exampleSubscriber = () => {};
+
+    registerWorker(ExampleManagerClass);
+
+    expect(() => subscribeToManager(ExampleClass as any, exampleSubscriber)).toThrow();
+    expect(() => unsubscribeFromManager(ExampleClass as any, exampleSubscriber)).toThrow();
+
+    expect(() => subscribeToManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
+    expect(() => unsubscribeFromManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
+
+    unRegisterWorker(ExampleManagerClass);
   });
 });

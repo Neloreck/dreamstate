@@ -24,7 +24,9 @@ describe("Signals and signaling.", () => {
       expect(signalEvent.emitter).toBe(EmittingContextManager);
       expect(signalEvent.data).toBe("newValue");
     });
-    const tree = mount(createElement(UsingSignalFunction, { onInternalSignal: mockFn }));
+    const tree = mount(
+      createElement(UsingSignalFunction, { onInternalSignal: (event: TStringSignalEvent) => mockFn(event) })
+    );
 
     expect(tree).toMatchSnapshot();
 

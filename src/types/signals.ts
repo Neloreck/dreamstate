@@ -21,6 +21,10 @@ export interface ISignalEvent<D = any, T extends TSignalType = TSignalType> exte
    */
   emitter: TDreamstateWorker | null;
   /**
+   * Signal emit timestamp.
+   */
+  timestamp: number;
+  /**
    * Stop signal handling by next listeners.
    */
   cancel(): void;

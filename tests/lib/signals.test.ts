@@ -103,12 +103,14 @@ describe("Signals and signaling.", () => {
       expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
       expect(typeof signal.data).toBe("number");
       expect(signal.emitter).toBe(EmittingContextManager);
+      expect(typeof signal.timestamp).toBe("number");
     });
 
     const stringSubscriber = jest.fn((signal: ISignalEvent<TSignalType, string>) => {
       expect(signal.type).toBe(ESignal.STRING_SIGNAL);
       expect(typeof signal.data).toBe("string");
       expect(signal.emitter).toBe(EmittingContextManager);
+      expect(typeof signal.timestamp).toBe("number");
     });
 
     subscribeToSignals(numberSubscriber);
