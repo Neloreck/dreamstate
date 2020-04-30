@@ -1,7 +1,7 @@
 import { Context, createContext } from "react";
 
 import { TAnyContextManagerConstructor } from "../types";
-import { CONTEXT_REACT_CONTEXTS_REGISTRY, MANAGER_REGEX } from "../internals";
+import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -18,7 +18,7 @@ export function getReactContext<T extends TAnyContextManagerConstructor>(
   } else {
     const reactContext: Context<T> = createContext(null as any);
 
-    reactContext.displayName = "DS." + managerConstructor.name.replace(MANAGER_REGEX, "");
+    reactContext.displayName = "DS." + managerConstructor.name;
 
     CONTEXT_REACT_CONTEXTS_REGISTRY.set(managerConstructor, reactContext);
 

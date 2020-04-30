@@ -65,7 +65,7 @@ describe("Context store creation tests.", () => {
     expect(contextType).not.toBeUndefined();
     expect(contextType.Consumer).not.toBeUndefined();
     expect(contextType.Provider).not.toBeUndefined();
-    expect(contextType.displayName).toBe("DS.TestContext");
+    expect(contextType.displayName).toBe("DS." + TestContextManager.name);
   });
 
   it("Should initialize managers classes without any exceptions.", () => {

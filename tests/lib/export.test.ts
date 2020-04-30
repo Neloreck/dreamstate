@@ -79,10 +79,4 @@ describe("Library exported API tests.", () => {
     assertListIntersection(Object.keys(testUtilsRoot), expectedTestUtilsExports);
     expect(Object.keys(testUtilsRoot)).toHaveLength(expectedTestUtilsExports.length);
   });
-
-  it("Should not declare debug variables for production.", () => {
-    // @ts-ignore
-    expect(window.__DREAMSTATE_DEBUG_INTERNALS__).toBeUndefined();
-    expect((global as any).IS_DEBUG).toBeFalsy();
-  });
 });
