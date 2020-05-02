@@ -17,12 +17,14 @@ import { log } from "../../build/macroses/log.macro";
  */
 export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   query: IQueryRequest<D, T>,
-  sender: TDreamstateWorker
+  sender?: TDreamstateWorker
 ): Promise<TQueryResponse<R, T> | null> {
   // Validate query type.
   if (!query || !query.type) {
     throw new TypeError("Query must be an object with declared type.");
   }
+
+  const timestamp: number = Date.now();
 
   return new Promise(function (
     resolve: (response: IQueryResponse<R, T> | null) => void,
@@ -31,7 +33,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
     const workers: Set<TDreamstateWorker> = CONTEXT_WORKERS_ACTIVATED;
 
     log.info("Possible query resolvers:", workers.size);
-    // Search each context manager metadata.
+    // Search each context worker metadata.
     for (const worker of workers) {
       // Skip own metadata checking.
       // Skip workers without metadata.
@@ -52,7 +54,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
         if (workerMeta[jt][1] === query.type) {
           log.info(
             "Query resolver was found, triggering callback:",
-            sender.name,
+            sender && sender.name,
             query,
             "=>",
             worker.name,
@@ -72,11 +74,11 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
             if (result instanceof Promise) {
               return result
                 .then(function (data: any): void {
-                  resolve({ answerer: worker, type: query.type, data });
+                  resolve({ answerer: worker, type: query.type, data, timestamp });
                 })
                 .catch(reject);
             } else {
-              return resolve({ answerer: worker, type: query.type, data: result });
+              return resolve({ answerer: worker, type: query.type, data: result, timestamp });
             }
           } catch (error) {
             reject(error);
@@ -87,7 +89,7 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
       }
     }
 
-    log.info("Query resolver was not found, returning null:", sender.name, query);
+    log.info("Query resolver was not found, returning null:", sender && sender.name, query);
 
     return resolve(null);
   });

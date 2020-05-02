@@ -10,7 +10,7 @@ import { log } from "../../build/macroses/log.macro";
 export function getCurrent<T extends TDreamstateWorker>(
   workerConstructor: T
 ): InstanceType<T> | null {
-  log.info("Requested current manager:", workerConstructor.name);
+  log.info("Requested current worker:", workerConstructor.name);
 
   return CONTEXT_WORKERS_REGISTRY.get(workerConstructor) as InstanceType<T> || null;
 }

@@ -1,6 +1,6 @@
 describe("Library exported API tests.", () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const libRoot = require("@Lib/index");
+  const libRoot = require("@Lib");
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const testUtilsRoot = require("@Lib/test-utils");
 

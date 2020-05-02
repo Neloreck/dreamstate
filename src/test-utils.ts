@@ -1,6 +1,7 @@
 import { Context } from "react";
 
 import { TAnyContextManagerConstructor, TDreamstateWorker, TUpdateObserver } from "./types";
+import { ContextWorker } from "./management";
 import {
   addWorkerObserverToRegistry,
   registerWorker as internalRegisterWorker,
@@ -13,6 +14,10 @@ import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "./internal
  * Register worker class.
  */
 export function registerWorker<T extends TDreamstateWorker>(workerClass: T): InstanceType<T> {
+  if (!workerClass || !workerClass.prototype || !(workerClass.prototype instanceof ContextWorker)) {
+    throw new TypeError("Cannot register invalid worker. Expected class extending ContextWorker.");
+  }
+
   internalRegisterWorker(workerClass);
 
   return CONTEXT_WORKERS_REGISTRY.get(workerClass) as InstanceType<T>;
@@ -25,6 +30,10 @@ export function unRegisterWorker<T extends TDreamstateWorker>(
   workerClass: T,
   forceUnregister: boolean = false
 ): void {
+  if (!workerClass || !workerClass.prototype || !(workerClass.prototype instanceof ContextWorker)) {
+    throw new TypeError("Cannot register invalid worker. Expected class extending ContextWorker.");
+  }
+
   internalUnRegisterWorker(workerClass, forceUnregister);
 }
 

@@ -19,6 +19,7 @@
   * getCurrent method added
   * createSetter method added
   * createMutable method added with related type
+  * ContextManager related react context is named same as manager class with DS. prefix
   * ContextManager::REACT_CONTEXT field added
   * ContextManager::IS_SINGLE field added for singleton instances
   * removed ContextManager::static::current method
