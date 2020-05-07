@@ -1,2 +1,4 @@
-./lib
+./cjs
+./esm
+./types
 ./coverage

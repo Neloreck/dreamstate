@@ -18,7 +18,7 @@ export const CJS_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
   input: [ "./src/index.ts", "./src/test-utils.ts" ],
   output: {
-    chunkFileNames: "cjs/[name]-[hash].js",
+    chunkFileNames: "cjs/lib-[hash].js",
     compact: IS_PRODUCTION,
     dir: "./",
     name: `dreamstate.${ENV}.js`,

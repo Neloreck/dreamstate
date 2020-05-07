@@ -7,7 +7,7 @@ import {
   TDreamstateWorker
 } from "../types";
 import { useLazyInitializeWorker } from "./useLazyInitializeWorker";
-import { provideSubTreeRecursive } from "./provideSubTreeRecursive";
+import { provideSubTreeRecursive } from "../provision";
 import { ContextManager, ContextWorker } from "../management";
 
 import { log } from "../../build/macroses/log.macro";
@@ -48,7 +48,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
       useLazyInitializeWorker(sources[it], updateProviders);
     }
 
-    return provideSubTreeRecursive(0, children ? createElement(children, props) : props.children, managers);
+    return provideSubTreeRecursive(children ? createElement(children, props) : props.children, managers, 0);
   }
 
   Observer.displayName = "DS.Observer";

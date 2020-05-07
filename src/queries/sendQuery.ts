@@ -7,7 +7,7 @@ import {
   TQueryType
 } from "../types";
 import { CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY, CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
-import { ContextWorker } from "../management";
+import { ContextWorker } from "../management/ContextWorker";
 
 import { log } from "../../build/macroses/log.macro";
 

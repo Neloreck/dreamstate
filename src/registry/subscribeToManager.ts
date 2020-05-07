@@ -1,6 +1,6 @@
 import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
 import { CONTEXT_STATES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
-import { ContextManager } from "../management";
+import { ContextManager } from "../management/ContextManager";
 
 import { log } from "../../build/macroses/log.macro";
 

@@ -1,7 +1,7 @@
 import { TAnyContextManagerConstructor, TQueryType } from "../types";
 import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
-import { createMethodDecorator } from "../polyfills";
-import { ContextWorker } from "../management";
+import { createMethodDecorator } from "../polyfills/createMethodDecorator";
+import { ContextWorker } from "../management/ContextWorker";
 
 import { log } from "../../build/macroses/log.macro";
 

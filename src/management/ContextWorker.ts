@@ -6,8 +6,8 @@ import {
   TQueryType,
   TSignalType
 } from "../types";
-import { emitSignal } from "../signals";
-import { sendQuery } from "../queries";
+import { emitSignal } from "../signals/emitSignal";
+import { sendQuery } from "../queries/sendQuery";
 
 import { log } from "../../build/macroses/log.macro";
 

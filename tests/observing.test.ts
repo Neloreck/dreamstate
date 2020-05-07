@@ -95,20 +95,6 @@ describe("Observing utils and methods.", () => {
     expect(shouldObserversUpdate(firstLoadable, secondLoadable)).toBeFalsy();
   });
 
-  it("Should properly compare mutables with same stored value.", () => {
-    const firstLoadableInlineObj = { nested: createLoadable({ a: 1 }) };
-    const secondLoadableInlineObj = { nested: createLoadable({ a: 1 }) };
-
-    expect(shouldObserversUpdate(firstLoadableInlineObj, secondLoadableInlineObj)).toBeTruthy();
-
-    const obj: object = { a: 15 };
-
-    const firstLoadableObj = { nested: createLoadable(obj) };
-    const secondLoadableObj = { nested: createLoadable(obj) };
-
-    expect(shouldObserversUpdate(firstLoadableObj, secondLoadableObj)).toBeFalsy();
-  });
-
   it("Should create observers for context workers only.", () => {
     expect(() => createManagersObserver(null, undefined as any)).toThrow();
     expect(() => createManagersObserver(null, [ 1 as any ])).toThrow();

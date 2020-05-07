@@ -1,6 +1,6 @@
 import { TAnyContextManagerConstructor, TConstructorKey, TSignalType } from "../types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
-import { createMethodDecorator } from "../polyfills";
+import { createMethodDecorator } from "../polyfills/createMethodDecorator";
 
 import { log } from "../../build/macroses/log.macro";
 

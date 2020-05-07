@@ -24,7 +24,13 @@ export const TextContextManagerProvider = createProvider([ TestContextManager ])
 export class TestContextWorker extends ContextWorker {
 }
 
-export const TestContextInterceptorProvider = createProvider([ TestContextWorker ]);
+export class TestSingleContextWorker extends ContextWorker {
+
+  protected static IS_SINGLE: boolean = true;
+
+  public createdAt: number = Date.now();
+
+}
 
 export class ExtendingTestContextManager extends TestContextManager {
 

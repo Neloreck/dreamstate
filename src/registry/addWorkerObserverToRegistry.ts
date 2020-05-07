@@ -1,4 +1,4 @@
-import type { ContextWorker } from "../management";
+import { ContextWorker } from "../management/ContextWorker";
 import { TDreamstateWorker, TUpdateObserver } from "../types";
 import { CONTEXT_WORKERS_REGISTRY, CONTEXT_OBSERVERS_REGISTRY } from "../internals";
 

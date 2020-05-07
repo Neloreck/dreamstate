@@ -15,20 +15,18 @@
     "test-utils.js.map",
     "esm/",
     "cjs/",
-    "umd/",
     "types/"
   ],
   "main": "./index.js",
   "module": "./esm/index.js",
-  "unpkg": "./umd/dreamstate.production.js",
   "types": "./types/",
   "scripts": {
-    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./umd ./coverage ./types",
+    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types",
     "build:debug": "npx cross-env NODE_ENV=debug rollup -c ./build/rollup.bundle.config.js",
-    "build:prod": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.bundle.config.js",
+    "build:cjs": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.cjs.config.js",
     "build:esm": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.config.js",
     "build:dts": "npx tsc -d -p ./build/tsconfig.build.json --outDir ./types --emitDeclarationOnly && cp ./build/reexport/* ./",
-    "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:prod",
+    "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "lint": "npx eslint . --ext .ts,.js,",
     "test": "jest --config ./build/jest.config.js",
     "prepublishOnly": "npm run clean && npm run lint && npm test && npm run build"

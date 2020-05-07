@@ -1,5 +1,5 @@
 import { TDreamstateWorker, TSignalListener } from "../types";
-import { ContextManager } from "../management";
+import { ContextManager } from "../management/ContextManager";
 import { onMetadataSignalListenerCalled, subscribeToSignals } from "../signals";
 import {
   CONTEXT_WORKERS_REGISTRY,
