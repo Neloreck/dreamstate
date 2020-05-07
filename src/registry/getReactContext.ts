@@ -2,6 +2,7 @@ import { Context, createContext } from "react";
 
 import { TAnyContextManagerConstructor } from "../types";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
+import { ContextManager } from "../management/ContextManager";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -16,6 +17,10 @@ export function getReactContext<T extends TAnyContextManagerConstructor>(
   if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(managerConstructor)) {
     return CONTEXT_REACT_CONTEXTS_REGISTRY.get(managerConstructor)!;
   } else {
+    if (!(managerConstructor.prototype instanceof ContextManager)) {
+      throw new TypeError("Only ContextManagers can bind react context.");
+    }
+
     const reactContext: Context<T> = createContext(null as any);
 
     reactContext.displayName = "DS." + managerConstructor.name;

@@ -1,6 +1,8 @@
-import { createManagersObserver, shouldObserversUpdate } from "@Lib/observing";
+import { createManagersObserver, shouldObserversUpdate } from "@Lib/observing/index";
 import { createLoadable, createMutable } from "@Lib/utils";
-import { TestContextWorker, TestContextManager } from "@Tests/assets";
+import { TestContextWorker, TestContextManager, ITestContext } from "@Tests/assets";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/testing";
+import { subscribeToManager, unsubscribeFromManager } from "@Lib/registry";
 
 describe("Observing utils and methods.", () => {
   it("Should notifiers update must check properly same nested primitives and objects.", () => {
@@ -81,6 +83,39 @@ describe("Observing utils and methods.", () => {
     next.nested = next.nested.asMerged({ a: 2 });
 
     expect(shouldObserversUpdate(base, next)).toBeTruthy();
+  });
+
+  // todo: Move to observing.
+  it("Should properly notify subscribers.", async () => {
+    const manager: TestContextManager = registerWorker(TestContextManager);
+
+    const withCheckParamsMockFn = jest.fn((context: ITestContext) => {
+      expect(context.first).toBe("example");
+      expect(context.second).toBe(100);
+    });
+
+    subscribeToManager(TestContextManager, withCheckParamsMockFn);
+
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
+
+    manager.setContext({ first: "example", second: 100 });
+
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
+
+    await nextAsyncQueue();
+
+    expect(withCheckParamsMockFn).toHaveBeenCalled();
+
+    withCheckParamsMockFn.mockClear();
+
+    unsubscribeFromManager(TestContextManager, withCheckParamsMockFn);
+
+    manager.setContext({ first: "d", second: 35 });
+
+    await nextAsyncQueue();
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
+
+    unRegisterWorker(TestContextManager);
   });
 
   it("Should properly compare initial SUBSTORE objects.", () => {

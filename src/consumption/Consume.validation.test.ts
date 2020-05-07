@@ -12,7 +12,7 @@ import {
   TextContextManagerProvider
 } from "@Tests/assets";
 
-describe("HoC @Consume and Consume selector validation.", () => {
+describe("@Consume selector validation.", () => {
   function mountProvided(element: ComponentType<object>): ReactWrapper {
     return mount(createElement(TextContextManagerProvider, {}, createElement(element, {})));
   }

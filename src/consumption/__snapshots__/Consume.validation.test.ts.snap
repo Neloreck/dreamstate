@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`HoC @Consume and Consume selector validation. Should properly select all properties with or without alias. 1`] = `
+exports[`@Consume selector validation. Should properly select all properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -16,7 +16,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select al
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select all properties with or without alias. 2`] = `
+exports[`@Consume selector validation. Should properly select all properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -36,7 +36,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select al
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select all properties with or without alias. 3`] = `
+exports[`@Consume selector validation. Should properly select all properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -52,7 +52,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select al
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select array properties with or without alias. 1`] = `
+exports[`@Consume selector validation. Should properly select array properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer>
@@ -64,7 +64,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select ar
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select array properties with or without alias. 2`] = `
+exports[`@Consume selector validation. Should properly select array properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer>
@@ -76,7 +76,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select ar
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select array properties with or without alias. 3`] = `
+exports[`@Consume selector validation. Should properly select array properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -90,7 +90,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select ar
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select array properties with or without alias. 4`] = `
+exports[`@Consume selector validation. Should properly select array properties with or without alias. 4`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -105,7 +105,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select ar
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select array properties with or without alias. 5`] = `
+exports[`@Consume selector validation. Should properly select array properties with or without alias. 5`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -124,7 +124,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select ar
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select selector properties with or without alias. 1`] = `
+exports[`@Consume selector validation. Should properly select selector properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -140,7 +140,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select se
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select selector properties with or without alias. 2`] = `
+exports[`@Consume selector validation. Should properly select selector properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -160,7 +160,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select se
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select selector properties with or without alias. 3`] = `
+exports[`@Consume selector validation. Should properly select selector properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -175,7 +175,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select se
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select selector properties with or without alias. 4`] = `
+exports[`@Consume selector validation. Should properly select selector properties with or without alias. 4`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -193,7 +193,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select se
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select string properties with or without alias. 1`] = `
+exports[`@Consume selector validation. Should properly select string properties with or without alias. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -207,7 +207,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select st
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select string properties with or without alias. 2`] = `
+exports[`@Consume selector validation. Should properly select string properties with or without alias. 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer
@@ -221,7 +221,7 @@ exports[`HoC @Consume and Consume selector validation. Should properly select st
 </Memo(DS.Observer)>
 `;
 
-exports[`HoC @Consume and Consume selector validation. Should properly select string properties with or without alias. 3`] = `
+exports[`@Consume selector validation. Should properly select string properties with or without alias. 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <PropsRenderer>

@@ -2,9 +2,9 @@ import {
   getCurrentContext,
   getCurrent,
   subscribeToManager,
-  unsubscribeFromManager
+  unsubscribeFromManager, getReactContext
 } from "../registry";
-import { CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "../internals";
+import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "../internals";
 import { ContextManager } from "./ContextManager";
 import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../test-utils";
 
@@ -12,11 +12,10 @@ import {
   ExampleContextManager,
   ExtendingTestContextManager,
   ITestContext,
-  TestContextManager,
+  TestContextManager
 } from "@Tests/assets";
 
 describe("ContextManager class.", () => {
-
   it("Should not allow base class REACT_CONTEXT.", () => {
     expect(() => ContextManager.REACT_CONTEXT).toThrow(Error);
   });
@@ -89,43 +88,6 @@ describe("ContextManager class.", () => {
 
     expect(manager["beforeUpdate"]).toHaveBeenCalled();
     expect(manager["afterUpdate"]).toHaveBeenCalled();
-
-    unRegisterWorker(TestContextManager);
-  });
-
-  it("Should properly subscribe to manager and unsubscribe.", async () => {
-    const manager: TestContextManager = registerWorker(TestContextManager);
-
-    const initialMockFn = jest.fn();
-    const withCheckParamsMockFn = jest.fn((context: ITestContext) => {
-      expect(context.first).toBe("example");
-      expect(context.second).toBe(100);
-    });
-
-    subscribeToManager(TestContextManager, initialMockFn, true);
-    subscribeToManager(TestContextManager, withCheckParamsMockFn);
-
-    expect(initialMockFn).toHaveBeenCalledWith(manager.context);
-    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
-
-    initialMockFn.mockClear();
-
-    manager.setContext({ first: "example", second: 100 });
-
-    await nextAsyncQueue();
-
-    expect(initialMockFn).toHaveBeenCalled();
-    expect(initialMockFn).toHaveBeenCalled();
-
-    initialMockFn.mockClear();
-
-    unsubscribeFromManager(TestContextManager, withCheckParamsMockFn);
-    unsubscribeFromManager(TestContextManager, initialMockFn);
-
-    manager.setContext({ first: "d", second: 35 });
-
-    await nextAsyncQueue();
-    expect(initialMockFn).not.toHaveBeenCalled();
 
     unRegisterWorker(TestContextManager);
   });
@@ -238,5 +200,10 @@ describe("ContextManager class.", () => {
     expect(() => unsubscribeFromManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
 
     unRegisterWorker(ExampleManagerClass);
+  });
+
+  it("Should use getReactContext for REACT_CONTEXT and return same result.", () => {
+    expect(getReactContext(ExampleContextManager)).toBe(ExampleContextManager.REACT_CONTEXT);
+    CONTEXT_REACT_CONTEXTS_REGISTRY.delete(ExampleContextManager);
   });
 });

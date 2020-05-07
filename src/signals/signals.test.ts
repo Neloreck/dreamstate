@@ -1,4 +1,4 @@
-import { emitSignal, subscribeToSignals, unsubscribeFromSignals } from "@Lib/signals";
+import { emitSignal, subscribeToSignals, unsubscribeFromSignals } from "@Lib/signals/index";
 import {
   ISignalEvent,
   TSignalSubscriptionMetadata,

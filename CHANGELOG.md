@@ -1,6 +1,6 @@
 ## 3.0.0 (todo)
   * Tests added, stricter check of library for production builds
-  * Included UMD, CJS and ESM bundles into library
+  * Included CJS and ESM bundles into library
   * Tree shaking introduced
   * Added "dreamstate/test-utils" for lib testing
   * Signals API added

@@ -1,5 +1,3 @@
-import { Context } from "react";
-
 import {
   EMPTY_ARR,
   CONTEXT_WORKERS_ACTIVATED,
@@ -82,19 +80,5 @@ describe("Dreamstate internals.", () => {
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
     expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
-  });
-
-  // todo: Move?
-  it("Related react context should be lazily initialized correctly with changed displayName.", () => {
-    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
-
-    const contextType: Context<object> = TestContextManager.REACT_CONTEXT;
-
-    expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeDefined();
-
-    expect(contextType).not.toBeUndefined();
-    expect(contextType.Consumer).not.toBeUndefined();
-    expect(contextType.Provider).not.toBeUndefined();
-    expect(contextType.displayName).toBe("DS." + TestContextManager.name);
   });
 });

@@ -1,13 +1,65 @@
-import { CONTEXT_WORKERS_REGISTRY } from "../internals";
-import {
-  addWorkerObserverToRegistry,
-  removeWorkerObserverFromRegistry
-} from "../registry";
+import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "../internals";
+import { addWorkerObserverToRegistry, removeWorkerObserverFromRegistry } from "../registry";
 import { registerWorker, unRegisterWorker } from "../test-utils";
+import { ContextManager, ContextWorker } from "./index";
+import { TAnyContextManagerConstructor, TDreamstateWorker } from "../types";
 
-import { TestSingleContextWorker, TestContextWorker } from "@Tests/assets";
+import {
+  TestSingleContextWorker,
+  TestContextWorker,
+  TestContextManager,
+  TestSingleContextManager
+} from "@Tests/assets";
 
 describe("ContextWorker class.", () => {
+  it("Should initialize worker classes without any exceptions.", () => {
+    const testContextManagerInit = (WorkerConstructor: TDreamstateWorker, isSingle: boolean = false) => {
+      const worker = new WorkerConstructor();
+
+      expect(worker).toBeInstanceOf(ContextWorker);
+      expect(worker).toBeInstanceOf(WorkerConstructor);
+
+      // @ts-ignore Test to detect API changes of ContextManager class.
+      expect(WorkerConstructor["IS_SINGLE"]).toBe(isSingle);
+
+      expect(typeof worker["onProvisionStarted"]).toBe("function");
+      expect(typeof worker["onProvisionEnded"]).toBe("function");
+      expect(typeof worker["emitSignal"]).toBe("function");
+      expect(typeof worker["sendQuery"]).toBe("function");
+
+      expect(Object.keys(WorkerConstructor)).toHaveLength(isSingle ? 1 : 0);
+      expect(Object.keys(WorkerConstructor.prototype)).toHaveLength(0);
+
+      if (WorkerConstructor instanceof ContextManager) {
+        const ManagerConstructor: TAnyContextManagerConstructor = WorkerConstructor as any;
+        const manager: ContextManager<any> = worker as ContextManager<any>;
+
+        expect(Object.keys(manager)).toHaveLength(1);
+        expect(manager).toBeInstanceOf(ContextManager);
+        expect(manager.context).toBeInstanceOf(Object);
+
+        expect(typeof manager.setContext).toBe("function");
+        expect(typeof manager.forceUpdate).toBe("function");
+        expect(typeof manager["beforeUpdate"]).toBe("function");
+        expect(typeof manager["afterUpdate"]).toBe("function");
+
+        expect(typeof ManagerConstructor.REACT_CONTEXT).toBe("object");
+        expect(typeof ManagerConstructor.REACT_CONTEXT.Provider).toBe("object");
+        expect(typeof ManagerConstructor.REACT_CONTEXT.Consumer).toBe("object");
+
+        // Cleanup persistent REACT_CONTEXT ref.
+        CONTEXT_REACT_CONTEXTS_REGISTRY.delete(WorkerConstructor);
+      }
+    };
+
+    expect(Object.keys(ContextManager.prototype)).toHaveLength(0);
+
+    testContextManagerInit(TestContextManager);
+    testContextManagerInit(TestContextWorker);
+    testContextManagerInit(TestSingleContextManager, true);
+    testContextManagerInit(TestSingleContextWorker, true);
+  });
+
   it("Should properly handle onProvisionStarted and onProvision ended for context workers.", () => {
     expect(CONTEXT_WORKERS_REGISTRY.get(TestContextWorker)).toBeUndefined();
 

@@ -1,5 +1,5 @@
 import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
-import { CONTEXT_STATES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
+import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 import { ContextManager } from "../management/ContextManager";
 
 import { log } from "../../build/macroses/log.macro";
@@ -10,8 +10,7 @@ import { log } from "../../build/macroses/log.macro";
  */
 export function subscribeToManager<T extends object, D extends IContextManagerConstructor<T>>(
   managerConstructor: D,
-  subscriber: TUpdateSubscriber<T>,
-  loadCurrent: boolean = false
+  subscriber: TUpdateSubscriber<T>
 ): void {
   if (!(managerConstructor.prototype instanceof ContextManager)) {
     throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
@@ -19,9 +18,5 @@ export function subscribeToManager<T extends object, D extends IContextManagerCo
 
   CONTEXT_SUBSCRIBERS_REGISTRY.get(managerConstructor)!.add(subscriber);
 
-  log.info("Context manager subscriber added:", managerConstructor.name, loadCurrent);
-
-  if (loadCurrent) {
-    subscriber(CONTEXT_STATES_REGISTRY.get(managerConstructor) as T);
-  }
+  log.info("Context manager subscriber added:", managerConstructor.name);
 }

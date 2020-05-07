@@ -28,7 +28,7 @@ export class TestSingleContextWorker extends ContextWorker {
 
   protected static IS_SINGLE: boolean = true;
 
-  public createdAt: number = Date.now();
+  public createdAt: number = performance.now();
 
 }
 
