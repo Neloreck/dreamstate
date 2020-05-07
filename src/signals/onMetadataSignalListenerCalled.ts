@@ -19,7 +19,6 @@ export function onMetadataSignalListenerCalled<D = undefined, T extends TSignalT
   ) {
     log.info("Calling metadata signal api listener:", this.constructor.name);
 
-    // Checked undefined before.
     for (const [ method, subscribed ] of CONTEXT_SIGNAL_METADATA_REGISTRY.get(this.constructor as TConstructorKey)!) {
       if (Array.isArray(subscribed) ? subscribed.includes(signal.type) : signal.type === subscribed) {
         log.info("Found signal listener:", signal.type, this.constructor.name, method);

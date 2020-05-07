@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 1`] = `
+<UsingSignalFunction
+  onInternalSignal={[Function]}
+>
+  <div>
+    initial
+  </div>
+</UsingSignalFunction>
+`;
+
+exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 2`] = `
+<UsingSignalFunction
+  onInternalSignal={[Function]}
+>
+  <div>
+    newValue
+  </div>
+</UsingSignalFunction>
+`;

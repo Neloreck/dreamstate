@@ -1,14 +1,15 @@
 import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "../internals";
 import { addWorkerObserverToRegistry, removeWorkerObserverFromRegistry } from "../registry";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../test-utils";
 import { ContextManager, ContextWorker } from "./index";
-import { TAnyContextManagerConstructor, TDreamstateWorker } from "../types";
+import { ISignalEvent, TAnyContextManagerConstructor, TDreamstateWorker } from "../types";
+import { subscribeToSignals, unsubscribeFromSignals } from "../signals";
 
 import {
   TestSingleContextWorker,
   TestContextWorker,
   TestContextManager,
-  TestSingleContextManager
+  TestSingleContextManager, EmittingContextManager
 } from "@Tests/assets";
 
 describe("ContextWorker class.", () => {
@@ -156,5 +157,24 @@ describe("ContextWorker class.", () => {
     expect(second.createdAt).not.toBe(third.createdAt);
 
     unRegisterWorker(TestSingleContextWorker);
+  });
+
+  it("Should use emitSignal method when sending signals.", async () => {
+    const emittingContextManager: EmittingContextManager = registerWorker(EmittingContextManager);
+    const spy = jest.fn((signal: ISignalEvent) => {
+      expect(signal.emitter).toBe(EmittingContextManager);
+      expect(signal.type).toBe("TEST");
+    });
+
+    subscribeToSignals(spy);
+
+    emittingContextManager["emitSignal"]({ type: "TEST" });
+
+    await nextAsyncQueue();
+
+    expect(spy).toHaveBeenCalled();
+
+    unsubscribeFromSignals(spy);
+    unRegisterWorker(EmittingContextManager);
   });
 });

@@ -1,4 +1,4 @@
-import { TSignalListener, TSignalType } from "../types";
+import { TSignalListener } from "../types";
 import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";
