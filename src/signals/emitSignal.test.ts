@@ -1,12 +1,23 @@
 import { emitSignal } from "./emitSignal";
-import { ISignalEvent, TSignalType } from "../types";
 import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../testing";
+import { ISignalEvent, TSignalType } from "../types";
 import { subscribeToSignals } from "./subscribeToSignals";
 import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
+
 import { ESignal, SubscribedContextManager } from "@Tests/assets";
-import { getCurrent } from "@Lib";
 
 describe("emitSignal method.", () => {
+  it("Should properly reject bad emit parameters.", () => {
+    expect(() => emitSignal(null as any)).toThrow(TypeError);
+    expect(() => emitSignal(false as any)).toThrow(TypeError);
+    expect(() => emitSignal(NaN as any)).toThrow(TypeError);
+    expect(() => emitSignal(undefined as any)).toThrow(TypeError);
+    expect(() => emitSignal([] as any)).toThrow(TypeError);
+    expect(() => emitSignal(new Set() as any)).toThrow(TypeError);
+    expect(() => emitSignal({} as any)).toThrow(TypeError);
+    expect(() => emitSignal({ type: "VALIDATION" })).not.toThrow(Error);
+  });
+
   it("Should properly dispatch signals.", async () => {
     const subscriber = jest.fn((signal: ISignalEvent) => {
       expect(signal.type).toBe("TEST");

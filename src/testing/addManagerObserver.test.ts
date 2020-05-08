@@ -6,7 +6,7 @@ import {
 } from "./index";
 import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
 
-import { TestContextManager } from "@Tests/assets";
+import { ExampleContextManager, TestContextManager, TestContextWorker } from "@Tests/assets";
 
 describe("Add manager observer util.", () => {
   beforeAll(() => {
@@ -15,6 +15,15 @@ describe("Add manager observer util.", () => {
 
   afterAll(() => {
     unRegisterWorker(TestContextManager);
+  });
+
+  it("Should throw errors for wrong method targets.", () => {
+    expect(() => addManagerObserver(null as any, jest.fn())).toThrow(TypeError);
+    expect(() => addManagerObserver(undefined as any, jest.fn())).toThrow(TypeError);
+    expect(() => addManagerObserver(0 as any, jest.fn())).toThrow(TypeError);
+    expect(() => addManagerObserver(class Any {} as any, jest.fn())).toThrow(TypeError);
+    expect(() => addManagerObserver(TestContextWorker as any, jest.fn())).toThrow(TypeError);
+    expect(() => addManagerObserver(ExampleContextManager, jest.fn())).toThrow(Error);
   });
 
   it("Should add observer to registry.", () => {

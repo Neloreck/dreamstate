@@ -9,7 +9,7 @@ import {
   CONTEXT_WORKERS_REGISTRY
 } from "../internals";
 
-import { TestContextManager, TestContextWorker } from "@Tests/assets";
+import { TestContextManager, TestContextWorker, TestSingleContextWorker } from "@Tests/assets";
 
 describe("register method functionality.", () => {
   it("Should properly unregister generic worker.", () => {
@@ -36,5 +36,28 @@ describe("register method functionality.", () => {
     expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
+  });
+
+  it("Should unregister singletons only with force.", () => {
+    registerWorker(TestSingleContextWorker);
+    unRegisterWorker(TestSingleContextWorker);
+
+    expect(CONTEXT_WORKERS_REGISTRY.has(TestSingleContextWorker)).toBeTruthy();
+    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(1);
+    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestSingleContextWorker)).toBeDefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestSingleContextWorker)).toBeDefined();
+    expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestSingleContextWorker)).toBeDefined();
+    expect(CONTEXT_STATES_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
+
+    unRegisterWorker(TestSingleContextWorker, true);
+
+    expect(CONTEXT_WORKERS_REGISTRY.has(TestSingleContextWorker)).toBeFalsy();
+    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
+    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestSingleContextWorker)).toBeDefined();
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
+    expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
+    expect(CONTEXT_STATES_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
   });
 });

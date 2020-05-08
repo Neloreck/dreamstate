@@ -1,5 +1,5 @@
 import { TAnyContextManagerConstructor, TUpdateObserver } from "../types";
-import { ContextWorker } from "../";
+import { ContextManager } from "../";
 import { CONTEXT_WORKERS_REGISTRY } from "../internals";
 import { addWorkerObserverToRegistry } from "../registry";
 
@@ -10,7 +10,7 @@ export function addManagerObserver<T extends TAnyContextManagerConstructor>(
   managerConstructor: T,
   observer: TUpdateObserver
 ) {
-  if (!(managerConstructor.prototype instanceof ContextWorker)) {
+  if (!(managerConstructor.prototype instanceof ContextManager)) {
     throw new TypeError("Supplied class is not extending ContextWorker.");
   }
 

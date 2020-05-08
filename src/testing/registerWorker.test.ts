@@ -11,7 +11,7 @@ import {
 } from "../internals";
 import { registerWorker, unRegisterWorker } from "../test-utils";
 
-import { TestContextManager } from "@Tests/assets";
+import { ExampleContextManager, TestContextManager, TestContextWorker } from "@Tests/assets";
 
 describe("Register worker test util.", () => {
   it("Should not be initialized before test.", () => {
@@ -24,6 +24,13 @@ describe("Register worker test util.", () => {
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
+  });
+
+  it("Should throw errors for wrong method targets.", () => {
+    expect(() => registerWorker(class Any {} as any)).toThrow(TypeError);
+    expect(() => registerWorker(1 as any)).toThrow(TypeError);
+    expect(() => registerWorker(undefined as any)).toThrow(TypeError);
+    expect(() => registerWorker(null as any)).toThrow(TypeError);
   });
 
   it("Should properly register workers like library does.", () => {

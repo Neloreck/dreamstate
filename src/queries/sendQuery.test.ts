@@ -13,6 +13,18 @@ describe("sendQuery and queries processing.", () => {
     unRegisterWorker(RespondingWorker);
   });
 
+  it("Should validate sendQuery params.", () => {
+    expect(() => sendQuery(undefined as any)).toThrow(TypeError);
+    expect(() => sendQuery(false as any)).toThrow(TypeError);
+    expect(() => sendQuery(true as any)).toThrow(TypeError);
+    expect(() => sendQuery(NaN as any)).toThrow(TypeError);
+    expect(() => sendQuery("123" as any)).toThrow(TypeError);
+    expect(() => sendQuery(1 as any)).toThrow(TypeError);
+    expect(() => sendQuery(null as any)).toThrow(TypeError);
+    expect(() => sendQuery([] as any)).toThrow(TypeError);
+    expect(() => sendQuery({} as any)).toThrow(TypeError);
+  });
+
   it("Should properly handle sync and async sendQuery listeners.", async () => {
     const stringResponse: QueryResponse<string> = await sendQuery({ type: EQuery.ASYNC_STRING_QUERY, data: "query" });
     const booleanResponse: QueryResponse<string> = await sendQuery({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });

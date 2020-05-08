@@ -6,7 +6,7 @@ import {
 } from "../test-utils";
 import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
 
-import { TestContextManager } from "@Tests/assets";
+import { ExampleContextManager, TestContextManager, TestContextWorker } from "@Tests/assets";
 
 describe("Remove manager observer util.", () => {
   beforeAll(() => {
@@ -15,6 +15,15 @@ describe("Remove manager observer util.", () => {
 
   afterAll(() => {
     unRegisterWorker(TestContextManager);
+  });
+
+  it("Should throw errors for wrong method targets.", () => {
+    expect(() => removeManagerObserver(null as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeManagerObserver(undefined as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeManagerObserver(0 as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeManagerObserver(TestContextWorker as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeManagerObserver(class Any {} as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeManagerObserver(ExampleContextManager, jest.fn())).toThrow(Error);
   });
 
   it("Should remove observer from registry.", () => {

@@ -19,11 +19,22 @@ describe("Unregister worker test util.", () => {
     unRegisterWorker(TestContextWorker);
   });
 
+  it("Should not work with non-context-workers.", () => {
+    expect(() => unRegisterWorker(0 as any)).toThrow(TypeError);
+    expect(() => unRegisterWorker(null as any)).toThrow(TypeError);
+    expect(() => unRegisterWorker("asd" as any)).toThrow(TypeError);
+    expect(() => unRegisterWorker(class AnyClass {} as any)).toThrow(TypeError);
+  });
+
   it("Should not remove singletons with force flag.", () => {
     registerWorker(TestSingleContextWorker);
     unRegisterWorker(TestSingleContextWorker, false);
 
     expect(CONTEXT_WORKERS_REGISTRY.get(TestSingleContextWorker)).toBeDefined();
+
+    unRegisterWorker(TestSingleContextWorker);
+
+    expect(CONTEXT_WORKERS_REGISTRY.get(TestSingleContextWorker)).toBeUndefined();
   });
 
   it("Should force remove singletons by default.", () => {
