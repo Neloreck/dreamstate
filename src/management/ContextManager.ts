@@ -71,7 +71,7 @@ export abstract class ContextManager<T extends object> extends ContextWorker {
       notifyObservers(this);
       this.afterUpdate(previousContext);
     } else {
-      log.info("Context manager update cancelled, state is same:", this.constructor.name);
+      log.info("Context manager update canceled, state is same:", this.constructor.name);
     }
   }
 

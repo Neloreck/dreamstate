@@ -1,3 +1,4 @@
+export * from "./cancelSignal";
 export * from "./emitSignal";
 export * from "./onMetadataSignalListenerCalled";
 export * from "./OnSignal";

@@ -1,11 +1,12 @@
 import { ISignal, ISignalEvent, TDreamstateWorker, TSignalListener, TSignalType } from "../types";
 import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
+import { cancelSignal } from "./cancelSignal";
 
 import { log } from "../../build/macroses/log.macro";
 
 /**
  * Emit signal and notify all subscribers in async query.
- * If event is cancelled, stop its propagation to next handlers.
+ * If event is canceled, stop its propagation to next handlers.
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: ISignal<D, T>,
@@ -19,9 +20,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   const signal: ISignalEvent<D, T> = Object.assign(base as { data: D; type: T }, {
     emitter,
     timestamp: Date.now(),
-    cancel: function (): void {
-      (this as ISignalEvent<D, T>).cancelled = true;
-    }
+    cancel: cancelSignal
   });
 
   log.info("Signal API emit signal:", base, emitter ? emitter.constructor.name : null);
@@ -29,10 +28,10 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   // Async processing of subscribed metadata.
   SIGNAL_LISTENERS_REGISTRY.forEach(function (it: TSignalListener<D, T>) {
     setTimeout(function () {
-      if (!signal.cancelled) {
+      if (!signal.canceled) {
         it(signal);
       } else {
-        log.info("Signal API ignore cancelled signal:", signal);
+        log.info("Signal API ignore canceled signal:", signal);
       }
     });
   });

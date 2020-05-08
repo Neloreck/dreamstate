@@ -31,7 +31,7 @@ export interface ISignalEvent<D = any, T extends TSignalType = TSignalType> exte
   /**
    * Stop signal handling flag.
    */
-  cancelled?: boolean;
+  canceled?: boolean;
 }
 
 export type TSignalType = symbol | string | number;

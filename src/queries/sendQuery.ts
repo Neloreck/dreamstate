@@ -26,46 +26,44 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
 
   const timestamp: number = Date.now();
 
-  return new Promise(function (
-    resolve: (response: IQueryResponse<R, T> | null) => void,
-    reject: (error: Error) => void
-  ): any {
-    const workers: Set<TDreamstateWorker> = CONTEXT_WORKERS_ACTIVATED;
+  log.info("Possible query resolvers:", CONTEXT_WORKERS_ACTIVATED.size);
+  // Search each context worker metadata.
+  for (const worker of CONTEXT_WORKERS_ACTIVATED) {
+    // Skip own metadata checking.
+    // Skip workers without metadata.
+    // Skip non-instantiated workers.
+    if (
+      worker === sender ||
+      !CONTEXT_QUERY_METADATA_REGISTRY.has(worker) ||
+      !CONTEXT_WORKERS_REGISTRY.has(worker)
+    ) {
+      continue;
+    }
 
-    log.info("Possible query resolvers:", workers.size);
-    // Search each context worker metadata.
-    for (const worker of workers) {
-      // Skip own metadata checking.
-      // Skip workers without metadata.
-      // Skip non-instantiated workers.
-      if (
-        worker === sender ||
-        !CONTEXT_QUERY_METADATA_REGISTRY.has(worker) ||
-        !CONTEXT_WORKERS_REGISTRY.has(worker)
-      ) {
-        continue;
-      }
+    log.info("Checking metadata for:", worker.name, query);
 
-      log.info("Checking metadata for:", worker.name, query);
+    const workerMeta: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(worker)!;
 
-      const workerMeta: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(worker)!;
+    for (let jt = 0; jt < workerMeta.length; jt ++) {
+      if (workerMeta[jt][1] === query.type) {
+        log.info(
+          "Query resolver was found, triggering callback:",
+          sender && sender.name,
+          query,
+          "=>",
+          worker.name,
+          workerMeta[jt][0]
+        );
 
-      for (let jt = 0; jt < workerMeta.length; jt ++) {
-        if (workerMeta[jt][1] === query.type) {
-          log.info(
-            "Query resolver was found, triggering callback:",
-            sender && sender.name,
-            query,
-            "=>",
-            worker.name,
-            workerMeta[jt][0]
-          );
+        const answerer: ContextWorker = CONTEXT_WORKERS_REGISTRY.get(worker)!;
 
-          const answerer: ContextWorker = CONTEXT_WORKERS_REGISTRY.get(worker)!;
-
+        return new Promise(function (
+          resolve: (response: IQueryResponse<R, T> | null) => void,
+          reject: (error: Error) => void
+        ): any {
           /**
            * Promisify query handler.
-           * If it is async, add then and catch handlers then.
+           * If it is async, add then and catch handlers.
            * If it is sync - return value or reject on catch.
            */
           try {
@@ -83,14 +81,12 @@ export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
           } catch (error) {
             reject(error);
           }
-        } else {
-          log.info("Skipping query resolver match:", worker.name, workerMeta[jt]);
-        }
+        });
       }
     }
+  }
 
-    log.info("Query resolver was not found, returning null:", sender && sender.name, query);
+  log.info("Query resolver was not found, returning null:", sender && sender.name, query);
 
-    return resolve(null);
-  });
+  return Promise.resolve(null);
 }

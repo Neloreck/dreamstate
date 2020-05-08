@@ -1,4 +1,4 @@
-import { ComponentType, createElement, memo, ReactElement, useCallback, useState } from "react";
+import { ComponentType, createElement, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
 import { EMPTY_ARR } from "../internals";
 import {
@@ -6,11 +6,11 @@ import {
   TAnyContextManagerConstructor,
   TDreamstateWorker
 } from "../types";
-import { useLazyInitializeWorker } from "./useLazyInitializeWorker";
 import { provideSubTreeRecursive } from "../provision/provideSubTreeRecursive";
 import { ContextManager, ContextWorker } from "../management";
 
 import { log } from "../../build/macroses/log.macro";
+import { addWorkerObserverToRegistry, registerWorker, removeWorkerObserverFromRegistry } from "@Lib/registry";
 
 /**
  * Utility method for observers creation.
@@ -45,7 +45,21 @@ export function createManagersObserver(children: ComponentType | null, sources: 
 
     // Subscribe to tree updater and lazily get first context value.
     for (let it = 0; it < sources.length; it ++) {
-      useLazyInitializeWorker(sources[it], updateProviders);
+      useMemo(function (): void {
+        registerWorker(sources[it]);
+      }, EMPTY_ARR);
+
+      useEffect(function () {
+        addWorkerObserverToRegistry(sources[it], updateProviders);
+
+        /**
+         * Destructor-like order for workers unregistering.
+         * React calls all hooks in 0...n order, but it should be like 0...n for start and n...0 for end.
+         */
+        return function () {
+          return removeWorkerObserverFromRegistry(sources[sources.length - it - 1], updateProviders);
+        };
+      }, EMPTY_ARR);
     }
 
     return provideSubTreeRecursive(children ? createElement(children, props) : props.children, managers, 0);

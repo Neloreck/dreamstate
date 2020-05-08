@@ -22,7 +22,7 @@ describe("emitSignal method.", () => {
     const subscriber = jest.fn((signal: ISignalEvent) => {
       expect(signal.type).toBe("TEST");
       expect(signal.data).toBeUndefined();
-      expect(signal.cancelled).toBeFalsy();
+      expect(signal.canceled).toBeFalsy();
       expect(signal.emitter).toBeNull();
       expect(typeof signal.timestamp).toBe("number");
       expect(typeof signal.cancel).toBe("function");
