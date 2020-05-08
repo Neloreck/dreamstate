@@ -9,7 +9,16 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
   it("Should ignore workers without metadata and not throw any errors.", () => {
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(TestContextManager)).toBeFalsy();
 
-    onMetadataSignalListenerCalled.call(new TestContextManager(),{ type: "TEST" });
+    onMetadataSignalListenerCalled.call(
+      new TestContextManager(),
+      {
+        type: "TEST",
+        timestamp: Date.now(),
+        emitter: null,
+        data: null,
+        cancel: jest.fn()
+      }
+    );
 
     expect(true).toBeTruthy();
   });
@@ -23,7 +32,16 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
       expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
     });
 
-    onMetadataSignalListenerCalled.call(manager,{ type: ESignal.NUMBER_SIGNAL });
+    onMetadataSignalListenerCalled.call(
+      manager,
+      {
+        type: ESignal.NUMBER_SIGNAL,
+        timestamp: Date.now(),
+        emitter: null,
+        data: null,
+        cancel: jest.fn()
+      }
+    );
 
     expect(manager.onNumberSignal).toHaveBeenCalled();
 
@@ -37,8 +55,26 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
 
     manager.onStringOrNumberSignal = jest.fn();
 
-    onMetadataSignalListenerCalled.call(manager,{ type: ESignal.NUMBER_SIGNAL });
-    onMetadataSignalListenerCalled.call(manager,{ type: ESignal.STRING_SIGNAL });
+    onMetadataSignalListenerCalled.call(
+      manager,
+      {
+        type: ESignal.NUMBER_SIGNAL,
+        timestamp: Date.now(),
+        emitter: null,
+        data: null,
+        cancel: jest.fn()
+      }
+    );
+    onMetadataSignalListenerCalled.call(
+      manager,
+      {
+        type: ESignal.STRING_SIGNAL,
+        timestamp: Date.now(),
+        emitter: null,
+        data: null,
+        cancel: jest.fn()
+      }
+    );
 
     expect(manager.onStringOrNumberSignal).toHaveBeenCalledTimes(2);
 
@@ -52,8 +88,16 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
       throw new Error("Unreachable code");
     });
 
-    onMetadataSignalListenerCalled.call(manager,{ type: ESignal.STRING_SIGNAL, emitter: SubscribedContextManager });
-
+    onMetadataSignalListenerCalled.call(
+      manager,
+      {
+        type: ESignal.STRING_SIGNAL,
+        timestamp: Date.now(),
+        emitter: SubscribedContextManager,
+        data: null,
+        cancel: jest.fn()
+      }
+    );
     expect(manager.onStringSignal).not.toHaveBeenCalled();
 
     unRegisterWorker(SubscribedContextManager);

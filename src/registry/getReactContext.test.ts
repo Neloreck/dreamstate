@@ -1,8 +1,6 @@
 import { Context } from "react";
 
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
-import { ContextWorker } from "../management";
-import { getReactContext } from "./getReactContext";
 
 import { TestContextManager } from "@Tests/assets";
 
@@ -20,10 +18,5 @@ describe("getReactContext method.", () => {
     expect(contextType.displayName).toBe("DS." + TestContextManager.name);
 
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestContextManager);
-  });
-
-  it("Should work only with ContextManager class.", () => {
-    expect(() => getReactContext(ContextWorker as any)).toThrow();
-    expect(() => getReactContext(class Any {} as any)).toThrow();
   });
 });

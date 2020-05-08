@@ -1,9 +1,9 @@
 import { TAnyContextManagerConstructor, TConstructorKey, TSignalType } from "../types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { createMethodDecorator } from "../polyfills/createMethodDecorator";
+import { ContextWorker } from "../management/ContextWorker";
 
 import { log } from "../../build/macroses/log.macro";
-import { ContextWorker } from "@Lib/management";
 
 /**
  * Write signal filter and bound method to class metadata.

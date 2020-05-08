@@ -1,4 +1,4 @@
-import { MutableRefObject, useCallback, useContext, useLayoutEffect, useRef, useState } from "react";
+import { MutableRefObject, useCallback, useContext, useEffect, useRef, useState } from "react";
 
 import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
 import { CONTEXT_STATES_REGISTRY, EMPTY_ARR } from "../internals";
@@ -31,7 +31,7 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
     }
   }, EMPTY_ARR);
 
-  useLayoutEffect(function () {
+  useEffect(function () {
     subscribeToManager(managerConstructor, updateMemoState);
 
     return function () {

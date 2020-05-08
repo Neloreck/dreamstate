@@ -6,7 +6,7 @@ import {
 } from "../registry";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "../internals";
 import { ContextManager } from "./ContextManager";
-import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../test-utils";
+import { registerWorker, unRegisterWorker } from "../test-utils";
 
 import {
   ExampleContextManager,

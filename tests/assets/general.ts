@@ -33,11 +33,6 @@ export class TestSingleContextWorker extends ContextWorker {
 }
 
 export class ExtendingTestContextManager extends TestContextManager {
-
-  public concat(): string {
-    return this.context.first + this.context.second;
-  }
-
 }
 
 export class TestSingleContextManager extends ContextManager<ITestContext> {
@@ -53,11 +48,6 @@ export class TestSingleContextManager extends ContextManager<ITestContext> {
 }
 
 export class ExtendingTestSingleContextManager extends TestSingleContextManager {
-
-  public concat(): string {
-    return this.context.first + this.context.second;
-  }
-
 }
 
 export interface INestedContext {

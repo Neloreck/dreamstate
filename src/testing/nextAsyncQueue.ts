@@ -1,7 +1,7 @@
 /**
  * Wait for all queued events.
- * Promisified setTimeout(,0).
+ * Promisified setTimeout(,time || 0).
  */
-export function nextAsyncQueue(): Promise<void> {
-  return new Promise((resolve: () => void) => setTimeout(resolve));
+export function nextAsyncQueue(ms?: number): Promise<void> {
+  return new Promise((resolve: () => void) => setTimeout(resolve, ms));
 }

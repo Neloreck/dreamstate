@@ -2,9 +2,19 @@ import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 import { subscribeToManager } from "./subscribeToManager";
 import { unsubscribeFromManager } from "./unSubscribeFromManager";
 
-import { TestContextManager, TestContextWorker } from "@Tests/assets";
+import { ITestContext, TestContextManager, TestContextWorker } from "@Tests/assets";
+import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/testing";
 
 describe("subscribeToManager method functionality.", () => {
+  it("Should not work before registering.", () => {
+    expect(() => subscribeToManager(TestContextManager, () => {})).toThrow(Error);
+  });
+
+  it("Should not work with non-ContextManager classes.", () => {
+    expect(() => subscribeToManager(TestContextWorker as any, () => {})).toThrow(TypeError);
+    expect(() => subscribeToManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
+  });
+
   it("Should properly add subscribers to registry.", () => {
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.has(TestContextManager)).toBeFalsy();
 
@@ -14,7 +24,7 @@ describe("subscribeToManager method functionality.", () => {
 
     subscribeToManager(TestContextManager, subscriber);
 
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager).size).toBe(1);
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.has(subscriber)).toBeTruthy();
 
     unsubscribeFromManager(TestContextManager, subscriber);
@@ -22,12 +32,35 @@ describe("subscribeToManager method functionality.", () => {
     CONTEXT_SUBSCRIBERS_REGISTRY.delete(TestContextManager);
   });
 
-  it("Should not work before registering.", () => {
-    expect(() => subscribeToManager(TestContextManager, () => {})).toThrow(Error);
-  });
+  it("Should properly notify subscribers.", async () => {
+    const manager: TestContextManager = registerWorker(TestContextManager);
 
-  it("Should not work with non-ContextManager classes.", () => {
-    expect(() => subscribeToManager(TestContextWorker, () => {})).toThrow(TypeError);
-    expect(() => subscribeToManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
+    const withCheckParamsMockFn = jest.fn((context: ITestContext) => {
+      expect(context.first).toBe("example");
+      expect(context.second).toBe(100);
+    });
+
+    subscribeToManager(TestContextManager, withCheckParamsMockFn);
+
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
+
+    manager.setContext({ first: "example", second: 100 });
+
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
+
+    await nextAsyncQueue();
+
+    expect(withCheckParamsMockFn).toHaveBeenCalled();
+
+    withCheckParamsMockFn.mockClear();
+
+    unsubscribeFromManager(TestContextManager, withCheckParamsMockFn);
+
+    manager.setContext({ first: "d", second: 35 });
+
+    await nextAsyncQueue();
+    expect(withCheckParamsMockFn).not.toHaveBeenCalled();
+
+    unRegisterWorker(TestContextManager);
   });
 });

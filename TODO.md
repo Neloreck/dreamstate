@@ -2,7 +2,8 @@
 
 1) Do we need array for onSignal?
 2) More async code? (signals, register/unregister etc)
-3) Think about query api name.
+3) Integration tests with exotic cases (exceptions on lifecycle, signals and queries on lifecycle)
+4) Think about query api name.
 
 ?) Scoping for signaling and query?
 

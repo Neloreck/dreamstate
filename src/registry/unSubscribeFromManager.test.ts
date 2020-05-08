@@ -16,15 +16,15 @@ describe("unSubscribeFromManager method functionality.", () => {
     subscribeToManager(TestContextManager, first);
     subscribeToManager(TestContextManager, second);
 
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager).size).toBe(2);
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(2);
 
     unsubscribeFromManager(TestContextManager, first);
 
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager).size).toBe(1);
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
 
     unsubscribeFromManager(TestContextManager, second);
 
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager).size).toBe(0);
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
     CONTEXT_SUBSCRIBERS_REGISTRY.delete(TestContextManager);
   });
@@ -34,7 +34,7 @@ describe("unSubscribeFromManager method functionality.", () => {
   });
 
   it("Should not work with non-ContextManager classes.", () => {
-    expect(() => unsubscribeFromManager(TestContextWorker, () => {})).toThrow(TypeError);
+    expect(() => unsubscribeFromManager(TestContextWorker as any, () => {})).toThrow(TypeError);
     expect(() => unsubscribeFromManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
   });
 });

@@ -45,4 +45,13 @@ describe("Register worker test util.", () => {
 
     unRegisterWorker(TestContextManager);
   });
+
+  it("Should not re-initialize existing workers.", () => {
+    const testContextManager: TestContextManager = registerWorker(TestContextManager);
+    const nextContextManager: TestContextManager = registerWorker(TestContextManager);
+
+    expect(testContextManager).toBe(nextContextManager);
+
+    unRegisterWorker(TestContextManager);
+  });
 });

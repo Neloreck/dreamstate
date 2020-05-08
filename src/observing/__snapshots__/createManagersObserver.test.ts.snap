@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`shouldObserversUpdate method functionality. Should create correct component tree with children. 1`] = `
+<Memo(DS.Observer)>
+  <Component>
+    <main>
+      {}
+      <div>
+        testChild
+      </div>
+    </main>
+  </Component>
+</Memo(DS.Observer)>
+`;
+
+exports[`shouldObserversUpdate method functionality. Should create correct component tree without children. 1`] = `
+<Memo(DS.Observer)>
+  <div>
+    testChild
+  </div>
+</Memo(DS.Observer)>
+`;

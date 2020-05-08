@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`useLazyInitializeWorker method functionality. Should correctly render functions and register workers. 1`] = `
+<withLazyInit>
+  <div>
+    123
+  </div>
+</withLazyInit>
+`;

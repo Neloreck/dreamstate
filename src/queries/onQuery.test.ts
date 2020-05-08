@@ -88,7 +88,7 @@ describe("@OnQuery and queries processing.", () => {
     });
   });
 
-  it("Should not work with non-context worker classes.", () => {
+  it("Should not work with non-context worker classes and bad queries.", () => {
     expect(() => {
       class Custom {
 
@@ -100,10 +100,10 @@ describe("@OnQuery and queries processing.", () => {
     expect(() => {
       class Worker extends ContextWorker {
 
-        @OnQuery("WILL_WORK")
+        @OnQuery(undefined as any)
         private willWork(): void {}
 
       }
-    }).not.toThrow(TypeError);
+    }).toThrow(TypeError);
   });
 });

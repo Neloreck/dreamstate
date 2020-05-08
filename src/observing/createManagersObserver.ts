@@ -7,7 +7,7 @@ import {
   TDreamstateWorker
 } from "../types";
 import { useLazyInitializeWorker } from "./useLazyInitializeWorker";
-import { provideSubTreeRecursive } from "../provision";
+import { provideSubTreeRecursive } from "../provision/provideSubTreeRecursive";
 import { ContextManager, ContextWorker } from "../management";
 
 import { log } from "../../build/macroses/log.macro";
