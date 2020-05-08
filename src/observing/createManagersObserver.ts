@@ -10,7 +10,7 @@ import { provideSubTreeRecursive } from "../provision/provideSubTreeRecursive";
 import { ContextManager, ContextWorker } from "../management";
 
 import { log } from "../../build/macroses/log.macro";
-import { addWorkerObserverToRegistry, registerWorker, removeWorkerObserverFromRegistry } from "@Lib/registry";
+import { addWorkerObserverToRegistry, registerWorker, removeWorkerObserverFromRegistry } from "../registry";
 
 /**
  * Utility method for observers creation.
