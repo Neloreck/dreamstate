@@ -1,6 +1,7 @@
 import { ClassDescriptor } from "../types";
 
 // Todo: Wait for proper proposal decorators.
+// Todo: Tests.
 
 export function createClassWrapDecorator<D>(resolver: (c: D) => D): ClassDecorator {
   return function <T> (classOrDescriptor: T) {

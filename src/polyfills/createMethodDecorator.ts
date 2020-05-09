@@ -1,6 +1,7 @@
 import { MethodDescriptor, TConstructor } from "../types";
 
 // Todo: Wait for proper proposal decorators.
+// Todo: Tests.
 
 export function createMethodDecorator<T extends TConstructor<any>>(
   resolver: (method: string | symbol, constructor: T) => void

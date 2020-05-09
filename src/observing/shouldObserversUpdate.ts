@@ -10,7 +10,7 @@ export function shouldObserversUpdate<T extends object>(
   previousContext: IStringIndexed<any>,
   nextContext: IStringIndexed<any>
 ): boolean {
-  // If previous context is registered and current supplied.
+  // If previous context is registered and current is changed.
   return (
     !previousContext ||
     Object.keys(nextContext).some(function (key: string): boolean {
@@ -22,7 +22,7 @@ export function shouldObserversUpdate<T extends object>(
        * We cannot guess about each object because it is (1) not obvious, (2) can be unwanted and (3) will not work for
        * some objects like native MediaStream/MediaStreamTrack.
        *
-       * todo: Check if one object is mutable, but next is not and print warnings.
+       * todo: [DEV] Check if one object is mutable, but next is not and print warnings.
        */
       return nextValue !== null && typeof nextValue === "object" && nextValue instanceof NestedStore
         ? !shallowEqualObjects(nextValue, previousContext[key])
