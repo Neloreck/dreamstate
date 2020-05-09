@@ -1,9 +1,7 @@
-## todo:
+## future:
 
-1) Think about query api name.
+?) Scoping and separated registry?
 
-?) Scoping for signaling and query?
-
-- Think about actions/state separation.
+- Think about actions/state separation. [HoCs do not allow to do so]
 - Better dev assistance with logs and warnings for development bundle.
-- Async code execution like takeLatest/takeLeading etc?
+- Async code execution utils like takeLatest/takeLeading etc?

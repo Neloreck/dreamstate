@@ -19,10 +19,10 @@ describe("@OnQuery and queries processing.", () => {
   it("Should properly find async query responders or fallback to null.", async () => {
     const requestingWorker: RequestingWorker = getCurrent(RequestingWorker)!;
 
-    const numberResponse: QueryResponse<number> = await requestingWorker.sendAsyncNumberQuery();
-    const stringResponse: QueryResponse<string> = await requestingWorker.sendAsyncStringQuery("query");
-    const booleanResponse: QueryResponse<boolean> = await requestingWorker.sendSyncBooleanQuery();
-    const undefinedResponse: QueryResponse<any> = await requestingWorker.sendUndefinedQuery();
+    const numberResponse: QueryResponse<number> = await requestingWorker.queryAsyncNumberData();
+    const stringResponse: QueryResponse<string> = await requestingWorker.queryAsyncStringData("query");
+    const booleanResponse: QueryResponse<boolean> = await requestingWorker.querySyncBooleanData();
+    const undefinedResponse: QueryResponse<any> = await requestingWorker.queryUndefinedData();
 
     expect(numberResponse).not.toBeNull();
     expect(numberResponse!.data).toBe(100);
@@ -42,8 +42,8 @@ describe("@OnQuery and queries processing.", () => {
   it("Should properly handle errors in queries.", () => {
     const requestingWorker: RequestingWorker = getCurrent(RequestingWorker)!;
 
-    expect(requestingWorker.sendAsyncThrowingQuery()).rejects.toBeInstanceOf(Error);
-    expect(requestingWorker.sendSyncThrowingQuery()).rejects.toBeInstanceOf(Error);
+    expect(requestingWorker.queryAsyncThrowingData()).rejects.toBeInstanceOf(Error);
+    expect(requestingWorker.querySyncThrowingData()).rejects.toBeInstanceOf(Error);
   });
 
   it("Should properly handle duplicated query listeners in order of register.", async () => {
@@ -55,7 +55,7 @@ describe("@OnQuery and queries processing.", () => {
     registerWorker(RespondingWorker);
     registerWorker(RespondingDuplicateWorker);
 
-    const first: IQueryResponse<number> = (await requestingWorker.sendAsyncNumberQuery())!;
+    const first: IQueryResponse<number> = (await requestingWorker.queryAsyncNumberData())!;
 
     expect(first.data).toBe(100);
 
@@ -65,7 +65,7 @@ describe("@OnQuery and queries processing.", () => {
     registerWorker(RespondingDuplicateWorker);
     registerWorker(RespondingWorker);
 
-    const second: IQueryResponse<number> = (await requestingWorker.sendAsyncNumberQuery())!;
+    const second: IQueryResponse<number> = (await requestingWorker.queryAsyncNumberData())!;
 
     expect(second.data).toBe(-1);
   });

@@ -1,2 +1,2 @@
 export * from "./OnQuery";
-export * from "./sendQuery";
+export * from "./queryData";

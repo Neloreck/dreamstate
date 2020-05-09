@@ -7,7 +7,7 @@ import {
   TSignalType
 } from "../types";
 import { emitSignal } from "../signals/emitSignal";
-import { sendQuery } from "../queries/sendQuery";
+import { queryData } from "../queries/queryData";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -42,15 +42,15 @@ export abstract class ContextWorker {
   }
 
   /**
-   * Send context query to retrieve data from @OnQuery method with required typex.
+   * Send context query to retrieve data from @OnQuery method with required types.
    */
-  protected sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: {
+  protected queryData<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: {
     type: T;
     data?: D;
   }): Promise<IQueryResponse<R, T> | null> {
     log.info("Context manager sending query:", this.constructor.name, queryRequest);
 
-    return sendQuery(queryRequest as IQueryRequest<D, T>, this.constructor as TDreamstateWorker);
+    return queryData(queryRequest as IQueryRequest<D, T>, this.constructor as TDreamstateWorker);
   }
 
 }

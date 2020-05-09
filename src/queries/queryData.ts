@@ -6,7 +6,7 @@ import {
   TQuerySubscriptionMetadata,
   TQueryType
 } from "../types";
-import { CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY, CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
+import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY } from "../internals";
 import { ContextWorker } from "../management/ContextWorker";
 
 import { log } from "../../build/macroses/log.macro";
@@ -15,7 +15,7 @@ import { log } from "../../build/macroses/log.macro";
  * Find correct async listener and send response or null.
  * Try to find matching type and call related method.
  */
-export function sendQuery<R, D = undefined, T extends TQueryType = TQueryType>(
+export function queryData<R, D = undefined, T extends TQueryType = TQueryType>(
   query: IQueryRequest<D, T>,
   sender?: TDreamstateWorker
 ): Promise<TQueryResponse<R, T> | null> {

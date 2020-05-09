@@ -17,7 +17,7 @@ describe("Sending query on provision start.", () => {
   class QueryingOnProvisionStart extends ContextWorker {
 
     protected async onProvisionStarted() {
-      count(await this.sendQuery({ type: "START" }));
+      count(await this.queryData({ type: "START" }));
     }
 
   }

@@ -55,28 +55,28 @@ export class RespondingDuplicateWorker extends ContextWorker {
 
 export class RequestingWorker extends ContextWorker {
 
-  public async sendUndefinedQuery(): Promise<QueryResponse<any>> {
-    return this.sendQuery({ type: EQuery.UNDEFINED_QUERY });
+  public async queryUndefinedData(): Promise<QueryResponse<any>> {
+    return this.queryData({ type: EQuery.UNDEFINED_QUERY });
   }
 
-  public async sendSyncThrowingQuery(): Promise<QueryResponse<void>> {
-    return this.sendQuery({ type: EQuery.SYNC_EXCEPTION_QUERY });
+  public async querySyncThrowingData(): Promise<QueryResponse<void>> {
+    return this.queryData({ type: EQuery.SYNC_EXCEPTION_QUERY });
   }
 
-  public async sendSyncBooleanQuery(): Promise<QueryResponse<boolean>> {
-    return this.sendQuery({ type: EQuery.SYNC_BOOLEAN_QUERY });
+  public async querySyncBooleanData(): Promise<QueryResponse<boolean>> {
+    return this.queryData({ type: EQuery.SYNC_BOOLEAN_QUERY });
   }
 
-  public async sendAsyncThrowingQuery(): Promise<QueryResponse<void>> {
-    return this.sendQuery({ type: EQuery.ASYNC_EXCEPTION_QUERY });
+  public async queryAsyncThrowingData(): Promise<QueryResponse<void>> {
+    return this.queryData({ type: EQuery.ASYNC_EXCEPTION_QUERY });
   }
 
-  public async sendAsyncNumberQuery(): Promise<QueryResponse<number>> {
-    return this.sendQuery({ type: EQuery.ASYNC_NUMBER_QUERY });
+  public async queryAsyncNumberData(): Promise<QueryResponse<number>> {
+    return this.queryData({ type: EQuery.ASYNC_NUMBER_QUERY });
   }
 
-  public async sendAsyncStringQuery(data: string): Promise<QueryResponse<string>> {
-    return this.sendQuery({ type: EQuery.ASYNC_STRING_QUERY, data });
+  public async queryAsyncStringData(data: string): Promise<QueryResponse<string>> {
+    return this.queryData({ type: EQuery.ASYNC_STRING_QUERY, data });
   }
 
 }

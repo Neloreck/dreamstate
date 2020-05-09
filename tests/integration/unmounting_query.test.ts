@@ -10,7 +10,7 @@ describe("Emitting signal on provision end.", () => {
   class QueryingOnProvisionEnd extends ContextWorker {
 
     protected async onProvisionEnded() {
-      await this.sendQuery({ type: "END" });
+      await this.queryData({ type: "END" });
     }
 
   }

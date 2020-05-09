@@ -1,7 +1,7 @@
 ## 3.0.0 (todo)
   * Tests added, stricter check of library for production builds
   * Included CJS and ESM bundles into library
-  * Tree shaking introduced
+  * Tree shaking
   * Added "dreamstate/test-utils" for lib testing
   * Signals API added
     * OnSignal decorator added
@@ -12,7 +12,7 @@
     * ContextManager::emitSignal method added
   * Query API added
     * OnQuery decorator added
-    * ContextManager::sendQuery method added
+    * ContextManager::queryData method added
   * ContextWorker added
     * Exposed base abstract class for signals and queries observing with provision lifecycle
   * getCurrentContext method added

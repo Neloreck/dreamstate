@@ -26,7 +26,7 @@ describe("ContextWorker class.", () => {
       expect(typeof worker["onProvisionStarted"]).toBe("function");
       expect(typeof worker["onProvisionEnded"]).toBe("function");
       expect(typeof worker["emitSignal"]).toBe("function");
-      expect(typeof worker["sendQuery"]).toBe("function");
+      expect(typeof worker["queryData"]).toBe("function");
 
       expect(Object.keys(WorkerConstructor)).toHaveLength(isSingle ? 1 : 0);
       expect(Object.keys(WorkerConstructor.prototype)).toHaveLength(0);
