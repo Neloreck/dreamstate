@@ -1,4 +1,4 @@
-## 3.0.0 (todo)
+## 3.0.0 (5/9/2020)
   * Tests added, stricter check of library for production builds
   * Included CJS and ESM bundles into library
   * Tree shaking
