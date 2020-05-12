@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { TSignalListener, TSignalType } from "../types";
+import { TCallable, TSignalListener, TSignalType } from "../types";
 import { EMPTY_ARR } from "../internals";
 import { subscribeToSignals } from "./subscribeToSignals";
 import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
@@ -11,10 +11,10 @@ import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
 export function useSignals<D = undefined, T extends TSignalType = TSignalType>(
   subscriber: TSignalListener<D, T>
 ): void {
-  useEffect(function () {
+  useEffect(function(): TCallable {
     subscribeToSignals(subscriber);
 
-    return function () {
+    return function(): void {
       unsubscribeFromSignals(subscriber);
     };
   }, EMPTY_ARR);

@@ -11,7 +11,7 @@ import {
 } from "../types";
 import { ContextManager } from "../management";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Notify observers and check if update is needed.
@@ -21,7 +21,7 @@ export function notifyObservers<T extends IStringIndexed<any>>(
 ): void {
   const nextContext: T = manager.context;
 
-  log.info(
+  debug.info(
     "Context manager notify observers and subscribers:",
     manager.constructor.name,
     CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService)!.size,
@@ -29,7 +29,7 @@ export function notifyObservers<T extends IStringIndexed<any>>(
   );
 
   CONTEXT_STATES_REGISTRY.set(manager.constructor as TDreamstateService, nextContext);
-  CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService)!.forEach(function (it: TUpdateObserver) {
+  CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService)!.forEach(function(it: TUpdateObserver) {
     it();
   });
   /**
@@ -38,7 +38,7 @@ export function notifyObservers<T extends IStringIndexed<any>>(
    * Subscribers should not block code there with CPU usage/unhandled exceptions.
    */
   CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TDreamstateService)!
-    .forEach(function (it: TUpdateSubscriber<T>) {
+    .forEach(function(it: TUpdateSubscriber<T>) {
       setTimeout(it, 0, nextContext);
     });
 }

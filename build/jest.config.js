@@ -14,6 +14,7 @@ module.exports = {
     "^.+\\.[t|j]sx?$": [ "babel-jest", { configFile: "./build/babel.test.config.js" } ]
   },
   globals: {
+    IS_DEV: false,
     IS_DEBUG: false
   }
 };

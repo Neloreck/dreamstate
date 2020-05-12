@@ -7,7 +7,7 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "../internals";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 export function unRegisterService<T extends object>(
   Service: TDreamstateService,
@@ -27,8 +27,8 @@ export function unRegisterService<T extends object>(
     // Delete possible context manager reference to prevent issues with GC.
     CONTEXT_SERVICES_ACTIVATED.delete(Service);
 
-    log.info("Context service instance disposed:", Service.name);
+    debug.info("Context service instance disposed:", Service.name);
   } else {
-    log.info("Context service singleton should not be disposed:", Service.name);
+    debug.info("Context service singleton should not be disposed:", Service.name);
   }
 }

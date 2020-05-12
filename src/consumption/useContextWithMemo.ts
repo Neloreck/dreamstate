@@ -12,12 +12,12 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
   Manager: D,
   depsSelector: (context: T) => Array<any>
 ): D["prototype"]["context"] {
-  const [ state, setState ] = useState(function () {
+  const [ state, setState ] = useState(function() {
     return CONTEXT_STATES_REGISTRY.get(Manager) as T;
   });
   const observed: MutableRefObject<Array<any>> = useRef(depsSelector(state));
 
-  const updateMemoState: TUpdateSubscriber<T> = useCallback(function (nextContext: T): void {
+  const updateMemoState: TUpdateSubscriber<T> = useCallback(function(nextContext: T): void {
     // Calculate changes like react lib does and fire change only after update.
     const nextObserved = depsSelector(nextContext);
 
@@ -31,10 +31,10 @@ export function useContextWithMemo<T extends object, D extends IContextManagerCo
     }
   }, EMPTY_ARR);
 
-  useEffect(function () {
+  useEffect(function() {
     subscribeToManager(Manager, updateMemoState);
 
-    return function () {
+    return function() {
       unsubscribeFromManager(Manager, updateMemoState);
     };
   });

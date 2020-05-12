@@ -4,11 +4,11 @@ const { createMacro } = require("babel-plugin-macros");
 const IS_DEBUG = (process.env.NODE_ENV === "debug");
 const PREFIX_COLOR = "color: #bada53";
 
-function log({ references, babel, state }) {
+function debug({ references, babel, state }) {
   const { types } = babel;
-  const { log } = references;
+  const { debug } = references;
 
-  log.forEach((reference) => {
+  debug.forEach((reference) => {
     if (types.isMemberExpression(reference.parentPath)) {
       const expression = reference.parentPath.parentPath;
 
@@ -16,23 +16,6 @@ function log({ references, babel, state }) {
       if (IS_DEBUG) {
         const method = reference.parent.property.name;
         const args = expression.node.arguments;
-
-        // Handle custom methods keys.
-        if (method === "pushSeparator") {
-          const logStatement = types.expressionStatement(
-            types.callExpression(
-              types.memberExpression(types.identifier("console"), types.identifier("info")),
-              [
-                types.stringLiteral("%c=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-="),
-                types.stringLiteral(PREFIX_COLOR)
-              ]
-            )
-          );
-
-          expression.replaceWith(logStatement);
-
-          return;
-        }
 
         const timeExpression = types.callExpression(
           types.memberExpression(
@@ -96,4 +79,4 @@ function log({ references, babel, state }) {
   });
 }
 
-module.exports = createMacro(log);
+module.exports = createMacro(debug);

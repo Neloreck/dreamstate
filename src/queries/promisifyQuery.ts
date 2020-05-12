@@ -11,7 +11,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
   method: TQueryType,
   query: IOptionalQueryRequest<D, T>
 ) {
-  return new Promise(function (
+  return new Promise(function(
     resolve: (response: IQueryResponse<R, T> | null) => void,
     reject: (error: Error) => void
   ) {
@@ -21,7 +21,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
 
       if (result instanceof Promise) {
         return result
-          .then(function (data: any): void {
+          .then(function(data: any): void {
             resolve({
               answerer: service.constructor as TDreamstateService,
               type: query.type,

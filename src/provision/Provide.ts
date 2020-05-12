@@ -13,7 +13,7 @@ import { TDreamstateService } from "../types";
 export function Provide<T extends ComponentType>(
   sources: Array<TDreamstateService>
 ): ClassDecorator {
-  return createClassWrapDecorator(function (targetClass: T): T {
+  return createClassWrapDecorator(function(targetClass: T): T {
     return hoistNonReactStatics(createManagersObserver(targetClass, sources), targetClass);
   });
 }

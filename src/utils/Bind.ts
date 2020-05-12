@@ -1,6 +1,6 @@
 import { MethodDescriptor } from "../types";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Bind decorator wrappers factory for methods binding.
@@ -12,7 +12,7 @@ import { log } from "../../build/macroses/log.macro";
  * with incorrect ES inheritance after runtime modification of base class.
  */
 function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: PropertyKey): PropertyDescriptor {
-  log.info("Created bound descriptor for:", property);
+  debug.info("Created bound descriptor for:", property);
 
   // Todo: Wait for autobind merge with fix of shared callbacks issue and other.
   let definingProperty: boolean = false;
@@ -59,7 +59,7 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
  * Modified for proposal support.
  */
 export function Bind(): MethodDecorator {
-  return function <T> (
+  return function <T>(
     targetOrDescriptor: object | MethodDescriptor,
     propertyKey: PropertyKey | undefined,
     descriptor: TypedPropertyDescriptor<T> | undefined

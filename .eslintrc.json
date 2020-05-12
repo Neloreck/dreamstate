@@ -36,7 +36,7 @@
     "newline-per-chained-call": [ 2 ],
     "array-element-newline": [ 2, "consistent" ],
     "function-paren-newline": [ 2, "multiline-arguments" ],
-    "space-before-function-paren": [ 2, { "anonymous": "always", "named": "never" } ],
+    "space-before-function-paren": [ 2, { "anonymous": "never", "named": "never" } ],
     "array-bracket-spacing": [ 2, "always" ],
     "comma-dangle": [ 2, { "functions": "never" } ],
     "eol-last": [ 2, "always" ],

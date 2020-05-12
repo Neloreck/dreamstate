@@ -5,7 +5,7 @@ import { notifyObservers } from "../observing/notifyObservers";
 import { getReactContext } from "../registry/getReactContext";
 import { ContextService } from "./ContextService";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Abstract class.
@@ -35,7 +35,7 @@ export abstract class ContextManager<T extends object> extends ContextService {
    * Forces update and render of subscribed components.
    */
   public forceUpdate(): void {
-    log.info("Forcing context manager update:", this.constructor.name);
+    debug.info("Forcing context manager update:", this.constructor.name);
     // Force updates and common lifecycle with same params.
     this.beforeUpdate(this.context);
     this.context = Object.assign({}, this.context);
@@ -64,14 +64,14 @@ export abstract class ContextManager<T extends object> extends ContextService {
         nextContext
       )
     ) {
-      log.info("Updating context manager:", this.constructor.name);
+      debug.info("Updating context manager:", this.constructor.name);
 
       this.beforeUpdate(nextContext);
       this.context = nextContext;
       notifyObservers(this);
       this.afterUpdate(previousContext);
     } else {
-      log.info("Context manager update canceled, state is same:", this.constructor.name);
+      debug.info("Context manager update canceled, state is same:", this.constructor.name);
     }
   }
 

@@ -3,6 +3,8 @@ import { shallowEqualObjects } from "shallow-equal";
 import { NestedStore } from "../utils";
 import { IStringIndexed } from "../types";
 
+import { dev } from "../../build/macroses/dev.macro";
+
 /**
  * Compare context manager state diff with shallow check + nested objects check.
  */
@@ -10,23 +12,24 @@ export function shouldObserversUpdate<T extends object>(
   previousContext: IStringIndexed<any>,
   nextContext: IStringIndexed<any>
 ): boolean {
-  // If previous context is registered and current is changed.
+  if (IS_DEV) {
+    if (!nextContext) {
+      dev.warn("Next context value is null, but ContextManager context field is not nullable. Is it expected?");
+    }
+  }
+
   return (
     !previousContext ||
-    Object.keys(nextContext).some(function (key: string): boolean {
-      const nextValue: any = nextContext[key];
-
+    Object.keys(nextContext).some(function(key: string): boolean {
       /**
        * Shallow check for mutable objects created by library.
        * Optimization for sub-states to prevent pollution of context and improve performance.
        * We cannot guess about each object because it is (1) not obvious, (2) can be unwanted and (3) will not work for
        * some objects like native MediaStream/MediaStreamTrack.
-       *
-       * todo: [DEV] Check if one object is mutable, but next is not and print warnings.
        */
-      return nextValue !== null && typeof nextValue === "object" && nextValue instanceof NestedStore
-        ? !shallowEqualObjects(nextValue, previousContext[key])
-        : nextValue !== previousContext[key];
+      return nextContext[key] instanceof NestedStore
+        ? !shallowEqualObjects(nextContext[key], previousContext[key])
+        : nextContext[key] !== previousContext[key];
     })
   );
 }

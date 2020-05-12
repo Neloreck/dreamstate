@@ -1,7 +1,7 @@
 import { TMutable } from "../types";
 import { NestedStore } from "./NestedStore";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Util for mutable.
@@ -14,7 +14,7 @@ function asMerged<T extends object>(this: TMutable<T>, state: Partial<T>): T {
  * Create mutable sub-state.
  */
 export function createMutable<T extends object>(initialValue: T): TMutable<T> {
-  log.info("Created mutable entity from:", initialValue);
+  debug.info("Created mutable entity from:", initialValue);
   if (initialValue === null || typeof initialValue !== "object") {
     throw new TypeError("Mutable values can be created for non-null object parameter only.");
   }

@@ -6,9 +6,10 @@ import { ContextManager } from "../management";
 import { createClassWrapDecorator } from "../polyfills";
 import { useManager } from "./useManager";
 
+import { dev } from "../../build/macroses/dev.macro";
+
 /**
  * Function for consume wrappers that maps selectors and allows class components to consume store data.
- * todo: Should we warn if no alias and no selector provided?
  */
 export function createManagersConsumer(Target: ComponentType, sources: Array<TConsumable<any>>) {
   if (!Array.isArray(sources)) {
@@ -34,6 +35,10 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
     ) {
       throw new TypeError("Wrong context-consume parameter supplied.");
     }
+
+    if (typeof source === "object" && !source.as && !source.take) {
+      dev.warn("@Consume selector without selector and alias detected, did you mean to use direct class reference?");
+    }
   }
 
   /**
@@ -55,27 +60,27 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
       // No selector, only alias.
       if (take === undefined) {
         if (alias) {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[source.as] = useManager(source.from);
 
             return accumulator;
           };
         } else {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             return Object.assign(accumulator, useManager(source.from));
           };
         }
       } else if (Array.isArray(take)) {
         // Selected array of needed props, filter only needed and alias it if 'as' is supplied.
         // Here we can automatically use memo parameter.
-        const memoCheck = function (current: IStringIndexed<any>) {
-          return (take as Array<string>).map(function (it: string) {
+        const memoCheck = function(current: IStringIndexed<any>) {
+          return (take as Array<string>).map(function(it: string) {
             return current[it];
           });
         };
 
         if (alias) {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             const context: IStringIndexed<any> = useManager(source.from, memoCheck);
 
             accumulator[alias] = (take as Array<string>).reduce(
@@ -86,12 +91,12 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
             return accumulator;
           };
         } else {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             const context: IStringIndexed<any> = useManager(source.from, memoCheck);
 
             return Object.assign(
               accumulator,
-              (take as Array<string>).reduce(function (a: IStringIndexed<any>, e: string) {
+              (take as Array<string>).reduce(function(a: IStringIndexed<any>, e: string) {
                 return (a[e] = context[e]), a;
               }, {})
             );
@@ -99,7 +104,7 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
         }
       } else if (typeof take === "function") {
         // Supplied functional selector, return object with needed props like redux does. Alias if 'as' is supplied.
-        const memoCheck = function (current: IStringIndexed<any>) {
+        const memoCheck = function(current: IStringIndexed<any>) {
           return Object.values(take(current));
         };
 
@@ -107,31 +112,31 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
          * todo: Is there any necessary to check return value: is it object or not?
          */
         if (alias) {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[alias] = take(useManager(source.from, memoCheck));
 
             return accumulator;
           };
         } else {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             return Object.assign(accumulator, take(useManager(source.from, memoCheck)));
           };
         }
         // Fallback to indexing. Strings, boolean, numbers, symbols etc.
       } else {
         // Pick only selected key prop. Using memo-selector here.
-        const memoCheck = function (current: IStringIndexed<any>) {
+        const memoCheck = function(current: IStringIndexed<any>) {
           return [ current[take as any] ];
         };
 
         if (alias) {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[alias as any] = useManager(source.from, memoCheck)[take];
 
             return accumulator;
           };
         } else {
-          mutators[it] = function (accumulator: IStringIndexed<any>) {
+          mutators[it] = function(accumulator: IStringIndexed<any>) {
             accumulator[take as any] = useManager(source.from, memoCheck)[take];
 
             return accumulator;
@@ -147,7 +152,7 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
       Target,
       Object.assign(
         mutators.reduce(
-          function (
+          function(
             acc: IStringIndexed<any>,
             mutator: (acc: IStringIndexed<any>) => IStringIndexed<any>
           ) {
@@ -160,7 +165,16 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
     );
   }
 
-  Consumer.displayName = "DS.Consumer";
+  if (IS_DEV) {
+    Consumer.displayName = `Dreamstate.Consumer[${sources.map(function(it: TConsumable<any>) {
+      return it.prototype instanceof ContextManager
+        ? it.name
+        : `${it.from.name}{${it.take ? "take" : "*"} as ${it.as || "*"}}`;
+    })
+    }]`;
+  } else {
+    Consumer.displayName = "DS.Consumer";
+  }
 
   return Consumer;
 }
@@ -170,8 +184,8 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
  * Consumes context from context manager.
  * Observes changes and uses default react Provider.
  */
-export const Consume: IConsumeDecorator = function (sources: Array<TConsumable<any>>): ClassDecorator {
-  return createClassWrapDecorator(function (Target) {
+export const Consume: IConsumeDecorator = function(sources: Array<TConsumable<any>>): ClassDecorator {
+  return createClassWrapDecorator(function(Target) {
     return hoistNonReactStatics(createManagersConsumer(Target as any, sources), Target as ComponentType);
   });
 };

@@ -2,7 +2,7 @@ import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "../types";
 import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "../internals";
 import { promisifyQuery } from "./promisifyQuery";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Get single query resolver from possible metadata.
@@ -16,7 +16,7 @@ export function querySingle<
 ): Promise<TQueryResponse<R, T>> {
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
     if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
-      log.info("Checking metadata for:", service.name, query);
+      debug.info("Checking metadata for:", service.name, query);
 
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         if (type === query.type) {

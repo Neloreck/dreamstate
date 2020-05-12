@@ -3,7 +3,7 @@ import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { createMethodDecorator } from "../polyfills/createMethodDecorator";
 import { ContextService } from "../management/ContextService";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Write signal filter and bound method to class metadata.
@@ -13,7 +13,7 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
     throw new TypeError("Signal type should be provided for OnQuery decorator.");
   }
 
-  return createMethodDecorator<TAnyContextManagerConstructor>(function (
+  return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
     Service: TDreamstateService
   ): void {
@@ -21,7 +21,7 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
       throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");
     }
 
-    log.info("Signal metadata written for context manager:", Service.name, signalType, method);
+    debug.info("Signal metadata written for context manager:", Service.name, signalType, method);
 
     if (!CONTEXT_SIGNAL_METADATA_REGISTRY.has(Service)) {
       CONTEXT_SIGNAL_METADATA_REGISTRY.set(Service, []);

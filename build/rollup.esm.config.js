@@ -36,6 +36,7 @@ export const ESM_CONFIG = {
     }),
     typescript({
       tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
+      pretty: !IS_PRODUCTION,
       declaration: false
     })
   ].concat(

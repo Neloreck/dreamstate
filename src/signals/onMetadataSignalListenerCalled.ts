@@ -1,7 +1,7 @@
 import { ISignalEvent, TConstructorKey, TDreamstateService, TSignalType } from "../types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Listen signal and call related metadata listeners of this manager.
@@ -17,11 +17,11 @@ export function onMetadataSignalListenerCalled<D = undefined, T extends TSignalT
     signal.emitter !== this.constructor &&
     CONTEXT_SIGNAL_METADATA_REGISTRY.has(this.constructor as TDreamstateService)
   ) {
-    log.info("Calling metadata signal api listener:", this.constructor.name);
+    debug.info("Calling metadata signal api listener:", this.constructor.name);
 
     for (const [ method, subscribed ] of CONTEXT_SIGNAL_METADATA_REGISTRY.get(this.constructor as TConstructorKey)!) {
       if (Array.isArray(subscribed) ? subscribed.includes(signal.type) : signal.type === subscribed) {
-        log.info("Found signal listener:", signal.type, this.constructor.name, method);
+        debug.info("Found signal listener:", signal.type, this.constructor.name, method);
         (this as any)[method](signal);
       }
     }

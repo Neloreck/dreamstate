@@ -2,7 +2,7 @@ import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
 import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 import { ContextManager } from "../management/ContextManager";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Subscribe to manager updates/changes.
@@ -18,5 +18,5 @@ export function subscribeToManager<T extends object, D extends IContextManagerCo
 
   CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.add(subscriber);
 
-  log.info("Context manager subscriber added:", Manager.name);
+  debug.info("Context manager subscriber added:", Manager.name);
 }

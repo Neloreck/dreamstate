@@ -1,7 +1,7 @@
 import { TDreamstateService } from "../types";
 import { CONTEXT_SERVICES_REGISTRY } from "../internals";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Get current manager instance from registry.
@@ -10,7 +10,7 @@ import { log } from "../../build/macroses/log.macro";
 export function getCurrent<T extends TDreamstateService>(
   Service: T
 ): InstanceType<T> | null {
-  log.info("Requested current service:", Service.name);
+  debug.info("Requested current service:", Service.name);
 
   return CONTEXT_SERVICES_REGISTRY.get(Service) as InstanceType<T> || null;
 }

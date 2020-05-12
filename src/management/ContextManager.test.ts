@@ -24,7 +24,7 @@ describe("ContextManager class.", () => {
     const manager: TestContextManager = registerService(TestContextManager);
 
     manager["beforeUpdate"] = jest.fn(
-      function (this: TestContextManager, nextContext: ITestContext) {
+      function(this: TestContextManager, nextContext: ITestContext) {
         expect(nextContext.first).toBe("updated");
         expect(nextContext.second).toBe(22);
         expect(this.context.first).toBe("first");
@@ -32,7 +32,7 @@ describe("ContextManager class.", () => {
       }.bind(manager)
     );
     manager["afterUpdate"] = jest.fn(
-      function (this: TestContextManager, prevContext: ITestContext) {
+      function(this: TestContextManager, prevContext: ITestContext) {
         expect(this.context.first).toBe("updated");
         expect(this.context.second).toBe(22);
         expect(prevContext.first).toBe("first");
@@ -68,7 +68,7 @@ describe("ContextManager class.", () => {
      */
 
     manager["beforeUpdate"] = jest.fn(
-      function (this: TestContextManager, nextContext: ITestContext) {
+      function(this: TestContextManager, nextContext: ITestContext) {
         expect(nextContext.first).toBe("updated");
         expect(nextContext.second).toBe(22);
         expect(this.context.first).toBe("updated");
@@ -76,7 +76,7 @@ describe("ContextManager class.", () => {
       }.bind(manager)
     );
     manager["afterUpdate"] = jest.fn(
-      function (this: TestContextManager, prevContext: ITestContext) {
+      function(this: TestContextManager, prevContext: ITestContext) {
         expect(this.context.first).toBe("updated");
         expect(this.context.second).toBe(22);
         expect(prevContext.first).toBe("updated");

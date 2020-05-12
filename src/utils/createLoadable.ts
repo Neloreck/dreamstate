@@ -1,7 +1,7 @@
 import { ILoadable } from "../types";
 import { NestedStore } from "./NestedStore";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Util for loadable.
@@ -80,7 +80,7 @@ export function createLoadable<T, E>(
   isLoading: boolean = false,
   error: E | null = null
 ): ILoadable<T, E> {
-  log.info("Created loadable entity:", value);
+  debug.info("Created loadable entity:", value);
 
   return Object.assign(new NestedStore(), {
     error,

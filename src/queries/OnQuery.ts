@@ -3,7 +3,7 @@ import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
 import { createMethodDecorator } from "../polyfills/createMethodDecorator";
 import { ContextService } from "../management/ContextService";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 export function OnQuery(queryType: TQueryType): MethodDecorator {
   if (!queryType) {
@@ -18,7 +18,7 @@ export function OnQuery(queryType: TQueryType): MethodDecorator {
       throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");
     }
 
-    log.info("Query metadata written for context manager:", Service.name, queryType, method);
+    debug.info("Query metadata written for context manager:", Service.name, queryType, method);
 
     if (!CONTEXT_QUERY_METADATA_REGISTRY.has(Service)) {
       CONTEXT_QUERY_METADATA_REGISTRY.set(Service, []);

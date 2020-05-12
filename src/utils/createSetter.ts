@@ -1,7 +1,7 @@
 import { TPartialTransformer } from "../types";
 import { ContextManager } from "../management";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Setter method factory.
@@ -11,7 +11,7 @@ export function createSetter<S extends object, D extends keyof S>(
   manager: ContextManager<S>,
   key: D
 ) {
-  log.info("Created context setter for:", manager.constructor.name, key);
+  debug.info("Created context setter for:", manager.constructor.name, key);
 
   if (typeof manager.context[key] !== "object") {
     throw new TypeError("Cannot create setter for non-object nested properties.");

@@ -10,7 +10,7 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "../internals";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 /**
  * Register context manager entry.
@@ -41,10 +41,10 @@ export function registerService<T extends object>(
 
     CONTEXT_SERVICES_ACTIVATED.add(Service);
 
-    log.info("Service registered:", Service.name);
+    debug.info("Service registered:", Service.name);
   } else {
     // We cannot rely on react memo and tell that it is called only once.
     // Also can be called from other sub-trees.
-    log.info("Service already registered, continue with old instance:", Service.name);
+    debug.info("Service already registered, continue with old instance:", Service.name);
   }
 }

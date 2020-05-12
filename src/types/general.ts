@@ -5,3 +5,5 @@ export interface IStringIndexed<T> {
 export type TConstructor<T> = {
   new (...args: unknown[]): T;
 };
+
+export type TCallable = () => void;

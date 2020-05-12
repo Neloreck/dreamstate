@@ -9,7 +9,7 @@ import {
 import { emitSignal } from "../signals/emitSignal";
 import { queryData } from "../queries/queryData";
 
-import { log } from "../../build/macroses/log.macro";
+import { debug } from "../../build/macroses/debug.macro";
 
 export abstract class ContextService {
 
@@ -36,7 +36,7 @@ export abstract class ContextService {
    * Emit signal for other managers and subscribers.
    */
   protected emitSignal<D = undefined, T extends TSignalType = TSignalType>(baseSignal: ISignal<D, T>): void {
-    log.info("Context manager emitting signal:", this.constructor.name, baseSignal);
+    debug.info("Context manager emitting signal:", this.constructor.name, baseSignal);
 
     emitSignal(baseSignal, this.constructor as TDreamstateService);
   }
