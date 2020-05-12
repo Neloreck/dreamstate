@@ -9,14 +9,14 @@ import { log } from "../../build/macroses/log.macro";
  * Callback will be fired after each state update.
  */
 export function subscribeToManager<T extends object, D extends IContextManagerConstructor<T>>(
-  managerConstructor: D,
+  Manager: D,
   subscriber: TUpdateSubscriber<T>
 ): void {
-  if (!(managerConstructor.prototype instanceof ContextManager)) {
+  if (!(Manager.prototype instanceof ContextManager)) {
     throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
   }
 
-  CONTEXT_SUBSCRIBERS_REGISTRY.get(managerConstructor)!.add(subscriber);
+  CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.add(subscriber);
 
-  log.info("Context manager subscriber added:", managerConstructor.name);
+  log.info("Context manager subscriber added:", Manager.name);
 }

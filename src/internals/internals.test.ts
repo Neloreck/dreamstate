@@ -1,8 +1,8 @@
 import {
   EMPTY_ARR,
-  CONTEXT_WORKERS_ACTIVATED,
+  CONTEXT_SERVICES_ACTIVATED,
   CONTEXT_REACT_CONTEXTS_REGISTRY,
-  CONTEXT_WORKERS_REGISTRY,
+  CONTEXT_SERVICES_REGISTRY,
   CONTEXT_STATES_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_SUBSCRIBERS_REGISTRY,
@@ -11,8 +11,8 @@ import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   SIGNAL_LISTENERS_REGISTRY
 } from "./internals";
-import { unRegisterWorker } from "../registry";
-import { registerWorker } from "../testing";
+import { unRegisterService } from "../registry";
+import { registerService } from "../testing";
 
 import { TestContextManager } from "@Tests/assets";
 
@@ -25,8 +25,8 @@ describe("Dreamstate internals.", () => {
   });
 
   it("Internals should be initialized.", () => {
-    expect(CONTEXT_WORKERS_ACTIVATED).toBeInstanceOf(Set);
-    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
+    expect(CONTEXT_SERVICES_ACTIVATED).toBeInstanceOf(Set);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
 
     expect(EMPTY_ARR).toBeInstanceOf(Array);
     expect(EMPTY_ARR).toHaveLength(0);
@@ -34,7 +34,7 @@ describe("Dreamstate internals.", () => {
     expect(SIGNAL_LISTENERS_REGISTRY).toBeInstanceOf(Set);
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
 
-    expect(CONTEXT_WORKERS_REGISTRY).toBeInstanceOf(WeakMap);
+    expect(CONTEXT_SERVICES_REGISTRY).toBeInstanceOf(WeakMap);
     expect(CONTEXT_OBSERVERS_REGISTRY).toBeInstanceOf(WeakMap);
     expect(CONTEXT_QUERY_METADATA_REGISTRY).toBeInstanceOf(WeakMap);
     expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY).toBeInstanceOf(WeakMap);
@@ -45,7 +45,7 @@ describe("Dreamstate internals.", () => {
   });
 
   it("Internals should not exist until first register.", () => {
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeUndefined();
@@ -53,12 +53,12 @@ describe("Dreamstate internals.", () => {
     expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
-    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
 
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
 
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeDefined();
+    expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
@@ -66,19 +66,19 @@ describe("Dreamstate internals.", () => {
     expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined(); // No query listeners here.
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(1);
-    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(1);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
 
-    expect(CONTEXT_WORKERS_REGISTRY.get(TestContextManager)).toBeUndefined();
+    expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
-    expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(0);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestContextManager)).toBeUndefined();
   });
 });

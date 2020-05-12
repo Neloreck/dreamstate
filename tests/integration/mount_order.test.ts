@@ -1,30 +1,30 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextWorker, createProvider, getCurrent } from "@Lib";
-import { registerWorker } from "@Lib/testing";
-import { CONTEXT_WORKERS_ACTIVATED } from "@Lib/internals";
+import { ContextService, createProvider, getCurrent } from "@Lib";
+import { registerService } from "@Lib/testing";
+import { CONTEXT_SERVICES_ACTIVATED } from "@Lib/internals";
 
 describe("Mount order for providers.", () => {
-  class First extends ContextWorker {}
-  class Second extends ContextWorker {}
-  class Third extends ContextWorker {}
+  class First extends ContextService {}
+  class Second extends ContextService {}
+  class Third extends ContextService {}
 
   const Provider = createProvider([ First, Second, Third ]);
 
   it("Should properly mount provided components.", async () => {
     const list: Array<string> = [];
 
-    registerWorker(First)["onProvisionStarted"] = () => {
-      expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(3);
+    registerService(First)["onProvisionStarted"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
       list.push(First.name);
     };
-    registerWorker(Second)["onProvisionStarted"] = () => {
-      expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(3);
+    registerService(Second)["onProvisionStarted"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
       list.push(Second.name);
     };
-    registerWorker(Third)["onProvisionStarted"] = () => {
-      expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(3);
+    registerService(Third)["onProvisionStarted"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
       list.push(Third.name);
     };
 
@@ -43,15 +43,15 @@ describe("Mount order for providers.", () => {
     const tree = mount(createElement(Provider, {}));
 
     getCurrent(First)!["onProvisionEnded"] = () => {
-      expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(1);
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
       list.push(First.name);
     };
     getCurrent(Second)!["onProvisionEnded"] = () => {
-      expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(2);
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(2);
       list.push(Second.name);
     };
     getCurrent(Third)!["onProvisionEnded"] = () => {
-      expect(CONTEXT_WORKERS_ACTIVATED.size).toBe(3);
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
       list.push(Third.name);
     };
 

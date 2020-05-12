@@ -1,4 +1,4 @@
-import { TDreamstateWorker } from "../types/internal";
+import { TDreamstateService } from "../types/internal";
 
 export interface ISignal<D = undefined, T extends TSignalType = TSignalType> {
   /**
@@ -19,7 +19,7 @@ export interface ISignalEvent<D = any, T extends TSignalType = TSignalType> exte
   /**
    * Signal sender.
    */
-  emitter: TDreamstateWorker | null;
+  emitter: TDreamstateService | null;
   /**
    * Signal emit timestamp.
    */

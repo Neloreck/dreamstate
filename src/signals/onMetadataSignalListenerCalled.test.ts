@@ -1,12 +1,12 @@
 import { onMetadataSignalListenerCalled } from "./onMetadataSignalListenerCalled";
-import { registerWorker, unRegisterWorker } from "../testing";
+import { registerService, unRegisterService } from "../testing";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { ISignalEvent } from "../types";
 
 import { ESignal, SubscribedContextManager, TestContextManager } from "@Tests/assets";
 
 describe("onMetadataSignalListenerCalled method functionality.", () => {
-  it("Should ignore workers without metadata and not throw any errors.", () => {
+  it("Should ignore services without metadata and not throw any errors.", () => {
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     onMetadataSignalListenerCalled.call(
@@ -24,7 +24,7 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
   });
 
   it("Should properly call single signal-subscribed methods for managers.", () => {
-    const manager: SubscribedContextManager = registerWorker(SubscribedContextManager);
+    const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(SubscribedContextManager)).toBeTruthy();
 
@@ -45,11 +45,11 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
 
     expect(manager.onNumberSignal).toHaveBeenCalled();
 
-    unRegisterWorker(SubscribedContextManager);
+    unRegisterService(SubscribedContextManager);
   });
 
   it("Should properly call array signal-subscribed methods for managers.", () => {
-    const manager: SubscribedContextManager = registerWorker(SubscribedContextManager);
+    const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(SubscribedContextManager)).toBeTruthy();
 
@@ -78,11 +78,11 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
 
     expect(manager.onStringOrNumberSignal).toHaveBeenCalledTimes(2);
 
-    unRegisterWorker(SubscribedContextManager);
+    unRegisterService(SubscribedContextManager);
   });
 
   it("Should ignore own signals.", () => {
-    const manager: SubscribedContextManager = registerWorker(SubscribedContextManager);
+    const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     manager.onStringSignal = jest.fn(() => {
       throw new Error("Unreachable code");
@@ -100,6 +100,6 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
     );
     expect(manager.onStringSignal).not.toHaveBeenCalled();
 
-    unRegisterWorker(SubscribedContextManager);
+    unRegisterService(SubscribedContextManager);
   });
 });

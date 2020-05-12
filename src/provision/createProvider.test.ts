@@ -1,31 +1,31 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { CONTEXT_WORKERS_ACTIVATED } from "../internals";
+import { CONTEXT_SERVICES_ACTIVATED } from "../internals";
 
-import { TestContextManager, TestContextWorker, TestSingleContextWorker } from "@Tests/assets";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/assets";
 import { createProvider } from "@Lib";
 
 describe("createProvider method.", () => {
-  const Provider = createProvider([ TestContextManager, TestContextWorker, TestSingleContextWorker ]);
+  const Provider = createProvider([ TestContextManager, TestContextService, TestSingleContextService ]);
 
   it("Should render correct component tree.", async () => {
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestContextWorker)).toBeFalsy();
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestContextManager)).toBeFalsy();
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestSingleContextWorker)).toBeFalsy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextService)).toBeFalsy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestSingleContextService)).toBeFalsy();
 
     const tree = mount(createElement(Provider, {}, "test"));
 
     expect(tree).toMatchSnapshot();
 
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestContextWorker)).toBeTruthy();
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestContextManager)).toBeTruthy();
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestSingleContextWorker)).toBeTruthy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextService)).toBeTruthy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestSingleContextService)).toBeTruthy();
 
     tree.unmount();
 
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestContextWorker)).toBeFalsy();
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestContextManager)).toBeFalsy();
-    expect(CONTEXT_WORKERS_ACTIVATED.has(TestSingleContextWorker)).toBeTruthy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextService)).toBeFalsy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_ACTIVATED.has(TestSingleContextService)).toBeTruthy();
   });
 });

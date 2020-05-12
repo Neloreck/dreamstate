@@ -1,11 +1,12 @@
-import { TAnyContextManagerConstructor } from "../types";
 import { Context } from "react";
+
+import { TAnyContextManagerConstructor } from "../types";
 
 /**
  * Get react provider of selected context manager.
  */
 export function getReactConsumer<T extends TAnyContextManagerConstructor>(
-  managerConstructor: T
+  Manager: T
 ): Context<T["prototype"]["context"]>["Consumer"] {
-  return managerConstructor.REACT_CONTEXT.Consumer;
+  return Manager.REACT_CONTEXT.Consumer;
 }

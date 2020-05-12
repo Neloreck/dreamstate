@@ -9,20 +9,20 @@ import { log } from "../../build/macroses/log.macro";
  * Get manager react context internal.
  */
 export function getReactContext<T extends TAnyContextManagerConstructor>(
-  managerConstructor: T
+  Manager: T
 ): Context<T> {
-  log.info("Requested manager react context:", managerConstructor.name);
+  log.info("Requested manager react context:", Manager.name);
 
-  if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(managerConstructor)) {
-    return CONTEXT_REACT_CONTEXTS_REGISTRY.get(managerConstructor)!;
+  if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(Manager)) {
+    return CONTEXT_REACT_CONTEXTS_REGISTRY.get(Manager)!;
   } else {
     const reactContext: Context<T> = createContext(null as any);
 
-    reactContext.displayName = "DS." + managerConstructor.name;
+    reactContext.displayName = "DS." + Manager.name;
 
-    CONTEXT_REACT_CONTEXTS_REGISTRY.set(managerConstructor, reactContext);
+    CONTEXT_REACT_CONTEXTS_REGISTRY.set(Manager, reactContext);
 
-    log.info("Context manager context declared:", managerConstructor.name, reactContext.displayName);
+    log.info("Context manager context declared:", Manager.name, reactContext.displayName);
 
     return reactContext;
   }

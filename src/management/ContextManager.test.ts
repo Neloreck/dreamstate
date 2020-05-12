@@ -4,9 +4,9 @@ import {
   subscribeToManager,
   unsubscribeFromManager, getReactContext
 } from "../registry";
-import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_WORKERS_REGISTRY } from "../internals";
+import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "../internals";
 import { ContextManager } from "./ContextManager";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 
 import {
   ExampleContextManager,
@@ -21,7 +21,7 @@ describe("ContextManager class.", () => {
   });
 
   it("Should properly handle setContext and forceUpdate method update with prev/next props.", () => {
-    const manager: TestContextManager = registerWorker(TestContextManager);
+    const manager: TestContextManager = registerService(TestContextManager);
 
     manager["beforeUpdate"] = jest.fn(
       function (this: TestContextManager, nextContext: ITestContext) {
@@ -89,26 +89,26 @@ describe("ContextManager class.", () => {
     expect(manager["beforeUpdate"]).toHaveBeenCalled();
     expect(manager["afterUpdate"]).toHaveBeenCalled();
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 
   it("Should correctly register context and get current context/manager.", () => {
     expect(getCurrent(TestContextManager)).toBeNull();
     expect(getCurrentContext(TestContextManager)).toBeNull();
 
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
 
     expect(getCurrent(TestContextManager)).not.toBeNull();
     expect(getCurrentContext(TestContextManager)).not.toBeNull();
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
 
     expect(getCurrent(TestContextManager)).toBeNull();
     expect(getCurrentContext(TestContextManager)).toBeNull();
   });
 
   it("Should correctly create new managers after provision restart.", () => {
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
 
     getCurrent(TestContextManager)!.setContext({
       first: "15",
@@ -118,40 +118,40 @@ describe("ContextManager class.", () => {
     expect(getCurrentContext(TestContextManager)!.first).toBe("15");
     expect(getCurrentContext(TestContextManager)!.second).toBe(15);
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
 
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
 
     expect(getCurrentContext(TestContextManager)!.first).toBe("first");
     expect(getCurrentContext(TestContextManager)!.second).toBe(2);
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 
   it("Should properly manage extended managers.", () => {
     expect(getCurrent(ExtendingTestContextManager)).toBeNull();
     expect(getCurrent(TestContextManager)).toBeNull();
 
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
 
     expect(getCurrent(TestContextManager)).not.toBeNull();
     expect(getCurrent(ExtendingTestContextManager)).toBeNull();
 
-    registerWorker(ExtendingTestContextManager);
+    registerService(ExtendingTestContextManager);
 
     expect(getCurrent(TestContextManager)).not.toBeNull();
     expect(getCurrent(ExtendingTestContextManager)).not.toBeNull();
     expect(getCurrent(TestContextManager)).not.toBe(getCurrent(ExtendingTestContextManager));
     expect(getCurrentContext(TestContextManager)).not.toBe(getCurrentContext(ExtendingTestContextManager));
 
-    expect(CONTEXT_WORKERS_REGISTRY.has(TestContextManager)).toBeTruthy();
-    expect(CONTEXT_WORKERS_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeTruthy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
 
-    unRegisterWorker(TestContextManager);
-    unRegisterWorker(ExtendingTestContextManager);
+    unRegisterService(TestContextManager);
+    unRegisterService(ExtendingTestContextManager);
 
-    expect(CONTEXT_WORKERS_REGISTRY.has(TestContextManager)).toBeFalsy();
-    expect(CONTEXT_WORKERS_REGISTRY.has(ExtendingTestContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeFalsy();
   });
 
   it("Should properly add contextManagers subscribers.", () => {
@@ -159,7 +159,7 @@ describe("ContextManager class.", () => {
 
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBeUndefined();
 
-    registerWorker(ExampleContextManager);
+    registerService(ExampleContextManager);
 
     expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
@@ -174,7 +174,7 @@ describe("ContextManager class.", () => {
     expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
 
-    unRegisterWorker(ExampleContextManager);
+    unRegisterService(ExampleContextManager);
 
     expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
@@ -194,12 +194,12 @@ describe("ContextManager class.", () => {
     expect(() => subscribeToManager(ExampleClass as any, exampleSubscriber)).toThrow();
     expect(() => unsubscribeFromManager(ExampleClass as any, exampleSubscriber)).toThrow();
 
-    registerWorker(ExampleManagerClass);
+    registerService(ExampleManagerClass);
 
     expect(() => subscribeToManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
     expect(() => unsubscribeFromManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
 
-    unRegisterWorker(ExampleManagerClass);
+    unRegisterService(ExampleManagerClass);
   });
 
   it("Should use getReactContext for REACT_CONTEXT and return same result.", () => {

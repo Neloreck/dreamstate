@@ -3,7 +3,7 @@ import hoistNonReactStatics from "hoist-non-react-statics";
 
 import { createManagersObserver } from "../observing";
 import { createClassWrapDecorator } from "../polyfills";
-import { TDreamstateWorker } from "../types";
+import { TDreamstateService } from "../types";
 
 /**
  * Decorator factory.
@@ -11,7 +11,7 @@ import { TDreamstateWorker } from "../types";
  * Observes changes and uses default react Providers for data flow.
  */
 export function Provide<T extends ComponentType>(
-  sources: Array<TDreamstateWorker>
+  sources: Array<TDreamstateService>
 ): ClassDecorator {
   return createClassWrapDecorator(function (targetClass: T): T {
     return hoistNonReactStatics(createManagersObserver(targetClass, sources), targetClass);

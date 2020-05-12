@@ -1,16 +1,16 @@
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 import { queryMultiple } from "../queries";
 import { TQueryResponse } from "../types";
 
-import { EQuery, RespondingWorker } from "@Tests/assets/queries";
+import { EQuery, RespondingService } from "@Tests/assets/queries";
 
 describe("querySingle method.", () => {
   beforeEach(() => {
-    registerWorker(RespondingWorker);
+    registerService(RespondingService);
   });
 
   afterEach(() => {
-    unRegisterWorker(RespondingWorker);
+    unRegisterService(RespondingService);
   });
 
   it("Should properly find async query responders or fallback to null for multi queries.", async () => {

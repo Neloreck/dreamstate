@@ -1,10 +1,10 @@
 import { notifyObservers } from "./notifyObservers";
 import {
-  addManagerObserver,
+  addServiceObserver,
   nextAsyncQueue,
-  registerWorker,
-  removeManagerObserver,
-  unRegisterWorker
+  registerService,
+  removeServiceObserver,
+  unRegisterService
 } from "../testing";
 import { subscribeToManager, unsubscribeFromManager, getCurrentContext } from "../registry";
 import { CONTEXT_STATES_REGISTRY } from "../internals";
@@ -13,7 +13,7 @@ import { ITestContext, TestContextManager } from "@Tests/assets";
 
 describe("notifyObservers method functionality.", () => {
   it("Should correctly set nextState for managers.", () => {
-    const manager: TestContextManager = registerWorker(TestContextManager);
+    const manager: TestContextManager = registerService(TestContextManager);
 
     expect(CONTEXT_STATES_REGISTRY.has(TestContextManager)).toBeTruthy();
 
@@ -40,24 +40,24 @@ describe("notifyObservers method functionality.", () => {
     expect(currentContext.second).toBe(1);
     expect(currentContext.third).toBe(true);
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 
   it("Should correctly notify subscribers.", () => {
-    const testContextManager: TestContextManager = registerWorker(TestContextManager)!;
+    const testContextManager: TestContextManager = registerService(TestContextManager)!;
     const observer = jest.fn();
 
-    addManagerObserver(TestContextManager, observer);
+    addServiceObserver(TestContextManager, observer);
     notifyObservers(testContextManager);
 
     expect(observer).toHaveBeenCalled();
 
-    removeManagerObserver(TestContextManager, observer);
-    unRegisterWorker(TestContextManager);
+    removeServiceObserver(TestContextManager, observer);
+    unRegisterService(TestContextManager);
   });
 
   it("Should correctly notify subscribers.", async () => {
-    const testContextManager: TestContextManager = registerWorker(TestContextManager)!;
+    const testContextManager: TestContextManager = registerService(TestContextManager)!;
     const subscriber = jest.fn();
 
     subscribeToManager(TestContextManager, subscriber);
@@ -70,6 +70,6 @@ describe("notifyObservers method functionality.", () => {
     expect(subscriber).toHaveBeenCalled();
 
     unsubscribeFromManager(TestContextManager, subscriber);
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 });

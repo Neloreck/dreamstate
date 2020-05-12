@@ -3,8 +3,8 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 import { getCurrent } from "../registry";
-import { CONTEXT_WORKERS_REGISTRY } from "../internals";
-import { nextAsyncQueue, registerWorker } from "../testing";
+import { CONTEXT_SERVICES_REGISTRY } from "../internals";
+import { nextAsyncQueue, registerService } from "../testing";
 
 import {
   ExampleContextFunctionalConsumer,
@@ -113,7 +113,7 @@ describe("UseManager subscription and rendering.", () => {
   });
 
   it("Should properly fire onProvisionStarted for functional observers.", async () => {
-    const manager: ExampleContextManager = registerWorker(ExampleContextManager);
+    const manager: ExampleContextManager = registerService(ExampleContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
     manager["onProvisionEnded"] = jest.fn();
@@ -136,11 +136,11 @@ describe("UseManager subscription and rendering.", () => {
     await nextAsyncQueue();
 
     expect(manager["onProvisionEnded"]).toHaveBeenCalled();
-    expect(CONTEXT_WORKERS_REGISTRY.has(ExampleContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(ExampleContextManager)).toBeFalsy();
   });
 
   it("Should properly fire onProvisionStarted for functional subscribers.", async () => {
-    const manager: ExampleContextManager = registerWorker(ExampleContextManager);
+    const manager: ExampleContextManager = registerService(ExampleContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
     manager["onProvisionEnded"] = jest.fn();
@@ -162,6 +162,6 @@ describe("UseManager subscription and rendering.", () => {
     await nextAsyncQueue();
 
     expect(manager["onProvisionEnded"]).toHaveBeenCalled();
-    expect(CONTEXT_WORKERS_REGISTRY.has(ExampleContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(ExampleContextManager)).toBeFalsy();
   });
 });

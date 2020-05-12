@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextWorker, createProvider, OnQuery } from "@Lib";
+import { ContextService, createProvider, OnQuery } from "@Lib";
 import { nextAsyncQueue } from "@Lib/testing";
 
 /**
@@ -14,7 +14,7 @@ describe("Sending query on provision start.", () => {
     expect(value.data).toBe("value");
   });
 
-  class QueryingOnProvisionStart extends ContextWorker {
+  class QueryingOnProvisionStart extends ContextService {
 
     protected async onProvisionStarted() {
       count(await this.queryData({ type: "START" }));
@@ -22,7 +22,7 @@ describe("Sending query on provision start.", () => {
 
   }
 
-  class AnsweringOnProvisionStart extends ContextWorker {
+  class AnsweringOnProvisionStart extends ContextService {
 
     @OnQuery("START")
     private onQuery(): string {

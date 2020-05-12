@@ -1,17 +1,17 @@
 import { getCurrent } from "../registry";
 import { createLoadable, createMutable, createSetter } from "./index";
 import { ContextManager } from "../management";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 
 import { NestedContextManager } from "@Tests/assets";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {
-    registerWorker(NestedContextManager);
+    registerService(NestedContextManager);
   });
 
   afterEach(() => {
-    unRegisterWorker(NestedContextManager);
+    unRegisterService(NestedContextManager);
   });
 
   it("Should properly declare create setters.", () => {

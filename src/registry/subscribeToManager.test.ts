@@ -2,8 +2,8 @@ import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 import { subscribeToManager } from "./subscribeToManager";
 import { unsubscribeFromManager } from "./unSubscribeFromManager";
 
-import { ITestContext, TestContextManager, TestContextWorker } from "@Tests/assets";
-import { nextAsyncQueue, registerWorker, unRegisterWorker } from "@Lib/testing";
+import { ITestContext, TestContextManager, TestContextService } from "@Tests/assets";
+import { nextAsyncQueue, registerService, unRegisterService } from "@Lib/testing";
 
 describe("subscribeToManager method functionality.", () => {
   it("Should not work before registering.", () => {
@@ -11,7 +11,7 @@ describe("subscribeToManager method functionality.", () => {
   });
 
   it("Should not work with non-ContextManager classes.", () => {
-    expect(() => subscribeToManager(TestContextWorker as any, () => {})).toThrow(TypeError);
+    expect(() => subscribeToManager(TestContextService as any, () => {})).toThrow(TypeError);
     expect(() => subscribeToManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
   });
 
@@ -33,7 +33,7 @@ describe("subscribeToManager method functionality.", () => {
   });
 
   it("Should properly notify subscribers.", async () => {
-    const manager: TestContextManager = registerWorker(TestContextManager);
+    const manager: TestContextManager = registerService(TestContextManager);
 
     const withCheckParamsMockFn = jest.fn((context: ITestContext) => {
       expect(context.first).toBe("example");
@@ -61,6 +61,6 @@ describe("subscribeToManager method functionality.", () => {
     await nextAsyncQueue();
     expect(withCheckParamsMockFn).not.toHaveBeenCalled();
 
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 });

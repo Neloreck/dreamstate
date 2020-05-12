@@ -1,2 +1,2 @@
 export * from "./ContextManager";
-export * from "./ContextWorker";
+export * from "./ContextService";

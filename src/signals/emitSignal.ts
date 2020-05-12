@@ -1,4 +1,4 @@
-import { ISignal, ISignalEvent, TDreamstateWorker, TSignalListener, TSignalType } from "../types";
+import { ISignal, ISignalEvent, TDreamstateService, TSignalListener, TSignalType } from "../types";
 import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
 import { cancelSignal } from "./cancelSignal";
 
@@ -10,7 +10,7 @@ import { log } from "../../build/macroses/log.macro";
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: ISignal<D, T>,
-  emitter: TDreamstateWorker | null = null
+  emitter: TDreamstateService | null = null
 ): void {
   // Validate query type.
   if (!base || !base.type) {

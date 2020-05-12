@@ -1,79 +1,79 @@
-import { ContextWorker, getCurrent, OnQuery, QueryResponse } from "../";
+import { ContextService, getCurrent, OnQuery, QueryResponse } from "../";
 import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
 import { IQueryResponse, TQuerySubscriptionMetadata } from "../types";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 
-import { RequestingWorker, RespondingDuplicateWorker, RespondingWorker } from "@Tests/assets/queries";
+import { RequestingService, RespondingDuplicateService, RespondingService } from "@Tests/assets/queries";
 
 describe("@OnQuery and queries processing.", () => {
   beforeEach(() => {
-    registerWorker(RequestingWorker);
-    registerWorker(RespondingWorker);
+    registerService(RequestingService);
+    registerService(RespondingService);
   });
 
   afterEach(() => {
-    unRegisterWorker(RequestingWorker);
-    unRegisterWorker(RespondingWorker);
+    unRegisterService(RequestingService);
+    unRegisterService(RespondingService);
   });
 
   it("Should properly find async query responders or fallback to null.", async () => {
-    const requestingWorker: RequestingWorker = getCurrent(RequestingWorker)!;
+    const requestingService: RequestingService = getCurrent(RequestingService)!;
 
-    const numberResponse: QueryResponse<number> = await requestingWorker.queryAsyncNumberData();
-    const stringResponse: QueryResponse<string> = await requestingWorker.queryAsyncStringData("query");
-    const booleanResponse: QueryResponse<boolean> = await requestingWorker.querySyncBooleanData();
-    const undefinedResponse: QueryResponse<any> = await requestingWorker.queryUndefinedData();
+    const numberResponse: QueryResponse<number> = await requestingService.queryAsyncNumberData();
+    const stringResponse: QueryResponse<string> = await requestingService.queryAsyncStringData("query");
+    const booleanResponse: QueryResponse<boolean> = await requestingService.querySyncBooleanData();
+    const undefinedResponse: QueryResponse<any> = await requestingService.queryUndefinedData();
 
     expect(numberResponse).not.toBeNull();
     expect(numberResponse!.data).toBe(100);
-    expect(numberResponse!.answerer).toBe(RespondingWorker);
+    expect(numberResponse!.answerer).toBe(RespondingService);
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");
-    expect(booleanResponse!.answerer).toBe(RespondingWorker);
+    expect(booleanResponse!.answerer).toBe(RespondingService);
 
     expect(booleanResponse).not.toBeNull();
     expect(booleanResponse!.data).toBe(true);
-    expect(booleanResponse!.answerer).toBe(RespondingWorker);
+    expect(booleanResponse!.answerer).toBe(RespondingService);
 
     expect(undefinedResponse).toBeNull();
   });
 
   it("Should properly handle errors in queries.", () => {
-    const requestingWorker: RequestingWorker = getCurrent(RequestingWorker)!;
+    const requestingService: RequestingService = getCurrent(RequestingService)!;
 
-    expect(requestingWorker.queryAsyncThrowingData()).rejects.toBeInstanceOf(Error);
-    expect(requestingWorker.querySyncThrowingData()).rejects.toBeInstanceOf(Error);
+    expect(requestingService.queryAsyncThrowingData()).rejects.toBeInstanceOf(Error);
+    expect(requestingService.querySyncThrowingData()).rejects.toBeInstanceOf(Error);
   });
 
   it("Should properly handle duplicated query listeners in order of register.", async () => {
-    const requestingWorker: RequestingWorker = getCurrent(RequestingWorker)!;
+    const requestingService: RequestingService = getCurrent(RequestingService)!;
 
-    unRegisterWorker(RespondingWorker);
-    unRegisterWorker(RespondingDuplicateWorker);
+    unRegisterService(RespondingService);
+    unRegisterService(RespondingDuplicateService);
 
-    registerWorker(RespondingWorker);
-    registerWorker(RespondingDuplicateWorker);
+    registerService(RespondingService);
+    registerService(RespondingDuplicateService);
 
-    const first: IQueryResponse<number> = (await requestingWorker.queryAsyncNumberData())!;
+    const first: IQueryResponse<number> = (await requestingService.queryAsyncNumberData())!;
 
     expect(first.data).toBe(100);
 
-    unRegisterWorker(RespondingWorker);
-    unRegisterWorker(RespondingDuplicateWorker);
+    unRegisterService(RespondingService);
+    unRegisterService(RespondingDuplicateService);
 
-    registerWorker(RespondingDuplicateWorker);
-    registerWorker(RespondingWorker);
+    registerService(RespondingDuplicateService);
+    registerService(RespondingService);
 
-    const second: IQueryResponse<number> = (await requestingWorker.queryAsyncNumberData())!;
+    const second: IQueryResponse<number> = (await requestingService.queryAsyncNumberData())!;
 
     expect(second.data).toBe(-1);
   });
 
-  it("Should properly save methods metadata for ContextWorkers.", () => {
-    const responding: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingWorker)!;
-    const requesting: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RequestingWorker)!;
-    const duplicated: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingDuplicateWorker)!;
+  it("Should properly save methods metadata for ContextServices.", () => {
+    const responding: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingService)!;
+    const requesting: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RequestingService)!;
+    const duplicated: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingDuplicateService)!;
 
     expect(responding).toBeDefined();
     expect(duplicated).toBeDefined();
@@ -88,7 +88,7 @@ describe("@OnQuery and queries processing.", () => {
     });
   });
 
-  it("Should not work with non-context worker classes and bad queries.", () => {
+  it("Should not work with non-context service classes and bad queries.", () => {
     expect(() => {
       class Custom {
 
@@ -98,7 +98,7 @@ describe("@OnQuery and queries processing.", () => {
       }
     }).toThrow(TypeError);
     expect(() => {
-      class Worker extends ContextWorker {
+      class Service extends ContextService {
 
         @OnQuery(undefined as any)
         private willWork(): void {}

@@ -19,7 +19,7 @@ export {
   TQueryType as QueryType
 } from "./types";
 
-export { ContextManager, ContextWorker } from "./management";
+export { ContextManager, ContextService } from "./management";
 
 export { getCurrentContext, getCurrent } from "./registry";
 

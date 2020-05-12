@@ -1,7 +1,7 @@
-import { TAnyContextManagerConstructor, TConstructorKey, TSignalType } from "../types";
+import { TAnyContextManagerConstructor, TDreamstateService, TSignalType } from "../types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { createMethodDecorator } from "../polyfills/createMethodDecorator";
-import { ContextWorker } from "../management/ContextWorker";
+import { ContextService } from "../management/ContextService";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -15,18 +15,18 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
 
   return createMethodDecorator<TAnyContextManagerConstructor>(function (
     method: string | symbol,
-    managerConstructor: TAnyContextManagerConstructor
+    Service: TDreamstateService
   ): void {
-    if (!(managerConstructor.prototype instanceof ContextWorker)) {
-      throw new TypeError("Only ContextWorker extending classes methods can be decorated as handlers.");
+    if (!(Service.prototype instanceof ContextService)) {
+      throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");
     }
 
-    log.info("Signal metadata written for context manager:", managerConstructor.name, signalType, method);
+    log.info("Signal metadata written for context manager:", Service.name, signalType, method);
 
-    if (!CONTEXT_SIGNAL_METADATA_REGISTRY.has(managerConstructor)) {
-      CONTEXT_SIGNAL_METADATA_REGISTRY.set(managerConstructor as TConstructorKey, []);
+    if (!CONTEXT_SIGNAL_METADATA_REGISTRY.has(Service)) {
+      CONTEXT_SIGNAL_METADATA_REGISTRY.set(Service, []);
     }
 
-    CONTEXT_SIGNAL_METADATA_REGISTRY.get(managerConstructor)!.push([ method, signalType ]);
+    CONTEXT_SIGNAL_METADATA_REGISTRY.get(Service)!.push([ method, signalType ]);
   });
 }

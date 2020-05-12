@@ -1,5 +1,5 @@
 import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "../types";
-import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY } from "../internals";
+import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "../internals";
 import { promisifyQuery } from "./promisifyQuery";
 
 import { log } from "../../build/macroses/log.macro";
@@ -14,13 +14,13 @@ export function querySingle<
 >(
   query: IOptionalQueryRequest<D, T>
 ): Promise<TQueryResponse<R, T>> {
-  for (const worker of CONTEXT_WORKERS_ACTIVATED) {
-    if (CONTEXT_QUERY_METADATA_REGISTRY.has(worker) && CONTEXT_WORKERS_REGISTRY.has(worker)) {
-      log.info("Checking metadata for:", worker.name, query);
+  for (const service of CONTEXT_SERVICES_ACTIVATED) {
+    if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
+      log.info("Checking metadata for:", service.name, query);
 
-      for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(worker)!) {
+      for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         if (type === query.type) {
-          return promisifyQuery(CONTEXT_WORKERS_REGISTRY.get(worker)!, method, query);
+          return promisifyQuery(CONTEXT_SERVICES_REGISTRY.get(service)!, method, query);
         }
       }
     }

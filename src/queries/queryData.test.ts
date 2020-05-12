@@ -1,16 +1,16 @@
 import { QueryResponse } from "../index";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 import { queryData } from "../queries";
 
-import { EQuery, RespondingWorker } from "@Tests/assets/queries";
+import { EQuery, RespondingService } from "@Tests/assets/queries";
 
 describe("queryData and queries processing.", () => {
   beforeEach(() => {
-    registerWorker(RespondingWorker);
+    registerService(RespondingService);
   });
 
   afterEach(() => {
-    unRegisterWorker(RespondingWorker);
+    unRegisterService(RespondingService);
   });
 
   it("Should validate queryData params.", () => {
@@ -37,12 +37,12 @@ describe("queryData and queries processing.", () => {
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");
-    expect(stringResponse!.answerer).toBe(RespondingWorker);
+    expect(stringResponse!.answerer).toBe(RespondingService);
     expect(typeof stringResponse!.timestamp).toBe("number");
 
     expect(booleanResponse).not.toBeNull();
     expect(booleanResponse!.data).toBe(true);
-    expect(booleanResponse!.answerer).toBe(RespondingWorker);
+    expect(booleanResponse!.answerer).toBe(RespondingService);
     expect(typeof booleanResponse!.timestamp).toBe("number");
   });
 

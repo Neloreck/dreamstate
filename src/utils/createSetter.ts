@@ -7,7 +7,10 @@ import { log } from "../../build/macroses/log.macro";
  * Setter method factory.
  * !Strictly typed generic method with 'update' lifecycle.
  */
-export function createSetter<S extends object, D extends keyof S>(manager: ContextManager<S>, key: D) {
+export function createSetter<S extends object, D extends keyof S>(
+  manager: ContextManager<S>,
+  key: D
+) {
   log.info("Created context setter for:", manager.constructor.name, key);
 
   if (typeof manager.context[key] !== "object") {

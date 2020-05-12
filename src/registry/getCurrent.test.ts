@@ -1,18 +1,18 @@
 import { getCurrent } from "./getCurrent";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 
-import { TestContextWorker } from "@Tests/assets";
+import { TestContextService } from "@Tests/assets";
 
 describe("getCurrent method functionality.", () => {
-  it("Should properly return current worker instance.", () => {
-    expect(getCurrent(TestContextWorker)).toBeNull();
+  it("Should properly return current service instance.", () => {
+    expect(getCurrent(TestContextService)).toBeNull();
 
-    const worker: TestContextWorker = registerWorker(TestContextWorker);
+    const service: TestContextService = registerService(TestContextService);
 
-    expect(getCurrent(TestContextWorker)).toBe(worker);
+    expect(getCurrent(TestContextService)).toBe(service);
 
-    unRegisterWorker(TestContextWorker);
+    unRegisterService(TestContextService);
 
-    expect(getCurrent(TestContextWorker)).toBeNull();
+    expect(getCurrent(TestContextService)).toBeNull();
   });
 });

@@ -2,21 +2,21 @@ import { createElement } from "react";
 import { shallow } from "enzyme";
 
 import { provideSubTreeIterative, provideSubTreeRecursive } from "./index";
-import { registerWorker, unRegisterWorker } from "../test-utils";
+import { registerService, unRegisterService } from "../test-utils";
 
 import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/assets";
 
 describe("provideSubTreeIterative rendering.", () => {
   beforeAll(() => {
-    registerWorker(TestContextManager);
-    registerWorker(NestedContextManager);
-    registerWorker(TestSingleContextManager);
+    registerService(TestContextManager);
+    registerService(NestedContextManager);
+    registerService(TestSingleContextManager);
   });
 
   afterAll(() => {
-    unRegisterWorker(TestContextManager);
-    unRegisterWorker(NestedContextManager);
-    unRegisterWorker(TestSingleContextManager, true);
+    unRegisterService(TestContextManager);
+    unRegisterService(NestedContextManager);
+    unRegisterService(TestSingleContextManager, true);
   });
 
   const provide = (method: typeof provideSubTreeIterative | typeof provideSubTreeRecursive) => {

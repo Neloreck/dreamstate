@@ -1,13 +1,13 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextWorker, createProvider, OnSignal } from "@Lib";
+import { ContextService, createProvider, OnSignal } from "@Lib";
 import { nextAsyncQueue } from "@Lib/testing";
 
 describe("Emitting signal on provision end.", () => {
   const count = jest.fn();
 
-  class EmittingOnProvisionEnd extends ContextWorker {
+  class EmittingOnProvisionEnd extends ContextService {
 
     protected onProvisionEnded() {
       this.emitSignal({ type: "END" });
@@ -15,7 +15,7 @@ describe("Emitting signal on provision end.", () => {
 
   }
 
-  class SubscribedToEndSignal extends ContextWorker {
+  class SubscribedToEndSignal extends ContextService {
 
     @OnSignal("END")
     private onEnd(): void {

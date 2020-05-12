@@ -2,7 +2,7 @@ import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 import { subscribeToManager } from "./subscribeToManager";
 import { unsubscribeFromManager } from "./unSubscribeFromManager";
 
-import { TestContextManager, TestContextWorker } from "@Tests/assets";
+import { TestContextManager, TestContextService } from "@Tests/assets";
 
 describe("unSubscribeFromManager method functionality.", () => {
   it("Should properly remove subscribers from registry.", () => {
@@ -34,7 +34,7 @@ describe("unSubscribeFromManager method functionality.", () => {
   });
 
   it("Should not work with non-ContextManager classes.", () => {
-    expect(() => unsubscribeFromManager(TestContextWorker as any, () => {})).toThrow(TypeError);
+    expect(() => unsubscribeFromManager(TestContextService as any, () => {})).toThrow(TypeError);
     expect(() => unsubscribeFromManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
   });
 });

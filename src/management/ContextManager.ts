@@ -1,9 +1,9 @@
-import { TConstructorKey, TDreamstateWorker, TPartialTransformer } from "../types";
+import { TConstructorKey, TDreamstateService, TPartialTransformer } from "../types";
 import { CONTEXT_STATES_REGISTRY } from "../internals";
 import { shouldObserversUpdate } from "../observing/shouldObserversUpdate";
 import { notifyObservers } from "../observing/notifyObservers";
 import { getReactContext } from "../registry/getReactContext";
-import { ContextWorker } from "./ContextWorker";
+import { ContextService } from "./ContextService";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -12,7 +12,7 @@ import { log } from "../../build/macroses/log.macro";
  * Class based context manager for react.
  * Current Issue: Static items inside of each class instance.
  */
-export abstract class ContextManager<T extends object> extends ContextWorker {
+export abstract class ContextManager<T extends object> extends ContextService {
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
@@ -60,7 +60,7 @@ export abstract class ContextManager<T extends object> extends ContextWorker {
      */
     if (
       shouldObserversUpdate(
-        CONTEXT_STATES_REGISTRY.get(this.constructor as TDreamstateWorker)!,
+        CONTEXT_STATES_REGISTRY.get(this.constructor as TDreamstateService)!,
         nextContext
       )
     ) {

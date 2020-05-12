@@ -1,6 +1,6 @@
 import { createElement, PropsWithChildren, ReactElement } from "react";
 
-import { ContextManager, ContextWorker } from "@Lib/management";
+import { ContextManager, ContextService } from "@Lib/management";
 import { createProvider } from "@Lib/provision";
 
 export interface ITestContext {
@@ -21,10 +21,10 @@ export class TestContextManager extends ContextManager<ITestContext> {
 
 export const TextContextManagerProvider = createProvider([ TestContextManager ]);
 
-export class TestContextWorker extends ContextWorker {
+export class TestContextService extends ContextService {
 }
 
-export class TestSingleContextWorker extends ContextWorker {
+export class TestSingleContextService extends ContextService {
 
   protected static IS_SINGLE: boolean = true;
 

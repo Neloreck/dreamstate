@@ -1,5 +1,5 @@
-import { IOptionalQueryRequest, IQueryResponse, TDreamstateWorker, TQueryType } from "../types";
-import { ContextWorker } from "../";
+import { IOptionalQueryRequest, IQueryResponse, TDreamstateService, TQueryType } from "../types";
+import { ContextService } from "../";
 
 /**
  * Promisify query handler.
@@ -7,7 +7,7 @@ import { ContextWorker } from "../";
  * If it is sync - return value or reject on catch.
  */
 export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
-  worker: ContextWorker,
+  service: ContextService,
   method: TQueryType,
   query: IOptionalQueryRequest<D, T>
 ) {
@@ -17,13 +17,13 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
   ) {
     try {
       const timestamp: number = Date.now();
-      const result: any = (worker as any)[method](query);
+      const result: any = (service as any)[method](query);
 
       if (result instanceof Promise) {
         return result
           .then(function (data: any): void {
             resolve({
-              answerer: worker.constructor as TDreamstateWorker,
+              answerer: service.constructor as TDreamstateService,
               type: query.type,
               data,
               timestamp
@@ -32,7 +32,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
           .catch(reject);
       } else {
         return resolve({
-          answerer: worker.constructor as TDreamstateWorker,
+          answerer: service.constructor as TDreamstateService,
           type: query.type,
           data: result,
           timestamp

@@ -1,4 +1,4 @@
-import { ContextWorker, OnQuery, QueryRequest, QueryResponse } from "@Lib";
+import { ContextService, OnQuery, QueryRequest, QueryResponse } from "@Lib";
 
 export enum EQuery {
   SYNC_BOOLEAN_QUERY = "SYNC_BOOLEAN_QUERY",
@@ -15,7 +15,7 @@ export type TSyncBooleanQuery = QueryRequest<void, EQuery.SYNC_BOOLEAN_QUERY>;
 export type TAsyncExceptionQuery = QueryRequest<void, EQuery.ASYNC_EXCEPTION_QUERY>;
 export type TSyncExceptionQuery = QueryRequest<void, EQuery.SYNC_EXCEPTION_QUERY>;
 
-export class RespondingWorker extends ContextWorker {
+export class RespondingService extends ContextService {
 
   @OnQuery(EQuery.ASYNC_EXCEPTION_QUERY)
   public async onAsyncExceptionQuery(queryRequest: TAsyncExceptionQuery): Promise<never> {
@@ -44,7 +44,7 @@ export class RespondingWorker extends ContextWorker {
 
 }
 
-export class RespondingDuplicateWorker extends ContextWorker {
+export class RespondingDuplicateService extends ContextService {
 
   @OnQuery(EQuery.ASYNC_NUMBER_QUERY)
   public async onAsyncNumberQuery(queryRequest: TAsyncNumberQuery): Promise<number> {
@@ -53,7 +53,7 @@ export class RespondingDuplicateWorker extends ContextWorker {
 
 }
 
-export class RequestingWorker extends ContextWorker {
+export class RequestingService extends ContextService {
 
   public async queryUndefinedData(): Promise<QueryResponse<any>> {
     return this.queryData({ type: EQuery.UNDEFINED_QUERY });

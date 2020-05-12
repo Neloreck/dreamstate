@@ -8,14 +8,14 @@ import { log } from "../../build/macroses/log.macro";
  * Unsubscribe from manager updates.
  */
 export function unsubscribeFromManager<T extends object, D extends IContextManagerConstructor<T>>(
-  managerConstructor: D,
+  Manager: D,
   subscriber: TUpdateSubscriber<T>
 ): void {
-  if (!(managerConstructor.prototype instanceof ContextManager)) {
+  if (!(Manager.prototype instanceof ContextManager)) {
     throw new TypeError("Cannot unsubscribe from class that does not extend ContextManager.");
   }
 
-  log.info("Context manager subscriber removed:", managerConstructor.name);
+  log.info("Context manager subscriber removed:", Manager.name);
 
-  CONTEXT_SUBSCRIBERS_REGISTRY.get(managerConstructor)!.delete(subscriber);
+  CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.delete(subscriber);
 }

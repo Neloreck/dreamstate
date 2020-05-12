@@ -1,5 +1,5 @@
 import { emitSignal } from "./emitSignal";
-import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../testing";
+import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
 import { ISignalEvent, TSignalType } from "../types";
 import { subscribeToSignals } from "./subscribeToSignals";
 import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
@@ -74,7 +74,7 @@ describe("emitSignal method.", () => {
   });
 
   it("Signal subscribers should properly cancel events and be called in declared order.", async () => {
-    const subscribedManager: SubscribedContextManager = registerWorker(SubscribedContextManager);
+    const subscribedManager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     subscribedManager.onStringSignal = jest.fn();
     subscribedManager.onStringOrNumberSignal = jest.fn((signal: ISignalEvent<TSignalType, any>) => signal.cancel());
@@ -96,6 +96,6 @@ describe("emitSignal method.", () => {
     unsubscribeFromSignals(firstSubscriber);
     unsubscribeFromSignals(secondSubscriber);
 
-    unRegisterWorker(SubscribedContextManager);
+    unRegisterService(SubscribedContextManager);
   });
 });

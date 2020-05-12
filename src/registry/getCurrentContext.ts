@@ -7,9 +7,9 @@ import { log } from "../../build/macroses/log.macro";
  * Get current supplied context.
  */
 export function getCurrentContext<T extends TAnyContextManagerConstructor>(
-  managerConstructor: T
+  Manager: T
 ): T["prototype"]["context"] | null {
-  log.info("Requested current manager context:", managerConstructor.name);
+  log.info("Requested current manager context:", Manager.name);
 
-  return CONTEXT_STATES_REGISTRY.get(managerConstructor) || null;
+  return CONTEXT_STATES_REGISTRY.get(Manager) || null;
 }

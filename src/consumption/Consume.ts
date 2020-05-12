@@ -10,7 +10,7 @@ import { useManager } from "./useManager";
  * Function for consume wrappers that maps selectors and allows class components to consume store data.
  * todo: Should we warn if no alias and no selector provided?
  */
-export function createManagersConsumer(target: ComponentType, sources: Array<TConsumable<any>>) {
+export function createManagersConsumer(Target: ComponentType, sources: Array<TConsumable<any>>) {
   if (!Array.isArray(sources)) {
     throw new TypeError("Expecting 'source' parameter to be array type.");
   }
@@ -144,7 +144,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
   // HOC component to pick props and provide needed/selected.
   function Consumer(ownProps: object): ReactElement {
     return createElement(
-      target,
+      Target,
       Object.assign(
         mutators.reduce(
           function (
@@ -171,7 +171,7 @@ export function createManagersConsumer(target: ComponentType, sources: Array<TCo
  * Observes changes and uses default react Provider.
  */
 export const Consume: IConsumeDecorator = function (sources: Array<TConsumable<any>>): ClassDecorator {
-  return createClassWrapDecorator(function (targetClass) {
-    return hoistNonReactStatics(createManagersConsumer(targetClass as any, sources), targetClass as ComponentType);
+  return createClassWrapDecorator(function (Target) {
+    return hoistNonReactStatics(createManagersConsumer(Target as any, sources), Target as ComponentType);
   });
 };

@@ -1,5 +1,5 @@
 import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "../types";
-import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY } from "../internals";
+import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "../internals";
 import { promisifyQuery } from "./promisifyQuery";
 
 export function queryMultiple<R>(
@@ -7,12 +7,12 @@ export function queryMultiple<R>(
 ): Promise<Array<null | TQueryResponse<any>>> {
   const resolved: Array<Promise<null | TQueryResponse<any>>> = new Array(queries.length);
 
-  for (const worker of CONTEXT_WORKERS_ACTIVATED) {
-    if (CONTEXT_QUERY_METADATA_REGISTRY.has(worker) && CONTEXT_WORKERS_REGISTRY.has(worker)) {
-      for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(worker)!) {
+  for (const service of CONTEXT_SERVICES_ACTIVATED) {
+    if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
+      for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         for (let it = 0; it < queries.length; it ++) {
           if (queries[it].type === type && !resolved[it]) {
-            resolved[it] = promisifyQuery(CONTEXT_WORKERS_REGISTRY.get(worker)!, method, queries[it]);
+            resolved[it] = promisifyQuery(CONTEXT_SERVICES_REGISTRY.get(service)!, method, queries[it]);
           }
         }
       }

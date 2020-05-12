@@ -1,4 +1,4 @@
-import { ISignalEvent, TConstructorKey, TDreamstateWorker, TSignalType } from "../types";
+import { ISignalEvent, TConstructorKey, TDreamstateService, TSignalType } from "../types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";
@@ -7,7 +7,7 @@ import { log } from "../../build/macroses/log.macro";
  * Listen signal and call related metadata listeners of this manager.
  */
 export function onMetadataSignalListenerCalled<D = undefined, T extends TSignalType = TSignalType>(
-  this: InstanceType<TDreamstateWorker>,
+  this: InstanceType<TDreamstateService>,
   signal: ISignalEvent<D, T>
 ): void {
   /**
@@ -15,7 +15,7 @@ export function onMetadataSignalListenerCalled<D = undefined, T extends TSignalT
    */
   if (
     signal.emitter !== this.constructor &&
-    CONTEXT_SIGNAL_METADATA_REGISTRY.has(this.constructor as TDreamstateWorker)
+    CONTEXT_SIGNAL_METADATA_REGISTRY.has(this.constructor as TDreamstateService)
   ) {
     log.info("Calling metadata signal api listener:", this.constructor.name);
 

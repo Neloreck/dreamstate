@@ -1,4 +1,4 @@
-import { TDreamstateWorker } from "./internal";
+import { TDreamstateService } from "./internal";
 
 export type TQueryType = symbol | string | number;
 
@@ -44,7 +44,7 @@ export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType
   /**
    * Query answerer.
    */
-  answerer: TDreamstateWorker;
+  answerer: TDreamstateService;
 }
 
 export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = null | IQueryResponse<D, T>;

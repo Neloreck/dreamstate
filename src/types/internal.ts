@@ -1,13 +1,13 @@
 import type { Context } from "react";
 
-import type { ContextWorker, ContextManager } from "../management";
+import type { ContextService, ContextManager } from "../management";
 
-export interface IContextWorkerConstructor {
-  prototype: ContextWorker;
-  new (): ContextWorker;
+export interface IContextServiceConstructor {
+  prototype: ContextService;
+  new (): ContextService;
 }
 
-export interface IContextManagerConstructor<T extends object> extends IContextWorkerConstructor {
+export interface IContextManagerConstructor<T extends object> extends IContextServiceConstructor {
   REACT_CONTEXT: Context<T>;
   prototype: ContextManager<T>;
   new (): ContextManager<T>;
@@ -15,7 +15,7 @@ export interface IContextManagerConstructor<T extends object> extends IContextWo
 
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any>;
 
-export type TDreamstateWorker = IContextWorkerConstructor;
+export type TDreamstateService = IContextServiceConstructor;
 
 export type TPartialTransformer<T> = (value: T) => Partial<T>;
 
@@ -25,4 +25,4 @@ export type TUpdateSubscriber<T extends object> = (context: T) => void;
 
 export type TConstructorKey = any;
 
-export type TWorkerMap<T> = WeakMap<TDreamstateWorker, T>;
+export type TServiceMap<T> = WeakMap<TDreamstateService, T>;

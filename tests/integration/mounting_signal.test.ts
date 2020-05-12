@@ -1,13 +1,13 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextWorker, createProvider, OnSignal } from "@Lib";
+import { ContextService, createProvider, OnSignal } from "@Lib";
 import { nextAsyncQueue } from "@Lib/testing";
 
 describe("Emitting signal on provision start.", () => {
   const count = jest.fn();
 
-  class EmittingOnProvisionStart extends ContextWorker {
+  class EmittingOnProvisionStart extends ContextService {
 
     protected onProvisionStarted() {
       this.emitSignal({ type: "START" });
@@ -15,7 +15,7 @@ describe("Emitting signal on provision start.", () => {
 
   }
 
-  class SubscribedToStartSignal extends ContextWorker {
+  class SubscribedToStartSignal extends ContextService {
 
     @OnSignal("START")
     private onStart(): void {

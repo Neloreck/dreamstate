@@ -1,5 +1,15 @@
-## 3.0.1 (*/*/2020)
+## 3.0.1 (5/12/2020)
   * Arrays as queryData method parameters for multiple queries fetching
+  * Core update:
+    * ContextWorker -> ContextService to reduce confusion with workers and responsibility scope
+  * Test utils update:
+    * registerWorker -> registerService
+    * unRegisterWorker -> unRegisterService
+    * getWorkerObserversCount -> getServiceObserversCount
+    * isWorkerProvided -> isServiceProvided
+    * addManagerObserver -> addServiceObserver
+    * removeManagerObserver -> removeServiceObserver
+  * Minor implementation fixes - shorter code samples/simplified call checks.
 
 ## 3.0.0 (5/9/2020)
   * Tests added, stricter check of library for production builds

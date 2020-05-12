@@ -2,7 +2,7 @@ import {
   IOptionalQueryRequest,
   IQueryRequest,
   ISignal,
-  TDreamstateWorker,
+  TDreamstateService,
   TQueryType,
   TSignalType
 } from "../types";
@@ -11,7 +11,7 @@ import { queryData } from "../queries/queryData";
 
 import { log } from "../../build/macroses/log.macro";
 
-export abstract class ContextWorker {
+export abstract class ContextService {
 
   /**
    * Should dreamstate destroy store instance after observers removal or preserve it for application lifespan.
@@ -38,14 +38,21 @@ export abstract class ContextWorker {
   protected emitSignal<D = undefined, T extends TSignalType = TSignalType>(baseSignal: ISignal<D, T>): void {
     log.info("Context manager emitting signal:", this.constructor.name, baseSignal);
 
-    emitSignal(baseSignal, this.constructor as TDreamstateWorker);
+    emitSignal(baseSignal, this.constructor as TDreamstateService);
   }
 
   /**
    * Send context query to retrieve data from @OnQuery method with required types.
    */
-  protected queryData<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: IOptionalQueryRequest<D, T>) {
-    return queryData(queryRequest as IQueryRequest<D, T>);
+  protected queryData<
+    R extends any,
+    D extends any,
+    T extends TQueryType,
+    Q extends IOptionalQueryRequest<D, T> | Array<IOptionalQueryRequest>
+    >(
+    queryRequest: Q
+  ) {
+    return queryData<R, D, T, Q>(queryRequest);
   }
 
 }

@@ -6,7 +6,7 @@ import { TAnyContextManagerConstructor } from "../types";
  * Get react provider of selected context manager.
  */
 export function getReactProvider<T extends TAnyContextManagerConstructor>(
-  managerConstructor: T
+  Manager: T
 ): Context<T["prototype"]["context"]>["Provider"] {
-  return managerConstructor.REACT_CONTEXT.Provider;
+  return Manager.REACT_CONTEXT.Provider;
 }

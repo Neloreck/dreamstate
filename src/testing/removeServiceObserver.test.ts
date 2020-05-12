@@ -1,29 +1,29 @@
 import {
-  addManagerObserver,
-  registerWorker,
-  removeManagerObserver,
-  unRegisterWorker
+  addServiceObserver,
+  registerService,
+  removeServiceObserver,
+  unRegisterService
 } from "../test-utils";
 import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
 
-import { ExampleContextManager, TestContextManager, TestContextWorker } from "@Tests/assets";
+import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/assets";
 
 describe("Remove manager observer util.", () => {
   beforeAll(() => {
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
   });
 
   afterAll(() => {
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 
   it("Should throw errors for wrong method targets.", () => {
-    expect(() => removeManagerObserver(null as any, jest.fn())).toThrow(TypeError);
-    expect(() => removeManagerObserver(undefined as any, jest.fn())).toThrow(TypeError);
-    expect(() => removeManagerObserver(0 as any, jest.fn())).toThrow(TypeError);
-    expect(() => removeManagerObserver(TestContextWorker as any, jest.fn())).toThrow(TypeError);
-    expect(() => removeManagerObserver(class Any {} as any, jest.fn())).toThrow(TypeError);
-    expect(() => removeManagerObserver(ExampleContextManager, jest.fn())).toThrow(Error);
+    expect(() => removeServiceObserver(null as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeServiceObserver(undefined as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeServiceObserver(0 as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeServiceObserver(class Any {} as any, jest.fn())).toThrow(TypeError);
+    expect(() => removeServiceObserver(TestContextService as any, jest.fn())).toThrow(Error);
+    expect(() => removeServiceObserver(ExampleContextManager, jest.fn())).toThrow(Error);
   });
 
   it("Should remove observer from registry.", () => {
@@ -33,34 +33,34 @@ describe("Remove manager observer util.", () => {
     const first = jest.fn();
     const second = jest.fn();
 
-    addManagerObserver(TestContextManager, first);
-    addManagerObserver(TestContextManager, second);
+    addServiceObserver(TestContextManager, first);
+    addServiceObserver(TestContextManager, second);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(2);
 
-    removeManagerObserver(TestContextManager, first);
+    removeServiceObserver(TestContextManager, first);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
 
-    removeManagerObserver(TestContextManager, second);
+    removeServiceObserver(TestContextManager, second);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
   });
 
   it("Should properly trigger lifecycle of manager.", async () => {
-    const manager: TestContextManager = registerWorker(TestContextManager);
+    const manager: TestContextManager = registerService(TestContextManager);
     const spy = jest.fn();
     const observer = jest.fn();
 
     manager["onProvisionEnded"] = spy;
 
-    addManagerObserver(TestContextManager, observer);
+    addServiceObserver(TestContextManager, observer);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
     expect(spy).not.toHaveBeenCalled();
 
-    removeManagerObserver(TestContextManager, observer);
+    removeServiceObserver(TestContextManager, observer);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
     expect(spy).toHaveBeenCalledTimes(1);

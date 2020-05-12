@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 
 import { Consume } from "./index";
 import { getCurrent } from "../registry";
-import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../testing";
+import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
 
 import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/assets";
 
@@ -14,11 +14,11 @@ describe("@Consume selector observing.", () => {
   }
 
   beforeEach(() => {
-    registerWorker(TestContextManager);
+    registerService(TestContextManager);
   });
 
   afterEach(() => {
-    unRegisterWorker(TestContextManager);
+    unRegisterService(TestContextManager);
   });
 
   it("Should properly observe only one property and prevent odd updates.", async () => {

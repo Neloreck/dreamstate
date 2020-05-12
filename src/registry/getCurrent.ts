@@ -1,5 +1,5 @@
-import { TDreamstateWorker } from "../types";
-import { CONTEXT_WORKERS_REGISTRY } from "../internals";
+import { TDreamstateService } from "../types";
+import { CONTEXT_SERVICES_REGISTRY } from "../internals";
 
 import { log } from "../../build/macroses/log.macro";
 
@@ -7,10 +7,10 @@ import { log } from "../../build/macroses/log.macro";
  * Get current manager instance from registry.
  * Returns null if nothing is found.
  */
-export function getCurrent<T extends TDreamstateWorker>(
-  workerConstructor: T
+export function getCurrent<T extends TDreamstateService>(
+  Service: T
 ): InstanceType<T> | null {
-  log.info("Requested current worker:", workerConstructor.name);
+  log.info("Requested current service:", Service.name);
 
-  return CONTEXT_WORKERS_REGISTRY.get(workerConstructor) as InstanceType<T> || null;
+  return CONTEXT_SERVICES_REGISTRY.get(Service) as InstanceType<T> || null;
 }

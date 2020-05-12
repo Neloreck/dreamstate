@@ -1,8 +1,8 @@
 import { OnSignal } from "./OnSignal";
-import { ContextWorker } from "../management";
+import { ContextService } from "../management";
 import { TSignalSubscriptionMetadata, TSignalType } from "../types";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
-import { nextAsyncQueue, registerWorker, unRegisterWorker } from "../testing";
+import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
 import { emitSignal } from "./emitSignal";
 
 import { ESignal, SubscribedContextManager } from "@Tests/assets/signals";
@@ -42,7 +42,7 @@ describe("@OnSignal metadata decorator.", () => {
   });
 
   it("Signal decorator methods should properly subscribe.", async () => {
-    const subscribedManager: SubscribedContextManager = registerWorker(SubscribedContextManager)!;
+    const subscribedManager: SubscribedContextManager = registerService(SubscribedContextManager)!;
 
     subscribedManager.onNumberSignal = jest.fn();
     subscribedManager.onStringSignal = jest.fn();
@@ -79,12 +79,12 @@ describe("@OnSignal metadata decorator.", () => {
     expect(subscribedManager.onStringOrNumberSignal).not.toHaveBeenCalled();
     expect(subscribedManager.onStringSignal).not.toHaveBeenCalled();
 
-    unRegisterWorker(SubscribedContextManager)!;
+    unRegisterService(SubscribedContextManager)!;
   });
 
-  it("Should work only with context workers.", () => {
+  it("Should work only with context services.", () => {
     expect(() => {
-      class Throwing extends ContextWorker {
+      class Throwing extends ContextService {
 
         @OnSignal(undefined as any)
         public onSignal(): number {
