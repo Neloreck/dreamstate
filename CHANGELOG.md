@@ -1,3 +1,6 @@
+## 3.0.1 (*/*/2020)
+  * Arrays as queryData method parameters for multiple queries fetching
+
 ## 3.0.0 (5/9/2020)
   * Tests added, stricter check of library for production builds
   * Included CJS and ESM bundles into library

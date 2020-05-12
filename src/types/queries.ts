@@ -2,7 +2,18 @@ import { TDreamstateWorker } from "./internal";
 
 export type TQueryType = symbol | string | number;
 
-export interface IQueryRequest<D = undefined, T extends TQueryType = TQueryType> {
+export interface IOptionalQueryRequest<D extends any = any, T extends TQueryType = TQueryType> {
+  /**
+   * Query key type for search matching.
+   */
+  type: T;
+  /**
+   * Query requested data params.
+   */
+  data?: D;
+}
+
+export interface IQueryRequest<D extends any = undefined, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
    */

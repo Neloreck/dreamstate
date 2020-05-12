@@ -1,92 +1,28 @@
-import {
-  IQueryRequest,
-  IQueryResponse,
-  TDreamstateWorker,
-  TQueryResponse,
-  TQuerySubscriptionMetadata,
-  TQueryType
-} from "../types";
-import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_WORKERS_ACTIVATED, CONTEXT_WORKERS_REGISTRY } from "../internals";
-import { ContextWorker } from "../management/ContextWorker";
-
-import { log } from "../../build/macroses/log.macro";
+import { IOptionalQueryRequest, IQueryRequest, TQueryRequest, TQueryResponse, TQueryType } from "../types";
+import { queryMultiple } from "./queryMultiple";
+import { querySingle } from "./querySingle";
 
 /**
- * Find correct async listener and send response or null.
+ * Find correct async listener or array of listeners and return response or null.
  * Try to find matching type and call related method.
  */
-export function queryData<R, D = undefined, T extends TQueryType = TQueryType>(
-  query: IQueryRequest<D, T>,
-  sender?: TDreamstateWorker
-): Promise<TQueryResponse<R, T> | null> {
-  // Validate query type.
-  if (!query || !query.type) {
-    throw new TypeError("Query must be an object with declared type.");
-  }
-
-  const timestamp: number = Date.now();
-
-  log.info("Possible query resolvers:", CONTEXT_WORKERS_ACTIVATED.size);
-  // Search each context worker metadata.
-  for (const worker of CONTEXT_WORKERS_ACTIVATED) {
-    // Skip own metadata checking.
-    // Skip workers without metadata.
-    // Skip non-instantiated workers.
-    if (
-      worker === sender ||
-      !CONTEXT_QUERY_METADATA_REGISTRY.has(worker) ||
-      !CONTEXT_WORKERS_REGISTRY.has(worker)
-    ) {
-      continue;
-    }
-
-    log.info("Checking metadata for:", worker.name, query);
-
-    const workerMeta: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(worker)!;
-
-    for (let jt = 0; jt < workerMeta.length; jt ++) {
-      if (workerMeta[jt][1] === query.type) {
-        log.info(
-          "Query resolver was found, triggering callback:",
-          sender && sender.name,
-          query,
-          "=>",
-          worker.name,
-          workerMeta[jt][0]
-        );
-
-        const answerer: ContextWorker = CONTEXT_WORKERS_REGISTRY.get(worker)!;
-
-        return new Promise(function (
-          resolve: (response: IQueryResponse<R, T> | null) => void,
-          reject: (error: Error) => void
-        ): any {
-          /**
-           * Promisify query handler.
-           * If it is async, add then and catch handlers.
-           * If it is sync - return value or reject on catch.
-           */
-          try {
-            const result: any = (answerer as any)[workerMeta[jt][0]](query);
-
-            if (result instanceof Promise) {
-              return result
-                .then(function (data: any): void {
-                  resolve({ answerer: worker, type: query.type, data, timestamp });
-                })
-                .catch(reject);
-            } else {
-              return resolve({ answerer: worker, type: query.type, data: result, timestamp });
-            }
-          } catch (error) {
-            reject(error);
-          }
-        });
+export function queryData<
+  R,
+  D extends any,
+  T extends TQueryType,
+  Q extends IOptionalQueryRequest<D, T> | Array<IOptionalQueryRequest>
+>(
+  queries: Q
+): Q extends Array<any> ? Promise<Array<TQueryResponse<any, T>>> : Promise<TQueryResponse<R, T>> {
+  if (Array.isArray(queries)) {
+    for (const query of queries) {
+      if (!query || !query.type) {
+        throw new TypeError("Query must be an object with declared type or array of objects with type.");
       }
     }
+  } else if (!queries || !(queries as IQueryRequest<D, T>).type) {
+    throw new TypeError("Query must be an object with declared type or array of objects with type.");
   }
 
-  log.info("Query resolver was not found, returning null:", sender && sender.name, query);
-
-  return Promise.resolve(null);
+  return Array.isArray(queries) ? queryMultiple(queries) : (querySingle(queries as IQueryRequest<D, T>) as any);
 }

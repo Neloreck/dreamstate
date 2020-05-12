@@ -14,6 +14,13 @@ describe("queryData and queries processing.", () => {
   });
 
   it("Should validate queryData params.", () => {
+    expect(() => queryData([])).not.toThrow(TypeError);
+    expect(() => queryData([ { type: "TEST", data: undefined } ])).not.toThrow(TypeError);
+    expect(() => queryData({ type: "TEST", data: undefined })).not.toThrow(TypeError);
+    expect(() => queryData([ 1 as any ])).toThrow(TypeError);
+    expect(() => queryData([ undefined as any ])).toThrow(TypeError);
+    expect(() => queryData([ "asd" as any ])).toThrow(TypeError);
+    expect(() => queryData([ {} as any ])).toThrow(TypeError);
     expect(() => queryData(undefined as any)).toThrow(TypeError);
     expect(() => queryData(false as any)).toThrow(TypeError);
     expect(() => queryData(true as any)).toThrow(TypeError);
@@ -21,13 +28,12 @@ describe("queryData and queries processing.", () => {
     expect(() => queryData("123" as any)).toThrow(TypeError);
     expect(() => queryData(1 as any)).toThrow(TypeError);
     expect(() => queryData(null as any)).toThrow(TypeError);
-    expect(() => queryData([] as any)).toThrow(TypeError);
     expect(() => queryData({} as any)).toThrow(TypeError);
   });
 
   it("Should properly handle sync and async queryData listeners.", async () => {
     const stringResponse: QueryResponse<string> = await queryData({ type: EQuery.ASYNC_STRING_QUERY, data: "query" });
-    const booleanResponse: QueryResponse<string> = await queryData({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });
+    const booleanResponse: QueryResponse<boolean> = await queryData({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");
@@ -38,18 +44,6 @@ describe("queryData and queries processing.", () => {
     expect(booleanResponse!.data).toBe(true);
     expect(booleanResponse!.answerer).toBe(RespondingWorker);
     expect(typeof booleanResponse!.timestamp).toBe("number");
-  });
-
-  it("Should properly find async query responders or fallback to null.", async () => {
-    const numberResponse: QueryResponse<number> = await queryData({ type: EQuery.ASYNC_NUMBER_QUERY, data: null });
-    const undefinedResponse: QueryResponse<any> = await queryData({ type: EQuery.UNDEFINED_QUERY, data: null });
-
-    expect(numberResponse).not.toBeNull();
-    expect(numberResponse!.data).toBe(100);
-    expect(numberResponse!.answerer).toBe(RespondingWorker);
-    expect(typeof numberResponse!.timestamp).toBe("number");
-
-    expect(undefinedResponse).toBeNull();
   });
 
   it("Should properly handle errors in queries.", () => {

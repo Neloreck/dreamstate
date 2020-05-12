@@ -1,6 +1,6 @@
 import {
+  IOptionalQueryRequest,
   IQueryRequest,
-  IQueryResponse,
   ISignal,
   TDreamstateWorker,
   TQueryType,
@@ -44,13 +44,8 @@ export abstract class ContextWorker {
   /**
    * Send context query to retrieve data from @OnQuery method with required types.
    */
-  protected queryData<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: {
-    type: T;
-    data?: D;
-  }): Promise<IQueryResponse<R, T> | null> {
-    log.info("Context manager sending query:", this.constructor.name, queryRequest);
-
-    return queryData(queryRequest as IQueryRequest<D, T>, this.constructor as TDreamstateWorker);
+  protected queryData<R, D = undefined, T extends TQueryType = TQueryType>(queryRequest: IOptionalQueryRequest<D, T>) {
+    return queryData(queryRequest as IQueryRequest<D, T>);
   }
 
 }
