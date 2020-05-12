@@ -16,7 +16,9 @@ import { log } from "../../build/macroses/log.macro";
 /**
  * Notify observers and check if update is needed.
  */
-export function notifyObservers<T extends IStringIndexed<any>>(manager: ContextManager<T>): void {
+export function notifyObservers<T extends IStringIndexed<any>>(
+  manager: ContextManager<T>
+): void {
   const nextContext: T = manager.context;
 
   log.info(

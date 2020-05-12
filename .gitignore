@@ -63,6 +63,7 @@ typings/
 target/
 cjs/
 es/
+portable/
 umd/
 iife/
 types/

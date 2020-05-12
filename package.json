@@ -21,11 +21,12 @@
   "module": "./esm/index.js",
   "types": "./types/",
   "scripts": {
-    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types",
+    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types ./portable",
     "build:debug": "npx cross-env NODE_ENV=debug rollup -c ./build/rollup.bundle.config.js",
     "build:cjs": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.cjs.config.js",
     "build:esm": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.config.js",
     "build:dts": "npx tsc -d -p ./build/tsconfig.build.json --outDir ./types --emitDeclarationOnly && cp ./build/reexport/* ./",
+    "build:portable": "npm run clean && npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.portable.config.js",
     "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "lint": "npx eslint . --ext .ts,.js,",
     "test": "jest --config ./build/jest.config.js",
