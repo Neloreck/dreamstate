@@ -65,7 +65,7 @@
       { "blankLine": "always", "prev": "expression", "next": [ "const", "let", "var" ] },
       { "blankLine": "always", "prev": [ "const", "let", "var" ], "next": "*" },
       { "blankLine": "always", "prev": [ "for", "if", "while", "do", "with" ], "next": "*" },
-      { "blankLine": "always", "prev": "function", "next": "function" },
+      { "blankLine": "always", "prev": [ "function", "class" ], "next": [ "function", "class" ] },
       { "blankLine": "any", "prev": [ "const", "let", "var" ], "next": [ "const", "let", "var" ] }
     ],
     "space-unary-ops": [

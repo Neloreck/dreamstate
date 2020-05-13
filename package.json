@@ -1,42 +1,13 @@
 {
   "name": "dreamstate",
-  "version": "3.0.2",
+  "version": "3.0.2-experimental.7",
   "description": "Store management library based on context and observers.",
   "sideEffects": false,
   "private": false,
   "author": "Syrotenko Igor",
   "license": "MIT",
-  "files": [
-    "index.*",
-    "test-utils.*",
-    "esm/",
-    "cjs/",
-    "types/"
-  ],
   "main": "./index.js",
   "module": "./esm/index.js",
-  "types": "./types/",
-  "scripts": {
-    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types ./portable",
-    "build:debug": "npx cross-env NODE_ENV=debug rollup -c ./build/rollup.bundle.config.js",
-    "build:cjs": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.cjs.config.js",
-    "build:esm": "npx cross-env NODE_ENV=development rollup -c ./build/rollup.esm.config.js",
-    "build:dts": "npx tsc -d -p ./build/tsconfig.build.json --outDir ./types --emitDeclarationOnly",
-    "build:static": "cp ./build/reexport/cjs/* ./",
-    "build:portable": "npm run clean && npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.portable.config.js",
-    "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs && npm run build:static",
-    "lint": "npx eslint . --ext .ts,.js,",
-    "test": "jest --config ./build/jest.config.js",
-    "prepublishOnly": "npm run clean && npm run lint && npm test && npm run build"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neloreck/dreamstate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/neloreck/dreamstate/issues"
-  },
-  "homepage": "https://github.com/neloreck/dreamstate#readme",
   "keywords": [
     "action",
     "class-based",
@@ -50,17 +21,44 @@
     "typescript",
     "utility"
   ],
-  "peerDependencies": {
-    "react": ">=16.8.0"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neloreck/dreamstate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neloreck/dreamstate/issues"
+  },
+  "homepage": "https://github.com/neloreck/dreamstate#readme",
+  "files": [
+    "index.*",
+    "test-utils.*",
+    "esm/",
+    "types/",
+    "cjs/"
+  ],
+  "scripts": {
+    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types ./portable",
+    "build:debug": "npx cross-env NODE_ENV=debug rollup -c ./build/rollup.bundle.config.js",
+    "build:cjs": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.cjs.config.js",
+    "build:esm": "npx cross-env NODE_ENV=development rollup -c ./build/rollup.esm.config.js",
+    "build:dts": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.dts.config.js && mv ./types/lib ./types/lib.d.ts",
+    "build:portable": "npm run clean && npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.portable.config.js",
+    "build": "npm run build:dts && npm run build:esm && npm run build:cjs",
+    "lint": "npx eslint . --ext .ts,.js,",
+    "test": "jest --config ./build/jest.config.js",
+    "prepublishOnly": "npm run clean && npm run lint && npm test && npm run build"
   },
   "dependencies": {
-    "tslib": "^1.11.1",
+    "tslib": "^1.12.0",
     "hoist-non-react-statics": ">=3.0.0",
     "shallow-equal": ">=1.0.0"
   },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.9.0",
+    "@babel/core": "^7.9.6",
     "@babel/node": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
     "@babel/plugin-proposal-decorators": "^7.8.3",
@@ -75,31 +73,32 @@
     "@types/hoist-non-react-statics": "^3.3.1",
     "@types/jest": "^25.2.1",
     "@types/node": "^13.13.0",
-    "@types/react": ">=16.9.16",
-    "@types/react-dom": ">=16.9.6",
+    "@types/react": ">=16.8.0",
+    "@types/react-dom": ">=16.8.0",
     "@typescript-eslint/eslint-plugin": "^2.28.0",
     "@typescript-eslint/parser": "^2.28.0",
     "babel-jest": "^25.3.0",
     "babel-plugin-macros": "^2.8.0",
     "babel-plugin-module-resolver": "^4.0.0",
-    "benchmark": "^2.1.4",
     "cross-env": "^7.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "enzyme-to-json": "^3.4.4",
-    "eslint": "^6.8.0",
+    "eslint": "^7.0.0",
     "eslint-plugin-import": "^2.20.2",
-    "eslint-plugin-jest": "^23.8.2",
-    "jest": "^25.3.0",
-    "react": "^16.13.1",
+    "eslint-plugin-jest": "^23.11.0",
+    "jest": "^26.0.1",
+    "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.6.1",
+    "rollup": "^2.10.0",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-dts": "^1.4.3",
     "rollup-plugin-multi-input": "^1.1.1",
+    "rollup-plugin-size-snapshot": "^0.11.0",
     "rollup-plugin-terser": "^5.3.0",
-    "ts-node": "^8.9.0",
-    "typescript": "^3.8.3"
+    "ts-node": "^8.10.1",
+    "typescript": "^3.9.2"
   }
 }

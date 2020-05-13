@@ -5,6 +5,8 @@ import { default as typescript } from "@rollup/plugin-typescript";
 import { default as replace } from "@rollup/plugin-replace";
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
+import { default as dts } from "rollup-plugin-dts";
+import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
@@ -18,7 +20,7 @@ export const ESM_CONFIG = {
   preserveModules: false,
   output: {
     compact: IS_PRODUCTION,
-    dir: "./portable/",
+    file: "./portable/dreamstate.js",
     sourcemap: true,
     format: "es"
   },
@@ -36,8 +38,22 @@ export const ESM_CONFIG = {
     typescript({
       tsconfig: path.resolve(__dirname, "./tsconfig.portable.json"),
       declaration: false
-    })
+    }),
+    sizeSnapshot({ snapshotPath: "./build/size_snapshot.json" })
   ]
 };
 
-export default ESM_CONFIG;
+export const DTS_CONFIG = {
+  input: [
+    "./src/index.ts"
+  ],
+  output: {
+    file: "./portable/dreamstate.ts",
+    format: "es"
+  },
+  plugins: [
+    dts()
+  ]
+};
+
+export default [ DTS_CONFIG, ESM_CONFIG ];

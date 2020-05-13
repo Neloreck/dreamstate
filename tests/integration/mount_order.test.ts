@@ -7,7 +7,9 @@ import { CONTEXT_SERVICES_ACTIVATED } from "@Lib/internals";
 
 describe("Mount order for providers.", () => {
   class First extends ContextService {}
+
   class Second extends ContextService {}
+
   class Third extends ContextService {}
 
   const Provider = createProvider([ First, Second, Third ]);
