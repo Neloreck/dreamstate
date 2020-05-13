@@ -11,7 +11,7 @@ import {
 } from "../internals";
 import { registerService, unRegisterService } from "../test-utils";
 
-import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/assets";
+import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/../fixtures";
 
 describe("Register service test util.", () => {
   it("Should not be initialized before test.", () => {

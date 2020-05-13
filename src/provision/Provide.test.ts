@@ -4,7 +4,7 @@ import { createElement, PureComponent, ReactNode } from "react";
 import { Provide } from "./Provide";
 import { CONTEXT_SERVICES_ACTIVATED } from "../internals";
 
-import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/assets";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/../fixtures";
 
 describe("@Provide decorator.", () => {
   @Provide([ TestContextManager, TestContextService, TestSingleContextService ])

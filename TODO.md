@@ -3,7 +3,11 @@
 - createAsync as loadable copy with stored promise or extended createLoadable
 - test queries with cases when declared 2 or more handlers
 - test useContextWithMemo properly
+- fixtures separation and review - removed odd items
 - more exotic cases
+- macros alias
+- alias after type bundling fixes?
+- multiple tsconfig usage review
 
 - Docs update
 - Simple examples of library usage

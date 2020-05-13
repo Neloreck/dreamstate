@@ -2,7 +2,7 @@ import { Context } from "react";
 
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
 
-import { TestContextManager } from "@Tests/assets";
+import { TestContextManager } from "@Tests/../fixtures";
 
 describe("getReactContext method.", () => {
   it("Related react context should be lazily initialized correctly with changed displayName.", () => {

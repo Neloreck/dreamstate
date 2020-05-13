@@ -3,7 +3,7 @@ import { registerService, unRegisterService } from "../testing";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { ISignalEvent } from "../types";
 
-import { ESignal, SubscribedContextManager, TestContextManager } from "@Tests/assets";
+import { ESignal, SubscribedContextManager, TestContextManager } from "@Tests/../fixtures";
 
 describe("onMetadataSignalListenerCalled method functionality.", () => {
   it("Should ignore services without metadata and not throw any errors.", () => {

@@ -6,7 +6,7 @@ import { Consume } from "./index";
 import { getCurrent } from "../registry";
 import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
 
-import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/assets";
+import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/../fixtures";
 
 describe("@Consume selector observing.", () => {
   function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {

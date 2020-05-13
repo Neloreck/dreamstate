@@ -11,7 +11,7 @@ import {
 } from "../types";
 import { ContextManager } from "../management";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Notify observers and check if update is needed.

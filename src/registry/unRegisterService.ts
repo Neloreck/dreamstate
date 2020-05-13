@@ -7,7 +7,7 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "../internals";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 export function unRegisterService<T extends object>(
   Service: TDreamstateService,

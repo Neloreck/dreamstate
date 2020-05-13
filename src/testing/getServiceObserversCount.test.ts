@@ -8,7 +8,7 @@ import {
 import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
 import { ContextService } from "../management";
 
-import { TestContextManager } from "@Tests/assets";
+import { TestContextManager } from "@Tests/../fixtures";
 
 describe("Get service observers count util.", () => {
   it("Should properly fail for unregistered services.", () => {

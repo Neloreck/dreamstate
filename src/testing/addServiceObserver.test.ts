@@ -6,7 +6,7 @@ import {
 } from "./index";
 import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
 
-import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/assets";
+import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/../fixtures";
 
 describe("Add manager observer util.", () => {
   beforeAll(() => {

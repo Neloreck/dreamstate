@@ -8,8 +8,8 @@
     "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "rootDir": "../src",
-    "baseUrl": "../",
+    "rootDir": "../../src",
+    "baseUrl": "../..",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,
@@ -28,11 +28,10 @@
     }
   },
   "include": [
-    "../src"
+    "../../src"
   ],
   "exclude": [
-    "../tests",
-    "../src/**/*.test.ts",
+    "../../src/**/*.test.ts",
     "node_modules"
   ]
 }

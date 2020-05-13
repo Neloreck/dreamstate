@@ -3,7 +3,7 @@ import { Context, createContext } from "react";
 import { TAnyContextManagerConstructor } from "../types";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Get manager react context internal.

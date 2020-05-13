@@ -8,7 +8,7 @@ import {
   Provide,
   useManager,
   withConsumption
-} from "@Lib";
+} from "../index";
 
 /**
  * Utils for react tree testing.

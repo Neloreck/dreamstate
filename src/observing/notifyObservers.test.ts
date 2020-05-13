@@ -9,7 +9,7 @@ import {
 import { subscribeToManager, unsubscribeFromManager, getCurrentContext } from "../registry";
 import { CONTEXT_STATES_REGISTRY } from "../internals";
 
-import { ITestContext, TestContextManager } from "@Tests/assets";
+import { ITestContext, TestContextManager } from "@Tests/../fixtures";
 
 describe("notifyObservers method functionality.", () => {
   it("Should correctly set nextState for managers.", () => {

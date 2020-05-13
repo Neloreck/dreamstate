@@ -1,4 +1,4 @@
-import { ContextService, OnQuery, QueryRequest, QueryResponse } from "@Lib";
+import { ContextService, OnQuery, QueryRequest, QueryResponse } from "../index";
 
 export enum EQuery {
   SYNC_BOOLEAN_QUERY = "SYNC_BOOLEAN_QUERY",

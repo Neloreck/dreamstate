@@ -3,8 +3,8 @@ import { createElement } from "react";
 
 import { CONTEXT_SERVICES_ACTIVATED } from "../internals";
 
-import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/assets";
-import { createProvider } from "@Lib";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/../fixtures";
+import { createProvider } from "../";
 
 describe("createProvider method.", () => {
   const Provider = createProvider([ TestContextManager, TestContextService, TestSingleContextService ]);

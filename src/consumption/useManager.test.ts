@@ -13,7 +13,7 @@ import {
   ExampleContextFunctionalProvider,
   ExampleContextManager,
   IExampleContext
-} from "@Tests/assets";
+} from "@Tests/../fixtures";
 
 describe("UseManager subscription and rendering.", () => {
   it("Functional components should properly subscribe to managers without diff-checking cb.", async () => {

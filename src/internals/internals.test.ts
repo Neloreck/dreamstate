@@ -14,7 +14,7 @@ import {
 import { unRegisterService } from "../registry";
 import { registerService } from "../testing";
 
-import { TestContextManager } from "@Tests/assets";
+import { TestContextManager } from "@Tests/../fixtures";
 
 describe("Dreamstate internals.", () => {
   it("Should contain only listed objects.", () => {

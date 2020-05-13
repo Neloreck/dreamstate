@@ -1,6 +1,6 @@
 import { createManagersObserver } from "./createManagersObserver";
 
-import { TestContextService, TestContextManager } from "@Tests/assets";
+import { TestContextService, TestContextManager } from "@Tests/../fixtures";
 import { mount } from "enzyme";
 import { createElement, PropsWithChildren } from "react";
 

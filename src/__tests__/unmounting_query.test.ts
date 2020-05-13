@@ -1,8 +1,8 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextService, createProvider, OnQuery } from "@Lib";
-import { nextAsyncQueue } from "@Lib/testing";
+import { ContextService, createProvider, OnQuery } from "../";
+import { nextAsyncQueue } from "../testing";
 
 describe("Emitting signal on provision end.", () => {
   const count = jest.fn();

@@ -5,7 +5,7 @@ import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
 import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
 import { emitSignal } from "./emitSignal";
 
-import { ESignal, SubscribedContextManager } from "@Tests/assets/signals";
+import { ESignal, SubscribedContextManager } from "@Tests/../fixtures/signals";
 
 describe("@OnSignal metadata decorator.", () => {
   it("Signal decorator should properly add metadata.", () => {

@@ -22,9 +22,7 @@
       "dom"
     ],
     "paths": {
-      "@Lib": [ "src/index.ts" ],
-      "@Lib/*": [ "src/*" ],
-      "@Tests/*": [ "tests/*" ]
+      "@Tests/*": [ "src/__tests__/*" ]
     }
   },
   "exclude": [

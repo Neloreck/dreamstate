@@ -2,7 +2,7 @@ import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
 import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
 import { ContextManager } from "../management/ContextManager";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Subscribe to manager updates/changes.

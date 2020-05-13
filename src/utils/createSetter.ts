@@ -1,7 +1,7 @@
 import { TPartialTransformer } from "../types";
 import { ContextManager } from "../management";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Setter method factory.

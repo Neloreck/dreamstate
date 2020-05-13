@@ -9,7 +9,7 @@ import {
   CONTEXT_SERVICES_REGISTRY
 } from "../internals";
 
-import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/assets";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/../fixtures";
 
 describe("unRegisterService method functionality.", () => {
   it("Should properly unregister generic services.", () => {

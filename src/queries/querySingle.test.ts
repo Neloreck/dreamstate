@@ -2,7 +2,7 @@ import { QueryResponse } from "../index";
 import { registerService, unRegisterService } from "../test-utils";
 import { querySingle } from "../queries";
 
-import { EQuery, RespondingService } from "@Tests/assets/queries";
+import { EQuery, RespondingService } from "@Tests/../fixtures/queries";
 
 describe("querySingle method.", () => {
   beforeEach(() => {

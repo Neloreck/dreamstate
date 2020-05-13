@@ -6,7 +6,7 @@ import {
 } from "../internals";
 import { unRegisterService } from "./unRegisterService";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Remove state changes observer and kill instance if it is not singleton.

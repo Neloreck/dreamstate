@@ -38,14 +38,14 @@
   ],
   "scripts": {
     "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types ./portable",
-    "build:debug": "npx cross-env NODE_ENV=debug rollup -c ./build/rollup.bundle.config.js",
-    "build:cjs": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.cjs.config.js",
-    "build:esm": "npx cross-env NODE_ENV=development rollup -c ./build/rollup.esm.config.js",
-    "build:dts": "npx cross-env NODE_ENV=production rollup -c ./build/rollup.dts.config.js && mv ./types/lib ./types/lib.d.ts",
-    "build:portable": "npm run clean && npx cross-env NODE_ENV=production rollup -c ./build/rollup.esm.portable.config.js",
+    "build:debug": "npx cross-env NODE_ENV=debug rollup -c cli/build/rollup.bundle.config.js",
+    "build:cjs": "npx cross-env NODE_ENV=production rollup -c cli/build/rollup.cjs.config.js",
+    "build:esm": "npx cross-env NODE_ENV=development rollup -c cli/build/rollup.esm.config.js",
+    "build:dts": "npx cross-env NODE_ENV=production rollup -c cli/build/rollup.dts.config.js && mv ./types/lib ./types/lib.d.ts",
+    "build:portable": "npm run clean && npx cross-env NODE_ENV=production rollup -c cli/build/rollup.esm.portable.config.js",
     "build": "npm run build:dts && npm run build:esm && npm run build:cjs",
     "lint": "npx eslint . --ext .ts,.js,",
-    "test": "jest --config ./build/jest.config.js",
+    "test": "jest --config cli/test/jest.config.js --detectOpenHandles",
     "prepublishOnly": "npm run clean && npm run lint && npm test && npm run build"
   },
   "dependencies": {

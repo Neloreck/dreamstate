@@ -10,7 +10,7 @@ import { provideSubTreeRecursive } from "../provision/provideSubTreeRecursive";
 import { ContextManager, ContextService } from "../management";
 import { addServiceObserverToRegistry, registerService, removeServiceObserverFromRegistry } from "../registry";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Utility method for observers creation.

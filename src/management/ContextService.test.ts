@@ -10,7 +10,7 @@ import {
   TestContextManager,
   TestSingleContextManager,
   EmittingContextManager
-} from "@Tests/assets";
+} from "@Tests/../fixtures";
 
 describe("ContextService class.", () => {
   it("Should initialize service classes without any exceptions.", () => {

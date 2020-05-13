@@ -4,7 +4,7 @@ import { ISignalEvent, TSignalType } from "../types";
 import { subscribeToSignals } from "./subscribeToSignals";
 import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
 
-import { ESignal, SubscribedContextManager } from "@Tests/assets";
+import { ESignal, SubscribedContextManager } from "@Tests/../fixtures";
 
 describe("emitSignal method.", () => {
   it("Should properly reject bad emit parameters.", () => {

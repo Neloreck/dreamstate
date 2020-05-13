@@ -3,7 +3,7 @@ import { shallowEqualObjects } from "shallow-equal";
 import { NestedStore } from "../utils";
 import { IStringIndexed } from "../types";
 
-import { dev } from "../../build/macroses/dev.macro";
+import { dev } from "../../cli/build/macroses/dev.macro";
 
 /**
  * Compare context manager state diff with shallow check + nested objects check.

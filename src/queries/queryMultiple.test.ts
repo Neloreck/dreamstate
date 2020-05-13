@@ -2,7 +2,7 @@ import { registerService, unRegisterService } from "../test-utils";
 import { queryMultiple } from "../queries";
 import { TQueryResponse } from "../types";
 
-import { EQuery, RespondingService } from "@Tests/assets/queries";
+import { EQuery, RespondingService } from "@Tests/../fixtures/queries";
 
 describe("querySingle method.", () => {
   beforeEach(() => {

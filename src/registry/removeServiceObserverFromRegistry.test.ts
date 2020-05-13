@@ -2,7 +2,7 @@ import { addServiceObserverToRegistry } from "./addServiceObserverToRegistry";
 import { removeServiceObserverFromRegistry } from "./removeServiceObserverFromRegistry";
 import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "../internals";
 
-import { TestContextManager } from "@Tests/assets";
+import { TestContextManager } from "@Tests/../fixtures";
 
 describe("removeServiceObserverFromRegistry method functionality.", () => {
   it("Should properly remove manager observer from set.", () => {

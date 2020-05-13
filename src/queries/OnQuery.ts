@@ -3,7 +3,7 @@ import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
 import { createMethodDecorator } from "../polyfills/createMethodDecorator";
 import { ContextService } from "../management/ContextService";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 export function OnQuery(queryType: TQueryType): MethodDecorator {
   if (!queryType) {

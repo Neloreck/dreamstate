@@ -2,7 +2,7 @@ import { QueryResponse } from "../index";
 import { registerService, unRegisterService } from "../test-utils";
 import { queryData } from "../queries";
 
-import { EQuery, RespondingService } from "@Tests/assets/queries";
+import { EQuery, RespondingService } from "@Tests/../fixtures/queries";
 
 describe("queryData and queries processing.", () => {
   beforeEach(() => {

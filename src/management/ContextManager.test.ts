@@ -13,7 +13,7 @@ import {
   ExtendingTestContextManager,
   ITestContext,
   TestContextManager
-} from "@Tests/assets";
+} from "@Tests/../fixtures";
 
 describe("ContextManager class.", () => {
   it("Should not allow base class REACT_CONTEXT.", () => {

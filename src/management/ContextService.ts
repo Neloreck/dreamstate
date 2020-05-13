@@ -9,7 +9,7 @@ import {
 import { emitSignal } from "../signals/emitSignal";
 import { queryData } from "../queries/queryData";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 export abstract class ContextService {
 

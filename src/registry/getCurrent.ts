@@ -1,7 +1,7 @@
 import { TDreamstateService } from "../types";
 import { CONTEXT_SERVICES_REGISTRY } from "../internals";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Get current manager instance from registry.

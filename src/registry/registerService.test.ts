@@ -9,7 +9,7 @@ import {
   CONTEXT_SERVICES_REGISTRY
 } from "../internals";
 
-import { TestContextManager, TestContextService } from "@Tests/assets";
+import { TestContextManager, TestContextService } from "@Tests/../fixtures";
 
 describe("registerService method functionality.", () => {
   it("Should properly register generic service.", () => {

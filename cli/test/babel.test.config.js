@@ -22,9 +22,7 @@ module.exports = {
       {
         "root": [ "./" ],
         "alias": {
-          "@Build": "./build",
-          "@Lib": "./src",
-          "@Tests": "./tests"
+          "@Tests": "./src/__tests__"
         }
       }
     ]

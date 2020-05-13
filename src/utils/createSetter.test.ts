@@ -3,7 +3,7 @@ import { createLoadable, createMutable, createSetter } from "./index";
 import { ContextManager } from "../management";
 import { registerService, unRegisterService } from "../test-utils";
 
-import { NestedContextManager } from "@Tests/assets";
+import { NestedContextManager } from "@Tests/../fixtures";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {

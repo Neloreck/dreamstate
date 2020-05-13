@@ -5,7 +5,7 @@ import { act } from "react-dom/test-utils";
 import { getCurrent } from "../registry";
 import { nextAsyncQueue, registerService, unRegisterService } from "../test-utils";
 
-import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Tests/assets/signals";
+import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Tests/../fixtures/signals";
 
 describe("Signals and signaling.", () => {
   beforeEach(() => {

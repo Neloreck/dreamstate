@@ -3,7 +3,7 @@ import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
 import { IQueryResponse, TQuerySubscriptionMetadata } from "../types";
 import { registerService, unRegisterService } from "../test-utils";
 
-import { RequestingService, RespondingDuplicateService, RespondingService } from "@Tests/assets/queries";
+import { RequestingService, RespondingDuplicateService, RespondingService } from "@Tests/../fixtures/queries";
 
 describe("@OnQuery and queries processing.", () => {
   beforeEach(() => {

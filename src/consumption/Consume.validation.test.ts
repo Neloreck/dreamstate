@@ -10,7 +10,7 @@ import {
   PropsRenderer,
   TestContextManager,
   TextContextManagerProvider
-} from "@Tests/assets";
+} from "@Tests/../fixtures";
 
 describe("@Consume selector validation.", () => {
   function mountProvided(element: ComponentType<object>): ReactWrapper {

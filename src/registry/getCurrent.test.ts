@@ -1,7 +1,7 @@
 import { getCurrent } from "./getCurrent";
 import { registerService, unRegisterService } from "../test-utils";
 
-import { TestContextService } from "@Tests/assets";
+import { TestContextService } from "@Tests/../fixtures";
 
 describe("getCurrent method functionality.", () => {
   it("Should properly return current service instance.", () => {

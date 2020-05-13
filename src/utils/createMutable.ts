@@ -1,7 +1,7 @@
 import { TMutable } from "../types";
 import { NestedStore } from "./NestedStore";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Util for mutable.

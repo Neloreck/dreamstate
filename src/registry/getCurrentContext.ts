@@ -1,7 +1,7 @@
 import { TAnyContextManagerConstructor } from "../types";
 import { CONTEXT_STATES_REGISTRY } from "../internals";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Get current supplied context.

@@ -11,7 +11,7 @@ import {
 } from "../internals";
 import { registerService, unRegisterService } from "./index";
 
-import { TestContextService, TestSingleContextService } from "@Tests/assets";
+import { TestContextService, TestSingleContextService } from "@Tests/../fixtures";
 
 describe("Unregister service test util.", () => {
   it("Should properly unregister services without errors.", () => {

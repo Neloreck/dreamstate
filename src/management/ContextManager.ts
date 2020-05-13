@@ -5,7 +5,7 @@ import { notifyObservers } from "../observing/notifyObservers";
 import { getReactContext } from "../registry/getReactContext";
 import { ContextService } from "./ContextService";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Abstract class.

@@ -6,7 +6,7 @@ import { ContextManager } from "../management";
 import { createClassWrapDecorator } from "../polyfills";
 import { useManager } from "./useManager";
 
-import { dev } from "../../build/macroses/dev.macro";
+import { dev } from "../../cli/build/macroses/dev.macro";
 
 /**
  * Function for consume wrappers that maps selectors and allows class components to consume store data.

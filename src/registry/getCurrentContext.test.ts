@@ -1,7 +1,7 @@
 import { getCurrentContext } from "./getCurrentContext";
 import { registerService, unRegisterService } from "../test-utils";
 
-import { TestContextManager } from "@Tests/assets";
+import { TestContextManager } from "@Tests/../fixtures";
 
 describe("getCurrentContext method functionality.", () => {
   it("Should properly return current manager context.", () => {

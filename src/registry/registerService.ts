@@ -10,7 +10,7 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "../internals";
 
-import { debug } from "../../build/macroses/debug.macro";
+import { debug } from "../../cli/build/macroses/debug.macro";
 
 /**
  * Register context manager entry.

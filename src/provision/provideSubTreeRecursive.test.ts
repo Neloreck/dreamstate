@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 import { provideSubTreeIterative, provideSubTreeRecursive } from "./index";
 import { registerService, unRegisterService } from "../test-utils";
 
-import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/assets";
+import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/../fixtures";
 
 describe("provideSubTreeRecursive rendering.", () => {
   beforeAll(() => {
