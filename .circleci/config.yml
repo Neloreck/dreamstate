@@ -12,7 +12,9 @@ jobs:
             - run: npm install
             - run: npm run lint
             - run: npm run test
-            - run: npm run build
+            - run: npm run build:dts
+            - run: npm run build:cjs
+            - run: npm run build:esm
             - run: npm run build:portable
 workflows:
     build-and-test:
