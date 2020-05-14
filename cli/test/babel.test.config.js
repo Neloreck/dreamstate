@@ -21,9 +21,7 @@ module.exports = {
       {
         "root": [ "./" ],
         "alias": {
-          "@Tests": "./src/__tests__",
-          "@Macro": "./cli/build/macroses",
-          "@Lib": "./src"
+          "@": "./src"
         }
       }
     ],

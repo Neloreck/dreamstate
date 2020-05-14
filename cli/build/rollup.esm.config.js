@@ -1,7 +1,6 @@
 import { default as replace } from "@rollup/plugin-replace";
 import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
-
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";

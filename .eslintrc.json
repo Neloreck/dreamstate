@@ -50,7 +50,7 @@
     "camelcase": 2,
     "yoda": 2,
     "arrow-parens": [ 2, "always" ],
-    "no-multiple-empty-lines": 2,
+    "no-multiple-empty-lines": [ 2, { "max": 1, "maxBOF": 0 } ],
     "no-trailing-spaces": 2,
     "no-multi-spaces": 2,
     "object-curly-spacing": [ 2, "always" ],
@@ -78,7 +78,27 @@
         }
       }
     ],
-    "import/order": [ 2, { "alphabetize": { "order": "asc", "caseInsensitive": true } } ],
+    "import/order": [
+      2,
+      {
+        "alphabetize": { "order": "asc", "caseInsensitive": true },
+        "newlines-between": "always",
+        "groups": [ "builtin", "external", "parent", "sibling", "index" ],
+        "pathGroupsExcludedImportTypes": [ "builtin" ],
+        "pathGroups": [
+          {
+            "pattern": "@/macroses/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "@/**",
+            "group": "external",
+            "position": "after"
+          }
+        ]
+      }
+    ],
     "import/no-unresolved": 0,
     "import/default": 0
   }

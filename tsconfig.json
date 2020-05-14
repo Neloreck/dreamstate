@@ -22,9 +22,7 @@
       "dom"
     ],
     "paths": {
-      "@Lib/*": [ "./src/*" ],
-      "@Macro/*": [ "./cli/build/macroses/*" ],
-      "@Tests/*": [ "./src/__tests__/*" ]
+      "@/*": [ "./src/*" ]
     }
   },
   "include": [

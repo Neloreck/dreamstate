@@ -9,8 +9,7 @@ export const BABEL_CONFIG = {
       {
         "root": [ "./" ],
         "alias": {
-          "@Macro": "./cli/build/macroses",
-          "@Lib": "./src"
+          "@": "./src"
         }
       }
     ],

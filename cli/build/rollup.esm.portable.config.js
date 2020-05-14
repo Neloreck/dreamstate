@@ -1,14 +1,15 @@
 import * as path from "path";
+
 import { default as replace } from "@rollup/plugin-replace";
 import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
-
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { default as dts } from "rollup-plugin-dts";
 import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 import { default as tsconfig } from "../../tsconfig.json";
+
 import { BABEL_CONFIG } from "./babel.modern.config";
 import {
   IS_PRODUCTION,

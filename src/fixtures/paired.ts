@@ -1,12 +1,12 @@
-
-import { Consume } from "@Lib/core/consumption/Consume";
-import { useManager } from "@Lib/core/consumption/useManager";
-import { withConsumption } from "@Lib/core/consumption/withConsumption";
-import { ContextManager } from "@Lib/core/management/ContextManager";
-import { ContextService } from "@Lib/core/management/ContextService";
-import { createProvider } from "@Lib/core/provision/createProvider";
-import { Provide } from "@Lib/core/provision/Provide";
 import { createElement, PureComponent, ReactElement, ReactNode, useEffect } from "react";
+
+import { Consume } from "@/dreamstate/core/consumption/Consume";
+import { useManager } from "@/dreamstate/core/consumption/useManager";
+import { withConsumption } from "@/dreamstate/core/consumption/withConsumption";
+import { createProvider } from "@/dreamstate/core/provision/createProvider";
+import { Provide } from "@/dreamstate/core/provision/Provide";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextService } from "@/dreamstate/core/services/ContextService";
 
 /**
  * Utils for react tree testing.

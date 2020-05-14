@@ -1,6 +1,7 @@
 import { default as dts } from "rollup-plugin-dts";
 
 import { default as tsconfig } from "../../tsconfig.json";
+
 import { CORE_ENTRY, TEST_UTILS_ENTRY } from "./build.config";
 
 export const DTS_CONFIG = {
