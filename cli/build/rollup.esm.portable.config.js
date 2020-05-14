@@ -9,18 +9,22 @@ import { default as dts } from "rollup-plugin-dts";
 import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 import { default as tsconfig } from "../../tsconfig.json";
-
-import { BABEL_CONFIG } from "./babel.modern.config";
 import {
   IS_PRODUCTION,
   IS_DEBUG,
   CORE_ENTRY,
   TS_PORTABLE_CONFIG,
   SIZE_SNAPSHOT_PATH, PORTABLE_ROOT
-} from "./build.config";
+} from "../config/build.constants";
+
+import { BABEL_CONFIG } from "./babel.modern.config";
 
 export const ESM_CONFIG = {
-  external: [ "react", "shallow-equal", "hoist-non-react-statics" ],
+  external: [
+    "react",
+    "shallow-equal",
+    "hoist-non-react-statics"
+  ],
   input: CORE_ENTRY,
   preserveModules: false,
   output: {
@@ -57,9 +61,7 @@ export const DTS_CONFIG = {
     format: "es"
   },
   plugins: [
-    dts({
-      compilerOptions: tsconfig.compilerOptions
-    })
+    dts({ compilerOptions: tsconfig.compilerOptions })
   ]
 };
 

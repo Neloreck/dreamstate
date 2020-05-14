@@ -1,4 +1,4 @@
-import { cancelSignal } from "@/dreamstate/signals/cancelSignal";
+import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
 
 describe("cancelSignal method.", () => {
   it("Should properly set cancel variable.", () => {

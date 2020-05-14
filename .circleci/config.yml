@@ -15,7 +15,7 @@ jobs:
             - run: npm run build:dts
             - run: npm run build:cjs
             - run: npm run build:esm
-            - run: npm run build:portable
+            - run: npm run build:ptb
 workflows:
     build-and-test:
       jobs:

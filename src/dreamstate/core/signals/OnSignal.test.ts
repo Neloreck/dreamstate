@@ -1,7 +1,7 @@
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { emitSignal } from "@/dreamstate/signals/emitSignal";
-import { OnSignal } from "@/dreamstate/signals/OnSignal";
+import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
+import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";

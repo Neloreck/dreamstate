@@ -5,13 +5,19 @@ import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 
+import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG } from "../config/build.constants";
+
 import { BABEL_CONFIG } from "./babel.modern.config";
-import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG } from "./build.config";
 
 export const ESM_CONFIG = {
-  external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
-  input: CORE_ENTRY,
+  external: [
+    "react",
+    "shallow-equal",
+    "hoist-non-react-statics",
+    "tslib"
+  ],
   preserveModules: true,
+  input: CORE_ENTRY,
   output: {
     compact: IS_PRODUCTION,
     dir: ESM_ROOT,
@@ -34,18 +40,7 @@ export const ESM_CONFIG = {
       pretty: !IS_PRODUCTION,
       declaration: false
     })
-  ].concat(
-    IS_PRODUCTION
-      ? [
-        terser({
-          output: {
-            beautify: false,
-            comments: false
-          }
-        })
-      ]
-      : []
-  )
+  ].concat(IS_PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
 };
 
 export default ESM_CONFIG;

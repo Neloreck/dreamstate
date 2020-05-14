@@ -25,13 +25,13 @@ export { createProvider } from "@/dreamstate/core/provision/createProvider";
 export { Provide } from "@/dreamstate/core/provision/Provide";
 export { withProvision } from "@/dreamstate/core/provision/withProvision";
 
-export { OnSignal } from "@/dreamstate/signals/OnSignal";
-export { useSignals } from "@/dreamstate/signals/useSignals";
-export { unsubscribeFromSignals } from "@/dreamstate/signals/unsubscribeFromSignals";
-export { subscribeToSignals } from "@/dreamstate/signals/subscribeToSignals";
-export { emitSignal } from "@/dreamstate/signals/emitSignal";
+export { OnSignal } from "@/dreamstate/core/signals/OnSignal";
+export { useSignals } from "@/dreamstate/core/signals/useSignals";
+export { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
+export { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
+export { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 
-export { OnQuery } from "@/dreamstate/queries/OnQuery";
+export { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 
 export { useManager } from "@/dreamstate/core/consumption/useManager";
 export { Consume } from "@/dreamstate/core/consumption/Consume";

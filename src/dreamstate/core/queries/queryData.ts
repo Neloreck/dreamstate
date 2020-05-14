@@ -1,5 +1,5 @@
-import { queryMultiple } from "@/dreamstate/queries/queryMultiple";
-import { querySingle } from "@/dreamstate/queries/querySingle";
+import { queryMultiple } from "@/dreamstate/core/queries/queryMultiple";
+import { querySingle } from "@/dreamstate/core/queries/querySingle";
 import { IOptionalQueryRequest, IQueryRequest, TQueryResponse, TQueryType } from "@/dreamstate/types";
 
 /**

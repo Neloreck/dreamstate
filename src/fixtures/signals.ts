@@ -2,8 +2,8 @@ import { createElement, useState } from "react";
 
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { OnSignal } from "@/dreamstate/signals/OnSignal";
-import { useSignals } from "@/dreamstate/signals/useSignals";
+import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
+import { useSignals } from "@/dreamstate/core/signals/useSignals";
 import { ISignalEvent } from "@/dreamstate/types";
 
 export enum ESignal {

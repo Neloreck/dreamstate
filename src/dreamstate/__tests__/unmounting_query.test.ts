@@ -2,8 +2,8 @@ import { mount } from "enzyme";
 import { createElement } from "react";
 
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
+import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { OnQuery } from "@/dreamstate/queries/OnQuery";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("Emitting signal on provision end.", () => {

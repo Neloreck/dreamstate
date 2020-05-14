@@ -3,7 +3,7 @@ import {
   CONTEXT_SERVICES_ACTIVATED,
   CONTEXT_SERVICES_REGISTRY
 } from "@/dreamstate/core/internals";
-import { promisifyQuery } from "@/dreamstate/queries/promisifyQuery";
+import { promisifyQuery } from "@/dreamstate/core/queries/promisifyQuery";
 import { IOptionalQueryRequest, TQueryResponse } from "@/dreamstate/types";
 
 export function queryMultiple<R>(

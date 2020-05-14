@@ -1,7 +1,7 @@
 import { CONTEXT_QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
+import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { OnQuery } from "@/dreamstate/queries/OnQuery";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { IQueryResponse, TQueryResponse, TQuerySubscriptionMetadata } from "@/dreamstate/types";

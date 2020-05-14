@@ -1,4 +1,4 @@
-import { querySingle } from "@/dreamstate/queries/querySingle";
+import { querySingle } from "@/dreamstate/core/queries/querySingle";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TQueryResponse } from "@/dreamstate/types";

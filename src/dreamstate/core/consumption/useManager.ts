@@ -8,8 +8,8 @@ import { IContextManagerConstructor } from "@/dreamstate/types";
  */
 export function useManager<T extends object, D extends IContextManagerConstructor<T>>(
   Manager: D,
-  depsSelector?: (context: T) => Array<any>
-): T {
+  depsSelector?: (context: D["prototype"]["context"]) => Array<any>
+): D["prototype"]["context"] {
   if (depsSelector) {
     return useContextWithMemo(Manager, depsSelector);
   } else {

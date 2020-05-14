@@ -1,5 +1,5 @@
+import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
-import { NestedStore } from "@/dreamstate/utils/NestedStore";
 
 describe("Nested store class", () => {
   it("Should be shallow-checked by core and update if objects are different.", () => {

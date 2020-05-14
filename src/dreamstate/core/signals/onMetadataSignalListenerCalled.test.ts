@@ -1,5 +1,5 @@
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
-import { onMetadataSignalListenerCalled } from "@/dreamstate/signals/onMetadataSignalListenerCalled";
+import { onMetadataSignalListenerCalled } from "@/dreamstate/core/signals/onMetadataSignalListenerCalled";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { ISignalEvent } from "@/dreamstate/types";

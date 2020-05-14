@@ -6,7 +6,7 @@ import {
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED
 } from "@/dreamstate/core/internals";
-import { unsubscribeFromSignals } from "@/dreamstate/signals/unsubscribeFromSignals";
+import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { TDreamstateService } from "@/dreamstate/types";
 
 export function unRegisterService<T extends object>(

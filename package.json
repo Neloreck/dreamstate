@@ -1,52 +1,22 @@
 {
-  "name": "dreamstate",
-  "version": "3.0.2",
+  "name": "dreamstate-cli",
+  "version": "1.0.0",
   "description": "Store management library based on context and observers.",
-  "sideEffects": false,
-  "private": false,
+  "private": true,
   "author": "Syrotenko Igor",
   "license": "MIT",
-  "main": "./index.js",
-  "module": "./esm/index.js",
-  "keywords": [
-    "action",
-    "class-based",
-    "declarative",
-    "decorator",
-    "metadata",
-    "react",
-    "reducer",
-    "redux",
-    "state",
-    "typescript",
-    "utility"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/neloreck/dreamstate.git"
-  },
-  "bugs": {
-    "url": "https://github.com/neloreck/dreamstate/issues"
-  },
-  "homepage": "https://github.com/neloreck/dreamstate#readme",
-  "files": [
-    "index.*",
-    "test-utils.*",
-    "esm/",
-    "types/",
-    "cjs/"
-  ],
   "scripts": {
-    "clean": "npx rimraf ./index.* ./test-utils.* ./cjs ./esm ./coverage ./types ./portable",
-    "build:debug": "npx cross-env NODE_ENV=debug rollup -c cli/build/rollup.bundle.config.js",
+    "clean": "npx rimraf ./target",
+    "build:dbg": "npx cross-env NODE_ENV=debug rollup -c cli/build/rollup.bundle.config.js",
     "build:cjs": "npx cross-env NODE_ENV=production rollup -c cli/build/rollup.cjs.config.js",
-    "build:esm": "npx cross-env NODE_ENV=development rollup -c cli/build/rollup.esm.config.js",
-    "build:dts": "npx cross-env NODE_ENV=production rollup -c cli/build/rollup.dts.config.js && mv ./types/lib ./types/lib.d.ts",
-    "build:portable": "npm run clean && npx cross-env NODE_ENV=production rollup -c cli/build/rollup.esm.portable.config.js",
-    "build": "npm run build:dts && npm run build:esm && npm run build:cjs",
-    "lint": "npx eslint . --ext .ts,.js,",
+    "build:esm": "npx cross-env NODE_ENV=production rollup -c cli/build/rollup.esm.config.js",
+    "build:dts": "npx cross-env NODE_ENV=production rollup -c cli/build/rollup.dts.config.js && mv ./target/dist/dts/lib ./target/dist/dts/lib.d.ts",
+    "build:ptb": "npm run clean && npx cross-env NODE_ENV=production rollup -c cli/build/rollup.esm.portable.config.js",
+    "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs",
+    "lint": "npx eslint . --ext .ts,.js",
     "test": "jest --config cli/test/jest.config.js --detectOpenHandles",
-    "prepublishOnly": "npm run clean && npm run lint && npm test && npm run build"
+    "prepare": "npm run clean && npm run lint && npm test && npm run build && npx babel-node ./cli/deploy/prepare.js",
+    "deploy": "npm run prepare && cd ./target/pkg && npm publish"
   },
   "dependencies": {
     "tslib": "^1.12.0",
@@ -89,6 +59,7 @@
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jest": "^23.11.0",
     "jest": "^26.0.1",
+    "ncp": "^2.0.0",
     "react": ">=16.8.0",
     "react-dom": ">=16.8.0",
     "rimraf": "^3.0.2",

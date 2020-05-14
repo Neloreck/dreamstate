@@ -1,7 +1,7 @@
 import { debug } from "@/macroses/debug.macro";
 
+import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { ILoadable } from "@/dreamstate/types";
-import { NestedStore } from "@/dreamstate/utils/NestedStore";
 
 /**
  * Util for loadable.

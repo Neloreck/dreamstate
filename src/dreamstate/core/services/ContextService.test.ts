@@ -1,8 +1,8 @@
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { subscribeToSignals } from "@/dreamstate/signals/subscribeToSignals";
-import { unsubscribeFromSignals } from "@/dreamstate/signals/unsubscribeFromSignals";
+import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";

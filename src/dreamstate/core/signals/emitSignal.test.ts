@@ -1,6 +1,6 @@
-import { emitSignal } from "@/dreamstate/signals/emitSignal";
-import { subscribeToSignals } from "@/dreamstate/signals/subscribeToSignals";
-import { unsubscribeFromSignals } from "@/dreamstate/signals/unsubscribeFromSignals";
+import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
+import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";

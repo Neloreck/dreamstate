@@ -1,4 +1,4 @@
-import { promisifyQuery } from "@/dreamstate/queries/promisifyQuery";
+import { promisifyQuery } from "@/dreamstate/core/queries/promisifyQuery";
 
 describe("promisifyQuery method.", () => {
   it("Should properly call sync methods.", async () => {

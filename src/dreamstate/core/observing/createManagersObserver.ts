@@ -17,7 +17,7 @@ import { IStringIndexed, TAnyContextManagerConstructor, TDreamstateService } fro
 export function createManagersObserver(children: ComponentType | null, sources: Array<TDreamstateService>) {
   if (!Array.isArray(sources)) {
     throw new TypeError(
-      "Wrong provider config supplied. Only array of context services is acceptable."
+      "Wrong provider dreamstate supplied. Only array of context services is acceptable."
     );
   }
 

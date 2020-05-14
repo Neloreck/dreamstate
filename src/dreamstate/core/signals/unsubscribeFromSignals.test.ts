@@ -1,7 +1,7 @@
 import { SIGNAL_LISTENERS_REGISTRY } from "@/dreamstate/core/internals";
-import { emitSignal } from "@/dreamstate/signals/emitSignal";
-import { subscribeToSignals } from "@/dreamstate/signals/subscribeToSignals";
-import { unsubscribeFromSignals } from "@/dreamstate/signals/unsubscribeFromSignals";
+import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
+import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("unSubscribeFromSignals method.", () => {

@@ -1,7 +1,7 @@
 import { debug } from "@/macroses/debug.macro";
 
-import { queryData } from "@/dreamstate/queries/queryData";
-import { emitSignal } from "@/dreamstate/signals/emitSignal";
+import { queryData } from "@/dreamstate/core/queries/queryData";
+import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import {
   IOptionalQueryRequest,
   ISignal,

@@ -1,4 +1,4 @@
-import { queryMultiple } from "@/dreamstate/queries/queryMultiple";
+import { queryMultiple } from "@/dreamstate/core/queries/queryMultiple";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TQueryResponse } from "@/dreamstate/types";

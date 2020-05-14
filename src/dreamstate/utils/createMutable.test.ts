@@ -1,6 +1,6 @@
+import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { TMutable } from "@/dreamstate/types";
 import { createMutable } from "@/dreamstate/utils/createMutable";
-import { NestedStore } from "@/dreamstate/utils/NestedStore";
 
 describe("Mutable util.", () => {
   it("Should properly create mutable objects.", () => {

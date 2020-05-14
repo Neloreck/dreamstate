@@ -9,8 +9,8 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { onMetadataSignalListenerCalled } from "@/dreamstate/signals/onMetadataSignalListenerCalled";
-import { subscribeToSignals } from "@/dreamstate/signals/subscribeToSignals";
+import { onMetadataSignalListenerCalled } from "@/dreamstate/core/signals/onMetadataSignalListenerCalled";
+import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
 import { TDreamstateService, TSignalListener } from "@/dreamstate/types";
 
 /**

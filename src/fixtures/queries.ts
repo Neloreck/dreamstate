@@ -1,5 +1,5 @@
+import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { OnQuery } from "@/dreamstate/queries/OnQuery";
 import { TQueryRequest, TQueryResponse } from "@/dreamstate/types";
 
 export enum EQuery {

@@ -2,8 +2,8 @@ import { shallowEqualObjects } from "shallow-equal";
 
 import { dev } from "@/macroses/dev.macro";
 
+import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { IStringIndexed } from "@/dreamstate/types";
-import { NestedStore } from "@/dreamstate/utils/NestedStore";
 
 /**
  * Compare context manager state diff with shallow check + nested objects check.

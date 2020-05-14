@@ -1,7 +1,7 @@
 import { debug } from "@/macroses/debug.macro";
 
 import { SIGNAL_LISTENERS_REGISTRY } from "@/dreamstate/core/internals";
-import { cancelSignal } from "@/dreamstate/signals/cancelSignal";
+import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
 import { ISignal, ISignalEvent, TDreamstateService, TSignalListener, TSignalType } from "@/dreamstate/types";
 
 /**

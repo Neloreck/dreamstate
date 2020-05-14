@@ -1,0 +1,40 @@
+{
+  "name": "dreamstate",
+  "version": "3.0.2-experimental.12",
+  "description": "Store management library based on context and observers.",
+  "sideEffects": false,
+  "private": false,
+  "author": "Syrotenko Igor",
+  "homepage": "https://github.com/neloreck/dreamstate#readme",
+  "license": "MIT",
+  "main": "./index.js",
+  "module": "./esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neloreck/dreamstate.git"
+  },
+  "bugs": {
+    "url": "https://github.com/neloreck/dreamstate/issues"
+  },
+  "keywords": [
+    "action",
+    "class-based",
+    "declarative",
+    "decorator",
+    "metadata",
+    "react",
+    "reducer",
+    "redux",
+    "state",
+    "typescript",
+    "utility"
+  ],
+  "dependencies": {
+    "tslib": "^1.12.0",
+    "hoist-non-react-statics": ">=3.0.0",
+    "shallow-equal": ">=1.0.0"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  }
+}

@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
 import { EMPTY_ARR } from "@/dreamstate/core/internals";
-import { subscribeToSignals } from "@/dreamstate/signals/subscribeToSignals";
-import { unsubscribeFromSignals } from "@/dreamstate/signals/unsubscribeFromSignals";
+import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { TCallable, TSignalListener, TSignalType } from "@/dreamstate/types";
 
 /**
