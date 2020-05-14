@@ -1,6 +1,6 @@
-import { MethodDescriptor } from "../types";
+import { MethodDescriptor } from "@Lib/types";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Bind decorator wrappers factory for methods binding.

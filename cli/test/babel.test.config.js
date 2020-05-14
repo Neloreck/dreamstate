@@ -13,7 +13,6 @@ module.exports = {
     "@babel/preset-typescript"
   ],
   plugins: [
-    "macros",
     "@babel/plugin-transform-modules-commonjs",
     [ "@babel/plugin-proposal-decorators", { legacy: true } ],
     [ "@babel/plugin-proposal-class-properties", { loose: true } ],
@@ -22,9 +21,12 @@ module.exports = {
       {
         "root": [ "./" ],
         "alias": {
-          "@Tests": "./src/__tests__"
+          "@Tests": "./src/__tests__",
+          "@Macro": "./cli/build/macroses",
+          "@Lib": "./src"
         }
       }
-    ]
+    ],
+    "macros"
   ]
 };

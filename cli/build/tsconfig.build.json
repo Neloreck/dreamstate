@@ -1,37 +1,10 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
     "target": "es5",
-    "strict": true,
-    "sourceMap": true,
-    "declaration": true,
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "rootDir": "../../src",
-    "baseUrl": "../..",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "downlevelIteration": true,
-    "importHelpers": true,
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "es2017",
-      "dom"
-    ],
-    "paths": {
-    }
+    "importHelpers": true
   },
   "include": [
     "../../src"
-  ],
-  "exclude": [
-    "../../src/**/*.test.ts",
-    "node_modules"
   ]
 }

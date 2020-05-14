@@ -1,4 +1,4 @@
-import { Bind } from "./Bind";
+import { Bind } from "@Lib/utils/Bind";
 
 describe("@Bind decorator.", () => {
   class Base {

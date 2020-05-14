@@ -1,9 +1,9 @@
 import { shallowEqualObjects } from "shallow-equal";
 
-import { NestedStore } from "../utils";
-import { IStringIndexed } from "../types";
+import { NestedStore } from "@Lib/utils/NestedStore";
+import { IStringIndexed } from "@Lib/types";
 
-import { dev } from "../../cli/build/macroses/dev.macro";
+import { dev } from "@Macro/dev.macro";
 
 /**
  * Compare context manager state diff with shallow check + nested objects check.

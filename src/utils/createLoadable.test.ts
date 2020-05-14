@@ -1,5 +1,6 @@
-import { ILoadable } from "../types";
-import { asFailed, asLoading, asReady, asUpdated, createLoadable, NestedStore } from "./index";
+import { ILoadable } from "@Lib/types";
+import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "@Lib/utils/createLoadable";
+import { NestedStore } from "@Lib/utils/NestedStore";
 
 describe("Loadable util.", () => {
   it("Should properly create loadable objects.", () => {

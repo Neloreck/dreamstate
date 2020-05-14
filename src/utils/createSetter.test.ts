@@ -1,9 +1,12 @@
-import { getCurrent } from "../registry";
-import { createLoadable, createMutable, createSetter } from "./index";
-import { ContextManager } from "../management";
-import { registerService, unRegisterService } from "../test-utils";
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { createMutable } from "@Lib/utils/createMutable";
+import { createLoadable } from "@Lib/utils/createLoadable";
+import { createSetter } from "@Lib/utils/createSetter";
+import { ContextManager } from "@Lib/management/ContextManager";
 
-import { NestedContextManager } from "@Tests/../fixtures";
+import { registerService, unRegisterService } from "@Lib/test-utils";
+
+import { NestedContextManager } from "@Lib/fixtures";
 
 describe("CreateSetter util.", () => {
   beforeEach(() => {

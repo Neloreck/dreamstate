@@ -1,5 +1,6 @@
-import { TMutable } from "../types";
-import { createMutable, NestedStore } from "./index";
+import { TMutable } from "@Lib/types";
+import { createMutable } from "@Lib/utils/createMutable";
+import { NestedStore } from "@Lib/utils/NestedStore";
 
 describe("Mutable util.", () => {
   it("Should properly create mutable objects.", () => {

@@ -1,7 +1,7 @@
-import { ILoadable } from "../types";
-import { NestedStore } from "./NestedStore";
+import { ILoadable } from "@Lib/types";
+import { NestedStore } from "@Lib/utils/NestedStore";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Util for loadable.

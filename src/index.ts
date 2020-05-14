@@ -1,9 +1,5 @@
 /*
- *
  * 'https://github.com/Neloreck/dreamstate'
- *
- * OOP style context store for react.
- * Based on observing and using as small react tree components count as possible.
  */
 
 export {
@@ -17,18 +13,21 @@ export {
   TQueryResponse as QueryResponse,
   TQueryRequest as QueryRequest,
   TQueryType as QueryType
-} from "./types";
+} from "@Lib/types";
 
-export { ContextManager, ContextService } from "./management";
+export { ContextManager, ContextService } from "@Lib/management";
 
-export { getCurrentContext, getCurrent } from "./registry";
+export { getCurrentContext, getCurrent } from "@Lib/registry";
 
-export { createProvider, Provide, withProvision } from "./provision";
+export { createProvider, Provide, withProvision } from "@Lib/provision";
 
-export { OnSignal, useSignals, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "./signals";
+export { OnSignal, useSignals, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "@Lib/signals";
 
-export { OnQuery } from "./queries";
+export { OnQuery } from "@Lib/queries";
 
-export { useManager, Consume, withConsumption } from "./consumption";
+export { useManager, Consume, withConsumption } from "@Lib/consumption";
 
-export { Bind, createLoadable, createMutable, createSetter } from "./utils";
+export { Bind } from "@Lib/utils/Bind";
+export { createLoadable } from "@Lib/utils/createLoadable";
+export { createMutable } from "@Lib/utils/createMutable";
+export { createSetter } from "@Lib/utils/createSetter";
