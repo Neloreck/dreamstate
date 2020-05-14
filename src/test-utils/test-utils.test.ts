@@ -1,6 +1,6 @@
 describe("Library test utils exports.", () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const testUtilsRoot = require("@Lib/test-utils/index");
+  const testUtilsRoot = require("@Lib/test-utils/test-utils");
 
   const expectedTestUtilsExports: Array<string> = [
     "registerService",
