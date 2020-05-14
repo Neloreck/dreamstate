@@ -1,24 +1,30 @@
 import * as path from "path";
+import { default as replace } from "@rollup/plugin-replace";
+import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
 
-import { default as typescript } from "@rollup/plugin-typescript";
-import { default as replace } from "@rollup/plugin-replace";
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { default as dts } from "rollup-plugin-dts";
 import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
-import { IS_PRODUCTION, IS_DEBUG } from "./build.config";
-import { BABEL_CONFIG } from "./babel.modern.config";
 import { default as tsconfig } from "../../tsconfig.json";
+import { BABEL_CONFIG } from "./babel.modern.config";
+import {
+  IS_PRODUCTION,
+  IS_DEBUG,
+  CORE_ENTRY,
+  TS_PORTABLE_CONFIG,
+  SIZE_SNAPSHOT_PATH, PORTABLE_ROOT
+} from "./build.config";
 
 export const ESM_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics" ],
-  input: "./src/index.ts",
+  input: CORE_ENTRY,
   preserveModules: false,
   output: {
     compact: IS_PRODUCTION,
-    file: "./portable/dreamstate.js",
+    file: path.resolve(PORTABLE_ROOT, "dreamstate.js"),
     sourcemap: true,
     format: "es"
   },
@@ -34,19 +40,19 @@ export const ESM_CONFIG = {
       IS_DEBUG: IS_DEBUG
     }),
     typescript({
-      tsconfig: path.resolve(__dirname, "./tsconfig.portable.json"),
+      tsconfig: TS_PORTABLE_CONFIG,
       declaration: false
     }),
-    sizeSnapshot({ snapshotPath: "./cli/build/size_snapshot.json" })
+    sizeSnapshot({ snapshotPath: SIZE_SNAPSHOT_PATH })
   ]
 };
 
 export const DTS_CONFIG = {
   input: [
-    "./src/index.ts"
+    CORE_ENTRY
   ],
   output: {
-    file: "./portable/dreamstate.d.ts",
+    file: path.resolve(PORTABLE_ROOT, "dreamstate.d.ts"),
     format: "es"
   },
   plugins: [

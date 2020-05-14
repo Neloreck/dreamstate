@@ -1,10 +1,10 @@
-import { createElement, useState } from "react";
 
-import { ISignalEvent } from "@Lib/types";
-import { ContextManager } from "@Lib/management/ContextManager";
-import { ContextService } from "@Lib/management/ContextService";
-import { useSignals } from "@Lib/signals/useSignals";
-import { OnSignal } from "@Lib/signals/OnSignal";
+import { ContextManager } from "@Lib/core/management/ContextManager";
+import { ContextService } from "@Lib/core/management/ContextService";
+import { OnSignal } from "@Lib/core/signals/OnSignal";
+import { useSignals } from "@Lib/core/signals/useSignals";
+import { ISignalEvent } from "@Lib/core/types";
+import { createElement, useState } from "react";
 
 export enum ESignal {
   NUMBER_SIGNAL = "NUMBER",

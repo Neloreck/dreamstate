@@ -5,9 +5,6 @@
 - test useContextWithMemo properly
 - fixtures separation and review - removed odd items
 - more exotic cases
-- macros alias
-- multiple tsconfig usage review
-- import sorting
 
 - Docs update
 - Simple examples of library usage

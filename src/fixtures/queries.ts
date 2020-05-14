@@ -1,6 +1,6 @@
-import { ContextService } from "@Lib/management/ContextService";
-import { OnQuery } from "@Lib/queries/OnQuery";
-import { TQueryRequest, TQueryResponse } from "@Lib/types";
+import { ContextService } from "@Lib/core/management/ContextService";
+import { OnQuery } from "@Lib/core/queries/OnQuery";
+import { TQueryRequest, TQueryResponse } from "@Lib/core/types";
 
 export enum EQuery {
   SYNC_BOOLEAN_QUERY = "SYNC_BOOLEAN_QUERY",

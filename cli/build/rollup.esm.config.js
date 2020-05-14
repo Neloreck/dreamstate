@@ -1,22 +1,21 @@
-import * as path from "path";
+import { default as replace } from "@rollup/plugin-replace";
+import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
 
-import { default as typescript } from "@rollup/plugin-typescript";
-import { default as replace } from "@rollup/plugin-replace";
 import { default as babel } from "rollup-plugin-babel";
-import { terser } from "rollup-plugin-terser";
 import { default as commonjs } from "rollup-plugin-commonjs";
+import { terser } from "rollup-plugin-terser";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
-import { PROJECT_ROOT, IS_PRODUCTION, IS_DEBUG } from "./build.config";
+import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG } from "./build.config";
 
 export const ESM_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
-  input: path.resolve(PROJECT_ROOT, "./src/index.ts"),
+  input: CORE_ENTRY,
   preserveModules: true,
   output: {
     compact: IS_PRODUCTION,
-    dir: path.resolve(PROJECT_ROOT, "./esm/"),
+    dir: ESM_ROOT,
     sourcemap: true,
     format: "es"
   },
@@ -32,7 +31,7 @@ export const ESM_CONFIG = {
       IS_DEBUG: IS_DEBUG
     }),
     typescript({
-      tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
+      tsconfig: TS_BUILD_CONFIG,
       pretty: !IS_PRODUCTION,
       declaration: false
     })

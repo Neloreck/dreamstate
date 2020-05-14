@@ -78,6 +78,7 @@
         }
       }
     ],
+    "import/order": [ 2, { "alphabetize": { "order": "asc", "caseInsensitive": true } } ],
     "import/no-unresolved": 0,
     "import/default": 0
   }

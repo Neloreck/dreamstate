@@ -2,6 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "esnext",
-    "importHelpers": true
+    "downlevelIteration": true,
+    "removeComments": true,
+    "pretty": true,
+    "importHelpers": false
   }
 }

@@ -1,26 +1,24 @@
-import * as path from "path";
+import { default as replace } from "@rollup/plugin-replace";
+import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
 
-import { default as typescript } from "@rollup/plugin-typescript";
-import { default as replace } from "@rollup/plugin-replace";
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
-
-const ENV = process.env.NODE_ENV || "development";
-const IS_PRODUCTION = ENV === "production";
-const IS_DEBUG = ENV === "debug";
+import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, TEST_UTILS_ENTRY, PROJECT_ROOT, TS_BUILD_CONFIG } from "./build.config";
 
 export const CJS_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
-  input: [ "./src/index.ts", "./src/test-utils.ts" ],
+  input: [
+    CORE_ENTRY,
+    TEST_UTILS_ENTRY
+  ],
   output: {
-    chunkFileNames: "cjs/lib.js",
+    chunkFileNames: "cjs/core.js",
     compact: IS_PRODUCTION,
-    dir: "./",
-    name: `dreamstate.${ENV}.js`,
+    dir: PROJECT_ROOT,
     sourcemap: true,
     format: "cjs"
   },
@@ -36,7 +34,7 @@ export const CJS_CONFIG = {
       IS_DEBUG: IS_DEBUG
     }),
     typescript({
-      tsconfig: path.resolve(__dirname, "./tsconfig.build.json"),
+      tsconfig: TS_BUILD_CONFIG,
       declaration: false
     })
   ].concat(
