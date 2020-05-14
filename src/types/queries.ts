@@ -1,4 +1,4 @@
-import { TDreamstateService } from "./internal";
+import { TDreamstateService } from "@Lib/types/internal";
 
 export type TQueryType = symbol | string | number;
 

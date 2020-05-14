@@ -6,7 +6,6 @@ import { default as replace } from "@rollup/plugin-replace";
 import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
-import { default as multiinput } from "rollup-plugin-multi-input";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
@@ -26,7 +25,6 @@ export const CJS_CONFIG = {
     format: "cjs"
   },
   plugins: [
-    multiinput(),
     commonjs({
       namedExports: {
         react: Object.keys(react)

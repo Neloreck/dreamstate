@@ -1,5 +1,5 @@
-import { withProvision } from "./withProvision";
-import { Provide } from "./Provide";
+import { withProvision } from "@Lib/provision/withProvision";
+import { Provide } from "@Lib/provision/Provide";
 
 describe("withProvision HoC method.", () => {
   it("Should be same as @Provide decorator", () => {

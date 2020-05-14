@@ -1,9 +1,11 @@
-import { ContextService, getCurrent, OnQuery, QueryResponse } from "../";
-import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
-import { IQueryResponse, TQuerySubscriptionMetadata } from "../types";
-import { registerService, unRegisterService } from "../test-utils";
-
-import { RequestingService, RespondingDuplicateService, RespondingService } from "@Tests/../fixtures/queries";
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { OnQuery } from "@Lib/queries/OnQuery";
+import { ContextService } from "@Lib/management/ContextService";
+import { CONTEXT_QUERY_METADATA_REGISTRY } from "@Lib/internals";
+import { IQueryResponse, TQueryResponse, TQuerySubscriptionMetadata } from "@Lib/types";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { RequestingService, RespondingDuplicateService, RespondingService } from "@Lib/fixtures/queries";
 
 describe("@OnQuery and queries processing.", () => {
   beforeEach(() => {
@@ -19,10 +21,10 @@ describe("@OnQuery and queries processing.", () => {
   it("Should properly find async query responders or fallback to null.", async () => {
     const requestingService: RequestingService = getCurrent(RequestingService)!;
 
-    const numberResponse: QueryResponse<number> = await requestingService.queryAsyncNumberData();
-    const stringResponse: QueryResponse<string> = await requestingService.queryAsyncStringData("query");
-    const booleanResponse: QueryResponse<boolean> = await requestingService.querySyncBooleanData();
-    const undefinedResponse: QueryResponse<any> = await requestingService.queryUndefinedData();
+    const numberResponse: TQueryResponse<number> = await requestingService.queryAsyncNumberData();
+    const stringResponse: TQueryResponse<string> = await requestingService.queryAsyncStringData("query");
+    const booleanResponse: TQueryResponse<boolean> = await requestingService.querySyncBooleanData();
+    const undefinedResponse: TQueryResponse<any> = await requestingService.queryUndefinedData();
 
     expect(numberResponse).not.toBeNull();
     expect(numberResponse!.data).toBe(100);

@@ -6,8 +6,8 @@
 - fixtures separation and review - removed odd items
 - more exotic cases
 - macros alias
-- alias after type bundling fixes?
 - multiple tsconfig usage review
+- import sorting
 
 - Docs update
 - Simple examples of library usage

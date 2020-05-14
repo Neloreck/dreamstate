@@ -1,6 +1,6 @@
 import { ComponentType } from "react";
 
-import { IContextManagerConstructor, TAnyContextManagerConstructor } from "./internal";
+import { IContextManagerConstructor, TAnyContextManagerConstructor } from "@Lib/types/internal";
 
 export type TContextFunctionalSelector<T extends object, R extends object = object> = (context: T) => R | Partial<T>;
 

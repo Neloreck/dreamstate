@@ -1,4 +1,4 @@
-import { MethodDescriptor, TConstructor } from "../types";
+import { MethodDescriptor, TConstructor } from "@Lib/types";
 
 // Todo: Wait for proper proposal decorators.
 // Todo: Tests.

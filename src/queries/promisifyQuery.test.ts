@@ -1,4 +1,4 @@
-import { promisifyQuery } from "./promisifyQuery";
+import { promisifyQuery } from "@Lib/queries/promisifyQuery";
 
 describe("promisifyQuery method.", () => {
   it("Should properly call sync methods.", async () => {

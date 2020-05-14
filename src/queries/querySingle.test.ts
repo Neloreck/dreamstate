@@ -1,8 +1,8 @@
-import { QueryResponse } from "../index";
-import { registerService, unRegisterService } from "../test-utils";
-import { querySingle } from "../queries";
-
-import { EQuery, RespondingService } from "@Tests/../fixtures/queries";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { querySingle } from "@Lib/queries/querySingle";
+import { TQueryResponse } from "@Lib/types";
+import { EQuery, RespondingService } from "@Lib/fixtures/queries";
 
 describe("querySingle method.", () => {
   beforeEach(() => {
@@ -14,8 +14,8 @@ describe("querySingle method.", () => {
   });
 
   it("Should properly find async query responders or fallback to null for single queries.", async () => {
-    const numberResponse: QueryResponse<number> = await querySingle({ type: EQuery.ASYNC_NUMBER_QUERY });
-    const undefinedResponse: QueryResponse<215> = await querySingle({ type: EQuery.UNDEFINED_QUERY });
+    const numberResponse: TQueryResponse<number> = await querySingle({ type: EQuery.ASYNC_NUMBER_QUERY });
+    const undefinedResponse: TQueryResponse<215> = await querySingle({ type: EQuery.UNDEFINED_QUERY });
 
     expect(numberResponse).not.toBeNull();
     expect(numberResponse!.data).toBe(100);

@@ -15,17 +15,27 @@ export {
   TQueryType as QueryType
 } from "@Lib/types";
 
-export { ContextManager, ContextService } from "@Lib/management";
+export { ContextService } from "@Lib/management/ContextService";
+export { ContextManager } from "@Lib/management/ContextManager";
 
-export { getCurrentContext, getCurrent } from "@Lib/registry";
+export { getCurrentContext } from "@Lib/registry/getCurrentContext";
+export { getCurrent } from "@Lib/registry/getCurrent";
 
-export { createProvider, Provide, withProvision } from "@Lib/provision";
+export { createProvider } from "@Lib/provision/createProvider";
+export { Provide } from "@Lib/provision/Provide";
+export { withProvision } from "@Lib/provision/withProvision";
 
-export { OnSignal, useSignals, unsubscribeFromSignals, subscribeToSignals, emitSignal } from "@Lib/signals";
+export { OnSignal } from "@Lib/signals/OnSignal";
+export { useSignals } from "@Lib/signals/useSignals";
+export { unsubscribeFromSignals } from "@Lib/signals/unsubscribeFromSignals";
+export { subscribeToSignals } from "@Lib/signals/subscribeToSignals";
+export { emitSignal } from "@Lib/signals/emitSignal";
 
-export { OnQuery } from "@Lib/queries";
+export { OnQuery } from "@Lib/queries/OnQuery";
 
-export { useManager, Consume, withConsumption } from "@Lib/consumption";
+export { useManager } from "@Lib/consumption/useManager";
+export { Consume } from "@Lib/consumption/Consume";
+export { withConsumption } from "@Lib/consumption/withConsumption";
 
 export { Bind } from "@Lib/utils/Bind";
 export { createLoadable } from "@Lib/utils/createLoadable";

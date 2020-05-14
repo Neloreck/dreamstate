@@ -1,7 +1,7 @@
 import { createElement, ReactElement } from "react";
 
-import { CONTEXT_STATES_REGISTRY } from "../internals";
-import { TAnyContextManagerConstructor } from "../types";
+import { CONTEXT_STATES_REGISTRY } from "@Lib/internals";
+import { TAnyContextManagerConstructor } from "@Lib/types";
 
 /**
  * Subtree provider as global scope helper.

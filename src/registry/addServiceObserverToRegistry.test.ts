@@ -1,7 +1,6 @@
-import { addServiceObserverToRegistry } from "./addServiceObserverToRegistry";
-import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "../internals";
-
-import { TestContextManager } from "@Tests/../fixtures";
+import { addServiceObserverToRegistry } from "@Lib/registry/addServiceObserverToRegistry";
+import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { TestContextManager } from "@Lib/fixtures";
 
 describe("addServiceObserverToRegistry method functionality.", () => {
   it("Should properly add manager observer to set.", () => {

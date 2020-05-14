@@ -1,8 +1,8 @@
-import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "../types";
-import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "../internals";
-import { promisifyQuery } from "./promisifyQuery";
+import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "@Lib/types";
+import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { promisifyQuery } from "@Lib/queries/promisifyQuery";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Get single query resolver from possible metadata.

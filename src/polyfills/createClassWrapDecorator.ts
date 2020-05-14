@@ -1,4 +1,4 @@
-import { ClassDescriptor } from "../types";
+import { ClassDescriptor } from "@Lib/types";
 
 // Todo: Wait for proper proposal decorators.
 // Todo: Tests.

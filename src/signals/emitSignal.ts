@@ -1,8 +1,8 @@
-import { ISignal, ISignalEvent, TDreamstateService, TSignalListener, TSignalType } from "../types";
-import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
-import { cancelSignal } from "./cancelSignal";
+import { ISignal, ISignalEvent, TDreamstateService, TSignalListener, TSignalType } from "@Lib/types";
+import { SIGNAL_LISTENERS_REGISTRY } from "@Lib/internals";
+import { cancelSignal } from "@Lib/signals/cancelSignal";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Emit signal and notify all subscribers in async query.

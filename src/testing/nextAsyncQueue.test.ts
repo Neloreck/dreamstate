@@ -1,4 +1,4 @@
-import { nextAsyncQueue } from "./nextAsyncQueue";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
 
 describe("Async queue await util.", () => {
   it("Should properly return promise.", () => {

@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 
-import { createManagersObserver } from "../observing";
-import { TDreamstateService } from "../types";
+import { createManagersObserver } from "@Lib/observing/createManagersObserver";
+import { TDreamstateService } from "@Lib/types";
 
 /**
  * Create component for manual provision without HOC/Decorator-like api.

@@ -1,10 +1,9 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { CONTEXT_SERVICES_ACTIVATED } from "../internals";
-
-import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/../fixtures";
-import { createProvider } from "../";
+import { CONTEXT_SERVICES_ACTIVATED } from "@Lib/internals";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Lib/fixtures";
+import { createProvider } from "@Lib/provision/createProvider";
 
 describe("createProvider method.", () => {
   const Provider = createProvider([ TestContextManager, TestContextService, TestSingleContextService ]);

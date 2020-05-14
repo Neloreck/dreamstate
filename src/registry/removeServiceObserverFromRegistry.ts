@@ -1,12 +1,9 @@
-import { ContextService } from "../management/ContextService";
-import { TDreamstateService, TUpdateObserver } from "../types";
-import {
-  CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_SERVICES_REGISTRY
-} from "../internals";
-import { unRegisterService } from "./unRegisterService";
+import { ContextService } from "@Lib/management/ContextService";
+import { TDreamstateService, TUpdateObserver } from "@Lib/types";
+import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { unRegisterService } from "@Lib/registry/unRegisterService";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Remove state changes observer and kill instance if it is not singleton.

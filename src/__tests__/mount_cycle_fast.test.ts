@@ -1,10 +1,9 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { createProvider } from "../";
-import { CONTEXT_STATES_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "../internals";
-
-import { TestContextManager, TestContextService } from "@Tests/../fixtures";
+import { createProvider } from "@Lib/provision/createProvider";
+import { CONTEXT_STATES_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { TestContextManager, TestContextService } from "@Lib/fixtures";
 
 describe("Mount order for providers.", () => {
   const Provider = createProvider([ TestContextManager, TestContextService ]);

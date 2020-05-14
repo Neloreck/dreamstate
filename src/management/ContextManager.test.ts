@@ -1,19 +1,22 @@
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { getCurrentContext } from "@Lib/registry/getCurrentContext";
+import { subscribeToManager } from "@Lib/registry/subscribeToManager";
+import { unsubscribeFromManager } from "@Lib/registry/unsubscribeFromManager";
+import { getReactContext } from "@Lib/registry/getReactContext";
+import { ContextManager } from "@Lib/management/ContextManager";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
 import {
-  getCurrentContext,
-  getCurrent,
-  subscribeToManager,
-  unsubscribeFromManager, getReactContext
-} from "../registry";
-import { CONTEXT_REACT_CONTEXTS_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "../internals";
-import { ContextManager } from "./ContextManager";
-import { registerService, unRegisterService } from "../test-utils";
-
+  CONTEXT_REACT_CONTEXTS_REGISTRY,
+  CONTEXT_SUBSCRIBERS_REGISTRY,
+  CONTEXT_SERVICES_REGISTRY
+} from "@Lib/internals";
 import {
   ExampleContextManager,
   ExtendingTestContextManager,
   ITestContext,
   TestContextManager
-} from "@Tests/../fixtures";
+} from "@Lib/fixtures";
 
 describe("ContextManager class.", () => {
   it("Should not allow base class REACT_CONTEXT.", () => {

@@ -1,9 +1,9 @@
-import { TAnyContextManagerConstructor, TDreamstateService, TSignalType } from "../types";
-import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
-import { createMethodDecorator } from "../polyfills/createMethodDecorator";
-import { ContextService } from "../management/ContextService";
+import { TAnyContextManagerConstructor, TDreamstateService, TSignalType } from "@Lib/types";
+import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
+import { createMethodDecorator } from "@Lib/polyfills/createMethodDecorator";
+import { ContextService } from "@Lib/management/ContextService";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Write signal filter and bound method to class metadata.

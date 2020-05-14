@@ -1,9 +1,9 @@
 import { ComponentType } from "react";
-import hoistNonReactStatics from "hoist-non-react-statics";
+import { default as hoistNonReactStatics } from "hoist-non-react-statics";
 
-import { createManagersObserver } from "../observing";
-import { createClassWrapDecorator } from "../polyfills";
-import { TDreamstateService } from "../types";
+import { createManagersObserver } from "@Lib/observing/createManagersObserver";
+import { createClassWrapDecorator } from "@Lib/polyfills/createClassWrapDecorator";
+import { TDreamstateService } from "@Lib/types";
 
 /**
  * Decorator factory.

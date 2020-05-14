@@ -1,8 +1,8 @@
-import { QueryResponse } from "../index";
-import { registerService, unRegisterService } from "../test-utils";
-import { queryData } from "../queries";
-
-import { EQuery, RespondingService } from "@Tests/../fixtures/queries";
+import { TQueryResponse } from "@Lib/types";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { queryData } from "@Lib/queries/queryData";
+import { EQuery, RespondingService } from "@Lib/fixtures/queries";
 
 describe("queryData and queries processing.", () => {
   beforeEach(() => {
@@ -32,8 +32,8 @@ describe("queryData and queries processing.", () => {
   });
 
   it("Should properly handle sync and async queryData listeners.", async () => {
-    const stringResponse: QueryResponse<string> = await queryData({ type: EQuery.ASYNC_STRING_QUERY, data: "query" });
-    const booleanResponse: QueryResponse<boolean> = await queryData({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });
+    const stringResponse: TQueryResponse<string> = await queryData({ type: EQuery.ASYNC_STRING_QUERY, data: "query" });
+    const booleanResponse: TQueryResponse<boolean> = await queryData({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");

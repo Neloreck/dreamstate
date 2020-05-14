@@ -1,8 +1,8 @@
-import { emitSignal } from "./emitSignal";
-import { nextAsyncQueue } from "../testing";
-import { subscribeToSignals } from "./subscribeToSignals";
-import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
-import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
+import { emitSignal } from "@Lib/signals/emitSignal";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { subscribeToSignals } from "@Lib/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@Lib/signals/unsubscribeFromSignals";
+import { SIGNAL_LISTENERS_REGISTRY } from "@Lib/internals";
 
 describe("unSubscribeFromSignals method.", () => {
   it("Should properly unsubscribe from signals.", async () => {

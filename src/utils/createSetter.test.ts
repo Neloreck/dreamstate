@@ -3,8 +3,8 @@ import { createMutable } from "@Lib/utils/createMutable";
 import { createLoadable } from "@Lib/utils/createLoadable";
 import { createSetter } from "@Lib/utils/createSetter";
 import { ContextManager } from "@Lib/management/ContextManager";
-
-import { registerService, unRegisterService } from "@Lib/test-utils";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { registerService } from "@Lib/testing/registerService";
 
 import { NestedContextManager } from "@Lib/fixtures";
 

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 1`] = `
+exports[`useSignals method. Functional components should properly subscribe to signals and update ui. 1`] = `
 <UsingSignalFunction
   onInternalSignal={[Function]}
 >
@@ -10,7 +10,7 @@ exports[`Signals and signaling. Functional components should properly subscribe 
 </UsingSignalFunction>
 `;
 
-exports[`Signals and signaling. Functional components should properly subscribe to signals and update ui. 2`] = `
+exports[`useSignals method. Functional components should properly subscribe to signals and update ui. 2`] = `
 <UsingSignalFunction
   onInternalSignal={[Function]}
 >

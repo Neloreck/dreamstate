@@ -11,10 +11,9 @@ import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   SIGNAL_LISTENERS_REGISTRY
 } from "./internals";
-import { unRegisterService } from "../registry";
-import { registerService } from "../testing";
-
-import { TestContextManager } from "@Tests/../fixtures";
+import { unRegisterService } from "@Lib/registry/unRegisterService";
+import { registerService } from "@Lib/testing/registerService";
+import { TestContextManager } from "@Lib/fixtures";
 
 describe("Dreamstate internals.", () => {
   it("Should contain only listed objects.", () => {

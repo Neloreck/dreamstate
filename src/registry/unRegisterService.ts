@@ -1,13 +1,13 @@
-import { TDreamstateService } from "../types";
-import { unsubscribeFromSignals } from "../signals";
+import { TDreamstateService } from "@Lib/types";
+import { unsubscribeFromSignals } from "@Lib/signals/unsubscribeFromSignals";
 import {
   CONTEXT_SERVICES_REGISTRY,
   CONTEXT_SIGNAL_HANDLERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED
-} from "../internals";
+} from "@Lib/internals";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 export function unRegisterService<T extends object>(
   Service: TDreamstateService,
@@ -19,12 +19,10 @@ export function unRegisterService<T extends object>(
 
     CONTEXT_SERVICES_REGISTRY.delete(Service);
     CONTEXT_SIGNAL_HANDLERS_REGISTRY.delete(Service);
-    // Do not check if it is CM - more expensive operation.
     CONTEXT_STATES_REGISTRY.delete(Service);
-    // todo: If replace weak maps with maps, think about GC there. High probability of leak there?
+
     // Do not clean observers and subscribers, automated by react.
 
-    // Delete possible context manager reference to prevent issues with GC.
     CONTEXT_SERVICES_ACTIVATED.delete(Service);
 
     debug.info("Context service instance disposed:", Service.name);

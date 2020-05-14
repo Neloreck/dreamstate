@@ -2,12 +2,13 @@ import { createElement } from "react";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { getCurrent } from "../registry";
-import { nextAsyncQueue, registerService, unRegisterService } from "../test-utils";
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Lib/fixtures/signals";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { registerService } from "@Lib/testing/registerService";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
 
-import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@Tests/../fixtures/signals";
-
-describe("Signals and signaling.", () => {
+describe("useSignals method.", () => {
   beforeEach(() => {
     registerService(EmittingContextManager);
   });

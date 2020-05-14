@@ -1,14 +1,13 @@
 import { ComponentType, createElement, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
-import { EMPTY_ARR } from "../internals";
-import {
-  IStringIndexed,
-  TAnyContextManagerConstructor,
-  TDreamstateService
-} from "../types";
-import { provideSubTreeRecursive } from "../provision/provideSubTreeRecursive";
-import { ContextManager, ContextService } from "../management";
-import { addServiceObserverToRegistry, registerService, removeServiceObserverFromRegistry } from "../registry";
+import { EMPTY_ARR } from "@Lib/internals";
+import { IStringIndexed, TAnyContextManagerConstructor, TDreamstateService } from "@Lib/types";
+import { provideSubTreeRecursive } from "@Lib/provision/provideSubTreeRecursive";
+import { ContextManager } from "@Lib/management/ContextManager";
+import { ContextService } from "@Lib/management/ContextService";
+import { addServiceObserverToRegistry } from "@Lib/registry/addServiceObserverToRegistry";
+import { registerService } from "@Lib/registry/registerService";
+import { removeServiceObserverFromRegistry } from "@Lib/registry/removeServiceObserverFromRegistry";
 
 import { debug } from "../../cli/build/macroses/debug.macro";
 

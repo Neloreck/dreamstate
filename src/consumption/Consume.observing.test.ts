@@ -2,11 +2,12 @@ import { ComponentType, createElement } from "react";
 import { mount, ReactWrapper } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { Consume } from "./index";
-import { getCurrent } from "../registry";
-import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
-
-import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Tests/../fixtures";
+import { Consume } from "@Lib/consumption/Consume";
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@Lib/fixtures";
 
 describe("@Consume selector observing.", () => {
   function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {

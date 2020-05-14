@@ -8,10 +8,10 @@ import {
   CONTEXT_SUBSCRIBERS_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
   CONTEXT_SERVICES_REGISTRY
-} from "../internals";
-import { registerService, unRegisterService } from "../test-utils";
-
-import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/../fixtures";
+} from "@Lib/internals";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { TestContextManager } from "@Lib/fixtures";
 
 describe("Register service test util.", () => {
   it("Should not be initialized before test.", () => {

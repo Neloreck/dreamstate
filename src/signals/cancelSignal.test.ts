@@ -1,4 +1,4 @@
-import { cancelSignal } from "./cancelSignal";
+import { cancelSignal } from "@Lib/signals/cancelSignal";
 
 describe("cancelSignal method.", () => {
   it("Should properly set cancel variable.", () => {

@@ -1,9 +1,9 @@
 import { Context, createContext } from "react";
 
-import { TAnyContextManagerConstructor } from "../types";
-import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
+import { TAnyContextManagerConstructor } from "@Lib/types";
+import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@Lib/internals";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Get manager react context internal.

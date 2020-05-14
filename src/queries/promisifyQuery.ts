@@ -1,5 +1,5 @@
-import { IOptionalQueryRequest, IQueryResponse, TDreamstateService, TQueryType } from "../types";
-import { ContextService } from "../";
+import { IOptionalQueryRequest, IQueryResponse, TDreamstateService, TQueryType } from "@Lib/types";
+import { ContextService } from "@Lib/management/ContextService";
 
 /**
  * Promisify query handler.

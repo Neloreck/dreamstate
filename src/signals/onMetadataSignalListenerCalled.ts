@@ -1,7 +1,7 @@
-import { ISignalEvent, TConstructorKey, TDreamstateService, TSignalType } from "../types";
-import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
+import { ISignalEvent, TConstructorKey, TDreamstateService, TSignalType } from "@Lib/types";
+import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Listen signal and call related metadata listeners of this manager.

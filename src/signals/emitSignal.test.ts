@@ -1,10 +1,11 @@
-import { emitSignal } from "./emitSignal";
-import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
-import { ISignalEvent, TSignalType } from "../types";
-import { subscribeToSignals } from "./subscribeToSignals";
-import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
-
-import { ESignal, SubscribedContextManager } from "@Tests/../fixtures";
+import { emitSignal } from "@Lib/signals/emitSignal";
+import { ISignalEvent, TSignalType } from "@Lib/types";
+import { subscribeToSignals } from "@Lib/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@Lib/signals/unsubscribeFromSignals";
+import { ESignal, SubscribedContextManager } from "@Lib/fixtures";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
 
 describe("emitSignal method.", () => {
   it("Should properly reject bad emit parameters.", () => {

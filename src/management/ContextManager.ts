@@ -1,11 +1,11 @@
-import { TConstructorKey, TDreamstateService, TPartialTransformer } from "../types";
-import { CONTEXT_STATES_REGISTRY } from "../internals";
-import { shouldObserversUpdate } from "../observing/shouldObserversUpdate";
-import { notifyObservers } from "../observing/notifyObservers";
-import { getReactContext } from "../registry/getReactContext";
-import { ContextService } from "./ContextService";
+import { TConstructorKey, TDreamstateService, TPartialTransformer } from "@Lib/types";
+import { CONTEXT_STATES_REGISTRY } from "@Lib/internals";
+import { shouldObserversUpdate } from "@Lib/observing/shouldObserversUpdate";
+import { notifyObservers } from "@Lib/observing/notifyObservers";
+import { getReactContext } from "@Lib/registry/getReactContext";
+import { ContextService } from "@Lib/management/ContextService";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Abstract class.

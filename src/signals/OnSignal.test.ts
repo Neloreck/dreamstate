@@ -1,11 +1,12 @@
-import { OnSignal } from "./OnSignal";
-import { ContextService } from "../management";
-import { TSignalSubscriptionMetadata, TSignalType } from "../types";
-import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "../internals";
-import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
-import { emitSignal } from "./emitSignal";
-
-import { ESignal, SubscribedContextManager } from "@Tests/../fixtures/signals";
+import { OnSignal } from "@Lib/signals/OnSignal";
+import { ContextService } from "@Lib/management/ContextService";
+import { TSignalSubscriptionMetadata, TSignalType } from "@Lib/types";
+import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@Lib/internals";
+import { emitSignal } from "@Lib/signals/emitSignal";
+import { ESignal, SubscribedContextManager } from "@Lib/fixtures/signals";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { registerService } from "@Lib/testing/registerService";
 
 describe("@OnSignal metadata decorator.", () => {
   it("Signal decorator should properly add metadata.", () => {

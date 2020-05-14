@@ -1,7 +1,7 @@
-import { TDreamstateService } from "../types";
-import { ContextService } from "../";
-import { registerService as internalRegisterService } from "../registry";
-import { CONTEXT_SERVICES_REGISTRY } from "../internals";
+import { TDreamstateService } from "@Lib/types";
+import { registerService as internalRegisterService } from "@Lib/registry/registerService";
+import { CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { ContextService } from "@Lib/management/ContextService";
 
 /**
  * Register service class.

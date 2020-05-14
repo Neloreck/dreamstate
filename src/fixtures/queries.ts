@@ -1,4 +1,6 @@
-import { ContextService, OnQuery, QueryRequest, QueryResponse } from "../index";
+import { ContextService } from "@Lib/management/ContextService";
+import { OnQuery } from "@Lib/queries/OnQuery";
+import { TQueryRequest, TQueryResponse } from "@Lib/types";
 
 export enum EQuery {
   SYNC_BOOLEAN_QUERY = "SYNC_BOOLEAN_QUERY",
@@ -9,11 +11,11 @@ export enum EQuery {
   UNDEFINED_QUERY = "UNDEFINED_QUERY"
 }
 
-export type TAsyncNumberQuery = QueryRequest<void, EQuery.ASYNC_NUMBER_QUERY>;
-export type TAsyncStringQuery = QueryRequest<string, EQuery.ASYNC_STRING_QUERY>;
-export type TSyncBooleanQuery = QueryRequest<void, EQuery.SYNC_BOOLEAN_QUERY>;
-export type TAsyncExceptionQuery = QueryRequest<void, EQuery.ASYNC_EXCEPTION_QUERY>;
-export type TSyncExceptionQuery = QueryRequest<void, EQuery.SYNC_EXCEPTION_QUERY>;
+export type TAsyncNumberQuery = TQueryRequest<void, EQuery.ASYNC_NUMBER_QUERY>;
+export type TAsyncStringQuery = TQueryRequest<string, EQuery.ASYNC_STRING_QUERY>;
+export type TSyncBooleanQuery = TQueryRequest<void, EQuery.SYNC_BOOLEAN_QUERY>;
+export type TAsyncExceptionQuery = TQueryRequest<void, EQuery.ASYNC_EXCEPTION_QUERY>;
+export type TSyncExceptionQuery = TQueryRequest<void, EQuery.SYNC_EXCEPTION_QUERY>;
 
 export class RespondingService extends ContextService {
 
@@ -55,27 +57,27 @@ export class RespondingDuplicateService extends ContextService {
 
 export class RequestingService extends ContextService {
 
-  public async queryUndefinedData(): Promise<QueryResponse<any>> {
+  public async queryUndefinedData(): Promise<TQueryResponse<any>> {
     return this.queryData({ type: EQuery.UNDEFINED_QUERY });
   }
 
-  public async querySyncThrowingData(): Promise<QueryResponse<void>> {
+  public async querySyncThrowingData(): Promise<TQueryResponse<void>> {
     return this.queryData({ type: EQuery.SYNC_EXCEPTION_QUERY });
   }
 
-  public async querySyncBooleanData(): Promise<QueryResponse<boolean>> {
+  public async querySyncBooleanData(): Promise<TQueryResponse<boolean>> {
     return this.queryData({ type: EQuery.SYNC_BOOLEAN_QUERY });
   }
 
-  public async queryAsyncThrowingData(): Promise<QueryResponse<void>> {
+  public async queryAsyncThrowingData(): Promise<TQueryResponse<void>> {
     return this.queryData({ type: EQuery.ASYNC_EXCEPTION_QUERY });
   }
 
-  public async queryAsyncNumberData(): Promise<QueryResponse<number>> {
+  public async queryAsyncNumberData(): Promise<TQueryResponse<number>> {
     return this.queryData({ type: EQuery.ASYNC_NUMBER_QUERY });
   }
 
-  public async queryAsyncStringData(data: string): Promise<QueryResponse<string>> {
+  public async queryAsyncStringData(data: string): Promise<TQueryResponse<string>> {
     return this.queryData({ type: EQuery.ASYNC_STRING_QUERY, data });
   }
 

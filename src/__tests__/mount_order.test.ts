@@ -1,9 +1,11 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextService, createProvider, getCurrent } from "../";
-import { registerService } from "../testing";
-import { CONTEXT_SERVICES_ACTIVATED } from "../internals";
+import { ContextService } from "@Lib/management/ContextService";
+import { createProvider } from "@Lib/provision/createProvider";
+import { registerService } from "@Lib/testing/registerService";
+import { CONTEXT_SERVICES_ACTIVATED } from "@Lib/internals";
+import { getCurrent } from "@Lib/registry/getCurrent";
 
 describe("Mount order for providers.", () => {
   class First extends ContextService {}

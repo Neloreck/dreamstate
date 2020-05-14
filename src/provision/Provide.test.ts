@@ -1,10 +1,9 @@
 import { mount } from "enzyme";
 import { createElement, PureComponent, ReactNode } from "react";
 
-import { Provide } from "./Provide";
-import { CONTEXT_SERVICES_ACTIVATED } from "../internals";
-
-import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/../fixtures";
+import { Provide } from "@Lib/provision/Provide";
+import { CONTEXT_SERVICES_ACTIVATED } from "@Lib/internals";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Lib/fixtures";
 
 describe("@Provide decorator.", () => {
   @Provide([ TestContextManager, TestContextService, TestSingleContextService ])

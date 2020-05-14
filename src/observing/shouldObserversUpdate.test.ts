@@ -1,4 +1,4 @@
-import { shouldObserversUpdate } from "./shouldObserversUpdate";
+import { shouldObserversUpdate } from "@Lib/observing/shouldObserversUpdate";
 
 describe("shouldObserversUpdate method functionality.", () => {
   it("Should return true of previous context does not exist.", () => {

@@ -1,8 +1,8 @@
-import { registerService, unRegisterService } from "../test-utils";
-import { queryMultiple } from "../queries";
-import { TQueryResponse } from "../types";
-
-import { EQuery, RespondingService } from "@Tests/../fixtures/queries";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { queryMultiple } from "@Lib/queries/queryMultiple";
+import { TQueryResponse } from "@Lib/types";
+import { EQuery, RespondingService } from "@Lib/fixtures/queries";
 
 describe("querySingle method.", () => {
   beforeEach(() => {

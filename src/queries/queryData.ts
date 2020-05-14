@@ -1,6 +1,6 @@
-import { IOptionalQueryRequest, IQueryRequest, TQueryRequest, TQueryResponse, TQueryType } from "../types";
-import { queryMultiple } from "./queryMultiple";
-import { querySingle } from "./querySingle";
+import { IOptionalQueryRequest, IQueryRequest, TQueryResponse, TQueryType } from "@Lib/types";
+import { queryMultiple } from "@Lib/queries/queryMultiple";
+import { querySingle } from "@Lib/queries/querySingle";
 
 /**
  * Find correct async listener or array of listeners and return response or null.

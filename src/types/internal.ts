@@ -1,6 +1,7 @@
-import type { Context } from "react";
+import { Context } from "react";
 
-import type { ContextService, ContextManager } from "../management";
+import type { ContextService } from "@Lib/management/ContextService";
+import type { ContextManager } from "@Lib/management/ContextManager";
 
 export interface IContextServiceConstructor {
   prototype: ContextService;

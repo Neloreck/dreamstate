@@ -1,4 +1,4 @@
-import { TConstructor } from "./general";
+import { TConstructor } from "@Lib/types/general";
 
 /**
  * From the TC39 Decorators proposal.

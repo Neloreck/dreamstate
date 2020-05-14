@@ -1,15 +1,14 @@
 import {
   IOptionalQueryRequest,
-  IQueryRequest,
   ISignal,
   TDreamstateService,
   TQueryType,
   TSignalType
-} from "../types";
-import { emitSignal } from "../signals/emitSignal";
-import { queryData } from "../queries/queryData";
+} from "@Lib/types";
+import { emitSignal } from "@Lib/signals/emitSignal";
+import { queryData } from "@Lib/queries/queryData";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 export abstract class ContextService {
 

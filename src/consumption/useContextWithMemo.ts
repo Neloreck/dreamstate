@@ -1,8 +1,9 @@
 import { MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
 
-import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
-import { CONTEXT_STATES_REGISTRY, EMPTY_ARR } from "../internals";
-import { subscribeToManager, unsubscribeFromManager } from "../registry";
+import { IContextManagerConstructor, TUpdateSubscriber } from "@Lib/types";
+import { CONTEXT_STATES_REGISTRY, EMPTY_ARR } from "@Lib/internals";
+import { subscribeToManager } from "@Lib/registry/subscribeToManager";
+import { unsubscribeFromManager } from "@Lib/registry/unSubscribeFromManager";
 
 /**
  * Use manager hook with subscribed updates.
@@ -11,7 +12,7 @@ import { subscribeToManager, unsubscribeFromManager } from "../registry";
 export function useContextWithMemo<T extends object, D extends IContextManagerConstructor<T>>(
   Manager: D,
   depsSelector: (context: T) => Array<any>
-): D["prototype"]["context"] {
+): T {
   const [ state, setState ] = useState(function() {
     return CONTEXT_STATES_REGISTRY.get(Manager) as T;
   });

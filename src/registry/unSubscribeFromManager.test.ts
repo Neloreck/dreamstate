@@ -1,8 +1,7 @@
-import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
-import { subscribeToManager } from "./subscribeToManager";
-import { unsubscribeFromManager } from "./unSubscribeFromManager";
-
-import { TestContextManager, TestContextService } from "@Tests/../fixtures";
+import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@Lib/internals";
+import { subscribeToManager } from "@Lib/registry/subscribeToManager";
+import { unsubscribeFromManager } from "@Lib/registry/unSubscribeFromManager";
+import { TestContextManager, TestContextService } from "@Lib/fixtures";
 
 describe("unSubscribeFromManager method functionality.", () => {
   it("Should properly remove subscribers from registry.", () => {

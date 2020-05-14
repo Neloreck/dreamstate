@@ -1,5 +1,5 @@
-import { Consume } from "./Consume";
-import { IConsume } from "../types";
+import { Consume } from "@Lib/consumption/Consume";
+import { IConsume } from "@Lib/types";
 
 /**
  * HOC alias for @Consume.

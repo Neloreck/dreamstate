@@ -1,15 +1,14 @@
-import { notifyObservers } from "./notifyObservers";
-import {
-  addServiceObserver,
-  nextAsyncQueue,
-  registerService,
-  removeServiceObserver,
-  unRegisterService
-} from "../testing";
-import { subscribeToManager, unsubscribeFromManager, getCurrentContext } from "../registry";
-import { CONTEXT_STATES_REGISTRY } from "../internals";
-
-import { ITestContext, TestContextManager } from "@Tests/../fixtures";
+import { notifyObservers } from "@Lib/observing/notifyObservers";
+import { CONTEXT_STATES_REGISTRY } from "@Lib/internals";
+import { subscribeToManager } from "@Lib/registry/subscribeToManager";
+import { unsubscribeFromManager } from "@Lib/registry/unsubscribeFromManager";
+import { getCurrentContext } from "@Lib/registry/getCurrentContext";
+import { ITestContext, TestContextManager } from "@Lib/fixtures";
+import { registerService } from "@Lib/testing/registerService";
+import { addServiceObserver } from "@Lib/testing/addServiceObserver";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { removeServiceObserver } from "@Lib/testing/removeServiceObserver";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
 
 describe("notifyObservers method functionality.", () => {
   it("Should correctly set nextState for managers.", () => {

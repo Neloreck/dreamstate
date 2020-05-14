@@ -1,6 +1,10 @@
 import { createElement, useState } from "react";
 
-import { SignalEvent, ContextManager, ContextService, OnSignal, useSignals } from "../index";
+import { ISignalEvent } from "@Lib/types";
+import { ContextManager } from "@Lib/management/ContextManager";
+import { ContextService } from "@Lib/management/ContextService";
+import { useSignals } from "@Lib/signals/useSignals";
+import { OnSignal } from "@Lib/signals/OnSignal";
 
 export enum ESignal {
   NUMBER_SIGNAL = "NUMBER",
@@ -8,24 +12,24 @@ export enum ESignal {
   EMPTY_SIGNAL = "EMPTY_SIGNAL"
 }
 
-export type TStringSignalEvent = SignalEvent<string, ESignal.STRING_SIGNAL>;
+export type TStringSignalEvent = ISignalEvent<string, ESignal.STRING_SIGNAL>;
 
 export class SubscribedContextManager extends ContextManager<object> {
 
   public context: object = {};
 
   @OnSignal(ESignal.NUMBER_SIGNAL)
-  public onNumberSignal(signal: SignalEvent<number>): void {
+  public onNumberSignal(signal: ISignalEvent<number>): void {
     return;
   }
 
   @OnSignal([ ESignal.STRING_SIGNAL ])
-  public onStringSignal(signal: SignalEvent<string>): void {
+  public onStringSignal(signal: ISignalEvent<string>): void {
     return;
   }
 
   @OnSignal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
-  public onStringOrNumberSignal(signal: SignalEvent<number | string>): void {
+  public onStringOrNumberSignal(signal: ISignalEvent<number | string>): void {
     return;
   }
 

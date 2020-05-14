@@ -2,13 +2,8 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { createElement } from "react";
 
-import { getCurrent } from "../";
-
-import {
-  ExampleContextClassConsumer,
-  ExampleContextFunctionalProvider,
-  ExampleContextManager
-} from "@Tests/../fixtures";
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { ExampleContextClassConsumer, ExampleContextFunctionalProvider, ExampleContextManager } from "@Lib/fixtures";
 
 describe("React tree for provided and consumed components.", () => {
   it("Should correctly update subscribed to functional provider elements view.", () => {

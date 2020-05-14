@@ -8,18 +8,15 @@ import { terser } from "rollup-plugin-terser";
 import { default as commonjs } from "rollup-plugin-commonjs";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
-
-const ENV = process.env.NODE_ENV || "development";
-const IS_PRODUCTION = ENV === "production";
-const IS_DEBUG = ENV === "debug";
+import { PROJECT_ROOT, IS_PRODUCTION, IS_DEBUG } from "./build.config";
 
 export const ESM_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics", "tslib" ],
-  input: "./src/index.ts",
+  input: path.resolve(PROJECT_ROOT, "./src/index.ts"),
   preserveModules: true,
   output: {
     compact: IS_PRODUCTION,
-    dir: "./esm/",
+    dir: path.resolve(PROJECT_ROOT, "./esm/"),
     sourcemap: true,
     format: "es"
   },

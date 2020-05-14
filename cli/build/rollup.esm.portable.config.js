@@ -8,11 +8,9 @@ import { default as commonjs } from "rollup-plugin-commonjs";
 import { default as dts } from "rollup-plugin-dts";
 import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
+import { IS_PRODUCTION, IS_DEBUG } from "./build.config";
 import { BABEL_CONFIG } from "./babel.modern.config";
-
-const ENV = process.env.NODE_ENV || "development";
-const IS_PRODUCTION = ENV === "production";
-const IS_DEBUG = ENV === "debug";
+import { default as tsconfig } from "../../tsconfig.json";
 
 export const ESM_CONFIG = {
   external: [ "react", "shallow-equal", "hoist-non-react-statics" ],
@@ -39,7 +37,7 @@ export const ESM_CONFIG = {
       tsconfig: path.resolve(__dirname, "./tsconfig.portable.json"),
       declaration: false
     }),
-    sizeSnapshot({ snapshotPath: "./build/size_snapshot.json" })
+    sizeSnapshot({ snapshotPath: "./cli/build/size_snapshot.json" })
   ]
 };
 
@@ -48,11 +46,13 @@ export const DTS_CONFIG = {
     "./src/index.ts"
   ],
   output: {
-    file: "./portable/dreamstate.ts",
+    file: "./portable/dreamstate.d.ts",
     format: "es"
   },
   plugins: [
-    dts()
+    dts({
+      compilerOptions: tsconfig.compilerOptions
+    })
   ]
 };
 

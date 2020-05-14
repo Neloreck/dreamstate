@@ -1,16 +1,19 @@
-import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "../internals";
-import { nextAsyncQueue, registerService, unRegisterService } from "../test-utils";
-import { ContextManager, ContextService } from "./index";
-import { ISignalEvent, TAnyContextManagerConstructor, TDreamstateService } from "../types";
-import { subscribeToSignals, unsubscribeFromSignals } from "../signals";
-
+import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@Lib/internals";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { ContextService } from "@Lib/management/ContextService";
+import { ContextManager } from "@Lib/management/ContextManager";
+import { ISignalEvent, TAnyContextManagerConstructor, TDreamstateService } from "@Lib/types";
+import { subscribeToSignals } from "@Lib/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@Lib/signals/unsubscribeFromSignals";
 import {
   TestSingleContextService,
   TestContextService,
   TestContextManager,
   TestSingleContextManager,
   EmittingContextManager
-} from "@Tests/../fixtures";
+} from "@Lib/fixtures";
 
 describe("ContextService class.", () => {
   it("Should initialize service classes without any exceptions.", () => {

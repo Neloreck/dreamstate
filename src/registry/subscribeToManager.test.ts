@@ -1,9 +1,10 @@
-import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
-import { subscribeToManager } from "./subscribeToManager";
-import { unsubscribeFromManager } from "./unSubscribeFromManager";
-
-import { ITestContext, TestContextManager, TestContextService } from "@Tests/../fixtures";
-import { nextAsyncQueue, registerService, unRegisterService } from "../testing";
+import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@Lib/internals";
+import { subscribeToManager } from "@Lib/registry/subscribeToManager";
+import { unsubscribeFromManager } from "@Lib/registry/unSubscribeFromManager";
+import { ITestContext, TestContextManager, TestContextService } from "@Lib/fixtures";
+import { registerService } from "@Lib/testing/registerService";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
 
 describe("subscribeToManager method functionality.", () => {
   it("Should not work before registering.", () => {

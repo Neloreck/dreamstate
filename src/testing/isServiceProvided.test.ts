@@ -1,6 +1,8 @@
-import { addServiceObserver, isServiceProvided, registerService, removeServiceObserver } from "../test-utils";
-
-import { TestContextManager } from "@Tests/../fixtures";
+import { addServiceObserver } from "@Lib/testing/addServiceObserver";
+import { isServiceProvided } from "@Lib/testing/isServiceProvided";
+import { registerService } from "@Lib/testing/registerService";
+import { removeServiceObserver } from "@Lib/testing/removeServiceObserver";
+import { TestContextManager } from "@Lib/fixtures";
 
 describe("Register service test util.", () => {
   it("Should properly detect if service is provided.", () => {

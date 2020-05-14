@@ -1,12 +1,12 @@
 import { ComponentType, createElement, ReactElement } from "react";
 import hoistNonReactStatics from "hoist-non-react-statics";
 
-import { IConsumeDecorator, IStringIndexed, TConsumable, TTakeContextSelector } from "../types";
-import { ContextManager } from "../management";
-import { createClassWrapDecorator } from "../polyfills";
-import { useManager } from "./useManager";
+import { IConsumeDecorator, IStringIndexed, TConsumable, TTakeContextSelector } from "@Lib/types";
+import { ContextManager } from "@Lib/management/ContextManager";
+import { createClassWrapDecorator } from "@Lib/polyfills/createClassWrapDecorator";
+import { useManager } from "@Lib/consumption/useManager";
 
-import { dev } from "../../cli/build/macroses/dev.macro";
+import { dev } from "@Macro/dev.macro";
 
 /**
  * Function for consume wrappers that maps selectors and allows class components to consume store data.
@@ -131,13 +131,13 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
 
         if (alias) {
           mutators[it] = function(accumulator: IStringIndexed<any>) {
-            accumulator[alias as any] = useManager(source.from, memoCheck)[take];
+            accumulator[alias as any] = useManager(source.from, memoCheck)[take as any];
 
             return accumulator;
           };
         } else {
           mutators[it] = function(accumulator: IStringIndexed<any>) {
-            accumulator[take as any] = useManager(source.from, memoCheck)[take];
+            accumulator[take as any] = useManager(source.from, memoCheck)[take as any];
 
             return accumulator;
           };

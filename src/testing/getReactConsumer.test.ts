@@ -1,8 +1,7 @@
 import { Context } from "react";
 
-import { getReactConsumer } from "./getReactConsumer";
-
-import { ITestContext, TestContextManager } from "@Tests/../fixtures";
+import { getReactConsumer } from "@Lib/testing/getReactConsumer";
+import { ITestContext, TestContextManager } from "@Lib/fixtures";
 
 describe("Get react consumer util.", () => {
   it("Should properly get service consumer.", () => {

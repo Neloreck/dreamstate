@@ -6,7 +6,7 @@ import {
   ExampleContextDecoratedProvider,
   ExampleContextFunctionalConsumer,
   ExampleContextFunctionalProvider
-} from "@Tests/../fixtures";
+} from "@Lib/fixtures";
 
 describe("React tree for provided and consumed components.", () => {
   it("Should correctly provide manager context from functional provider.", () => {

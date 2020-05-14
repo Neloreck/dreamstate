@@ -1,8 +1,8 @@
-import { IContextManagerConstructor, TUpdateSubscriber } from "../types";
-import { CONTEXT_SUBSCRIBERS_REGISTRY } from "../internals";
-import { ContextManager } from "../management/ContextManager";
+import { IContextManagerConstructor, TUpdateSubscriber } from "@Lib/types";
+import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@Lib/internals";
+import { ContextManager } from "@Lib/management/ContextManager";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Unsubscribe from manager updates.

@@ -1,6 +1,6 @@
-import { TDreamstateService } from "../types";
-import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
-import { ContextService } from "../management/ContextService";
+import { TDreamstateService } from "@Lib/types";
+import { CONTEXT_OBSERVERS_REGISTRY } from "@Lib/internals";
+import { ContextService } from "@Lib/management/ContextService";
 
 /**
  * Get current service observers count.

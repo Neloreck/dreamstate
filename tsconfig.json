@@ -8,9 +8,9 @@
     "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "rootDir": ".",
-    "baseUrl": ".",
-    "emitDecoratorMetadata": false,
+    "rootDir": "./",
+    "baseUrl": "./",
+    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "types": [
@@ -22,11 +22,14 @@
       "dom"
     ],
     "paths": {
-      "@Lib/*": [ "src/*" ],
-      "@Macro/*": [ "cli/build/macroses/*" ],
-      "@Tests/*": [ "src/__tests__/*" ]
+      "@Lib/*": [ "./src/*" ],
+      "@Macro/*": [ "./cli/build/macroses/*" ],
+      "@Tests/*": [ "./src/__tests__/*" ]
     }
   },
+  "include": [
+    "src/"
+  ],
   "exclude": [
     "node_modules"
   ]

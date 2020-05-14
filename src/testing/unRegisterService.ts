@@ -1,6 +1,6 @@
-import { TDreamstateService } from "../types";
-import { ContextService } from "..";
-import { unRegisterService as internalUnRegisterService } from "../registry";
+import { TDreamstateService } from "@Lib/types";
+import { ContextService } from "@Lib/management/ContextService";
+import { unRegisterService as internalUnRegisterService } from "@Lib/registry/unRegisterService";
 
 /**
  * Unregister service.

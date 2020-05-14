@@ -1,5 +1,3 @@
-import * as path from "path";
-
 export const BABEL_CONFIG = {
   extensions: [ ".ts", ".js" ],
   presets: [
@@ -11,7 +9,7 @@ export const BABEL_CONFIG = {
       {
         "root": [ "./" ],
         "alias": {
-          "@Macro": path.resolve(__dirname, "./macroses"),
+          "@Macro": "./cli/build/macroses",
           "@Lib": "./src"
         }
       }

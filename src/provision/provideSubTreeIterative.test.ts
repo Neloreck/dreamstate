@@ -1,10 +1,11 @@
 import { createElement } from "react";
 import { shallow } from "enzyme";
 
-import { provideSubTreeIterative, provideSubTreeRecursive } from "./index";
-import { registerService, unRegisterService } from "../test-utils";
-
-import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Tests/../fixtures";
+import { provideSubTreeIterative } from "@Lib/provision/provideSubTreeIterative";
+import { provideSubTreeRecursive } from "@Lib/provision/provideSubTreeRecursive";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@Lib/fixtures";
 
 describe("provideSubTreeIterative rendering.", () => {
   beforeAll(() => {

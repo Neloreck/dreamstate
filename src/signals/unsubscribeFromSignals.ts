@@ -1,7 +1,7 @@
-import { TSignalListener } from "../types";
-import { SIGNAL_LISTENERS_REGISTRY } from "../internals";
+import { TSignalListener } from "@Lib/types";
+import { SIGNAL_LISTENERS_REGISTRY } from "@Lib/internals";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Unsubscribe from all signals and listen everything.

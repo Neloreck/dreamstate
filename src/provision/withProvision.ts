@@ -1,4 +1,4 @@
-import { Provide } from "./Provide";
+import { Provide } from "@Lib/provision/Provide";
 
 /**
  * HOC alias for @Provide.

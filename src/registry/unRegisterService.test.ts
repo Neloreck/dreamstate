@@ -1,5 +1,6 @@
-import { registerService } from "./registerService";
-import { unRegisterService } from "./unRegisterService";
+import { registerService } from "@Lib/registry/registerService";
+import { unRegisterService } from "@Lib/registry//unRegisterService";
+import { TestContextManager, TestContextService, TestSingleContextService } from "@Lib/fixtures";
 import {
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_SIGNAL_HANDLERS_REGISTRY,
@@ -7,9 +8,7 @@ import {
   CONTEXT_SUBSCRIBERS_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
   CONTEXT_SERVICES_REGISTRY
-} from "../internals";
-
-import { TestContextManager, TestContextService, TestSingleContextService } from "@Tests/../fixtures";
+} from "@Lib/internals";
 
 describe("unRegisterService method functionality.", () => {
   it("Should properly unregister generic services.", () => {

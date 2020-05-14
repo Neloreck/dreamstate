@@ -1,5 +1,5 @@
-import { TDreamstateService, TUpdateObserver } from "../types";
-import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
+import { TDreamstateService, TUpdateObserver } from "@Lib/types";
+import { CONTEXT_OBSERVERS_REGISTRY } from "@Lib/internals";
 
 /**
  * Check if current service is provided.

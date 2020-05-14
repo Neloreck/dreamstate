@@ -1,4 +1,4 @@
-import { TDreamstateService } from "../types/internal";
+import { TDreamstateService } from "@Lib/types/internal";
 
 export interface ISignal<D = undefined, T extends TSignalType = TSignalType> {
   /**

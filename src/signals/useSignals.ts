@@ -1,9 +1,9 @@
 import { useEffect } from "react";
 
-import { TCallable, TSignalListener, TSignalType } from "../types";
-import { EMPTY_ARR } from "../internals";
-import { subscribeToSignals } from "./subscribeToSignals";
-import { unsubscribeFromSignals } from "./unsubscribeFromSignals";
+import { TCallable, TSignalListener, TSignalType } from "@Lib/types";
+import { EMPTY_ARR } from "@Lib/internals";
+import { subscribeToSignals } from "@Lib/signals/subscribeToSignals";
+import { unsubscribeFromSignals } from "@Lib/signals/unsubscribeFromSignals";
 
 /**
  * Hook for signals listening and custom UI handling.

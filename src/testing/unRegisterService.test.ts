@@ -8,10 +8,10 @@ import {
   CONTEXT_SUBSCRIBERS_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
   CONTEXT_SERVICES_REGISTRY
-} from "../internals";
-import { registerService, unRegisterService } from "./index";
-
-import { TestContextService, TestSingleContextService } from "@Tests/../fixtures";
+} from "@Lib/internals";
+import { registerService } from "@Lib/testing/registerService";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { TestContextService, TestSingleContextService } from "@Lib/fixtures";
 
 describe("Unregister service test util.", () => {
   it("Should properly unregister services without errors.", () => {

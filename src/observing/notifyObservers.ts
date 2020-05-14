@@ -1,17 +1,8 @@
-import {
-  CONTEXT_OBSERVERS_REGISTRY,
-  CONTEXT_STATES_REGISTRY,
-  CONTEXT_SUBSCRIBERS_REGISTRY
-} from "../internals";
-import {
-  IStringIndexed,
-  TDreamstateService,
-  TUpdateObserver,
-  TUpdateSubscriber
-} from "../types";
-import { ContextManager } from "../management";
+import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_STATES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY } from "@Lib/internals";
+import { IStringIndexed, TDreamstateService, TUpdateObserver, TUpdateSubscriber } from "@Lib/types";
+import { ContextManager } from "@Lib/management/ContextManager";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Notify observers and check if update is needed.

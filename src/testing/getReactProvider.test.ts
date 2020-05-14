@@ -1,8 +1,7 @@
 import { Context } from "react";
 
-import { getReactProvider } from "./getReactProvider";
-
-import { ITestContext, TestContextManager } from "@Tests/../fixtures";
+import { getReactProvider } from "@Lib/testing/getReactProvider";
+import { ITestContext, TestContextManager } from "@Lib/fixtures";
 
 describe("Get react provider util.", () => {
   it("Should properly get service provider.", () => {

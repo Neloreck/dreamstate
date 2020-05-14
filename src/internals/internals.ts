@@ -8,7 +8,7 @@ import type {
   TUpdateObserver,
   TUpdateSubscriber,
   TDreamstateService
-} from "../types";
+} from "@Lib/types";
 
 /**
  * Global shared constants.

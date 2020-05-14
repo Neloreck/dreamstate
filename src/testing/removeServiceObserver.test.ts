@@ -1,12 +1,9 @@
-import {
-  addServiceObserver,
-  registerService,
-  removeServiceObserver,
-  unRegisterService
-} from "../test-utils";
-import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
-
-import { ExampleContextManager, TestContextManager, TestContextService } from "@Tests/../fixtures";
+import { CONTEXT_OBSERVERS_REGISTRY } from "@Lib/internals";
+import { ExampleContextManager, TestContextManager, TestContextService } from "@Lib/fixtures";
+import { removeServiceObserver } from "@Lib/testing/removeServiceObserver";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { registerService } from "@Lib/testing/registerService";
+import { addServiceObserver } from "@Lib/testing/addServiceObserver";
 
 describe("Remove manager observer util.", () => {
   beforeAll(() => {

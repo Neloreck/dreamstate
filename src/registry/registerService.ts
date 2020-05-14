@@ -1,6 +1,7 @@
-import { TDreamstateService, TSignalListener } from "../types";
-import { ContextManager } from "../management/ContextManager";
-import { onMetadataSignalListenerCalled, subscribeToSignals } from "../signals";
+import { TDreamstateService, TSignalListener } from "@Lib/types";
+import { ContextManager } from "@Lib/management/ContextManager";
+import { onMetadataSignalListenerCalled } from "@Lib/signals/onMetadataSignalListenerCalled";
+import { subscribeToSignals } from "@Lib/signals/subscribeToSignals";
 import {
   CONTEXT_SERVICES_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
@@ -8,9 +9,9 @@ import {
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SUBSCRIBERS_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED
-} from "../internals";
+} from "@Lib/internals";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Register context manager entry.

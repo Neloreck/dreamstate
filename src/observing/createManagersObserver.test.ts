@@ -1,8 +1,8 @@
-import { createManagersObserver } from "./createManagersObserver";
-
-import { TestContextService, TestContextManager } from "@Tests/../fixtures";
 import { mount } from "enzyme";
 import { createElement, PropsWithChildren } from "react";
+
+import { createManagersObserver } from "@Lib/observing/createManagersObserver";
+import { TestContextService, TestContextManager } from "@Lib/fixtures";
 
 describe("shouldObserversUpdate method functionality.", () => {
   it("Should create observers with validation.", () => {

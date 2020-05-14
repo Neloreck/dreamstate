@@ -1,8 +1,10 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextService, createProvider, OnQuery } from "../";
-import { nextAsyncQueue } from "../testing";
+import { ContextService } from "@Lib/management/ContextService";
+import { createProvider } from "@Lib/provision/createProvider";
+import { OnQuery } from "@Lib/queries/OnQuery";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
 
 /**
  * Construction occurs before initial provision start.

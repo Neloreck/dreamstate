@@ -1,7 +1,7 @@
-import { TDreamstateService, TUpdateObserver } from "../types";
-import { ContextService } from "../";
-import { CONTEXT_SERVICES_REGISTRY } from "../internals";
-import { addServiceObserverToRegistry } from "../registry";
+import { TDreamstateService, TUpdateObserver } from "@Lib/types";
+import { CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { ContextService } from "@Lib/management/ContextService";
+import { addServiceObserverToRegistry } from "@Lib/registry/addServiceObserverToRegistry";
 
 /**
  * Add context manager observer and trigger all related events (onProvisionStarted for first observer).

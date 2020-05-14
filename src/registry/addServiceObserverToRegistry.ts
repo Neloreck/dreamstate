@@ -1,8 +1,8 @@
-import { ContextService } from "../management/ContextService";
-import { TDreamstateService, TUpdateObserver } from "../types";
-import { CONTEXT_SERVICES_REGISTRY, CONTEXT_OBSERVERS_REGISTRY } from "../internals";
+import { ContextService } from "@Lib/management/ContextService";
+import { TDreamstateService, TUpdateObserver } from "@Lib/types";
+import { CONTEXT_SERVICES_REGISTRY, CONTEXT_OBSERVERS_REGISTRY } from "@Lib/internals";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 /**
  * Add state changes observer.

@@ -1,6 +1,6 @@
-import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "../types";
-import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "../internals";
-import { promisifyQuery } from "./promisifyQuery";
+import { IOptionalQueryRequest, TQueryResponse } from "@Lib/types";
+import { CONTEXT_QUERY_METADATA_REGISTRY, CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { promisifyQuery } from "@Lib/queries/promisifyQuery";
 
 export function queryMultiple<R>(
   queries: Array<IOptionalQueryRequest>

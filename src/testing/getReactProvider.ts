@@ -1,6 +1,6 @@
 import { Context } from "react";
 
-import { TAnyContextManagerConstructor } from "../types";
+import { TAnyContextManagerConstructor } from "@Lib/types";
 
 /**
  * Get react provider of selected context manager.

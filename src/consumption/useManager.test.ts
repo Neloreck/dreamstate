@@ -2,10 +2,10 @@ import { createElement } from "react";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
-import { getCurrent } from "../registry";
-import { CONTEXT_SERVICES_REGISTRY } from "../internals";
-import { nextAsyncQueue, registerService } from "../testing";
-
+import { getCurrent } from "@Lib/registry/getCurrent";
+import { CONTEXT_SERVICES_REGISTRY } from "@Lib/internals";
+import { nextAsyncQueue } from "@Lib/testing/nextAsyncQueue";
+import { registerService } from "@Lib/testing/registerService";
 import {
   ExampleContextFunctionalConsumer,
   ExampleContextFunctionalConsumerWithMemo,
@@ -13,7 +13,7 @@ import {
   ExampleContextFunctionalProvider,
   ExampleContextManager,
   IExampleContext
-} from "@Tests/../fixtures";
+} from "@Lib/fixtures";
 
 describe("UseManager subscription and rendering.", () => {
   it("Functional components should properly subscribe to managers without diff-checking cb.", async () => {

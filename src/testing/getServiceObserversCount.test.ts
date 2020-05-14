@@ -1,14 +1,11 @@
-import {
-  addServiceObserver,
-  getServiceObserversCount,
-  registerService,
-  removeServiceObserver,
-  unRegisterService
-} from "../test-utils";
-import { CONTEXT_OBSERVERS_REGISTRY } from "../internals";
-import { ContextService } from "../management";
-
-import { TestContextManager } from "@Tests/../fixtures";
+import { addServiceObserver } from "@Lib/testing/addServiceObserver";
+import { getServiceObserversCount } from "@Lib/testing/getServiceObserversCount";
+import { registerService } from "@Lib/testing/registerService";
+import { removeServiceObserver } from "@Lib/testing/removeServiceObserver";
+import { unRegisterService } from "@Lib/testing/unRegisterService";
+import { CONTEXT_OBSERVERS_REGISTRY } from "@Lib/internals";
+import { TestContextManager } from "@Lib/fixtures";
+import { ContextService } from "@Lib/management/ContextService";
 
 describe("Get service observers count util.", () => {
   it("Should properly fail for unregistered services.", () => {

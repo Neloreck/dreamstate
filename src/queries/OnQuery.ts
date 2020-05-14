@@ -1,9 +1,9 @@
-import { TAnyContextManagerConstructor, TDreamstateService, TQueryType } from "../types";
-import { CONTEXT_QUERY_METADATA_REGISTRY } from "../internals";
-import { createMethodDecorator } from "../polyfills/createMethodDecorator";
-import { ContextService } from "../management/ContextService";
+import { TAnyContextManagerConstructor, TDreamstateService, TQueryType } from "@Lib/types";
+import { CONTEXT_QUERY_METADATA_REGISTRY } from "@Lib/internals";
+import { createMethodDecorator } from "@Lib/polyfills/createMethodDecorator";
+import { ContextService } from "@Lib/management/ContextService";
 
-import { debug } from "../../cli/build/macroses/debug.macro";
+import { debug } from "@Macro/debug.macro";
 
 export function OnQuery(queryType: TQueryType): MethodDecorator {
   if (!queryType) {

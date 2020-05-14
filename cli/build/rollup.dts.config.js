@@ -1,4 +1,5 @@
 import { default as dts } from "rollup-plugin-dts";
+
 import { default as tsconfig } from "../../tsconfig.json";
 
 export const DTS_CONFIG = {
