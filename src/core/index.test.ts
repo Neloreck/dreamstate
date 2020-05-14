@@ -1,6 +1,6 @@
 describe("Library exported API.", () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const libRoot = require("@Lib/core/index");
+  const libRoot = require("./index");
 
   const expectedLibExports: Array<string> = [
     // Types.
