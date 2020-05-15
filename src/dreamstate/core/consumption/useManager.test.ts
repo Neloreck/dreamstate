@@ -10,7 +10,7 @@ import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 import {
   TestContextManager,
-  ITestContext,
+  ITestContext
 } from "@/fixtures";
 
 describe("UseManager subscription and rendering.", () => {
