@@ -1,16 +1,15 @@
 ## future:
 
 - createAsync as loadable copy with stored promise or extended createLoadable
-- test queries with cases when declared 2 or more handlers
 - test useContextWithMemo properly
-- fixtures separation and review - removed odd items
 - more exotic cases
 
 - Docs update
 - Simple examples of library usage
+- Benchmarks
 
 - Think about actions/state separation. [HoCs do not allow to do so]
-- Better dev assistance with logs and warnings for development bundle.
-- Async code execution utils like takeLatest/takeLeading etc?
+- Better dev assistance with logs and warnings for development bundle. [ESM support?]
+- Async code execution utils like takeLatest/takeLeading etc? [createAsync]
 
 ?) Scoping and separated registry?
