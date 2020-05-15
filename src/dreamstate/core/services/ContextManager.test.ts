@@ -12,7 +12,6 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import {
-  ExampleContextManager,
   ExtendingTestContextManager,
   ITestContext,
   TestContextManager
@@ -160,27 +159,27 @@ describe("ContextManager class.", () => {
   it("Should properly add contextManagers subscribers.", () => {
     const exampleSubscriber = () => {};
 
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBeUndefined();
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
 
-    registerService(ExampleContextManager);
+    registerService(TestContextManager);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
-    subscribeToManager(ExampleContextManager, exampleSubscriber);
+    subscribeToManager(TestContextManager, exampleSubscriber);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(1);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
 
-    unsubscribeFromManager(ExampleContextManager, exampleSubscriber);
+    unsubscribeFromManager(TestContextManager, exampleSubscriber);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
-    unRegisterService(ExampleContextManager);
+    unRegisterService(TestContextManager);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(ExampleContextManager)!.size).toBe(0);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
   });
 
   it("Should properly subscribe and unsubscribe only from contextManagers", () => {
@@ -206,7 +205,7 @@ describe("ContextManager class.", () => {
   });
 
   it("Should use getReactContext for REACT_CONTEXT and return same result.", () => {
-    expect(getReactContext(ExampleContextManager)).toBe(ExampleContextManager.REACT_CONTEXT);
-    CONTEXT_REACT_CONTEXTS_REGISTRY.delete(ExampleContextManager);
+    expect(getReactContext(TestContextManager)).toBe(TestContextManager.REACT_CONTEXT);
+    CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestContextManager);
   });
 });

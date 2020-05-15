@@ -3,22 +3,13 @@
 exports[`React tree for provided and consumed components. Should correctly update subscribed to functional provider elements view.: Initial state. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
-    <ExampleContextClassConsumer
-      exampleContext={
-        Object {
-          "exampleActions": Object {
-            "setExampleNumber": [Function],
-            "setExampleString": [Function],
-          },
-          "exampleNumber": 0,
-          "exampleString": "initial",
-        }
-      }
+    <Component
+      first="first"
+      second={2}
+      third={false}
     >
-      <span>
-        {"exampleActions":{},"exampleNumber":0,"exampleString":"initial"}
-      </span>
-    </ExampleContextClassConsumer>
+      {"first":"first","second":2,"third":false}
+    </Component>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;
@@ -26,22 +17,13 @@ exports[`React tree for provided and consumed components. Should correctly updat
 exports[`React tree for provided and consumed components. Should correctly update subscribed to functional provider elements view.: Updated state. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
-    <ExampleContextClassConsumer
-      exampleContext={
-        Object {
-          "exampleActions": Object {
-            "setExampleNumber": [Function],
-            "setExampleString": [Function],
-          },
-          "exampleNumber": 101010,
-          "exampleString": "updated",
-        }
-      }
+    <Component
+      first="updated"
+      second={101010}
+      third={true}
     >
-      <span>
-        {"exampleActions":{},"exampleNumber":101010,"exampleString":"updated"}
-      </span>
-    </ExampleContextClassConsumer>
+      {"first":"updated","second":101010,"third":true}
+    </Component>
   </DS.Consumer>
 </Memo(DS.Observer)>
 `;

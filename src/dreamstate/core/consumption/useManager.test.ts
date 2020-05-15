@@ -1,28 +1,52 @@
 import { mount } from "enzyme";
-import { createElement } from "react";
+import { createElement, ReactElement, useEffect } from "react";
 import { act } from "react-dom/test-utils";
 
+import { createProvider, useManager } from "@/dreamstate";
 import { CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
+import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 import {
-  ExampleContextFunctionalConsumer,
-  ExampleContextFunctionalConsumerWithMemo,
-  ExampleContextFunctionalConsumerWithUseEffect,
-  ExampleContextFunctionalProvider,
-  ExampleContextManager,
-  IExampleContext
+  TestContextManager,
+  ITestContext,
 } from "@/fixtures";
 
 describe("UseManager subscription and rendering.", () => {
+  function FunctionalConsumerWithUseEffect<T extends TAnyContextManagerConstructor>({
+    onUpdate,
+    onCheckContextDiff
+  }: {
+    onUpdate: () => void;
+    onCheckContextDiff?: (context: T["prototype"]["context"]) => Array<any>;
+  }): ReactElement {
+    const context: object = useManager(TestContextManager as any, onCheckContextDiff as any);
+
+    useEffect(onUpdate);
+
+    return createElement("div", {}, JSON.stringify(context));
+  }
+
+  function FunctionalConsumer(): ReactElement {
+    const value: ITestContext = useManager(TestContextManager);
+
+    return createElement("span", {}, JSON.stringify(value));
+  }
+
+  function FunctionalConsumerWithMemo(): ReactElement {
+    const value: ITestContext = useManager(TestContextManager, ({ second }) => [ second ]);
+
+    return createElement("span", {}, JSON.stringify(value));
+  }
+
   it("Functional components should properly subscribe to managers without diff-checking cb.", async () => {
     const mockFn = jest.fn();
     const tree = mount(
       createElement(
-        ExampleContextFunctionalProvider,
+        createProvider([ TestContextManager ]),
         {},
-        createElement(ExampleContextFunctionalConsumerWithUseEffect, {
+        createElement(FunctionalConsumerWithUseEffect, {
           onUpdate: mockFn
         })
       )
@@ -33,10 +57,10 @@ describe("UseManager subscription and rendering.", () => {
 
     mockFn.mockClear();
 
-    const manager: ExampleContextManager = getCurrent(ExampleContextManager)!;
+    const manager: TestContextManager = getCurrent(TestContextManager)!;
 
     await act(async () => {
-      manager.setContext({ exampleNumber: manager.context.exampleNumber });
+      manager.setContext({ second: manager.context.second });
       await nextAsyncQueue();
     });
 
@@ -45,7 +69,7 @@ describe("UseManager subscription and rendering.", () => {
     mockFn.mockClear();
 
     await act(async () => {
-      manager.setContext({ exampleNumber: 100 });
+      manager.setContext({ second: 100 });
       await nextAsyncQueue();
     });
 
@@ -54,7 +78,7 @@ describe("UseManager subscription and rendering.", () => {
     mockFn.mockClear();
 
     await act(async () => {
-      manager.setContext({ exampleString: "anotherString" });
+      manager.setContext({ first: "anotherString" });
       await nextAsyncQueue();
     });
 
@@ -68,11 +92,11 @@ describe("UseManager subscription and rendering.", () => {
     const mockFn = jest.fn(() => {});
     const tree = mount(
       createElement(
-        ExampleContextFunctionalProvider,
+        createProvider([ TestContextManager ]),
         {},
-        createElement(ExampleContextFunctionalConsumerWithUseEffect, {
+        createElement(FunctionalConsumerWithUseEffect, {
           onUpdate: mockFn,
-          onCheckContextDiff: (context: IExampleContext) => [ context.exampleString ]
+          onCheckContextDiff: (context: ITestContext) => [ context.first ]
         })
       )
     );
@@ -82,19 +106,10 @@ describe("UseManager subscription and rendering.", () => {
 
     mockFn.mockClear();
 
-    const manager: ExampleContextManager = getCurrent(ExampleContextManager)!;
+    const manager: TestContextManager = getCurrent(TestContextManager)!;
 
     await act(async () => {
-      manager.setContext({ exampleString: manager.context.exampleString });
-      await nextAsyncQueue();
-    });
-
-    expect(mockFn).not.toHaveBeenCalled();
-
-    mockFn.mockClear();
-
-    await act(async () => {
-      manager.setContext({ exampleNumber: 100 });
+      manager.setContext({ second: 100 });
       await nextAsyncQueue();
     });
 
@@ -102,7 +117,7 @@ describe("UseManager subscription and rendering.", () => {
     mockFn.mockClear();
 
     await act(async () => {
-      manager.setContext({ exampleString: "anotherString" });
+      manager.setContext({ first: "anotherString" });
       await nextAsyncQueue();
     });
 
@@ -112,17 +127,17 @@ describe("UseManager subscription and rendering.", () => {
     tree.unmount();
   });
 
-  it("Should properly fire onProvisionStarted for functional observers.", async () => {
-    const manager: ExampleContextManager = registerService(ExampleContextManager);
+  it("Should properly fire provision events for functional observers.", async () => {
+    const manager: TestContextManager = registerService(TestContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
     manager["onProvisionEnded"] = jest.fn();
 
     const tree = mount(
       createElement(
-        ExampleContextFunctionalProvider,
+        createProvider([ TestContextManager ]),
         {},
-        createElement(ExampleContextFunctionalConsumer, {})
+        createElement(FunctionalConsumer, {})
       )
     );
 
@@ -136,20 +151,20 @@ describe("UseManager subscription and rendering.", () => {
     await nextAsyncQueue();
 
     expect(manager["onProvisionEnded"]).toHaveBeenCalled();
-    expect(CONTEXT_SERVICES_REGISTRY.has(ExampleContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeFalsy();
   });
 
-  it("Should properly fire onProvisionStarted for functional subscribers.", async () => {
-    const manager: ExampleContextManager = registerService(ExampleContextManager);
+  it("Should properly fire provision events for functional subscribers.", async () => {
+    const manager: TestContextManager = registerService(TestContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
     manager["onProvisionEnded"] = jest.fn();
 
     const tree = mount(
       createElement(
-        ExampleContextFunctionalProvider,
+        createProvider([ TestContextManager ]),
         {},
-        createElement(ExampleContextFunctionalConsumerWithMemo, {})
+        createElement(FunctionalConsumerWithMemo, {})
       )
     );
 
@@ -162,6 +177,6 @@ describe("UseManager subscription and rendering.", () => {
     await nextAsyncQueue();
 
     expect(manager["onProvisionEnded"]).toHaveBeenCalled();
-    expect(CONTEXT_SERVICES_REGISTRY.has(ExampleContextManager)).toBeFalsy();
+    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeFalsy();
   });
 });

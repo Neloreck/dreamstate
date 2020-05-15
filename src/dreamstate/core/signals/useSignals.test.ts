@@ -6,7 +6,7 @@ import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { EmittingContextManager, ESignal, TStringSignalEvent, UsingSignalFunction } from "@/fixtures/signals";
+import { EmittingContextManager, ESignal, TStringSignalEvent, SubscribedFunctionalComponent } from "@/fixtures/signals";
 
 describe("useSignals method.", () => {
   beforeEach(() => {
@@ -26,7 +26,7 @@ describe("useSignals method.", () => {
       expect(signalEvent.data).toBe("newValue");
     });
     const tree = mount(
-      createElement(UsingSignalFunction, { onInternalSignal: (event: TStringSignalEvent) => mockFn(event) })
+      createElement(SubscribedFunctionalComponent, { onInternalSignal: (event: TStringSignalEvent) => mockFn(event) })
     );
 
     expect(tree).toMatchSnapshot();

@@ -101,5 +101,8 @@
     ],
     "import/no-unresolved": 0,
     "import/default": 0
-  }
+  },
+  "ignorePatterns": [
+    "target/**/*"
+  ]
 }

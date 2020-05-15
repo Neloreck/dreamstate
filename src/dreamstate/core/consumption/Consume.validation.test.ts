@@ -5,7 +5,6 @@ import { Consume } from "@/dreamstate/core/consumption/Consume";
 import { withConsumption } from "@/dreamstate/core/consumption/withConsumption";
 import {
   BasicClassExample,
-  ExampleContextManager,
   ITestContext,
   PropsRenderer,
   TestContextManager,
@@ -34,19 +33,19 @@ describe("@Consume selector validation.", () => {
   });
 
   it("Should properly validate selectors.", () => {
-    expect(() => Consume([ ExampleContextManager ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager } ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, take: [] } ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, take: () => ({}) } ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, as: "any" } ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, take: "a" as any } ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, take: 1 as any } ])(PureComponent)).not.toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, take: {} as any } ])(PureComponent)).toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, take: null as any } ])(PureComponent)).toThrow();
+    expect(() => Consume([ TestContextManager ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager } ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager, take: [] } ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager, take: () => ({}) } ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager, as: "any" } ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager, take: "a" as any } ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager, take: 1 as any } ])(PureComponent)).not.toThrow();
+    expect(() => Consume([ { from: TestContextManager, take: {} as any } ])(PureComponent)).toThrow();
+    expect(() => Consume([ { from: TestContextManager, take: null as any } ])(PureComponent)).toThrow();
     expect(() => Consume([ { from: 1 as any } ])(PureComponent)).toThrow();
     expect(() => Consume([ { from: null as any } ])(PureComponent)).toThrow();
     expect(() => Consume([ { from: false as any } ])(PureComponent)).toThrow();
-    expect(() => Consume([ { from: ExampleContextManager, as: {} as any } ])(PureComponent)).toThrow(TypeError);
+    expect(() => Consume([ { from: TestContextManager, as: {} as any } ])(PureComponent)).toThrow(TypeError);
   });
 
   it("Should properly select all properties with or without alias.", () => {

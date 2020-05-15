@@ -3,7 +3,7 @@ import { addServiceObserver } from "@/dreamstate/test-utils/registry/addServiceO
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { removeServiceObserver } from "@/dreamstate/test-utils/registry/removeServiceObserver";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
-import { ExampleContextManager, TestContextManager, TestContextService } from "@/fixtures";
+import { TestContextManager, TestContextService } from "@/fixtures";
 
 describe("Remove manager observer util.", () => {
   beforeAll(() => {
@@ -20,7 +20,7 @@ describe("Remove manager observer util.", () => {
     expect(() => removeServiceObserver(0 as any, jest.fn())).toThrow(TypeError);
     expect(() => removeServiceObserver(class Any {} as any, jest.fn())).toThrow(TypeError);
     expect(() => removeServiceObserver(TestContextService as any, jest.fn())).toThrow(Error);
-    expect(() => removeServiceObserver(ExampleContextManager, jest.fn())).toThrow(Error);
+    expect(() => removeServiceObserver(class Ext extends TestContextManager {}, jest.fn())).toThrow(Error);
   });
 
   it("Should remove observer from registry.", () => {
