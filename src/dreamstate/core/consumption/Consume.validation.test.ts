@@ -4,7 +4,6 @@ import { ComponentType, createElement, PureComponent } from "react";
 import { Consume } from "@/dreamstate/core/consumption/Consume";
 import { withConsumption } from "@/dreamstate/core/consumption/withConsumption";
 import {
-  BasicClassExample,
   ITestContext,
   PropsRenderer,
   TestContextManager,
@@ -21,9 +20,9 @@ describe("@Consume selector validation.", () => {
   });
 
   it("Should take only valid classes or types and throw exception.", () => {
-    expect(() => Consume([ BasicClassExample as any ])(PureComponent)).toThrow(TypeError);
-    expect(() => Consume(BasicClassExample as any)(PureComponent)).toThrow(TypeError);
-    expect(() => Consume([ { from: BasicClassExample as any } ])(PureComponent)).toThrow(TypeError);
+    expect(() => Consume([ class Any {} as any ])(PureComponent)).toThrow(TypeError);
+    expect(() => Consume(class Any {} as any)(PureComponent)).toThrow(TypeError);
+    expect(() => Consume([ { from: class Any {} as any } ])(PureComponent)).toThrow(TypeError);
     expect(() => Consume(1 as any)(PureComponent)).toThrow(TypeError);
     expect(() => Consume("a" as any)(PureComponent)).toThrow(TypeError);
     expect(() => Consume(true as any)(PureComponent)).toThrow(TypeError);
