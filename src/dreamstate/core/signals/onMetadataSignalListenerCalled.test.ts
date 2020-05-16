@@ -81,11 +81,11 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
     unRegisterService(SubscribedContextManager);
   });
 
-  it("Should ignore own signals.", () => {
+  it("Should receive own signals with correct emitter field.", () => {
     const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
-    manager.onStringSignal = jest.fn(() => {
-      throw new Error("Unreachable code");
+    manager.onStringSignal = jest.fn((it: ISignalEvent) => {
+      expect(it.emitter).toBe(SubscribedContextManager);
     });
 
     onMetadataSignalListenerCalled.call(
@@ -98,7 +98,7 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
         cancel: jest.fn()
       }
     );
-    expect(manager.onStringSignal).not.toHaveBeenCalled();
+    expect(manager.onStringSignal).toHaveBeenCalled();
 
     unRegisterService(SubscribedContextManager);
   });

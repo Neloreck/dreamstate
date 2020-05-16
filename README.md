@@ -12,8 +12,8 @@
 
 Simple data management for react. <br/>
 <br/>
-Helps to separate application view and data without spaghetti-coded providers and boilerplate code. <br/>
-Library gives opportunity to create small stores with react-like lifecycle, lazy management of memory allocation and signaling. <br/>
+Separation of application view and data without spaghetti-coded providers and boilerplate code. <br/>
+Library helps to create small stores with react-like lifecycle, lazy management of memory allocation and signaling. <br/>
 
  - [x] Tree shaking
  - [x] Strictly typed
@@ -29,9 +29,12 @@ Library gives opportunity to create small stores with react-like lifecycle, lazy
 ## Requirements
 - `react >= 16.8.0`
 
+## Usage
+  - todo
+
 ## [Documentation](https://github.com/Neloreck/dreamstate/wiki/Home)
 
-#### [Management](https://github.com/Neloreck/dreamstate/wiki/management)
+#### [Services](https://github.com/Neloreck/dreamstate/wiki/services)
 - [ContextService](https://github.com/Neloreck/dreamstate/wiki/ContextService)
 - [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
 - [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)

@@ -15,6 +15,7 @@
     "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "lint": "npx eslint . --ext .ts,.js",
     "test": "jest --config cli/test/jest.config.js --detectOpenHandles",
+    "benchmark": "npx ts-node ./cli/benchmark/run.ts",
     "prepare": "npm run clean && npm run lint && npm test && npm run build && npx babel-node ./cli/deploy/prepare.js",
     "deploy": "npm run prepare && cd ./target/pkg && npm publish"
   },
@@ -51,6 +52,7 @@
     "babel-jest": "^25.3.0",
     "babel-plugin-macros": "^2.8.0",
     "babel-plugin-module-resolver": "^4.0.0",
+    "benchmark": "^2.1.4",
     "cross-env": "^7.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",

@@ -18,10 +18,10 @@ export function querySingle<
 >(
   query: IOptionalQueryRequest<D, T>
 ): Promise<TQueryResponse<R, T>> {
+  debug.info("Sending single query:", query);
+
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
     if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
-      debug.info("Checking metadata for:", service.name, query);
-
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         if (type === query.type) {
           return promisifyQuery(CONTEXT_SERVICES_REGISTRY.get(service)!, method, query);

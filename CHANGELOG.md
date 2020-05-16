@@ -1,5 +1,7 @@
 ## 3.0.2 (*/*/2020)
   * Better typing - d.ts files will be bundled in a few files instead of whole project tree re-exporting
+  * Better package building - no garbage inside library dist
+  * Services now listen own signals and queries, but can be filtered manually
 
 ## 3.0.1 (5/12/2020)
   * Arrays as queryData method parameters for multiple queries fetching

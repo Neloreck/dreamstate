@@ -3,6 +3,7 @@
 - createAsync as loadable copy with stored promise or extended createLoadable
 - test useContextWithMemo properly
 - more exotic cases
+- conditional esm export?
 
 - Docs update
 - Simple examples of library usage
@@ -13,3 +14,43 @@
 - Async code execution utils like takeLatest/takeLeading etc? [createAsync]
 
 ?) Scoping and separated registry?
+
+## docs state:
+  - [+] @Bind
+  - [+] @Consume
+  - [+] @OnQuery
+  - [+] @Provide
+  - [+] ContextManager
+  - [+] ContextService
+  - [+] ContextService
+  - [+] createLoadable
+  - [+] createProvider
+  - [+] getCurrent
+  - [+] getCurrentContext
+  - [+] useManager
+  - [+] withConsumption
+  - [+] withProvision
+  
+  - [-] @OnSignal
+  - [-] addManagerObserver
+  - [-] consumption
+  - [-] createSetter
+  - [-] emitSignal
+  - [-] FAQ
+  - [-] getReactConsumer
+  - [-] getReactProvider
+  - [-] getServiceObserversCount
+  - [-] isServiceProvided
+  - [-] nextAsyncQueue
+  - [-] provision
+  - [-] queries
+  - [-] queries
+  - [-] registerService
+  - [-] removeManagerObserver
+  - [-] services
+  - [-] signals
+  - [-] subscribeToSignals
+  - [-] testing
+  - [-] unRegisterService
+  - [-] unSubscribeFromSignals
+  - [-] useSignal
