@@ -1,3 +1,55 @@
 {
-
+  "benchmarks": {
+    "example": {
+      "name": "example",
+      "lastRun": 1589660742846,
+      "fastest": "String#indexOf",
+      "suites": [
+        {
+          "name": "RegExp#test",
+          "period": 1.9429780272200588e-8,
+          "frequency": 51467385940.064545,
+          "k": 18.780917877761244
+        },
+        {
+          "name": "String#indexOf",
+          "period": 1.0345490246356739e-9,
+          "frequency": 966604748723.396,
+          "k": 1
+        }
+      ]
+    },
+    "render_provider_consumer": {
+      "name": "render_provider_consumer",
+      "lastRun": 1589662133502,
+      "fastest": "render#react-context",
+      "suites": [
+        {
+          "name": "render#react-context",
+          "period": 0.00006770133743092338,
+          "frequency": 14770756.944355996,
+          "k": 1
+        },
+        {
+          "name": "render#dreamstate-functional",
+          "period": 0.00008269635636637224,
+          "frequency": 12092431.20180131,
+          "k": 1.221487780071531
+        },
+        {
+          "name": "render#dreamstate-classes",
+          "period": 0.00010138795685090866,
+          "frequency": 9863104.367222859,
+          "k": 1.497576867729625
+        },
+        {
+          "name": "render#redux-functional",
+          "period": 0.00012504033812925475,
+          "frequency": 7997419.192567247,
+          "k": 1.8469404427473115
+        }
+      ]
+    }
+  },
+  "lastRun": 1589662133502
 }

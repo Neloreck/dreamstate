@@ -1,7 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { CJS_ROOT, DIST_ROOT, ESM_ROOT, PKG_ROOT, PROJECT_ROOT, TYPES_ROOT } from "../config/build.constants";
+import { CJS_ROOT, DIST_ROOT, ESM_ROOT, PKG_ROOT, PROJECT_ROOT, SRC_PATH, TYPES_ROOT } from "../config/build.constants";
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const ncp = require("ncp");
@@ -22,7 +22,7 @@ const ASSETS = {
     destination: path.resolve(PKG_ROOT, "./CHANGELOG.md")
   },
   PACKAGE: {
-    source: path.resolve(__dirname, "./dreamstate.json"),
+    source: path.resolve(SRC_PATH, "./dreamstate/package.json"),
     destination: path.resolve(PKG_ROOT, "./package.json")
   },
   ESM: {

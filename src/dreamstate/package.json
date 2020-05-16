@@ -3,7 +3,6 @@
   "version": "3.0.2-experimental.13",
   "description": "Store management library based on context and observers.",
   "sideEffects": false,
-  "private": false,
   "author": "Syrotenko Igor",
   "homepage": "https://github.com/neloreck/dreamstate#readme",
   "license": "MIT",
@@ -35,6 +34,5 @@
     "shallow-equal": ">=1.0.0"
   },
   "peerDependencies": {
-    "react": ">=16.8.0"
   }
 }

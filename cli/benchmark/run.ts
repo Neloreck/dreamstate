@@ -1,22 +1,30 @@
 import * as path from "path";
 
+import { green } from "colors";
+
 import { BENCHMARKS_PATH } from "../config/build.constants";
 
+import { printSuiteResults, saveResults } from "./utils";
+
 const targetScript: string | undefined = process.argv[2];
-const targetScriptPath: string | undefined = path.resolve(BENCHMARKS_PATH, targetScript);
+const targetScriptPath: string | undefined = path.resolve(BENCHMARKS_PATH, "./suites", targetScript);
 
-try {
-  process.stdout.write(`Running benchmark script, target: '${targetScript}'.\n`);
+process.stdout.write(`Running benchmark script, target: '${green(targetScript)}'.\n`);
 
-  const suite = require(targetScriptPath).suite;
+import(targetScriptPath)
+  .then(({ suite }) => {
+    process.stdout.write(`Found benchmark, running: '${green(targetScriptPath)}'.\n\n`);
 
-  process.stdout.write(`Found benchmark, running: '${targetScriptPath}'.\n`);
+    suite.run({ "async": false });
 
-  suite.run({ "async": false });
+    printSuiteResults(suite);
 
-  // todo: File saving, report.
+    process.stdout.write("Benchmark run success, saving results.\n");
 
-  process.stdout.write("Benchmark run success.\n");
-} catch (error) {
-  process.stderr.write(`Failed to run benchmark: '${error.message}'.`);
-}
+    saveResults(targetScript, suite);
+
+    process.stdout.write("Results saved.\n");
+  })
+  .catch((error) => {
+    process.stderr.write(`Failed to run benchmark: '${error.message}'.\n`);
+  });
