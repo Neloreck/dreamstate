@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { default as replace } from "@rollup/plugin-replace";
 import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
@@ -11,7 +13,7 @@ import {
   CORE_ENTRY,
   TEST_UTILS_ENTRY,
   TS_BUILD_CONFIG,
-  CJS_ROOT
+  CJS_ROOT, ENV
 } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
@@ -30,7 +32,7 @@ export const CJS_CONFIG = {
   output: {
     chunkFileNames: "lib.js",
     compact: IS_PRODUCTION,
-    dir: CJS_ROOT,
+    dir: path.resolve(CJS_ROOT, ENV),
     sourcemap: true,
     format: "cjs"
   },

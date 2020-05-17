@@ -1,3 +1,5 @@
+import * as path from "path";
+
 import { default as replace } from "@rollup/plugin-replace";
 import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
@@ -5,7 +7,7 @@ import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 
-import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG } from "../config/build.constants";
+import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG, ENV } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
@@ -20,7 +22,7 @@ export const ESM_CONFIG = {
   input: CORE_ENTRY,
   output: {
     compact: IS_PRODUCTION,
-    dir: ESM_ROOT,
+    dir: path.resolve(ESM_ROOT, ENV),
     sourcemap: true,
     format: "es"
   },

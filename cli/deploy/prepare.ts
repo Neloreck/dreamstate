@@ -8,7 +8,14 @@ const ncp = require("ncp");
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const rimraf = require("rimraf");
 
-const ASSETS = {
+interface IAssetsDescription {
+  [index: string]: {
+    source: string;
+    destination: string;
+  };
+}
+
+const ASSETS: IAssetsDescription = {
   LICENSE: {
     source: path.resolve(PROJECT_ROOT, "LICENSE"),
     destination: path.resolve(PKG_ROOT, "./LICENSE")
@@ -25,12 +32,35 @@ const ASSETS = {
     source: path.resolve(SRC_PATH, "./dreamstate/package.json"),
     destination: path.resolve(PKG_ROOT, "./package.json")
   },
+  ESM_SWITCH: {
+    source: path.resolve(SRC_PATH, "./environment_switch/esm.js"),
+    destination: path.resolve(PKG_ROOT, "./esm/index.js")
+  },
+  CJS_CORE_SWITCH: {
+    source: path.resolve(SRC_PATH, "./environment_switch/cjs_core.js"),
+    destination: path.resolve(PKG_ROOT, "./index.js")
+  },
+  CJS_UTILS_SWITCH: {
+    source: path.resolve(SRC_PATH, "./environment_switch/cjs_utils.js"),
+    destination: path.resolve(PKG_ROOT, "./test-utils.js")
+  },
   ESM: {
     source: ESM_ROOT,
     destination: path.resolve(PKG_ROOT, "./esm")
   },
-  CJS: CJS_ROOT,
-  TYPES: TYPES_ROOT
+  CJS: {
+    source: CJS_ROOT,
+    destination: path.resolve(PKG_ROOT, "./cjs")
+  },
+  // Types.
+  ...(fs.readdirSync(TYPES_ROOT).reduce((acc: IAssetsDescription, it: string) => {
+    acc["TYPES#" + it] = {
+      source: path.resolve(TYPES_ROOT, it),
+      destination: path.resolve(PKG_ROOT, it)
+    };
+
+    return acc;
+  }, {}))
 };
 
 if (!fs.existsSync(DIST_ROOT) || !fs.existsSync(ESM_ROOT) || !fs.existsSync(CJS_ROOT) || !fs.existsSync(TYPES_ROOT)) {
@@ -41,11 +71,4 @@ rimraf.sync(PKG_ROOT);
 
 fs.mkdirSync(PKG_ROOT);
 
-ncp(ASSETS.LICENSE.source, ASSETS.LICENSE.destination);
-ncp(ASSETS.README.source, ASSETS.README.destination);
-ncp(ASSETS.CHANGELOG.source, ASSETS.CHANGELOG.destination);
-ncp(ASSETS.PACKAGE.source, ASSETS.PACKAGE.destination);
-ncp(ASSETS.ESM.source, ASSETS.ESM.destination);
-
-fs.readdirSync(CJS_ROOT).forEach((it) => ncp(path.resolve(CJS_ROOT, it), path.resolve(PKG_ROOT, it)));
-fs.readdirSync(TYPES_ROOT).forEach((it) => ncp(path.resolve(TYPES_ROOT, it), path.resolve(PKG_ROOT, it)));
+Object.values(ASSETS).forEach((it) => ncp(it.source, it.destination));

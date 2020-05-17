@@ -1,21 +1,31 @@
-## future:
+## TODO:
 
+### Utils
 - createAsync as loadable copy with stored promise or extended createLoadable
+- async code execution utils like takeLatest/takeLeading etc? [createAsync]
+
+### Testing
 - test useContextWithMemo properly
 - more exotic cases
-- conditional esm export?
+- review tests, simplify and cover more cases 
 
+### Build
+- remove env building and double config for cjs and esm
+- wiki builder?
+- debug extension?
+- test dev assistance with logs and warnings for separate bundles
+
+### Lib
+- Think about actions/state separation. [HoCs do not allow to do so]
+- Scoping for signals and queries?
+- query subscription util?
+
+### Docs
 - Docs update
 - Simple examples of library usage
 - Benchmarks
 
-- Think about actions/state separation. [HoCs do not allow to do so]
-- Better dev assistance with logs and warnings for development bundle. [ESM support?]
-- Async code execution utils like takeLatest/takeLeading etc? [createAsync]
-
-?) Scoping and separated registry?
-
-## docs state:
+##### docs state:
   - [+] @Bind
   - [+] @Consume
   - [+] @OnQuery

@@ -2,6 +2,7 @@
   * Better typing - d.ts files will be bundled in a few files instead of whole project tree re-exporting
   * Better package building - no garbage inside library dist
   * Services now listen own signals and queries, but can be filtered manually
+  * Conditional bundles for dev[dev assistance and better errors messaging] and prod[faster and smaller] environment
 
 ## 3.0.1 (5/12/2020)
   * Arrays as queryData method parameters for multiple queries fetching
