@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
@@ -18,8 +16,6 @@ export function querySingle<
 >(
   query: IOptionalQueryRequest<D, T>
 ): Promise<TQueryResponse<R, T>> {
-  debug.info("Sending single query:", query);
-
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
     if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {

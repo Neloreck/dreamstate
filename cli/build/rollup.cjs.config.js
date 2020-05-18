@@ -8,17 +8,16 @@ import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 
 import {
-  IS_PRODUCTION,
-  IS_DEBUG,
   CORE_ENTRY,
   TEST_UTILS_ENTRY,
   TS_BUILD_CONFIG,
-  CJS_ROOT, ENV
+  CJS_ROOT,
+  EEnvironment
 } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
-export const CJS_CONFIG = {
+const createCjsConfig = (env) => ({
   external: [
     "react",
     "shallow-equal",
@@ -31,8 +30,8 @@ export const CJS_CONFIG = {
   ],
   output: {
     chunkFileNames: "lib.js",
-    compact: IS_PRODUCTION,
-    dir: path.resolve(CJS_ROOT, ENV),
+    compact: env === EEnvironment.PRODUCTION,
+    dir: path.resolve(CJS_ROOT, env),
     sourcemap: true,
     format: "cjs"
   },
@@ -42,14 +41,13 @@ export const CJS_CONFIG = {
       namedExports: { react: Object.keys(react) }
     }),
     replace({
-      IS_DEV: (!IS_PRODUCTION).toString(),
-      IS_DEBUG: IS_DEBUG.toString()
+      IS_DEV: (env !== EEnvironment.PRODUCTION).toString()
     }),
     typescript({
       tsconfig: TS_BUILD_CONFIG,
       declaration: false
     })
-  ].concat(IS_PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
-};
+  ].concat(env === EEnvironment.PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
+});
 
-export default CJS_CONFIG;
+export default [ createCjsConfig(EEnvironment.PRODUCTION), createCjsConfig(EEnvironment.DEVELOPMENT) ];

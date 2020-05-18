@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
@@ -35,7 +33,6 @@ export abstract class ContextManager<T extends object> extends ContextService {
    * Forces update and render of subscribed components.
    */
   public forceUpdate(): void {
-    debug.info("Forcing context manager update:", this.constructor.name);
     // Force updates and common lifecycle with same params.
     this.beforeUpdate(this.context);
     this.context = Object.assign({}, this.context);
@@ -64,14 +61,10 @@ export abstract class ContextManager<T extends object> extends ContextService {
         nextContext
       )
     ) {
-      debug.info("Updating context manager:", this.constructor.name);
-
       this.beforeUpdate(nextContext);
       this.context = nextContext;
       notifyObservers(this);
       this.afterUpdate(previousContext);
-    } else {
-      debug.info("Context manager update canceled, state is same:", this.constructor.name);
     }
   }
 

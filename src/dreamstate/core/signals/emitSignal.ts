@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { SIGNAL_LISTENERS_REGISTRY } from "@/dreamstate/core/internals";
 import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
 import { ISignal, ISignalEvent, TDreamstateService, TSignalListener, TSignalType } from "@/dreamstate/types";
@@ -23,15 +21,11 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     cancel: cancelSignal
   });
 
-  debug.info("Signal API emit signal:", base, emitter ? emitter.constructor.name : null);
-
   // Async processing of subscribed metadata.
   SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D, T>) {
     setTimeout(function() {
       if (!signal.canceled) {
         it(signal);
-      } else {
-        debug.info("Signal API ignore canceled signal:", signal);
       }
     });
   });

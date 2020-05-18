@@ -3,5 +3,3 @@ declare module "shallow-equal" {
 }
 
 declare const IS_DEV: boolean;
-
-declare const IS_DEBUG: boolean;

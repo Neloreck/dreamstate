@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { IContextManagerConstructor, TUpdateSubscriber } from "@/dreamstate/types";
@@ -17,6 +15,4 @@ export function subscribeToManager<T extends object, D extends IContextManagerCo
   }
 
   CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.add(subscriber);
-
-  debug.info("Context manager subscriber added:", Manager.name);
 }

@@ -1,7 +1,5 @@
 import { ComponentType, createElement, memo, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 
-import { debug } from "@/macroses/debug.macro";
-
 import { EMPTY_ARR } from "@/dreamstate/core/internals";
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/provideSubTreeRecursive";
 import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServiceObserverToRegistry";
@@ -73,8 +71,6 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   } else {
     Observer.displayName = "DS.Observer";
   }
-
-  debug.info("Context manager observer created:", Observer.displayName);
 
   // Hoc helper for decorated components to prevent odd renders.
   return memo(Observer) as any;

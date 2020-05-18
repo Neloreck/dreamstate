@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { ILoadable } from "@/dreamstate/types";
 
@@ -80,8 +78,6 @@ export function createLoadable<T, E>(
   isLoading: boolean = false,
   error: E | null = null
 ): ILoadable<T, E> {
-  debug.info("Created loadable entity:", value);
-
   return Object.assign(new NestedStore(), {
     error,
     isLoading,

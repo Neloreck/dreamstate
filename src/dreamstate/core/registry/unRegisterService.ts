@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import {
   CONTEXT_SERVICES_REGISTRY,
   CONTEXT_SIGNAL_HANDLERS_REGISTRY,
@@ -24,9 +22,5 @@ export function unRegisterService<T extends object>(
     // Do not clean observers and subscribers, automated by react.
 
     CONTEXT_SERVICES_ACTIVATED.delete(Service);
-
-    debug.info("Context service instance disposed:", Service.name);
-  } else {
-    debug.info("Context service singleton should not be disposed:", Service.name);
   }
 }

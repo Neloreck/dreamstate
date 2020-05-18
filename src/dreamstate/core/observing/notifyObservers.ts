@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import {
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
@@ -15,13 +13,6 @@ export function notifyObservers<T extends IStringIndexed<any>>(
   manager: ContextManager<T>
 ): void {
   const nextContext: T = manager.context;
-
-  debug.info(
-    "Context manager notify observers and subscribers:",
-    manager.constructor.name,
-    CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService)!.size,
-    CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TDreamstateService)!.size
-  );
 
   CONTEXT_STATES_REGISTRY.set(manager.constructor as TDreamstateService, nextContext);
   CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService)!.forEach(function(it: TUpdateObserver) {

@@ -7,11 +7,16 @@ import { default as babel } from "rollup-plugin-babel";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 
-import { IS_PRODUCTION, IS_DEBUG, CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG, ENV } from "../config/build.constants";
+import {
+  CORE_ENTRY,
+  ESM_ROOT,
+  TS_BUILD_CONFIG,
+  EEnvironment
+} from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
-export const ESM_CONFIG = {
+const createEsmConfig = (env) => ({
   external: [
     "react",
     "shallow-equal",
@@ -21,8 +26,8 @@ export const ESM_CONFIG = {
   preserveModules: true,
   input: CORE_ENTRY,
   output: {
-    compact: IS_PRODUCTION,
-    dir: path.resolve(ESM_ROOT, ENV),
+    compact: env === EEnvironment.PRODUCTION,
+    dir: path.resolve(ESM_ROOT, env),
     sourcemap: true,
     format: "es"
   },
@@ -34,15 +39,14 @@ export const ESM_CONFIG = {
     }),
     babel(BABEL_CONFIG),
     replace({
-      IS_DEV: !IS_PRODUCTION,
-      IS_DEBUG: IS_DEBUG
+      IS_DEV: env !== EEnvironment.PRODUCTION
     }),
     typescript({
       tsconfig: TS_BUILD_CONFIG,
-      pretty: !IS_PRODUCTION,
+      pretty: env !== EEnvironment.PRODUCTION,
       declaration: false
     })
-  ].concat(IS_PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
-};
+  ].concat(env === EEnvironment.PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
+});
 
-export default ESM_CONFIG;
+export default [ createEsmConfig(EEnvironment.PRODUCTION), createEsmConfig(EEnvironment.DEVELOPMENT) ];

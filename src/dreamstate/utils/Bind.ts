@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { MethodDescriptor } from "@/dreamstate/types";
 
 /**
@@ -12,8 +10,6 @@ import { MethodDescriptor } from "@/dreamstate/types";
  * with incorrect ES inheritance after runtime modification of base class.
  */
 function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: PropertyKey): PropertyDescriptor {
-  debug.info("Created bound descriptor for:", property);
-
   // Todo: Wait for autobind merge with fix of shared callbacks issue and other.
   let definingProperty: boolean = false;
 

@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createMacro } = require("babel-plugin-macros");
 
-const IS_DEV = (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "debug");
+const IS_DEV = (process.env.NODE_ENV === "development");
 
 function dev({ references, babel }) {
   const { types } = babel;

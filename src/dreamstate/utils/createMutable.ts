@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { TMutable } from "@/dreamstate/types";
 
@@ -14,7 +12,6 @@ function asMerged<T extends object>(this: TMutable<T>, state: Partial<T>): T {
  * Create mutable sub-state.
  */
 export function createMutable<T extends object>(initialValue: T): TMutable<T> {
-  debug.info("Created mutable entity from:", initialValue);
   if (initialValue === null || typeof initialValue !== "object") {
     throw new TypeError("Mutable values can be created for non-null object parameter only.");
   }

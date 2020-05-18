@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
@@ -11,8 +9,6 @@ import { IOptionalQueryRequest, TQueryResponse } from "@/dreamstate/types";
 export function queryMultiple<R>(
   queries: Array<IOptionalQueryRequest>
 ): Promise<Array<null | TQueryResponse<any>>> {
-  debug.info("Sending multi query:", queries);
-
   const resolved: Array<Promise<null | TQueryResponse<any>>> = new Array(queries.length);
 
   for (const service of CONTEXT_SERVICES_ACTIVATED) {

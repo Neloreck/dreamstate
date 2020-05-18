@@ -10,16 +10,15 @@ import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 import { default as tsconfig } from "../../tsconfig.json";
 import {
-  IS_PRODUCTION,
-  IS_DEBUG,
   CORE_ENTRY,
   TS_PORTABLE_CONFIG,
-  SIZE_SNAPSHOT_PATH, PORTABLE_ROOT
+  SIZE_SNAPSHOT_PATH,
+  PORTABLE_ROOT, EEnvironment
 } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
-export const ESM_CONFIG = {
+const createPortableConfig = (env) => ({
   external: [
     "react",
     "shallow-equal",
@@ -28,7 +27,7 @@ export const ESM_CONFIG = {
   input: CORE_ENTRY,
   preserveModules: false,
   output: {
-    compact: IS_PRODUCTION,
+    compact: env === EEnvironment.PRODUCTION,
     file: path.resolve(PORTABLE_ROOT, "dreamstate.js"),
     sourcemap: true,
     format: "es"
@@ -41,8 +40,7 @@ export const ESM_CONFIG = {
     }),
     babel(BABEL_CONFIG),
     replace({
-      IS_DEV: !IS_PRODUCTION,
-      IS_DEBUG: IS_DEBUG
+      IS_DEV: env !== EEnvironment.PRODUCTION
     }),
     typescript({
       tsconfig: TS_PORTABLE_CONFIG,
@@ -50,9 +48,9 @@ export const ESM_CONFIG = {
     }),
     sizeSnapshot({ snapshotPath: SIZE_SNAPSHOT_PATH })
   ]
-};
+});
 
-export const DTS_CONFIG = {
+const createPortableDtsConfig = (env) => ({
   input: [
     CORE_ENTRY
   ],
@@ -63,6 +61,6 @@ export const DTS_CONFIG = {
   plugins: [
     dts({ compilerOptions: tsconfig.compilerOptions })
   ]
-};
+});
 
-export default [ DTS_CONFIG, ESM_CONFIG ];
+export default [ createPortableDtsConfig(EEnvironment.PRODUCTION), createPortableConfig(EEnvironment.PRODUCTION) ];

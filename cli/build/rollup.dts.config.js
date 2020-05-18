@@ -18,4 +18,4 @@ export const DTS_CONFIG = {
   ]
 };
 
-export default DTS_CONFIG;
+export default [ DTS_CONFIG ];

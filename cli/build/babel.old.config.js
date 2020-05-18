@@ -4,11 +4,9 @@ export const BABEL_CONFIG = {
     [
       "@babel/preset-env",
       {
-        targets: {
-          node: "current"
-        },
         modules: false,
-        loose: true
+        loose: true,
+        targets: "> 0.5%"
       }
     ],
     "@babel/preset-typescript"

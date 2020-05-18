@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { createMethodDecorator } from "@/dreamstate/polyfills/createMethodDecorator";
@@ -20,8 +18,6 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
     if (!(Service.prototype instanceof ContextService)) {
       throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");
     }
-
-    debug.info("Signal metadata written for context manager:", Service.name, signalType, method);
 
     if (!CONTEXT_SIGNAL_METADATA_REGISTRY.has(Service)) {
       CONTEXT_SIGNAL_METADATA_REGISTRY.set(Service, []);

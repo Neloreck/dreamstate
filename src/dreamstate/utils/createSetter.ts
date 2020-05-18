@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { TPartialTransformer } from "@/dreamstate/types";
 
@@ -11,8 +9,6 @@ export function createSetter<S extends object, D extends keyof S>(
   manager: ContextManager<S>,
   key: D
 ) {
-  debug.info("Created context setter for:", manager.constructor.name, key);
-
   if (typeof manager.context[key] !== "object") {
     throw new TypeError("Cannot create setter for non-object nested properties.");
   }

@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { IContextManagerConstructor, TUpdateSubscriber } from "@/dreamstate/types";
@@ -14,8 +12,6 @@ export function unsubscribeFromManager<T extends object, D extends IContextManag
   if (!(Manager.prototype instanceof ContextManager)) {
     throw new TypeError("Cannot unsubscribe from class that does not extend ContextManager.");
   }
-
-  debug.info("Context manager subscriber removed:", Manager.name);
 
   CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.delete(subscriber);
 }

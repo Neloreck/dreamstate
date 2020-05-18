@@ -1,5 +1,3 @@
-import { debug } from "@/macroses/debug.macro";
-
 import {
   CONTEXT_SERVICES_REGISTRY,
   CONTEXT_OBSERVERS_REGISTRY,
@@ -41,11 +39,5 @@ export function registerService<T extends object>(
     subscribeToSignals(signalHandler);
 
     CONTEXT_SERVICES_ACTIVATED.add(Service);
-
-    debug.info("Service registered:", Service.name);
-  } else {
-    // We cannot rely on react memo and tell that it is called only once.
-    // Also can be called from other sub-trees.
-    debug.info("Service already registered, continue with old instance:", Service.name);
   }
 }
