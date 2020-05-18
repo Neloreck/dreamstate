@@ -73,7 +73,7 @@ export function asUpdated<T, E>(
 /**
  * Create loadable value utility.
  */
-export function createLoadable<T, E>(
+export function createLoadable<T, E = Error>(
   value: T | null = null,
   isLoading: boolean = false,
   error: E | null = null

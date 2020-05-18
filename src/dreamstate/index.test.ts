@@ -5,7 +5,8 @@ describe("Library exported API.", () => {
   const expectedLibExports: Array<string> = [
     // Types.
     "Loadable",
-    "Mutable",
+    "Nested",
+    "Computed",
     "StateSetter",
     "Consumable",
     "SignalEvent",
@@ -36,8 +37,10 @@ describe("Library exported API.", () => {
     "emitSignal",
     // Queries.
     "OnQuery",
+    "queryData",
     // Utils.
-    "createMutable",
+    "createNested",
+    "createComputed",
     "createLoadable",
     "createSetter",
     "Bind"

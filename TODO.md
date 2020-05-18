@@ -1,15 +1,9 @@
 ## TODO:
 
-### Utils
-  - createAsync as loadable copy with stored promise or extended createLoadable
-  - async code execution utils like takeLatest/takeLeading etc? [createAsync]
-  - computed values? [createComputed]
-
 ### Testing
   - test useContextWithMemo properly
   - more exotic cases
   - review tests, simplify and cover more cases 
-  - test dev and prod bundles
 
 ### Build
   - wiki builder?
@@ -20,12 +14,16 @@
   - ???
 
 ### Lib
+  - Store schema registry/creating and validation when initializing context managers?
   - Think about actions/state separation. [HoCs do not allow to do so]
   - Scoping for signals and queries?
-  - query subscription util?
   - check preact
   - assistance messages when consuming, but tree is not provided
   - Scope component or something like it for query/signals scoping
+
+##### Utils
+  - createAsync as loadable copy with stored promise or extended createLoadable
+  - async code execution utils like takeLatest/takeLeading etc? [createAsync]
 
 ### Docs
   - Docs update
@@ -74,3 +72,5 @@
   - [-] unRegisterService
   - [-] unSubscribeFromSignals
   - [-] useSignal
+  - [-] queryData
+  - [-] createComputed

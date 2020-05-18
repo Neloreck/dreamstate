@@ -204,6 +204,38 @@ describe("ContextManager class.", () => {
     unRegisterService(ExampleManagerClass);
   });
 
+  it("Should correctly change computed values beforeUpdate.", () => {
+    interface IExampleContext {
+      a: number;
+      b: number;
+    }
+
+    class ExampleManagerClass extends ContextManager<IExampleContext> {
+
+      public readonly context: IExampleContext = {
+        a: 5,
+        b: 10
+      };
+
+      protected beforeUpdate(nextContext: IExampleContext) {
+        nextContext.b = nextContext.a * 2;
+      }
+
+    }
+
+    const manager = registerService(ExampleManagerClass);
+
+    manager.setContext({ a: 200 });
+
+    expect(manager.context.b).toBe(400);
+
+    manager.setContext({ a: 400 });
+
+    expect(manager.context.b).toBe(800);
+
+    unRegisterService(ExampleManagerClass);
+  });
+
   it("Should use getReactContext for REACT_CONTEXT and return same result.", () => {
     expect(getReactContext(TestContextManager)).toBe(TestContextManager.REACT_CONTEXT);
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestContextManager);

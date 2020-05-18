@@ -3,7 +3,7 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { createLoadable } from "@/dreamstate/utils/createLoadable";
-import { createMutable } from "@/dreamstate/utils/createMutable";
+import { createNested } from "@/dreamstate/utils/createNested";
 import { createSetter } from "@/dreamstate/utils/createSetter";
 import { NestedContextManager } from "@/fixtures";
 
@@ -76,7 +76,7 @@ describe("CreateSetter util.", () => {
     const mockManagerWithContext = {
       context: {
         loadable: createLoadable("example"),
-        mutable: createMutable({ example: true }),
+        mutable: createNested({ example: true }),
         string: "string",
         number: 1
       }

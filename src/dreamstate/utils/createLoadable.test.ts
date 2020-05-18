@@ -46,13 +46,13 @@ describe("Loadable util.", () => {
   });
 
   it("Should properly declare loadable objects flags.", () => {
-    const mutable: ILoadable<{ test: boolean }> = createLoadable({
+    const loadable: ILoadable<{ test: boolean }> = createLoadable({
       test: true
     });
 
-    expect(mutable instanceof NestedStore).toBeTruthy();
+    expect(loadable instanceof NestedStore).toBeTruthy();
 
-    const next: ILoadable<{ test: boolean }> = mutable.asUpdated({
+    const next: ILoadable<{ test: boolean }> = loadable.asUpdated({
       test: false
     });
 

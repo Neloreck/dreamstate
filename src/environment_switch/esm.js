@@ -21,7 +21,8 @@ import {
   withConsumption as DwithConsumption,
   Bind as DBind,
   createLoadable as DcreateLoadable,
-  createMutable as DcreateMutable,
+  createNested as DcreateNested,
+  createComputed as DcreateComputed,
   createSetter as DcreateSetter
 } from "./development";
 import {
@@ -43,7 +44,8 @@ import {
   withConsumption as PwithConsumption,
   Bind as PBind,
   createLoadable as PcreateLoadable,
-  createMutable as PcreateMutable,
+  createNested as PcreateNested,
+  createComputed as PcreateComputed,
   createSetter as PcreateSetter
 } from "./production";
 
@@ -73,5 +75,6 @@ export const withConsumption = process.env.NODE_ENV === "production" ? PwithCons
 
 export const Bind = process.env.NODE_ENV === "production" ? PBind : DBind;
 export const createLoadable = process.env.NODE_ENV === "production" ? PcreateLoadable : DcreateLoadable;
-export const createMutable = process.env.NODE_ENV === "production" ? PcreateMutable : DcreateMutable;
+export const createNested = process.env.NODE_ENV === "production" ? PcreateNested : DcreateNested;
+export const createComputed = process.env.NODE_ENV === "production" ? PcreateComputed : DcreateComputed;
 export const createSetter = process.env.NODE_ENV === "production" ? PcreateSetter : DcreateSetter;

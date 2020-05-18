@@ -6,3 +6,4 @@ export * from "@/fixtures/general/TestContextManagerProvider";
 export * from "@/fixtures/general/TestContextService";
 export * from "@/fixtures/general/TestSingleContextManager";
 export * from "@/fixtures/general/TestSingleContextService";
+export * from "@/fixtures/general/ManagerWithUtils";

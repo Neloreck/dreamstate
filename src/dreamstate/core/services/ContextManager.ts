@@ -1,5 +1,6 @@
 import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
+import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
 import { getReactContext } from "@/dreamstate/core/registry/getReactContext";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
@@ -33,6 +34,8 @@ export abstract class ContextManager<T extends object> extends ContextService {
    * Forces update and render of subscribed components.
    */
   public forceUpdate(): void {
+    // Update computed values if something was updated manually.
+    processComputed(this.context);
     // Force updates and common lifecycle with same params.
     this.beforeUpdate(this.context);
     this.context = Object.assign({}, this.context);
@@ -61,6 +64,8 @@ export abstract class ContextManager<T extends object> extends ContextService {
         nextContext
       )
     ) {
+      processComputed(nextContext);
+
       this.beforeUpdate(nextContext);
       this.context = nextContext;
       notifyObservers(this);

@@ -4,7 +4,8 @@
 
 export {
   ILoadable as Loadable,
-  TMutable as Mutable,
+  TNested as Nested,
+  TComputed as Computed,
   TStateSetter as StateSetter,
   TConsumable as Consumable,
   ISignalEvent as SignalEvent,
@@ -32,6 +33,7 @@ export { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals
 export { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 
 export { OnQuery } from "@/dreamstate/core/queries/OnQuery";
+export { queryData } from "@/dreamstate/core/queries/queryData";
 
 export { useManager } from "@/dreamstate/core/consumption/useManager";
 export { Consume } from "@/dreamstate/core/consumption/Consume";
@@ -39,5 +41,6 @@ export { withConsumption } from "@/dreamstate/core/consumption/withConsumption";
 
 export { Bind } from "@/dreamstate/utils/Bind";
 export { createLoadable } from "@/dreamstate/utils/createLoadable";
-export { createMutable } from "@/dreamstate/utils/createMutable";
+export { createNested } from "@/dreamstate/utils/createNested";
+export { createComputed } from "@/dreamstate/utils/createComputed";
 export { createSetter } from "@/dreamstate/utils/createSetter";

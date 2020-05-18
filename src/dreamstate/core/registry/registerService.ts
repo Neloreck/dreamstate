@@ -6,6 +6,7 @@ import {
   CONTEXT_SUBSCRIBERS_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED
 } from "@/dreamstate/core/internals";
+import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/signals/onMetadataSignalListenerCalled";
 import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
@@ -22,6 +23,14 @@ export function registerService<T extends object>(
     const instance: InstanceType<TDreamstateService> = new Service();
     const signalHandler: TSignalListener = onMetadataSignalListenerCalled.bind(instance);
 
+    CONTEXT_OBSERVERS_REGISTRY.set(Service, CONTEXT_OBSERVERS_REGISTRY.get(Service) || new Set());
+    CONTEXT_SERVICES_REGISTRY.set(Service, instance);
+    CONTEXT_SIGNAL_HANDLERS_REGISTRY.set(Service, signalHandler);
+
+    subscribeToSignals(signalHandler);
+
+    CONTEXT_SERVICES_ACTIVATED.add(Service);
+
     // Currently only context managers require additional information initialization.
     if (Service.prototype instanceof ContextManager) {
       CONTEXT_STATES_REGISTRY.set(Service, (instance as ContextManager<object>).context);
@@ -30,14 +39,9 @@ export function registerService<T extends object>(
         Service,
         CONTEXT_SUBSCRIBERS_REGISTRY.get(Service) || new Set()
       );
+
+      // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
+      processComputed((instance as ContextManager<any>).context);
     }
-
-    CONTEXT_OBSERVERS_REGISTRY.set(Service, CONTEXT_OBSERVERS_REGISTRY.get(Service) || new Set());
-    CONTEXT_SERVICES_REGISTRY.set(Service, instance);
-    CONTEXT_SIGNAL_HANDLERS_REGISTRY.set(Service, signalHandler);
-
-    subscribeToSignals(signalHandler);
-
-    CONTEXT_SERVICES_ACTIVATED.add(Service);
   }
 }
