@@ -78,13 +78,16 @@ export function createLoadable<T, E = Error>(
   isLoading: boolean = false,
   error: E | null = null
 ): ILoadable<T, E> {
-  return Object.assign(new NestedStore(), {
-    error,
-    isLoading,
-    value,
-    asLoading: asLoading,
-    asFailed: asFailed,
-    asReady: asReady,
-    asUpdated: asUpdated
-  });
+  return Object.assign(
+    new NestedStore(),
+    {
+      error,
+      isLoading,
+      value,
+      asLoading: asLoading,
+      asFailed: asFailed,
+      asReady: asReady,
+      asUpdated: asUpdated
+    }
+  );
 }
