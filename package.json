@@ -16,7 +16,7 @@
     "build": "npm run clean && npm run build:dts && npm run build:esm && npm run build:cjs",
     "lint": "npx eslint . --ext .ts,.js",
     "test": "jest --config cli/test/jest.config.js --detectOpenHandles",
-    "benchmark": "npx ts-node --project ./tsconfig.json ./cli/benchmark/run.ts",
+    "benchmark": "npx cross-env NODE_ENV=production npx ts-node --project ./tsconfig.json ./cli/benchmark/run.ts",
     "pre-deploy": "npm run clean && npm run lint && npm test && npm run build && npx ts-node cli/deploy/prepare.ts",
     "deploy": "npm run pre-deploy && cd ./target/pkg && npm publish"
   },
