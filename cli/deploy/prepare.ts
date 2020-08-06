@@ -32,18 +32,6 @@ const ASSETS: IAssetsDescription = {
     source: path.resolve(SRC_PATH, "./dreamstate/package.json"),
     destination: path.resolve(PKG_ROOT, "./package.json")
   },
-  ESM_SWITCH: {
-    source: path.resolve(SRC_PATH, "./environment_switch/esm.js"),
-    destination: path.resolve(PKG_ROOT, "./esm/index.js")
-  },
-  CJS_CORE_SWITCH: {
-    source: path.resolve(SRC_PATH, "./environment_switch/cjs_core.js"),
-    destination: path.resolve(PKG_ROOT, "./index.js")
-  },
-  CJS_UTILS_SWITCH: {
-    source: path.resolve(SRC_PATH, "./environment_switch/cjs_utils.js"),
-    destination: path.resolve(PKG_ROOT, "./test-utils.js")
-  },
   ESM: {
     source: ESM_ROOT,
     destination: path.resolve(PKG_ROOT, "./esm")
@@ -63,6 +51,21 @@ const ASSETS: IAssetsDescription = {
   }, {}))
 };
 
+const SWITCHERS: IAssetsDescription = {
+  ESM_SWITCH: {
+    source: path.resolve(SRC_PATH, "./environment_switch/esm.js"),
+    destination: path.resolve(PKG_ROOT, "./esm/index.js")
+  },
+  CJS_CORE_SWITCH: {
+    source: path.resolve(SRC_PATH, "./environment_switch/cjs_core.js"),
+    destination: path.resolve(PKG_ROOT, "./index.js")
+  },
+  CJS_UTILS_SWITCH: {
+    source: path.resolve(SRC_PATH, "./environment_switch/cjs_utils.js"),
+    destination: path.resolve(PKG_ROOT, "./test-utils.js")
+  }
+};
+
 if (!fs.existsSync(DIST_ROOT) || !fs.existsSync(ESM_ROOT) || !fs.existsSync(CJS_ROOT) || !fs.existsSync(TYPES_ROOT)) {
   throw new Error("Seems like build script was not called before pkg preparation.");
 }
@@ -72,3 +75,4 @@ rimraf.sync(PKG_ROOT);
 fs.mkdirSync(PKG_ROOT);
 
 Object.values(ASSETS).forEach((it) => ncp(it.source, it.destination));
+Object.values(SWITCHERS).forEach((it) => ncp(it.source, it.destination));
