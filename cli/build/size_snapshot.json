@@ -1,0 +1,16 @@
+{
+  "../../target/dist/portable/dreamstate.js": {
+    "bundled": 20594,
+    "minified": 12667,
+    "gzipped": 3426,
+    "treeshaked": {
+      "rollup": {
+        "code": 68,
+        "import_statements": 68
+      },
+      "webpack": {
+        "code": 2651
+      }
+    }
+  }
+}

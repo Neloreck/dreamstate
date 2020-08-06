@@ -1,3 +1,12 @@
+## 3.0.2 (*/*/2020)
+  * Better typing - d.ts files will be bundled in a few files instead of whole project tree re-exporting
+  * Better package building - no garbage inside library dist
+  * Services now listen own signals and queries, but can be filtered manually
+  * Conditional bundles for dev[dev assistance and better errors messaging] and prod[faster and smaller] environment
+  * queryData method exported for external usage
+  * createMutable -> createNested renamed to match method usage
+  * createComputed introduced for computed values selectors
+
 ## 3.0.1 (5/12/2020)
   * Arrays as queryData method parameters for multiple queries fetching
   * Core update:
@@ -31,7 +40,7 @@
   * getCurrentContext method added
   * getCurrent method added
   * createSetter method added
-  * createMutable method added with related type
+  * createNested method added with related type
   * ContextManager related react context is named same as manager class with DS. prefix
   * ContextManager::REACT_CONTEXT field added
   * ContextManager::IS_SINGLE field added for singleton instances

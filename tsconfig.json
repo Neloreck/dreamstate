@@ -3,14 +3,17 @@
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "target": "es5",
+    "module": "commonjs",
+    "allowJs": true,
     "strict": true,
     "sourceMap": true,
     "declaration": true,
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "rootDir": ".",
-    "baseUrl": ".",
-    "emitDecoratorMetadata": true,
+    "rootDir": "./",
+    "baseUrl": "./",
+    "resolveJsonModule": true,
+    "emitDecoratorMetadata": false,
     "experimentalDecorators": true,
     "downlevelIteration": true,
     "types": [
@@ -22,11 +25,12 @@
       "dom"
     ],
     "paths": {
-      "@Lib": [ "src/index.ts" ],
-      "@Lib/*": [ "src/*" ],
-      "@Tests/*": [ "tests/*" ]
+      "@/*": [ "./src/*" ]
     }
   },
+  "include": [
+    "src/"
+  ],
   "exclude": [
     "node_modules"
   ]

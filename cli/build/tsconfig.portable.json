@@ -1,0 +1,10 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "esnext",
+    "downlevelIteration": true,
+    "removeComments": true,
+    "pretty": true,
+    "importHelpers": false
+  }
+}
