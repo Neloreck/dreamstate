@@ -1,5 +1,6 @@
 ## 3.1.1 (9/2/2020)
   * Fixed issues with numeric signal types check (0)
+  * Removed null from default queryData typing - now you should add it manually
 
 ## 3.1.0 (8/20/2020)
   * Better typing - d.ts files will be bundled in a few files instead of whole project tree re-exporting
