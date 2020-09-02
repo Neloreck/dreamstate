@@ -8,7 +8,7 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { EmittingContextManager, ESignal, TStringSignalEvent, SubscribedFunctionalComponent } from "@/fixtures/signals";
 
-describe("useSignals method.", () => {
+describe("useSignals method", () => {
   beforeEach(() => {
     registerService(EmittingContextManager);
   });
@@ -17,7 +17,7 @@ describe("useSignals method.", () => {
     unRegisterService(EmittingContextManager);
   });
 
-  it("Functional components should properly subscribe to signals and update ui.", async () => {
+  it("Functional components should properly subscribe to signals and update ui", async () => {
     const emittingContextManager: EmittingContextManager = getCurrent(EmittingContextManager)!;
 
     const mockFn = jest.fn((signalEvent: TStringSignalEvent) => {

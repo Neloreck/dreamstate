@@ -1,7 +1,7 @@
 import { promisifyQuery } from "@/dreamstate/core/queries/promisifyQuery";
 
-describe("promisifyQuery method.", () => {
-  it("Should properly call sync methods.", async () => {
+describe("promisifyQuery method", () => {
+  it("Should properly call sync methods", async () => {
     const service = {
       testMethod(it: any): any {
         return it;
@@ -15,7 +15,7 @@ describe("promisifyQuery method.", () => {
     expect(result!.data).toBe(data);
   });
 
-  it("Should properly call async methods.", async () => {
+  it("Should properly call async methods", async () => {
     const service = {
       async testMethod(it: any): Promise<any> {
         return it;
@@ -29,7 +29,7 @@ describe("promisifyQuery method.", () => {
     expect(result!.data).toBe(data);
   });
 
-  it("Should properly handle sync exceptions.", async () => {
+  it("Should properly handle sync exceptions", async () => {
     const service = {
       testMethod(): void {
         throw new Error();
@@ -39,7 +39,7 @@ describe("promisifyQuery method.", () => {
     expect(promisifyQuery(service as any, "testMethod", 123 as any)).rejects.toBeInstanceOf(Error);
   });
 
-  it("Should properly handle async exceptions.", async () => {
+  it("Should properly handle async exceptions", async () => {
     const service = {
       async testMethod(): Promise<void> {
         throw new Error();

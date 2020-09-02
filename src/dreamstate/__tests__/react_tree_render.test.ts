@@ -8,7 +8,7 @@ import { Provide } from "@/dreamstate/core/provision/Provide";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
 
-describe("React tree for provided and consumed components.", () => {
+describe("React tree for provided and consumed components", () => {
   interface IExampleContext {
     exampleNumber: number;
     exampleString: string;
@@ -84,7 +84,7 @@ describe("React tree for provided and consumed components.", () => {
 
   }
 
-  it("Should correctly provide manager context from functional provider.", () => {
+  it("Should correctly provide manager context from functional provider", () => {
     const functionalFunctionalTree = mount(
       createElement(ExampleContextFunctionalProvider, {} as any, createElement(ExampleContextFunctionalConsumer))
     );
@@ -98,7 +98,7 @@ describe("React tree for provided and consumed components.", () => {
     expect(functionalDecoratedTree).toMatchSnapshot("Provision: Functional - Decorated.");
   });
 
-  it("Should correctly provide manager context from decorated HoC provider.", () => {
+  it("Should correctly provide manager context from decorated HoC provider", () => {
     const decoratedFunctionalTree = mount(
       createElement(ExampleContextDecoratedProvider, {} as any, createElement(ExampleContextFunctionalConsumer))
     );

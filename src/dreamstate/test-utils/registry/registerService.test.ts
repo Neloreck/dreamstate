@@ -13,8 +13,8 @@ import { registerService } from "@/dreamstate/test-utils/registry/registerServic
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextManager } from "@/fixtures";
 
-describe("Register service test util.", () => {
-  it("Should not be initialized before test.", () => {
+describe("Register service test util", () => {
+  it("Should not be initialized before test", () => {
     expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextManager)).toBeUndefined();
@@ -26,14 +26,14 @@ describe("Register service test util.", () => {
     expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
   });
 
-  it("Should throw errors for wrong method targets.", () => {
+  it("Should throw errors for wrong method targets", () => {
     expect(() => registerService(class Any {} as any)).toThrow(TypeError);
     expect(() => registerService(1 as any)).toThrow(TypeError);
     expect(() => registerService(undefined as any)).toThrow(TypeError);
     expect(() => registerService(null as any)).toThrow(TypeError);
   });
 
-  it("Should properly register services like library does.", () => {
+  it("Should properly register services like library does", () => {
     const testContextManager = registerService(TestContextManager);
 
     expect(testContextManager).toBeDefined();
@@ -53,7 +53,7 @@ describe("Register service test util.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should not re-initialize existing services.", () => {
+  it("Should not re-initialize existing services", () => {
     const testContextManager: TestContextManager = registerService(TestContextManager);
     const nextContextManager: TestContextManager = registerService(TestContextManager);
 

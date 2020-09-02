@@ -4,7 +4,7 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { TQueryResponse } from "@/dreamstate/types";
 import { EQuery, RespondingService } from "@/fixtures/queries";
 
-describe("queryData and queries processing.", () => {
+describe("queryData and queries processing", () => {
   beforeEach(() => {
     registerService(RespondingService);
   });
@@ -13,7 +13,7 @@ describe("queryData and queries processing.", () => {
     unRegisterService(RespondingService);
   });
 
-  it("Should validate queryData params.", () => {
+  it("Should validate queryData params", () => {
     expect(() => queryData([])).not.toThrow(TypeError);
     expect(() => queryData([ { type: "TEST", data: undefined } ])).not.toThrow(TypeError);
     expect(() => queryData({ type: "TEST", data: undefined })).not.toThrow(TypeError);
@@ -31,7 +31,7 @@ describe("queryData and queries processing.", () => {
     expect(() => queryData({} as any)).toThrow(TypeError);
   });
 
-  it("Should properly handle sync and async queryData listeners.", async () => {
+  it("Should properly handle sync and async queryData listeners", async () => {
     const stringResponse: TQueryResponse<string> = await queryData({ type: EQuery.ASYNC_STRING_QUERY, data: "query" });
     const booleanResponse: TQueryResponse<boolean> = await queryData({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });
 
@@ -46,7 +46,7 @@ describe("queryData and queries processing.", () => {
     expect(typeof booleanResponse!.timestamp).toBe("number");
   });
 
-  it("Should properly handle errors in queries.", () => {
+  it("Should properly handle errors in queries", () => {
     expect(queryData({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
     expect(queryData({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
   });

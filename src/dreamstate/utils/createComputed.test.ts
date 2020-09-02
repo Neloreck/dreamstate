@@ -5,8 +5,8 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 
-describe("createComputed method functionality.", () => {
-  it("Should create value with correct initial param.", () => {
+describe("createComputed method functionality", () => {
+  it("Should create value with correct initial param", () => {
     const context = {
       first: createComputed(() => ({ nullValue: null })),
       second: createComputed(() => ({ test: 355 })),
@@ -46,7 +46,7 @@ describe("createComputed method functionality.", () => {
     expect(context.third.__selector__).toBeDefined();
   });
 
-  it("Should correctly work with context managers.", () => {
+  it("Should correctly work with context managers", () => {
     interface IComputedContext {
       example: TComputed<{
         multipliedByTwo: number;
@@ -82,7 +82,7 @@ describe("createComputed method functionality.", () => {
     unRegisterService(ComputedManager);
   });
 
-  it("Should correctly compute non-primitive values.", () => {
+  it("Should correctly compute non-primitive values", () => {
     interface IComputedContext {
       computed: TComputed<{
         greaterThanFive: Array<number>;

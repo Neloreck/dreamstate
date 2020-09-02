@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`React tree for provided and consumed components. Should correctly update subscribed to functional provider elements view.: Initial state. 1`] = `
+exports[`React tree for provided and consumed components Should correctly update subscribed to functional provider elements view: Initial state. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <Component
@@ -14,7 +14,7 @@ exports[`React tree for provided and consumed components. Should correctly updat
 </Memo(DS.Observer)>
 `;
 
-exports[`React tree for provided and consumed components. Should correctly update subscribed to functional provider elements view.: Updated state. 1`] = `
+exports[`React tree for provided and consumed components Should correctly update subscribed to functional provider elements view: Updated state. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <Component

@@ -6,17 +6,17 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { ITestContext, TestContextManager, TestContextService } from "@/fixtures";
 
-describe("subscribeToManager method functionality.", () => {
-  it("Should not work before registering.", () => {
+describe("subscribeToManager method functionality", () => {
+  it("Should not work before registering", () => {
     expect(() => subscribeToManager(TestContextManager, () => {})).toThrow(Error);
   });
 
-  it("Should not work with non-ContextManager classes.", () => {
+  it("Should not work with non-ContextManager classes", () => {
     expect(() => subscribeToManager(TestContextService as any, () => {})).toThrow(TypeError);
     expect(() => subscribeToManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
   });
 
-  it("Should properly add subscribers to registry.", () => {
+  it("Should properly add subscribers to registry", () => {
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     CONTEXT_SUBSCRIBERS_REGISTRY.set(TestContextManager, new Set());
@@ -33,7 +33,7 @@ describe("subscribeToManager method functionality.", () => {
     CONTEXT_SUBSCRIBERS_REGISTRY.delete(TestContextManager);
   });
 
-  it("Should properly notify subscribers.", async () => {
+  it("Should properly notify subscribers", async () => {
     const manager: TestContextManager = registerService(TestContextManager);
 
     const withCheckParamsMockFn = jest.fn((context: ITestContext) => {

@@ -9,10 +9,10 @@ import {
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { TestContextManager, TestContextService } from "@/fixtures";
 
-describe("Mount order for providers.", () => {
+describe("Mount order for providers", () => {
   const Provider = createProvider([ TestContextManager, TestContextService ]);
 
-  it("Should properly have ready state if it was mounted-unmounted many times.", async () => {
+  it("Should properly have ready state if it was mounted-unmounted many times", async () => {
     for (let it = 0; it < 1000; it ++) {
       const tree = mount(createElement(Provider, {}));
 
@@ -25,7 +25,7 @@ describe("Mount order for providers.", () => {
     expect(CONTEXT_SERVICES_REGISTRY.get(TestContextService)).toBeUndefined();
   });
 
-  it("Should properly have ready state if it was mounted-unmounted many times and left mounted.", async () => {
+  it("Should properly have ready state if it was mounted-unmounted many times and left mounted", async () => {
     let tree = mount(createElement(Provider, {}));
 
     for (let it = 0; it < 1000; it ++) {

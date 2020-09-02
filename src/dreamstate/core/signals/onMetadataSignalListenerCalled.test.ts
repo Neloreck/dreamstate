@@ -5,8 +5,8 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { ISignalEvent } from "@/dreamstate/types";
 import { ESignal, SubscribedContextManager, TestContextManager } from "@/fixtures";
 
-describe("onMetadataSignalListenerCalled method functionality.", () => {
-  it("Should ignore services without metadata and not throw any errors.", () => {
+describe("onMetadataSignalListenerCalled method functionality", () => {
+  it("Should ignore services without metadata and not throw any errors", () => {
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     onMetadataSignalListenerCalled.call(
@@ -23,7 +23,7 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
     expect(true).toBeTruthy();
   });
 
-  it("Should properly call single signal-subscribed methods for managers.", () => {
+  it("Should properly call single signal-subscribed methods for managers", () => {
     const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(SubscribedContextManager)).toBeTruthy();
@@ -48,7 +48,7 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
     unRegisterService(SubscribedContextManager);
   });
 
-  it("Should properly call array signal-subscribed methods for managers.", () => {
+  it("Should properly call array signal-subscribed methods for managers", () => {
     const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(SubscribedContextManager)).toBeTruthy();
@@ -81,7 +81,7 @@ describe("onMetadataSignalListenerCalled method functionality.", () => {
     unRegisterService(SubscribedContextManager);
   });
 
-  it("Should receive own signals with correct emitter field.", () => {
+  it("Should receive own signals with correct emitter field", () => {
     const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     manager.onStringSignal = jest.fn((it: ISignalEvent) => {

@@ -8,8 +8,8 @@ import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TSignalSubscriptionMetadata, TSignalType } from "@/dreamstate/types";
 import { ESignal, SubscribedContextManager } from "@/fixtures/signals";
 
-describe("@OnSignal metadata decorator.", () => {
-  it("Signal decorator should properly add metadata.", () => {
+describe("@OnSignal metadata decorator", () => {
+  it("Signal decorator should properly add metadata", () => {
     const signalListenersList: TSignalSubscriptionMetadata =
       CONTEXT_SIGNAL_METADATA_REGISTRY.get(SubscribedContextManager)!;
 
@@ -42,7 +42,7 @@ describe("@OnSignal metadata decorator.", () => {
     expect((thirdSubscribed as Array<TSignalType>).includes(ESignal.NUMBER_SIGNAL)).toBeTruthy();
   });
 
-  it("Signal decorator methods should properly subscribe.", async () => {
+  it("Signal decorator methods should properly subscribe", async () => {
     const subscribedManager: SubscribedContextManager = registerService(SubscribedContextManager)!;
 
     subscribedManager.onNumberSignal = jest.fn();
@@ -83,7 +83,7 @@ describe("@OnSignal metadata decorator.", () => {
     unRegisterService(SubscribedContextManager)!;
   });
 
-  it("Should work only with context services.", () => {
+  it("Should work only with context services", () => {
     expect(() => {
       class Throwing extends ContextService {
 

@@ -3,8 +3,8 @@ import { registerService } from "@/dreamstate/test-utils/registry/registerServic
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextManager } from "@/fixtures";
 
-describe("getCurrentContext method functionality.", () => {
-  it("Should properly return current manager context.", () => {
+describe("getCurrentContext method functionality", () => {
+  it("Should properly return current manager context", () => {
     expect(getCurrentContext(TestContextManager)).toBeNull();
 
     const manager: TestContextManager = registerService(TestContextManager);

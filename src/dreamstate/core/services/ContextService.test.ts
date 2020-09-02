@@ -15,8 +15,8 @@ import {
   EmittingContextManager
 } from "@/fixtures";
 
-describe("ContextService class.", () => {
-  it("Should initialize service classes without any exceptions.", () => {
+describe("ContextService class", () => {
+  it("Should initialize service classes without any exceptions", () => {
     const testContextManagerInit = (Service: TDreamstateService, isSingle: boolean = false) => {
       const service = new Service();
 
@@ -64,11 +64,11 @@ describe("ContextService class.", () => {
     testContextManagerInit(TestSingleContextService, true);
   });
 
-  it("Should properly handle onProvisionStarted and onProvision ended for context services.", () => {
+  it("Should properly handle onProvisionStarted and onProvision ended for context services", () => {
     // todo;
   });
 
-  it("Should correctly save singleton services state after provision restart and force unregister.", () => {
+  it("Should correctly save singleton services state after provision restart and force unregister", () => {
     const first: TestSingleContextService = registerService(TestSingleContextService);
 
     const createdAt: number = first.createdAt;
@@ -90,7 +90,7 @@ describe("ContextService class.", () => {
     unRegisterService(TestSingleContextService);
   });
 
-  it("Should use emitSignal method when sending signals.", async () => {
+  it("Should use emitSignal method when sending signals", async () => {
     const emittingContextManager: EmittingContextManager = registerService(EmittingContextManager);
     const spy = jest.fn((signal: ISignalEvent) => {
       expect(signal.emitter).toBe(EmittingContextManager);

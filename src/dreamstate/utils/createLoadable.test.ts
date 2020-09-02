@@ -2,8 +2,8 @@ import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { ILoadable } from "@/dreamstate/types";
 import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "@/dreamstate/utils/createLoadable";
 
-describe("Loadable util.", () => {
-  it("Should properly create loadable objects.", () => {
+describe("Loadable util", () => {
+  it("Should properly create loadable objects", () => {
     const loadableValue: number = 10;
     const loadableError: Error = new Error("testError");
     const loadable: ILoadable<number> = createLoadable(loadableValue);
@@ -45,7 +45,7 @@ describe("Loadable util.", () => {
     expect(emptyLoadable.value).toBeNull();
   });
 
-  it("Should properly declare loadable objects flags.", () => {
+  it("Should properly declare loadable objects flags", () => {
     const loadable: ILoadable<{ test: boolean }> = createLoadable({
       test: true
     });
@@ -59,7 +59,7 @@ describe("Loadable util.", () => {
     expect(next instanceof NestedStore).toBeTruthy();
   });
 
-  it("Should properly compute new loadable values.", () => {
+  it("Should properly compute new loadable values", () => {
     const originalObject = { value: 500 };
     const mutateAsLoadable = asLoading.bind(originalObject as ILoadable<number>);
 
@@ -78,7 +78,7 @@ describe("Loadable util.", () => {
     expect(Object.keys(second)).toHaveLength(3);
   });
 
-  it("Should properly compute updated values.", () => {
+  it("Should properly compute updated values", () => {
     const originalObject = { value: 700 };
     const mutateAsFailed = asFailed.bind(originalObject as ILoadable<number>);
 
@@ -97,7 +97,7 @@ describe("Loadable util.", () => {
     expect(Object.keys(second)).toHaveLength(3);
   });
 
-  it("Should properly compute ready values.", () => {
+  it("Should properly compute ready values", () => {
     const originalObject = { value: 700, isLoading: true, error: new Error("Test.") };
     const mutateAsReady = asReady.bind(originalObject as ILoadable<number>);
 
@@ -116,7 +116,7 @@ describe("Loadable util.", () => {
     expect(Object.keys(second)).toHaveLength(3);
   });
 
-  it("Should properly compute updated values.", () => {
+  it("Should properly compute updated values", () => {
     const valueObject = { value: 1 };
     const mutateAsUpdated = asUpdated.bind(valueObject as ILoadable<number>);
 

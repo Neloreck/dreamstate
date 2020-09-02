@@ -1,7 +1,7 @@
 import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
 
-describe("cancelSignal method.", () => {
-  it("Should properly set cancel variable.", () => {
+describe("cancelSignal method", () => {
+  it("Should properly set cancel variable", () => {
     const obj = {};
 
     expect((obj as any).canceled).toBeFalsy();

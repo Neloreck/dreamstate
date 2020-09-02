@@ -13,20 +13,20 @@ import { registerService } from "@/dreamstate/test-utils/registry/registerServic
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextService, TestSingleContextService } from "@/fixtures";
 
-describe("Unregister service test util.", () => {
-  it("Should properly unregister services without errors.", () => {
+describe("Unregister service test util", () => {
+  it("Should properly unregister services without errors", () => {
     registerService(TestContextService);
     unRegisterService(TestContextService);
   });
 
-  it("Should not work with non-context-services.", () => {
+  it("Should not work with non-context-services", () => {
     expect(() => unRegisterService(0 as any)).toThrow(TypeError);
     expect(() => unRegisterService(null as any)).toThrow(TypeError);
     expect(() => unRegisterService("asd" as any)).toThrow(TypeError);
     expect(() => unRegisterService(class AnyClass {} as any)).toThrow(TypeError);
   });
 
-  it("Should not remove singletons with force flag.", () => {
+  it("Should not remove singletons with force flag", () => {
     registerService(TestSingleContextService);
     unRegisterService(TestSingleContextService, false);
 
@@ -37,14 +37,14 @@ describe("Unregister service test util.", () => {
     expect(CONTEXT_SERVICES_REGISTRY.get(TestSingleContextService)).toBeUndefined();
   });
 
-  it("Should force remove singletons by default.", () => {
+  it("Should force remove singletons by default", () => {
     registerService(TestSingleContextService);
     unRegisterService(TestSingleContextService);
 
     expect(CONTEXT_SERVICES_REGISTRY.get(TestSingleContextService)).toBeUndefined();
   });
 
-  it("Services should be de-initialized after test.", () => {
+  it("Services should be de-initialized after test", () => {
     expect(CONTEXT_SERVICES_REGISTRY.get(TestContextService)).toBeUndefined();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextService)).toBeInstanceOf(Set);
     expect(CONTEXT_QUERY_METADATA_REGISTRY.get(TestContextService)).toBeUndefined();

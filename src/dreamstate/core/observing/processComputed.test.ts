@@ -3,7 +3,7 @@ import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 
-describe("processComputed method.", () => {
+describe("processComputed method", () => {
   interface ITestContext {
     a: string;
     b: number;
@@ -12,7 +12,7 @@ describe("processComputed method.", () => {
     e: TComputed<{ odd: Array<number> }>;
   }
 
-  it("Should correctly process computed context and replace values.", () => {
+  it("Should correctly process computed context and replace values", () => {
     const context = {
       value: "default",
       computed: createComputed((context: { value: string }) => ({ concat: context.value + "!" }))
@@ -29,7 +29,7 @@ describe("processComputed method.", () => {
     expect(context.computed).toBeInstanceOf(ComputedValue);
   });
 
-  it("Should properly handle default computed and always update it.", () => {
+  it("Should properly handle default computed and always update it", () => {
     const defaultContext: ITestContext = {
       a: "1233",
       b: 123123,
@@ -64,7 +64,7 @@ describe("processComputed method.", () => {
     expect(nextComputed).not.toBe(defaultContext.e);
   });
 
-  it("Should properly handle values with memo and ignore update of other fields.", () => {
+  it("Should properly handle values with memo and ignore update of other fields", () => {
     const memoContext: ITestContext = {
       a: "1233",
       b: 123123,

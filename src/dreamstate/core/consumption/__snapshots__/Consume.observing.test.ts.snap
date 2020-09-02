@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`@Consume selector observing. Should properly observe array selected props and prevent odd updates. 1`] = `
+exports[`@Consume selector observing Should properly observe array selected props and prevent odd updates 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={
@@ -52,7 +52,7 @@ exports[`@Consume selector observing. Should properly observe array selected pro
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe array selected props and prevent odd updates. 2`] = `
+exports[`@Consume selector observing Should properly observe array selected props and prevent odd updates 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={
@@ -104,7 +104,7 @@ exports[`@Consume selector observing. Should properly observe array selected pro
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe array selected props and prevent odd updates. 3`] = `
+exports[`@Consume selector observing Should properly observe array selected props and prevent odd updates 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={[MockFunction]}
@@ -122,7 +122,7 @@ exports[`@Consume selector observing. Should properly observe array selected pro
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe array selected props and prevent odd updates. 4`] = `
+exports[`@Consume selector observing Should properly observe array selected props and prevent odd updates 4`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={[MockFunction]}
@@ -140,7 +140,7 @@ exports[`@Consume selector observing. Should properly observe array selected pro
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe array selected props and prevent odd updates. 5`] = `
+exports[`@Consume selector observing Should properly observe array selected props and prevent odd updates 5`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={
@@ -192,7 +192,7 @@ exports[`@Consume selector observing. Should properly observe array selected pro
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe only one property and prevent odd updates. 1`] = `
+exports[`@Consume selector observing Should properly observe only one property and prevent odd updates 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={
@@ -241,7 +241,7 @@ exports[`@Consume selector observing. Should properly observe only one property 
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe only one property and prevent odd updates. 2`] = `
+exports[`@Consume selector observing Should properly observe only one property and prevent odd updates 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={
@@ -290,7 +290,7 @@ exports[`@Consume selector observing. Should properly observe only one property 
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe only one property and prevent odd updates. 3`] = `
+exports[`@Consume selector observing Should properly observe only one property and prevent odd updates 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={[MockFunction]}
@@ -307,7 +307,7 @@ exports[`@Consume selector observing. Should properly observe only one property 
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe only one property and prevent odd updates. 4`] = `
+exports[`@Consume selector observing Should properly observe only one property and prevent odd updates 4`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={[MockFunction]}
@@ -324,7 +324,7 @@ exports[`@Consume selector observing. Should properly observe only one property 
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe selector picked props and prevent odd updates. 1`] = `
+exports[`@Consume selector observing Should properly observe selector picked props and prevent odd updates 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={
@@ -373,7 +373,7 @@ exports[`@Consume selector observing. Should properly observe selector picked pr
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe selector picked props and prevent odd updates. 2`] = `
+exports[`@Consume selector observing Should properly observe selector picked props and prevent odd updates 2`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={[MockFunction]}
@@ -390,7 +390,7 @@ exports[`@Consume selector observing. Should properly observe selector picked pr
 </Memo(DS.Observer)>
 `;
 
-exports[`@Consume selector observing. Should properly observe selector picked props and prevent odd updates. 3`] = `
+exports[`@Consume selector observing Should properly observe selector picked props and prevent odd updates 3`] = `
 <Memo(DS.Observer)>
   <DS.Consumer
     onRender={

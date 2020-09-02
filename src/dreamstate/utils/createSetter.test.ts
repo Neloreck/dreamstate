@@ -7,7 +7,7 @@ import { createNested } from "@/dreamstate/utils/createNested";
 import { createSetter } from "@/dreamstate/utils/createSetter";
 import { NestedContextManager } from "@/fixtures";
 
-describe("CreateSetter util.", () => {
+describe("CreateSetter util", () => {
   beforeEach(() => {
     registerService(NestedContextManager);
   });
@@ -16,7 +16,7 @@ describe("CreateSetter util.", () => {
     unRegisterService(NestedContextManager);
   });
 
-  it("Should properly declare create setters.", () => {
+  it("Should properly declare create setters", () => {
     const nestedManager: NestedContextManager =
       getCurrent(NestedContextManager)!;
 
@@ -58,7 +58,7 @@ describe("CreateSetter util.", () => {
     expect(nestedManager.setContext).toHaveBeenCalled();
   });
 
-  it("Should properly work with functional setters.", () => {
+  it("Should properly work with functional setters", () => {
     const nestedManager: NestedContextManager = getCurrent(NestedContextManager)!;
     const setter = createSetter(nestedManager, "second");
 
@@ -72,7 +72,7 @@ describe("CreateSetter util.", () => {
     expect(nestedManager.setContext).toHaveBeenCalled();
   });
 
-  it("Should not allow create setters for non-object values.", () => {
+  it("Should not allow create setters for non-object values", () => {
     const mockManagerWithContext = {
       context: {
         loadable: createLoadable("example"),

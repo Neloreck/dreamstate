@@ -2,8 +2,8 @@ import { CONTEXT_OBSERVERS_REGISTRY, CONTEXT_SERVICES_REGISTRY } from "@/dreamst
 import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServiceObserverToRegistry";
 import { TestContextManager } from "@/fixtures";
 
-describe("addServiceObserverToRegistry method functionality.", () => {
-  it("Should properly add manager observer to set.", () => {
+describe("addServiceObserverToRegistry method functionality", () => {
+  it("Should properly add manager observer to set", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     const observer = jest.fn();

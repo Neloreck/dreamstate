@@ -1,16 +1,16 @@
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
-describe("Async queue await util.", () => {
-  it("Should properly return promise.", () => {
+describe("Async queue await util", () => {
+  it("Should properly return promise", () => {
     expect(typeof nextAsyncQueue()).toBe("object");
     expect((nextAsyncQueue()) instanceof Promise).toBeTruthy();
   });
 
-  it("Should not throw.", () => {
+  it("Should not throw", () => {
     expect(nextAsyncQueue()).resolves.toBeUndefined();
   });
 
-  it("Should execute as next in queue.", async () => {
+  it("Should execute as next in queue", async () => {
     let value = 0;
 
     nextAsyncQueue().then(() => value = 10);
@@ -22,7 +22,7 @@ describe("Async queue await util.", () => {
     expect(value).toBe(10);
   });
 
-  it("Should execute as next with delay.", async () => {
+  it("Should execute as next with delay", async () => {
     let value = 0;
 
     nextAsyncQueue(250).then(() => value = 10);

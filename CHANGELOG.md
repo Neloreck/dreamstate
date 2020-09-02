@@ -1,4 +1,7 @@
-## 3.0.2 (*/*/2020)
+## 3.1.1 (9/2/2020)
+  * Fixed issues with numeric signal types check (0)
+
+## 3.1.0 (8/20/2020)
   * Better typing - d.ts files will be bundled in a few files instead of whole project tree re-exporting
   * Better package building - no garbage inside library dist
   * Services now listen own signals and queries, but can be filtered manually

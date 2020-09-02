@@ -4,8 +4,8 @@ import { createElement, PropsWithChildren } from "react";
 import { createManagersObserver } from "@/dreamstate/core/observing/createManagersObserver";
 import { TestContextService, TestContextManager } from "@/fixtures";
 
-describe("shouldObserversUpdate method functionality.", () => {
-  it("Should create observers with validation.", () => {
+describe("shouldObserversUpdate method functionality", () => {
+  it("Should create observers with validation", () => {
     expect(() => createManagersObserver(null, 0 as any)).toThrow(TypeError);
     expect(() => createManagersObserver(null, "0" as any)).toThrow(TypeError);
     expect(() => createManagersObserver(null, false as any)).toThrow(TypeError);
@@ -25,14 +25,14 @@ describe("shouldObserversUpdate method functionality.", () => {
     expect(() => createManagersObserver(null, [ TestContextService ])).not.toThrow();
     expect(() => createManagersObserver(null, [ TestContextManager ])).not.toThrow();
   });
-  it("Should create correct component tree without children.", () => {
+  it("Should create correct component tree without children", () => {
     const el = createManagersObserver(null, [ TestContextManager, TestContextService ]);
     const tree = mount(createElement(el, {}, createElement("div", {}, "testChild")));
 
     expect(tree).toMatchSnapshot();
   });
 
-  it("Should create correct component tree with children.", () => {
+  it("Should create correct component tree with children", () => {
     const el = createManagersObserver(
       ({ children, ...rest }: PropsWithChildren<any>) => createElement("main", {}, [ JSON.stringify(rest), children ]),
       [ TestContextManager, TestContextService ]

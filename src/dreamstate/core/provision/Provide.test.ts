@@ -5,7 +5,7 @@ import { CONTEXT_SERVICES_ACTIVATED } from "@/dreamstate/core/internals";
 import { Provide } from "@/dreamstate/core/provision/Provide";
 import { TestContextManager, TestContextService, TestSingleContextService } from "@/fixtures";
 
-describe("@Provide decorator.", () => {
+describe("@Provide decorator", () => {
   @Provide([ TestContextManager, TestContextService, TestSingleContextService ])
   class ExampleProvided extends PureComponent {
 
@@ -15,7 +15,7 @@ describe("@Provide decorator.", () => {
 
   }
 
-  it("Should render correct component tree.", async () => {
+  it("Should render correct component tree", async () => {
     expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextService)).toBeFalsy();
     expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
     expect(CONTEXT_SERVICES_ACTIVATED.has(TestSingleContextService)).toBeFalsy();

@@ -3,8 +3,8 @@ import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServ
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
 import { TestContextManager } from "@/fixtures";
 
-describe("removeServiceObserverFromRegistry method functionality.", () => {
-  it("Should properly remove manager observer from set.", () => {
+describe("removeServiceObserverFromRegistry method functionality", () => {
+  it("Should properly remove manager observer from set", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     const observer = jest.fn();
@@ -25,7 +25,7 @@ describe("removeServiceObserverFromRegistry method functionality.", () => {
     CONTEXT_SERVICES_REGISTRY.delete(TestContextManager);
   });
 
-  it("Should fail if service was not registered.", () => {
+  it("Should fail if service was not registered", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     CONTEXT_OBSERVERS_REGISTRY.set(TestContextManager, new Set());

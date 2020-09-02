@@ -1,14 +1,14 @@
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
 
-describe("shouldObserversUpdate method functionality.", () => {
-  it("Should return true of previous context does not exist.", () => {
+describe("shouldObserversUpdate method functionality", () => {
+  it("Should return true of previous context does not exist", () => {
     const previous: null = null;
     const next: object = { a: 15, b: 50 };
 
     expect(shouldObserversUpdate(previous as any, next)).toBeTruthy();
   });
 
-  it("Should check properly same nested primitives and objects.", () => {
+  it("Should check properly same nested primitives and objects", () => {
     const first = { first: 1 };
     const firstDifferent = { first: 1 };
     const second = { second: 2 };
@@ -33,7 +33,7 @@ describe("shouldObserversUpdate method functionality.", () => {
     expect(shouldObserversUpdate(firstStringDifferent, secondString)).toBeTruthy();
   });
 
-  it("Should properly check only refs for plain objects and primitives.", () => {
+  it("Should properly check only refs for plain objects and primitives", () => {
     let base = {
       nested: {
         a: 1,

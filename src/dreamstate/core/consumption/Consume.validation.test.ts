@@ -10,16 +10,16 @@ import {
   TextContextManagerProvider
 } from "@/fixtures";
 
-describe("@Consume selector validation.", () => {
+describe("@Consume selector validation", () => {
   function mountProvided(element: ComponentType<object>): ReactWrapper {
     return mount(createElement(TextContextManagerProvider, {}, createElement(element, {})));
   }
 
-  it("Hoc alias should be same as decorator.", () => {
+  it("Hoc alias should be same as decorator", () => {
     expect(Consume).toBe(withConsumption);
   });
 
-  it("Should take only valid classes or types and throw exception.", () => {
+  it("Should take only valid classes or types and throw exception", () => {
     expect(() => Consume([ class Any {} as any ])(PureComponent)).toThrow(TypeError);
     expect(() => Consume(class Any {} as any)(PureComponent)).toThrow(TypeError);
     expect(() => Consume([ { from: class Any {} as any } ])(PureComponent)).toThrow(TypeError);
@@ -31,7 +31,7 @@ describe("@Consume selector validation.", () => {
     expect(() => Consume([ true as any ])(PureComponent)).toThrow(TypeError);
   });
 
-  it("Should properly validate selectors.", () => {
+  it("Should properly validate selectors", () => {
     expect(() => Consume([ TestContextManager ])(PureComponent)).not.toThrow();
     expect(() => Consume([ { from: TestContextManager } ])(PureComponent)).not.toThrow();
     expect(() => Consume([ { from: TestContextManager, take: [] } ])(PureComponent)).not.toThrow();
@@ -47,7 +47,7 @@ describe("@Consume selector validation.", () => {
     expect(() => Consume([ { from: TestContextManager, as: {} as any } ])(PureComponent)).toThrow(TypeError);
   });
 
-  it("Should properly select all properties with or without alias.", () => {
+  it("Should properly select all properties with or without alias", () => {
     const TestComponent = Consume([ TestContextManager ])(PropsRenderer) as ComponentType<any>;
     const TestComponentWithSelector = Consume([ { from: TestContextManager } ])(PropsRenderer) as ComponentType<any>;
     const TestComponentWithAlias = Consume([
@@ -59,7 +59,7 @@ describe("@Consume selector validation.", () => {
     expect(mountProvided(TestComponentWithSelector)).toMatchSnapshot();
   });
 
-  it("Should properly select string properties with or without alias.", () => {
+  it("Should properly select string properties with or without alias", () => {
     const TestComponentWithSelector = Consume([
       { from: TestContextManager, take: "first" }
     ])(PropsRenderer) as ComponentType<any>;
@@ -75,7 +75,7 @@ describe("@Consume selector validation.", () => {
     expect(mountProvided(TestComponentWithFallbackSelector)).toMatchSnapshot();
   });
 
-  it("Should properly select array properties with or without alias.", () => {
+  it("Should properly select array properties with or without alias", () => {
     const TestComponentWithNoProps = Consume([
       { from: TestContextManager, take: [] }
     ])(PropsRenderer) as ComponentType<any>;
@@ -99,7 +99,7 @@ describe("@Consume selector validation.", () => {
     expect(mountProvided(TestComponentWithAllPropsAliased)).toMatchSnapshot();
   });
 
-  it("Should properly select selector properties with or without alias.", () => {
+  it("Should properly select selector properties with or without alias", () => {
     const TestComponentWithAllProps = Consume([
       { from: TestContextManager, take: (context: ITestContext) => context }
     ])(PropsRenderer) as ComponentType<any>;

@@ -5,7 +5,7 @@ import { removeServiceObserver } from "@/dreamstate/test-utils/registry/removeSe
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextManager, TestContextService } from "@/fixtures";
 
-describe("Remove manager observer util.", () => {
+describe("Remove manager observer util", () => {
   beforeAll(() => {
     registerService(TestContextManager);
   });
@@ -14,7 +14,7 @@ describe("Remove manager observer util.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should throw errors for wrong method targets.", () => {
+  it("Should throw errors for wrong method targets", () => {
     expect(() => removeServiceObserver(null as any, jest.fn())).toThrow(TypeError);
     expect(() => removeServiceObserver(undefined as any, jest.fn())).toThrow(TypeError);
     expect(() => removeServiceObserver(0 as any, jest.fn())).toThrow(TypeError);
@@ -23,7 +23,7 @@ describe("Remove manager observer util.", () => {
     expect(() => removeServiceObserver(class Ext extends TestContextManager {}, jest.fn())).toThrow(Error);
   });
 
-  it("Should remove observer from registry.", () => {
+  it("Should remove observer from registry", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
@@ -45,7 +45,7 @@ describe("Remove manager observer util.", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
   });
 
-  it("Should properly trigger lifecycle of manager.", async () => {
+  it("Should properly trigger lifecycle of manager", async () => {
     const manager: TestContextManager = registerService(TestContextManager);
     const spy = jest.fn();
     const observer = jest.fn();

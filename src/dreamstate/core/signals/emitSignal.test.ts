@@ -7,19 +7,27 @@ import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { ISignalEvent, TSignalType } from "@/dreamstate/types";
 import { ESignal, SubscribedContextManager } from "@/fixtures";
 
-describe("emitSignal method.", () => {
-  it("Should properly reject bad emit parameters.", () => {
+describe("emitSignal method", () => {
+  it("Should properly reject bad emit parameters", () => {
     expect(() => emitSignal(null as any)).toThrow(TypeError);
     expect(() => emitSignal(false as any)).toThrow(TypeError);
     expect(() => emitSignal(NaN as any)).toThrow(TypeError);
     expect(() => emitSignal(undefined as any)).toThrow(TypeError);
+    expect(() => emitSignal(Symbol.for("TEST") as any)).toThrow(TypeError);
+    expect(() => emitSignal(Symbol("TEST") as any)).toThrow(TypeError);
+    expect(() => emitSignal(0 as any)).toThrow(TypeError);
+    expect(() => emitSignal(1 as any)).toThrow(TypeError);
     expect(() => emitSignal([] as any)).toThrow(TypeError);
     expect(() => emitSignal(new Set() as any)).toThrow(TypeError);
     expect(() => emitSignal({} as any)).toThrow(TypeError);
+    expect(() => emitSignal({ type: Symbol.for("TEST") })).not.toThrow(Error);
+    expect(() => emitSignal({ type: Symbol("TEST") })).not.toThrow(Error);
+    expect(() => emitSignal({ type: 0 })).not.toThrow(Error);
+    expect(() => emitSignal({ type: 98 })).not.toThrow(Error);
     expect(() => emitSignal({ type: "VALIDATION" })).not.toThrow(Error);
   });
 
-  it("Should properly dispatch signals.", async () => {
+  it("Should properly dispatch signals", async () => {
     const subscriber = jest.fn((signal: ISignalEvent) => {
       expect(signal.type).toBe("TEST");
       expect(signal.data).toBeUndefined();
@@ -42,7 +50,7 @@ describe("emitSignal method.", () => {
     unsubscribeFromSignals(subscriber);
   });
 
-  it("Should properly inject data parameter.", async () => {
+  it("Should properly inject data parameter", async () => {
     const subscriber = jest.fn((signal: ISignalEvent) => {
       if (signal.type === "WITH_PARAM") {
         expect(signal.data).toBe(155);
@@ -58,7 +66,7 @@ describe("emitSignal method.", () => {
     expect(subscriber).toHaveBeenCalled();
   });
 
-  it("Should properly inject emitter parameter.", async () => {
+  it("Should properly inject emitter parameter", async () => {
     const subscriber = jest.fn((signal: ISignalEvent) => {
       if (signal.type === "WITH_EMITTER") {
         expect(signal.emitter).toBe(0);
@@ -74,7 +82,7 @@ describe("emitSignal method.", () => {
     expect(subscriber).toHaveBeenCalled();
   });
 
-  it("Signal subscribers should properly cancel events and be called in declared order.", async () => {
+  it("Signal subscribers should properly cancel events and be called in declared order", async () => {
     const subscribedManager: SubscribedContextManager = registerService(SubscribedContextManager);
 
     subscribedManager.onStringSignal = jest.fn();

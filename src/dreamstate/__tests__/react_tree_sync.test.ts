@@ -7,8 +7,8 @@ import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { TestContextManager } from "@/fixtures";
 
-describe("React tree for provided and consumed components.", () => {
-  it("Should correctly update subscribed to functional provider elements view.", () => {
+describe("React tree for provided and consumed components", () => {
+  it("Should correctly update subscribed to functional provider elements view", () => {
     const reactTree = mount(
       createElement(
         createProvider([ TestContextManager ]),

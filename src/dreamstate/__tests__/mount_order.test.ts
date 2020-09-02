@@ -7,7 +7,7 @@ import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 
-describe("Mount order for providers.", () => {
+describe("Mount order for providers", () => {
   class First extends ContextService {}
 
   class Second extends ContextService {}
@@ -16,7 +16,7 @@ describe("Mount order for providers.", () => {
 
   const Provider = createProvider([ First, Second, Third ]);
 
-  it("Should properly mount provided components.", async () => {
+  it("Should properly mount provided components", async () => {
     const list: Array<string> = [];
 
     registerService(First)["onProvisionStarted"] = () => {
@@ -42,7 +42,7 @@ describe("Mount order for providers.", () => {
     expect(list[2]).toBe(Third.name);
   });
 
-  it("Should properly unmount provided components.", async () => {
+  it("Should properly unmount provided components", async () => {
     const list: Array<string> = [];
     const tree = mount(createElement(Provider, {}));
 

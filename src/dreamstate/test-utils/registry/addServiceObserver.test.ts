@@ -5,7 +5,7 @@ import { removeServiceObserver } from "@/dreamstate/test-utils/registry/removeSe
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextManager, TestContextService } from "@/fixtures";
 
-describe("Add manager observer util.", () => {
+describe("Add manager observer util", () => {
   beforeAll(() => {
     registerService(TestContextManager);
   });
@@ -14,7 +14,7 @@ describe("Add manager observer util.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should throw errors for wrong method targets.", () => {
+  it("Should throw errors for wrong method targets", () => {
     expect(() => addServiceObserver(null as any, jest.fn())).toThrow(TypeError);
     expect(() => addServiceObserver(undefined as any, jest.fn())).toThrow(TypeError);
     expect(() => addServiceObserver(0 as any, jest.fn())).toThrow(TypeError);
@@ -23,7 +23,7 @@ describe("Add manager observer util.", () => {
     expect(() => addServiceObserver(class Ext extends TestContextManager {}, jest.fn())).toThrow(Error);
   });
 
-  it("Should add observer to registry.", () => {
+  it("Should add observer to registry", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
@@ -37,7 +37,7 @@ describe("Add manager observer util.", () => {
     removeServiceObserver(TestContextManager, observer);
   });
 
-  it("Should properly trigger lifecycle of manager.", async () => {
+  it("Should properly trigger lifecycle of manager", async () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
     const manager: TestContextManager = registerService(TestContextManager);

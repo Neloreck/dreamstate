@@ -13,7 +13,7 @@ import {
   ITestContext
 } from "@/fixtures";
 
-describe("UseManager subscription and rendering.", () => {
+describe("UseManager subscription and rendering", () => {
   function FunctionalConsumerWithUseEffect<T extends TAnyContextManagerConstructor>({
     onUpdate,
     onCheckContextDiff
@@ -40,7 +40,7 @@ describe("UseManager subscription and rendering.", () => {
     return createElement("span", {}, JSON.stringify(value));
   }
 
-  it("Functional components should properly subscribe to managers without diff-checking cb.", async () => {
+  it("Functional components should properly subscribe to managers without diff-checking cb", async () => {
     const mockFn = jest.fn();
     const tree = mount(
       createElement(
@@ -88,7 +88,7 @@ describe("UseManager subscription and rendering.", () => {
     tree.unmount();
   });
 
-  it("Functional components should properly subscribe to managers with diff-checking cb.", async () => {
+  it("Functional components should properly subscribe to managers with diff-checking cb", async () => {
     const mockFn = jest.fn(() => {});
     const tree = mount(
       createElement(
@@ -127,7 +127,7 @@ describe("UseManager subscription and rendering.", () => {
     tree.unmount();
   });
 
-  it("Should properly fire provision events for functional observers.", async () => {
+  it("Should properly fire provision events for functional observers", async () => {
     const manager: TestContextManager = registerService(TestContextManager);
 
     manager["onProvisionStarted"] = jest.fn();
@@ -154,7 +154,7 @@ describe("UseManager subscription and rendering.", () => {
     expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeFalsy();
   });
 
-  it("Should properly fire provision events for functional subscribers.", async () => {
+  it("Should properly fire provision events for functional subscribers", async () => {
     const manager: TestContextManager = registerService(TestContextManager);
 
     manager["onProvisionStarted"] = jest.fn();

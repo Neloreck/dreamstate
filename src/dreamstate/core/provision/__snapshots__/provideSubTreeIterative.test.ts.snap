@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`provideSubTreeIterative rendering. Should match snapshot. 1`] = `undefined`;
+exports[`provideSubTreeIterative rendering Should match snapshot 1`] = `undefined`;

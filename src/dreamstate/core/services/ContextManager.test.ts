@@ -17,12 +17,12 @@ import {
   TestContextManager
 } from "@/fixtures";
 
-describe("ContextManager class.", () => {
-  it("Should not allow base class REACT_CONTEXT.", () => {
+describe("ContextManager class", () => {
+  it("Should not allow base class REACT_CONTEXT", () => {
     expect(() => ContextManager.REACT_CONTEXT).toThrow(Error);
   });
 
-  it("Should properly handle setContext and forceUpdate method update with prev/next props.", () => {
+  it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
     const manager: TestContextManager = registerService(TestContextManager);
 
     manager["beforeUpdate"] = jest.fn(
@@ -94,7 +94,7 @@ describe("ContextManager class.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should correctly register context and get current context/manager.", () => {
+  it("Should correctly register context and get current context/manager", () => {
     expect(getCurrent(TestContextManager)).toBeNull();
     expect(getCurrentContext(TestContextManager)).toBeNull();
 
@@ -109,7 +109,7 @@ describe("ContextManager class.", () => {
     expect(getCurrentContext(TestContextManager)).toBeNull();
   });
 
-  it("Should correctly create new managers after provision restart.", () => {
+  it("Should correctly create new managers after provision restart", () => {
     registerService(TestContextManager);
 
     getCurrent(TestContextManager)!.setContext({
@@ -130,7 +130,7 @@ describe("ContextManager class.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should properly manage extended managers.", () => {
+  it("Should properly manage extended managers", () => {
     expect(getCurrent(ExtendingTestContextManager)).toBeNull();
     expect(getCurrent(TestContextManager)).toBeNull();
 
@@ -156,7 +156,7 @@ describe("ContextManager class.", () => {
     expect(CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeFalsy();
   });
 
-  it("Should properly add contextManagers subscribers.", () => {
+  it("Should properly add contextManagers subscribers", () => {
     const exampleSubscriber = () => {};
 
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
@@ -204,7 +204,7 @@ describe("ContextManager class.", () => {
     unRegisterService(ExampleManagerClass);
   });
 
-  it("Should correctly change computed values beforeUpdate.", () => {
+  it("Should correctly change computed values beforeUpdate", () => {
     interface IExampleContext {
       a: number;
       b: number;
@@ -236,7 +236,7 @@ describe("ContextManager class.", () => {
     unRegisterService(ExampleManagerClass);
   });
 
-  it("Should use getReactContext for REACT_CONTEXT and return same result.", () => {
+  it("Should use getReactContext for REACT_CONTEXT and return same result", () => {
     expect(getReactContext(TestContextManager)).toBe(TestContextManager.REACT_CONTEXT);
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestContextManager);
   });

@@ -6,7 +6,7 @@ import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
-describe("Emitting signal on provision start.", () => {
+describe("Emitting signal on provision start", () => {
   const count = jest.fn();
 
   class EmittingOnProvisionStart extends ContextService {
@@ -29,7 +29,7 @@ describe("Emitting signal on provision start.", () => {
   const FirstProvider = createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ]);
   const SecondProvider = createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ]);
 
-  it("Should properly notify current managers when sending signal on mount.", async () => {
+  it("Should properly notify current managers when sending signal on mount", async () => {
     const firstTree = mount(createElement(FirstProvider, {}));
 
     await nextAsyncQueue();

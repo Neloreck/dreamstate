@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`shouldObserversUpdate method functionality. Should create correct component tree with children. 1`] = `
+exports[`shouldObserversUpdate method functionality Should create correct component tree with children 1`] = `
 <Memo(DS.Observer)>
   <Component>
     <main>
@@ -13,7 +13,7 @@ exports[`shouldObserversUpdate method functionality. Should create correct compo
 </Memo(DS.Observer)>
 `;
 
-exports[`shouldObserversUpdate method functionality. Should create correct component tree without children. 1`] = `
+exports[`shouldObserversUpdate method functionality Should create correct component tree without children 1`] = `
 <Memo(DS.Observer)>
   <div>
     testChild

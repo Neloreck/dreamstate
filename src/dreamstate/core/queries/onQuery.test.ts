@@ -7,7 +7,7 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { IQueryResponse, TQueryResponse, TQuerySubscriptionMetadata } from "@/dreamstate/types";
 import { RequestingService, RespondingDuplicateService, RespondingService } from "@/fixtures/queries";
 
-describe("@OnQuery and queries processing.", () => {
+describe("@OnQuery and queries processing", () => {
   beforeEach(() => {
     registerService(RequestingService);
     registerService(RespondingService);
@@ -18,7 +18,7 @@ describe("@OnQuery and queries processing.", () => {
     unRegisterService(RespondingService);
   });
 
-  it("Should properly find async query responders or fallback to null.", async () => {
+  it("Should properly find async query responders or fallback to null", async () => {
     const requestingService: RequestingService = getCurrent(RequestingService)!;
 
     const numberResponse: TQueryResponse<number> = await requestingService.queryAsyncNumberData();
@@ -41,14 +41,14 @@ describe("@OnQuery and queries processing.", () => {
     expect(undefinedResponse).toBeNull();
   });
 
-  it("Should properly handle errors in queries.", () => {
+  it("Should properly handle errors in queries", () => {
     const requestingService: RequestingService = getCurrent(RequestingService)!;
 
     expect(requestingService.queryAsyncThrowingData()).rejects.toBeInstanceOf(Error);
     expect(requestingService.querySyncThrowingData()).rejects.toBeInstanceOf(Error);
   });
 
-  it("Should properly handle duplicated query listeners in order of register.", async () => {
+  it("Should properly handle duplicated query listeners in order of register", async () => {
     const requestingService: RequestingService = getCurrent(RequestingService)!;
 
     unRegisterService(RespondingService);
@@ -72,7 +72,7 @@ describe("@OnQuery and queries processing.", () => {
     expect(second.data).toBe(-1);
   });
 
-  it("Should properly save methods metadata for ContextServices.", () => {
+  it("Should properly save methods metadata for ContextServices", () => {
     const responding: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingService)!;
     const requesting: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RequestingService)!;
     const duplicated: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingDuplicateService)!;
@@ -90,7 +90,7 @@ describe("@OnQuery and queries processing.", () => {
     });
   });
 
-  it("Should not work with non-context service classes and bad queries.", () => {
+  it("Should not work with non-context service classes and bad queries", () => {
     expect(() => {
       class Custom {
 

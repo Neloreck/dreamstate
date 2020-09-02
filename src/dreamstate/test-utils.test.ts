@@ -1,4 +1,4 @@
-describe("Library test utils exports.", () => {
+describe("Library test utils exports", () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const testUtilsRoot = require("./test-utils");
 

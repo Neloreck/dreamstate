@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createProvider method. Should render correct component tree. 1`] = `
+exports[`createProvider method Should render correct component tree 1`] = `
 <Memo(DS.Observer)>
   test
 </Memo(DS.Observer)>

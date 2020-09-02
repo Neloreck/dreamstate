@@ -15,15 +15,15 @@ import { unRegisterService } from "@/dreamstate/core/registry/unRegisterService"
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { TestContextManager } from "@/fixtures";
 
-describe("Dreamstate internals.", () => {
-  it("Should contain only listed objects.", () => {
+describe("Dreamstate internals", () => {
+  it("Should contain only listed objects", () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const internals = require("./internals");
 
     expect(Object.keys(internals)).toHaveLength(11);
   });
 
-  it("Internals should be initialized.", () => {
+  it("Internals should be initialized", () => {
     expect(CONTEXT_SERVICES_ACTIVATED).toBeInstanceOf(Set);
     expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
 
@@ -43,7 +43,7 @@ describe("Dreamstate internals.", () => {
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY).toBeInstanceOf(WeakMap);
   });
 
-  it("Internals should not exist until first register.", () => {
+  it("Internals should not exist until first register", () => {
     expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeUndefined();

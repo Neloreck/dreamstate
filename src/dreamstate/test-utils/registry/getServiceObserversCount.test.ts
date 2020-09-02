@@ -7,12 +7,12 @@ import { removeServiceObserver } from "@/dreamstate/test-utils/registry/removeSe
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextManager } from "@/fixtures";
 
-describe("Get service observers count util.", () => {
-  it("Should properly fail for unregistered services.", () => {
+describe("Get service observers count util", () => {
+  it("Should properly fail for unregistered services", () => {
     expect(() => getServiceObserversCount(TestContextManager)).toThrow();
   });
 
-  it("Should properly tell the count.", () => {
+  it("Should properly tell the count", () => {
     registerService(TestContextManager);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
@@ -45,7 +45,7 @@ describe("Get service observers count util.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should properly validate class parameter.", () => {
+  it("Should properly validate class parameter", () => {
     expect(() => getServiceObserversCount(1 as any)).toThrow(Error);
     expect(() => getServiceObserversCount("das" as any)).toThrow(Error);
     expect(() => getServiceObserversCount(null as any)).toThrow(Error);

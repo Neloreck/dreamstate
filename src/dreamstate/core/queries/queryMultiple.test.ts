@@ -1,7 +1,7 @@
 import { queryMultiple } from "@/dreamstate/core/queries/queryMultiple";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
-import { TQueryResponse } from "@/dreamstate/types";
+import { TOptionalQueryResponse } from "@/dreamstate/types";
 import { EQuery, RespondingService } from "@/fixtures/queries";
 
 describe("querySingle method.", () => {
@@ -13,10 +13,10 @@ describe("querySingle method.", () => {
     unRegisterService(RespondingService);
   });
 
-  it("Should properly find async query responders or fallback to null for multi queries.", async () => {
-    const first: Array<TQueryResponse> = await queryMultiple([]);
-    const second: Array<TQueryResponse> = await queryMultiple([ { type: "UNDEFINED_TEST" } ]);
-    const third: Array<TQueryResponse> = await queryMultiple([
+  it("Should properly find async query responders or fallback to null for multi queries", async () => {
+    const first: Array<TOptionalQueryResponse> = await queryMultiple([]);
+    const second: Array<TOptionalQueryResponse> = await queryMultiple([ { type: "UNDEFINED_TEST" } ]);
+    const third: Array<TOptionalQueryResponse> = await queryMultiple([
       { type: EQuery.ASYNC_NUMBER_QUERY },
       { type: "UNDEFINED_TEST" }
     ]);

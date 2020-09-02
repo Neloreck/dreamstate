@@ -9,7 +9,7 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@/fixtures";
 
-describe("@Consume selector observing.", () => {
+describe("@Consume selector observing", () => {
   function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {
     return mount(createElement(TextContextManagerProvider, {}, createElement(element, props)));
   }
@@ -22,7 +22,7 @@ describe("@Consume selector observing.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should properly observe only one property and prevent odd updates.", async () => {
+  it("Should properly observe only one property and prevent odd updates", async () => {
     const manager: TestContextManager = getCurrent(TestContextManager)!;
     const Observer = Consume([ { from: TestContextManager, take: "first" } ])(RenderCallbacker) as ComponentType<any>;
     const onRender = jest.fn();
@@ -75,7 +75,7 @@ describe("@Consume selector observing.", () => {
     expect(onRender).not.toHaveBeenCalled();
   });
 
-  it("Should properly observe array selected props and prevent odd updates.", async () => {
+  it("Should properly observe array selected props and prevent odd updates", async () => {
     const manager: TestContextManager = getCurrent(TestContextManager)!;
     const Observer = Consume([
       { from: TestContextManager, take: [ "first", "third" ] }
@@ -147,7 +147,7 @@ describe("@Consume selector observing.", () => {
     onRender.mockClear();
   });
 
-  it("Should properly observe selector picked props and prevent odd updates.", async () => {
+  it("Should properly observe selector picked props and prevent odd updates", async () => {
     const manager: TestContextManager = getCurrent(TestContextManager)!;
     const Observer = Consume([
       {

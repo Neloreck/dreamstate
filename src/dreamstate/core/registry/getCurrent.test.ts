@@ -3,8 +3,8 @@ import { registerService } from "@/dreamstate/test-utils/registry/registerServic
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextService } from "@/fixtures";
 
-describe("getCurrent method functionality.", () => {
-  it("Should properly return current service instance.", () => {
+describe("getCurrent method functionality", () => {
+  it("Should properly return current service instance", () => {
     expect(getCurrent(TestContextService)).toBeNull();
 
     const service: TestContextService = registerService(TestContextService);

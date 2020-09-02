@@ -4,8 +4,8 @@ import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals
 import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
-describe("unSubscribeFromSignals method.", () => {
-  it("Should properly unsubscribe from signals.", async () => {
+describe("unSubscribeFromSignals method", () => {
+  it("Should properly unsubscribe from signals", async () => {
     expect(SIGNAL_LISTENERS_REGISTRY.size).toBe(0);
 
     const subscriber = jest.fn();

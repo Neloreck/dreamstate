@@ -12,6 +12,7 @@ export {
   ISignal as Signal,
   TSignalType as SignalType,
   TQueryResponse as QueryResponse,
+  TOptionalQueryResponse as OptionalQueryResponse,
   TQueryRequest as QueryRequest,
   TQueryType as QueryType
 } from "@/dreamstate/types";

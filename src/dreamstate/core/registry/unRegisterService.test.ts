@@ -10,8 +10,8 @@ import { unRegisterService } from "@/dreamstate/core/registry//unRegisterService
 import { registerService } from "@/dreamstate/core/registry/registerService";
 import { TestContextManager, TestContextService, TestSingleContextService } from "@/fixtures";
 
-describe("unRegisterService method functionality.", () => {
-  it("Should properly unregister generic services.", () => {
+describe("unRegisterService method functionality", () => {
+  it("Should properly unregister generic services", () => {
     registerService(TestContextService);
     unRegisterService(TestContextService);
 
@@ -24,7 +24,7 @@ describe("unRegisterService method functionality.", () => {
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextService)).toBeUndefined();
   });
 
-  it("Should properly unregister context managers.", () => {
+  it("Should properly unregister context managers", () => {
     registerService(TestContextManager);
     unRegisterService(TestContextManager);
 
@@ -37,7 +37,7 @@ describe("unRegisterService method functionality.", () => {
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
   });
 
-  it("Should unregister singletons only with force.", () => {
+  it("Should unregister singletons only with force", () => {
     registerService(TestSingleContextService);
     unRegisterService(TestSingleContextService);
 

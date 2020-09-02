@@ -10,7 +10,7 @@ import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
  * Construction occurs before initial provision start.
  * So mounting order does not impact listening start/stop.
  */
-describe("Sending query on provision start.", () => {
+describe("Sending query on provision start", () => {
   const count = jest.fn((value: any) => {
     expect(value.type).toBe("START");
     expect(value.data).toBe("value");
@@ -36,7 +36,7 @@ describe("Sending query on provision start.", () => {
   const FirstProvider = createProvider([ AnsweringOnProvisionStart, QueryingOnProvisionStart ]);
   const SecondProvider = createProvider([ QueryingOnProvisionStart, AnsweringOnProvisionStart ]);
 
-  it("Should properly query data while mounting.", async () => {
+  it("Should properly query data while mounting", async () => {
     const firstTree = mount(createElement(FirstProvider, {}));
 
     await nextAsyncQueue();

@@ -7,7 +7,7 @@ import { registerService } from "@/dreamstate/test-utils/registry/registerServic
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@/fixtures";
 
-describe("provideSubTreeIterative rendering.", () => {
+describe("provideSubTreeIterative rendering", () => {
   beforeAll(() => {
     registerService(TestContextManager);
     registerService(NestedContextManager);
@@ -38,13 +38,13 @@ describe("provideSubTreeIterative rendering.", () => {
     );
   };
 
-  it("Should match snapshot.", () => {
+  it("Should match snapshot", () => {
     const iterative = provide(provideSubTreeIterative);
 
     expect(iterative).toMatchSnapshot();
   });
 
-  it("Should be same as iterative implementation.", () => {
+  it("Should be same as iterative implementation", () => {
     const iterative = provide(provideSubTreeIterative);
     const recursive = provide(provideSubTreeRecursive);
 

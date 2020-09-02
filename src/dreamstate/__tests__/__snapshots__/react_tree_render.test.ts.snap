@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`React tree for provided and consumed components. Should correctly provide manager context from decorated HoC provider.: Provision: Decorated - Decorated. 1`] = `
+exports[`React tree for provided and consumed components Should correctly provide manager context from decorated HoC provider: Provision: Decorated - Decorated. 1`] = `
 <Memo(DS.Observer)>
   <ExampleContextDecoratedProvider>
     <DS.Consumer>
@@ -25,7 +25,7 @@ exports[`React tree for provided and consumed components. Should correctly provi
 </Memo(DS.Observer)>
 `;
 
-exports[`React tree for provided and consumed components. Should correctly provide manager context from decorated HoC provider.: Provision: Decorated - Functional. 1`] = `
+exports[`React tree for provided and consumed components Should correctly provide manager context from decorated HoC provider: Provision: Decorated - Functional. 1`] = `
 <Memo(DS.Observer)>
   <ExampleContextDecoratedProvider>
     <ExampleContextFunctionalConsumer>
@@ -37,7 +37,7 @@ exports[`React tree for provided and consumed components. Should correctly provi
 </Memo(DS.Observer)>
 `;
 
-exports[`React tree for provided and consumed components. Should correctly provide manager context from functional provider.: Provision: Functional - Decorated. 1`] = `
+exports[`React tree for provided and consumed components Should correctly provide manager context from functional provider: Provision: Functional - Decorated. 1`] = `
 <Memo(DS.Observer)>
   <DS.Consumer>
     <ExampleContextClassConsumer
@@ -60,7 +60,7 @@ exports[`React tree for provided and consumed components. Should correctly provi
 </Memo(DS.Observer)>
 `;
 
-exports[`React tree for provided and consumed components. Should correctly provide manager context from functional provider.: Provision: Functional - Functional. 1`] = `
+exports[`React tree for provided and consumed components Should correctly provide manager context from functional provider: Provision: Functional - Functional. 1`] = `
 <Memo(DS.Observer)>
   <ExampleContextFunctionalConsumer>
     <span>

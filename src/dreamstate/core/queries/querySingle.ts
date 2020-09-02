@@ -4,7 +4,7 @@ import {
   CONTEXT_SERVICES_REGISTRY
 } from "@/dreamstate/core/internals";
 import { promisifyQuery } from "@/dreamstate/core/queries/promisifyQuery";
-import { IOptionalQueryRequest, TQueryResponse, TQueryType } from "@/dreamstate/types";
+import { IOptionalQueryRequest, TOptionalQueryResponse, TQueryType } from "@/dreamstate/types";
 
 /**
  * Get single query resolver from possible metadata.
@@ -15,7 +15,7 @@ export function querySingle<
   T extends TQueryType = TQueryType
 >(
   query: IOptionalQueryRequest<D, T>
-): Promise<TQueryResponse<R, T>> {
+): Promise<TOptionalQueryResponse<R, T>> {
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
     if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {

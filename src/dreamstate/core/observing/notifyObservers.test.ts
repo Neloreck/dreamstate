@@ -10,8 +10,8 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { ITestContext, TestContextManager } from "@/fixtures";
 
-describe("notifyObservers method functionality.", () => {
-  it("Should correctly set nextState for managers.", () => {
+describe("notifyObservers method functionality", () => {
+  it("Should correctly set nextState for managers", () => {
     const manager: TestContextManager = registerService(TestContextManager);
 
     expect(CONTEXT_STATES_REGISTRY.has(TestContextManager)).toBeTruthy();
@@ -42,7 +42,7 @@ describe("notifyObservers method functionality.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should correctly notify subscribers.", () => {
+  it("Should correctly notify subscribers", () => {
     const testContextManager: TestContextManager = registerService(TestContextManager)!;
     const observer = jest.fn();
 
@@ -55,7 +55,7 @@ describe("notifyObservers method functionality.", () => {
     unRegisterService(TestContextManager);
   });
 
-  it("Should correctly notify subscribers.", async () => {
+  it("Should correctly notify subscribers", async () => {
     const testContextManager: TestContextManager = registerService(TestContextManager)!;
     const subscriber = jest.fn();
 
