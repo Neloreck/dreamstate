@@ -1,3 +1,6 @@
+## 3.1.3 (9/17/2020)
+  * Added resolving promise as return value for emit signal method/function
+  
 ## 3.1.1 (9/2/2020)
   * Fixed issues with numeric signal types check (0)
   * Removed null from default queryData typing - now you should add it manually
