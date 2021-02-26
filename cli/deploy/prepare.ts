@@ -18,27 +18,27 @@ interface IAssetsDescription {
 const ASSETS: IAssetsDescription = {
   LICENSE: {
     source: path.resolve(PROJECT_ROOT, "LICENSE"),
-    destination: path.resolve(PKG_ROOT, "./LICENSE")
+    destination: path.resolve(PKG_ROOT, "LICENSE")
   },
   README: {
     source: path.resolve(PROJECT_ROOT, "README.md"),
-    destination: path.resolve(PKG_ROOT, "./README.md")
+    destination: path.resolve(PKG_ROOT, "README.md")
   },
   CHANGELOG: {
     source: path.resolve(PROJECT_ROOT, "CHANGELOG.md"),
-    destination: path.resolve(PKG_ROOT, "./CHANGELOG.md")
+    destination: path.resolve(PKG_ROOT, "CHANGELOG.md")
   },
   PACKAGE: {
-    source: path.resolve(SRC_PATH, "./dreamstate/package.json"),
-    destination: path.resolve(PKG_ROOT, "./package.json")
+    source: path.resolve(SRC_PATH, "dreamstate/package.json"),
+    destination: path.resolve(PKG_ROOT, "package.json")
   },
   ESM: {
     source: ESM_ROOT,
-    destination: path.resolve(PKG_ROOT, "./esm")
+    destination: path.resolve(PKG_ROOT, "esm")
   },
   CJS: {
     source: CJS_ROOT,
-    destination: path.resolve(PKG_ROOT, "./cjs")
+    destination: path.resolve(PKG_ROOT, "cjs")
   },
   // Types.
   ...(fs.readdirSync(TYPES_ROOT).reduce((acc: IAssetsDescription, it: string) => {
@@ -53,16 +53,16 @@ const ASSETS: IAssetsDescription = {
 
 const SWITCHERS: IAssetsDescription = {
   ESM_SWITCH: {
-    source: path.resolve(SRC_PATH, "./environment_switch/esm.js"),
-    destination: path.resolve(PKG_ROOT, "./esm/index.js")
+    source: path.resolve(SRC_PATH, "environment_switch/esm.js"),
+    destination: path.resolve(PKG_ROOT, "esm/index.js")
   },
   CJS_CORE_SWITCH: {
-    source: path.resolve(SRC_PATH, "./environment_switch/cjs_core.js"),
-    destination: path.resolve(PKG_ROOT, "./index.js")
+    source: path.resolve(SRC_PATH, "environment_switch/cjs_core.js"),
+    destination: path.resolve(PKG_ROOT, "index.js")
   },
   CJS_UTILS_SWITCH: {
-    source: path.resolve(SRC_PATH, "./environment_switch/cjs_utils.js"),
-    destination: path.resolve(PKG_ROOT, "./test-utils.js")
+    source: path.resolve(SRC_PATH, "environment_switch/cjs_utils.js"),
+    destination: path.resolve(PKG_ROOT, "test-utils.js")
   }
 };
 

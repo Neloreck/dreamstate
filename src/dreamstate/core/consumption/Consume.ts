@@ -6,7 +6,7 @@ import { dev } from "@/macroses/dev.macro";
 import { useManager } from "@/dreamstate/core/consumption/useManager";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { createClassWrapDecorator } from "@/dreamstate/polyfills/createClassWrapDecorator";
-import { IConsumeDecorator, IStringIndexed, TConsumable, TTakeContextSelector } from "@/dreamstate/types";
+import { IConsumeDecorator, IStringIndexed, TAnyObject, TConsumable, TTakeContextSelector } from "@/dreamstate/types";
 
 /**
  * Function for consume wrappers that maps selectors and allows class components to consume store data.
@@ -147,7 +147,7 @@ export function createManagersConsumer(Target: ComponentType, sources: Array<TCo
   }
 
   // HOC component to pick props and provide needed/selected.
-  function Consumer(ownProps: object): ReactElement {
+  function Consumer(ownProps: TAnyObject): ReactElement {
     return createElement(
       Target,
       Object.assign(

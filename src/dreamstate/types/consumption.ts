@@ -1,10 +1,12 @@
 import { ComponentType } from "react";
 
+import { TAnyObject } from "@/dreamstate/types/general";
 import { IContextManagerConstructor, TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
 
-export type TContextFunctionalSelector<T extends object, R extends object = object> = (context: T) => R | Partial<T>;
+export type TContextFunctionalSelector<T extends TAnyObject, R extends TAnyObject = TAnyObject>
+  = (context: T) => R | Partial<T>;
 
-export type TTakeContextSelector<T extends object> =
+export type TTakeContextSelector<T extends TAnyObject> =
   | keyof T
   | Array<keyof T>
   | TContextFunctionalSelector<T>
@@ -14,7 +16,7 @@ export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<
 
 export interface IConsumePick<
   T extends IContextManagerConstructor<any>,
-  S extends object = T["prototype"]["context"]
+  S extends TAnyObject = T["prototype"]["context"]
 > {
   from: T;
   take?: TTakeContextSelector<S>;

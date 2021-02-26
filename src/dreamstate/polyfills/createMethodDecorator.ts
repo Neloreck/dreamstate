@@ -1,4 +1,4 @@
-import { MethodDescriptor, TConstructor } from "@/dreamstate/types";
+import { MethodDescriptor, TAnyObject, TConstructor } from "@/dreamstate/types";
 
 // Todo: Wait for proper proposal decorators.
 // Todo: Tests.
@@ -6,7 +6,7 @@ import { MethodDescriptor, TConstructor } from "@/dreamstate/types";
 export function createMethodDecorator<T extends TConstructor<any>>(
   resolver: (method: string | symbol, constructor: T) => void
 ): MethodDecorator {
-  return function(prototypeOrDescriptor: object, method: string | symbol) {
+  return function(prototypeOrDescriptor: TAnyObject, method: string | symbol) {
     if (prototypeOrDescriptor && method) {
       resolver(method, prototypeOrDescriptor.constructor as T);
 

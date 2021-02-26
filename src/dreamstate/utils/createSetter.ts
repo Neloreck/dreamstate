@@ -1,11 +1,11 @@
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { TPartialTransformer } from "@/dreamstate/types";
+import { TAnyObject, TPartialTransformer } from "@/dreamstate/types";
 
 /**
  * Setter method factory.
  * !Strictly typed generic method with 'update' lifecycle.
  */
-export function createSetter<S extends object, D extends keyof S>(
+export function createSetter<S extends TAnyObject, D extends keyof S>(
   manager: ContextManager<S>,
   key: D
 ) {

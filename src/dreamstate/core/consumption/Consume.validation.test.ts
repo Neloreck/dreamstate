@@ -3,6 +3,7 @@ import { ComponentType, createElement, PureComponent } from "react";
 
 import { Consume } from "@/dreamstate/core/consumption/Consume";
 import { withConsumption } from "@/dreamstate/core/consumption/withConsumption";
+import { TAnyObject } from "@/dreamstate/types";
 import {
   ITestContext,
   PropsRenderer,
@@ -11,7 +12,7 @@ import {
 } from "@/fixtures";
 
 describe("@Consume selector validation", () => {
-  function mountProvided(element: ComponentType<object>): ReactWrapper {
+  function mountProvided(element: ComponentType<TAnyObject>): ReactWrapper {
     return mount(createElement(TextContextManagerProvider, {}, createElement(element, {})));
   }
 

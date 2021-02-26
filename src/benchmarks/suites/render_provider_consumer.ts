@@ -14,6 +14,8 @@ import {
 import { Provider, connect } from "react-redux";
 import { createStore } from "redux";
 
+import { TAnyObject } from "@/dreamstate/types";
+
 interface ISomeContext {
   a: string;
   b: number;
@@ -27,7 +29,7 @@ class SomeManager extends ContextManager<ISomeContext> {
 
 const SomeManagerProvider = createProvider([ SomeManager ]);
 
-function FunctionalProvidedComponent(props: object): ReactElement {
+function FunctionalProvidedComponent(props: TAnyObject): ReactElement {
   return createElement(SomeManagerProvider, props);
 }
 
@@ -55,7 +57,7 @@ class ClassConsumedComponent extends PureComponent {
 
 const sampleContext: Context<ISomeContext> = createContext({ a: "-", b: 0 });
 
-function ReactFunctionalProvider(props: PropsWithChildren<object>): ReactElement {
+function ReactFunctionalProvider(props: PropsWithChildren<TAnyObject>): ReactElement {
   return createElement(sampleContext.Provider, { value: { a: "1", b: 1 } }, props.children);
 }
 
@@ -65,11 +67,11 @@ function ReactFunctionalConsumer({ data = useContext(sampleContext) }: { data: I
 
 const ReduxStore = createStore((state: ISomeContext = { a: "a", b: 10 }) => state);
 
-function ReduxProvider(props: PropsWithChildren<object>) {
+function ReduxProvider(props: PropsWithChildren<TAnyObject>) {
   return createElement(Provider, { store: ReduxStore }, props.children);
 }
 
-const ReduxConsumer = connect((state: ISomeContext) => state)(function(props: object): ReactElement {
+const ReduxConsumer = connect((state: ISomeContext) => state)(function(props: TAnyObject): ReactElement {
   return createElement("div", {}, JSON.stringify(props));
 });
 

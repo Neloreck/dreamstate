@@ -7,3 +7,5 @@ export type TConstructor<T> = {
 };
 
 export type TCallable = () => void;
+
+export type TAnyObject = Record<string, any>;

@@ -1,7 +1,9 @@
+import { TAnyObject } from "@/dreamstate/types/general";
+
 export interface INestedStore {
 }
 
-export type TStateSetter<T extends object, K extends keyof T> = (value: Partial<T[K]>) => void;
+export type TStateSetter<T extends TAnyObject, K extends keyof T> = (value: Partial<T[K]>) => void;
 
 export interface ILoadable<T, E = Error> extends INestedStore {
   error: E | null;
@@ -21,10 +23,10 @@ export interface INested<T> extends INestedStore {
 
 export type TNested<T> = T & INested<T>;
 
-export interface IComputed<T extends object, C extends object> {
+export interface IComputed<T extends TAnyObject, C extends TAnyObject> {
   __selector__: (context: C) => T;
   __memo__?: (context: C) => Array<any>;
   __diff__?: Array<any>;
 }
 
-export type TComputed<T extends object, C extends object = any> = T & IComputed<T, C>;
+export type TComputed<T extends TAnyObject, C extends TAnyObject = any> = T & IComputed<T, C>;

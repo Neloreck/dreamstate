@@ -4,14 +4,14 @@ import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
 import { getReactContext } from "@/dreamstate/core/registry/getReactContext";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { TConstructorKey, TDreamstateService, TPartialTransformer } from "@/dreamstate/types";
+import { TAnyObject, TConstructorKey, TDreamstateService, TPartialTransformer } from "@/dreamstate/types";
 
 /**
  * Abstract class.
  * Class based context manager for react.
  * Current Issue: Static items inside of each class instance.
  */
-export abstract class ContextManager<T extends object> extends ContextService {
+export abstract class ContextManager<T extends TAnyObject> extends ContextService {
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.

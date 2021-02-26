@@ -1,5 +1,7 @@
 import { createElement, PropsWithChildren, ReactElement } from "react";
 
-export function PropsRenderer(props: PropsWithChildren<object>): ReactElement {
+import { TAnyObject } from "@/dreamstate/types";
+
+export function PropsRenderer(props: PropsWithChildren<TAnyObject>): ReactElement {
   return createElement("div", {}, JSON.stringify(props));
 }

@@ -1,9 +1,10 @@
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
+import { TAnyObject } from "@/dreamstate/types";
 
 describe("shouldObserversUpdate method functionality", () => {
   it("Should return true of previous context does not exist", () => {
     const previous: null = null;
-    const next: object = { a: 15, b: 50 };
+    const next: TAnyObject = { a: 15, b: 50 };
 
     expect(shouldObserversUpdate(previous as any, next)).toBeTruthy();
   });
