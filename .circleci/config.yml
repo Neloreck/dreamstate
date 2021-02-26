@@ -8,18 +8,19 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
-          keys:
-            - v-npm-deps-{{ checksum "package-lock.json" }}
-            - v-npm-deps-
-          steps:
-            - run: npm install
-            - run: npm run setup
-            - run: npm run lint
-            - run: npm run test
-            - run: npm run build:dts
-            - run: npm run build:cjs
-            - run: npm run build:esm
-            - run: npm run build:ptb
+        steps:
+          - restore_cache:
+            keys:
+              - v-npm-deps-{{ checksum "package-lock.json" }}
+              - v-npm-deps-
+          - run: npm install
+          - run: npm run setup
+          - run: npm run lint
+          - run: npm run test
+          - run: npm run build:dts
+          - run: npm run build:cjs
+          - run: npm run build:esm
+          - run: npm run build:ptb
 workflows:
     build-and-test:
       jobs:
