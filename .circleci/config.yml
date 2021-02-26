@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
-        steps:
+          steps:
           - restore_cache:
             keys:
               - v-npm-deps-{{ checksum "package-lock.json" }}
