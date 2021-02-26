@@ -34,15 +34,15 @@ jobs:
       - run:
           name: Build dts
           command: npm run build:dts
-          - run:
-              name: Build cjs
-              command: npm run build:cjs
-          - run:
-              name: Build esm
-              command: npm run build:esm
-          - run:
-              name: Build ptb
-              command: npm run build:ptb
+      - run:
+          name: Build cjs
+          command: npm run build:cjs
+      - run:
+          name: Build esm
+          command: npm run build:esm
+      - run:
+          name: Build ptb
+          command: npm run build:ptb
 
 workflows:
   build-and-test:
