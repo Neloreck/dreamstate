@@ -4,7 +4,7 @@ orbs:
   node: circleci/node@3.0.0
 
 jobs:
-  prepare:
+  build-and-test:
     working_directory: ~/dreamstate
     executor:
       name: node/default
@@ -25,46 +25,26 @@ jobs:
           key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - node_modules
-
-  test:
-    working_directory: ~/dreamstate
-    executor:
-      name: node/default
-    steps:
-      - checkout
       - run:
           name: Lint
           command: npm run lint
       - run:
           name: Test
           command: npm run test
-
-  build:
-    working_directory: ~/dreamstate
-    executor:
-      name: node/default
-    steps:
-      - checkout
       - run:
           name: Build dts
           command: npm run build:dts
-      - run:
-          name: Build cjs
-          command: npm run build:cjs
-      - run:
-          name: Build esm
-          command: npm run build:esm
-      - run:
-          name: Build ptb
-          command: npm run build:ptb
+          - run:
+              name: Build cjs
+              command: npm run build:cjs
+          - run:
+              name: Build esm
+              command: npm run build:esm
+          - run:
+              name: Build ptb
+              command: npm run build:ptb
 
 workflows:
   build-and-test:
     jobs:
-      - prepare
-      - test:
-          requires:
-          - prepare
-      - build:
-          requires:
-          - test
+      - build-and-test
