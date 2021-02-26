@@ -1,3 +1,6 @@
+## 3.1.4 (2/26/2021)
+  * No looped hooks creation for provider hooks
+
 ## 3.1.3 (9/17/2020)
   * Added resolving promise as return value for emit signal method/function
   

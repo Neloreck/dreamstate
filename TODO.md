@@ -14,7 +14,8 @@
   - ???
 
 ### Lib
-  - Store schema registry/creating and validation when initializing context managers? [!!!]
+  - Global data provider for SSR/context managers constructors
+  - Store schema registry/creating and validation when initializing context managers?
   - Think about actions/state separation. [HoCs do not allow to do so]
   - Scoping for signals and queries?
   - check preact
@@ -22,7 +23,7 @@
   - Scope component or something like it for query/signals scoping
 
 ##### Utils
-  - createAsync as loadable copy with stored promise or extended createLoadable [!!!]
+  - createAsync as loadable copy with stored promise or extended createLoadable
   - async code execution utils like takeLatest/takeLeading etc? [createAsync]
 
 ### Docs

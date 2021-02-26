@@ -39,6 +39,7 @@ const createEsmConfig = (env) => ({
     }),
     babel(BABEL_CONFIG),
     replace({
+      preventAssignment: true,
       IS_DEV: env !== EEnvironment.PRODUCTION
     }),
     typescript({

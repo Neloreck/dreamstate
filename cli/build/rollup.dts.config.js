@@ -14,7 +14,13 @@ export const DTS_CONFIG = {
     format: "es"
   },
   plugins: [
-    dts({ compilerOptions: tsconfig.compilerOptions })
+    dts({
+      compilerOptions: {
+        baseUrl: tsconfig.compilerOptions.baseUrl,
+        paths: tsconfig.compilerOptions.paths,
+        rootDir: tsconfig.compilerOptions.rootDir
+      }
+    })
   ]
 };
 

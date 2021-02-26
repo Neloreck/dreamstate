@@ -36,29 +36,32 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   // Create observer component that will handle observing.
   function Observer(props: IStringIndexed<any>): ReactElement {
     // Update providers subtree utility.
-    const [ , updateState ] = useState();
+    const [ , updateState ] = useState({});
     const updateProviders = useCallback(function() {
       updateState({});
     }, EMPTY_ARR);
 
-    // Subscribe to tree updater and lazily get first context value.
-    for (let it = 0; it < sources.length; it ++) {
-      useMemo(function(): void {
+    useMemo(function(): void {
+      for (let it = 0; it < sources.length; it ++) {
         registerService(sources[it]);
-      }, EMPTY_ARR);
+      }
+    }, EMPTY_ARR);
 
-      useEffect(function() {
+    useEffect(function() {
+      for (let it = 0; it < sources.length; it ++) {
         addServiceObserverToRegistry(sources[it], updateProviders);
+      }
 
-        /**
-         * Destructor-like order for services unregistering.
-         * React calls all hooks in 0...n order, but it should be like 0...n for start and n...0 for end.
-         */
-        return function() {
-          return removeServiceObserverFromRegistry(sources[sources.length - it - 1], updateProviders);
-        };
-      }, EMPTY_ARR);
-    }
+      /**
+       * Destructor-like order for services unregistering.
+       * React calls all hooks in 0...n order, but it should be like 0...n for start and n...0 for end.
+       */
+      return function() {
+        for (let it = sources.length - 1; it >= 0; it --) {
+          removeServiceObserverFromRegistry(sources[it], updateProviders);
+        }
+      };
+    }, EMPTY_ARR);
 
     return provideSubTreeRecursive(children ? createElement(children, props) : props.children, managers, 0);
   }

@@ -24,7 +24,6 @@
     "@typescript-eslint/no-explicit-any": 0,
     "@typescript-eslint/no-inferrable-types": 0,
     "@typescript-eslint/explicit-function-return-type": 0,
-    "@typescript-eslint/interface-name-prefix": [ 2, "always" ],
     "@typescript-eslint/no-empty-interface": 0,
     "@typescript-eslint/no-empty-function": 0,
     "@typescript-eslint/no-unused-vars": 0,
@@ -75,6 +74,17 @@
         "overrides": {
           "++": true,
           "--": true
+        }
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"],
+        "custom": {
+          "regex": "^I[A-Z]",
+          "match": true
         }
       }
     ],
