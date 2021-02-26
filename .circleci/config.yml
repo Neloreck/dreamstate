@@ -8,6 +8,9 @@ jobs:
     steps:
       - checkout
       - node/with-cache:
+          keys:
+            - v-npm-deps-{{ checksum "package-lock.json" }}
+            - v-npm-deps-
           steps:
             - run: npm install
             - run: npm run setup
