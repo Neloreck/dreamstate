@@ -6,7 +6,7 @@
   "author": "Syrotenko Igor",
   "license": "MIT",
   "scripts": {
-    "setup": "npx lerna bootstrap",
+    "setup": "npx lerna bootstrap --hoist",
     "purge": "npx lerna clean -y",
     "clean": "npx rimraf ./target",
     "build:cjs": "npx rollup -c cli/build/rollup.cjs.config.js",

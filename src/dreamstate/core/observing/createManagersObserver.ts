@@ -7,7 +7,7 @@ import { registerService } from "@/dreamstate/core/registry/registerService";
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { IStringIndexed, TAnyContextManagerConstructor, TAnyObject, TDreamstateService } from "@/dreamstate/types";
+import { IStringIndexed, TAnyContextManagerConstructor, TDreamstateService } from "@/dreamstate/types";
 
 /**
  * Utility method for observers creation.
@@ -36,7 +36,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   // Create observer component that will handle observing.
   function Observer(props: IStringIndexed<any>): ReactElement {
     // Update providers subtree utility.
-    const [ , updateState ] = useState<TAnyObject>();
+    const [ , updateState ] = useState({});
     const updateProviders = useCallback(function() {
       updateState({});
     }, EMPTY_ARR);
