@@ -32,16 +32,16 @@ jobs:
           name: Test
           command: npm run test
       - run:
-          name: Build dts
+          name: Build DTS
           command: npm run build:dts
       - run:
-          name: Build cjs
+          name: Build CJS
           command: npm run build:cjs
       - run:
-          name: Build esm
+          name: Build ESM
           command: npm run build:esm
       - run:
-          name: Build ptb
+          name: Build PTB
           command: npm run build:ptb
 
 workflows:
