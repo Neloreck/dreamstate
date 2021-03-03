@@ -3,7 +3,8 @@ import { unRegisterService } from "@/dreamstate/core/registry/unRegisterService"
 import { TDreamstateService } from "@/dreamstate/types";
 
 /**
- * todo;
+ * Stop service observing.
+ * Decrement counted references and trigger lifecycle if observing was ended.
  */
 export function stopServiceObserving(
   Service: TDreamstateService

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Mount order for providers Should correctly replace context managers: Provider tree 1`] = `
+exports[`Mount order for providers Should correctly replace context managers: Providers tree with HMR 1`] = `
 <RootProvisioner
   sources={
     Array [
@@ -15,5 +15,35 @@ exports[`Mount order for providers Should correctly replace context managers: Pr
       nested
     </div>
   </Memo(DS.Observer)>
+</RootProvisioner>
+`;
+
+exports[`Mount order for providers Should correctly work with few providers of same services: Multiple providers tree 1`] = `
+<RootProvisioner
+  sources={
+    Array [
+      [Function],
+      [Function],
+    ]
+  }
+>
+  <div>
+    <div>
+      nested
+    </div>
+    <Memo(DS.Observer)>
+      <div>
+        nested
+      </div>
+    </Memo(DS.Observer)>
+    <Memo(DS.Observer)>
+      <div>
+        nested
+      </div>
+    </Memo(DS.Observer)>
+    <div>
+      nested
+    </div>
+  </div>
 </RootProvisioner>
 `;

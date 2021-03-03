@@ -2,6 +2,7 @@ import {
   ComponentType,
   createElement,
   memo,
+  MutableRefObject,
   ReactElement,
   useCallback,
   useEffect,
@@ -23,19 +24,14 @@ import { IStringIndexed, TAnyContextManagerConstructor, TDreamstateService } fro
 
 /**
  * Utility method for observers creation.
- *
- * todo: Cleaner code
- * todo: Test multiple mounts
- * todo: Dev only hook?
  */
 export function createManagersObserver(children: ComponentType | null, sources: Array<TDreamstateService>) {
   if (!Array.isArray(sources)) {
     throw new TypeError(
-      "Wrong provider dreamstate supplied. Only array of context services is acceptable."
+      "Wrong providers parameter supplied. Only array of context services is acceptable."
     );
   }
 
-  // Validate sources.
   for (let it = 0; it < sources.length; it ++) {
     if (!sources[it] || !(sources[it].prototype instanceof ContextService)) {
       throw new TypeError("Only classes extending ContextService can be supplied for provision.");
@@ -44,24 +40,37 @@ export function createManagersObserver(children: ComponentType | null, sources: 
 
   // todo: Validate duplicates for dev bundle? Should not be an issue since context value is always same.
 
-  // Check only managers with required provision.
-  // Do not include services for subTree rendering but add registering logic for services.
+  /**
+   * Check only managers with required provision.
+   * Do not include services for subTree rendering but add registering logic for services.
+   */
   const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(Service: TDreamstateService) {
     return Service.prototype instanceof ContextManager;
   }) as Array<TAnyContextManagerConstructor>;
 
-  // Create observer component that will handle observing.
+  /**
+   * Create observer component that will handle observing.
+   */
   function Observer(props: IStringIndexed<any>): ReactElement {
     const [ , forceRender ] = useState({});
     const updateProviders = useCallback(function() {
       forceRender({});
     }, EMPTY_ARR);
 
-    // todo: Single ref probably.
-    const nextObservedSources = useRef(sources);
-    const observedSources = useRef(sources);
-    const initialProvision = useRef(true);
-    const provisionDisposing = useRef(false);
+    /**
+     * Handle internal observing flags shared between re-renders and lifecycle effects.
+     */
+    const viewState: MutableRefObject<{
+      nextObservedSources: Array<TDreamstateService>;
+      observedSources: Array<TDreamstateService>;
+      isInitialProvision: boolean;
+      isProvisionDisposing: boolean;
+    }> = useRef({
+      nextObservedSources: sources,
+      observedSources: sources,
+      isInitialProvision: true,
+      isProvisionDisposing: false
+    });
 
     /**
      * Use memo for first and single init of required components.
@@ -70,7 +79,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
      * Note: Shared between components that do mount-unmount is the same node.
      */
     useMemo(function(): void {
-      nextObservedSources.current = sources;
+      viewState.current.nextObservedSources = sources;
 
       for (let it = 0; it < sources.length; it ++) {
         registerService(sources[it]);
@@ -82,21 +91,21 @@ export function createManagersObserver(children: ComponentType | null, sources: 
      * Count references of providers to detect whether we start provisioning or ending it.
      */
     useEffect(function() {
-      for (let it = 0; it < observedSources.current.length; it ++) {
-        addServiceObserverToRegistry(observedSources.current[it], updateProviders);
-        registerService(observedSources.current[it]);
-        startServiceObserving(observedSources.current[it]);
+      for (let it = 0; it < viewState.current.observedSources.length; it ++) {
+        addServiceObserverToRegistry(viewState.current.observedSources[it], updateProviders);
+        registerService(viewState.current.observedSources[it]);
+        startServiceObserving(viewState.current.observedSources[it]);
       }
 
       /**
        * Unmount current observers.
        */
       return function() {
-        provisionDisposing.current = true;
+        viewState.current.isProvisionDisposing = true;
 
-        for (let it = observedSources.current.length - 1; it >= 0; it --) {
-          removeServiceObserverFromRegistry(observedSources.current[it], updateProviders);
-          stopServiceObserving(observedSources.current[it]);
+        for (let it = viewState.current.observedSources.length - 1; it >= 0; it --) {
+          removeServiceObserverFromRegistry(viewState.current.observedSources[it], updateProviders);
+          stopServiceObserving(viewState.current.observedSources[it]);
         }
       };
     }, EMPTY_ARR);
@@ -106,11 +115,11 @@ export function createManagersObserver(children: ComponentType | null, sources: 
      * Detect whether observers were moved/updated/hot module replacement was activated.
      */
     useEffect(function() {
-      if (initialProvision.current) {
-        initialProvision.current = false;
+      if (viewState.current.isInitialProvision) {
+        viewState.current.isInitialProvision = false;
       } else {
         for (let it = 0; it < sources.length; it ++) {
-          if (observedSources.current[it] !== sources[it]) {
+          if (viewState.current.observedSources[it] !== sources[it]) {
             addServiceObserverToRegistry(sources[it], updateProviders);
             registerService(sources[it]);
             startServiceObserving(sources[it]);
@@ -118,17 +127,20 @@ export function createManagersObserver(children: ComponentType | null, sources: 
         }
       }
 
-      observedSources.current = sources;
+      /**
+       * Remember current observed sources after HMR replacement or update of dependencies.
+       */
+      viewState.current.observedSources = sources;
 
       /**
        * Clean up previous sources after dependencies updates or HMR.
        */
       return function() {
-        if (provisionDisposing.current) {
+        if (viewState.current.isProvisionDisposing) {
           return;
         } else {
           for (let it = sources.length - 1; it >= 0; it --) {
-            if (nextObservedSources.current[it] !== sources[it]) {
+            if (viewState.current.nextObservedSources[it] !== sources[it]) {
               removeServiceObserverFromRegistry(sources[it], updateProviders);
               stopServiceObserving(sources[it]);
             }

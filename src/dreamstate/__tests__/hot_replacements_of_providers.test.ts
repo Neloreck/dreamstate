@@ -61,17 +61,16 @@ describe("Mount order for providers", () => {
 
     }
 
-    let sources = [ First, Second, Third ];
-
     function RootProvisioner({ sources }: { sources: Array<TDreamstateService> }): ReactElement {
       const provider = createProvider(sources);
 
       return createElement(provider, {}, createElement("div", {}, "nested"));
     }
 
+    let sources = [ First, Second, Third ];
     const node = mount(createElement(RootProvisioner, { sources }));
 
-    expect(node).toMatchSnapshot("Provider tree");
+    expect(node).toMatchSnapshot("Providers tree with HMR");
     expect(provisionsStarted).toBe(3);
     expect(provisionsEnded).toBe(0);
     expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
@@ -99,5 +98,67 @@ describe("Mount order for providers", () => {
     expect(firstRemoved).toBe(2);
     expect(fourthProvided).toBe(1);
     expect(fourthRemoved).toBe(0);
+
+    node.unmount();
+
+    expect(provisionsStarted).toBe(9);
+    expect(provisionsEnded).toBe(9);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
+  });
+
+  it("Should correctly work with few providers of same services", () => {
+    let provisionsStarted: number = 0;
+    let provisionsEnded: number = 0;
+
+    class Base extends ContextManager<TAnyObject> {
+
+      public context: TAnyObject = {};
+
+      protected onProvisionStarted() {
+        provisionsStarted += 1;
+      }
+
+      protected onProvisionEnded() {
+        provisionsEnded += 1;
+      }
+
+    }
+
+    class First extends Base {}
+
+    class Second extends Base {}
+
+    function RootProvisioner({ sources }: { sources: Array<TDreamstateService> }): ReactElement {
+      const provider = createProvider(sources);
+
+      return createElement(
+        "div",
+        {},
+        createElement("div", {}, "nested"),
+        createElement(provider, {}, createElement("div", {}, "nested")),
+        createElement(provider, {}, createElement("div", {}, "nested")),
+        createElement("div", {}, "nested")
+      );
+    }
+
+    const sources = [ First, Second ];
+    const node = mount(createElement(RootProvisioner, { sources }));
+
+    expect(node).toMatchSnapshot("Multiple providers tree");
+    expect(provisionsStarted).toBe(2);
+    expect(provisionsEnded).toBe(0);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(2);
+
+    node.setProps({ sources });
+
+    expect(provisionsStarted).toBe(4);
+    expect(provisionsEnded).toBe(2);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(2);
+
+    node.unmount();
+
+    expect(provisionsStarted).toBe(4);
+    expect(provisionsEnded).toBe(4);
+    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
   });
 });

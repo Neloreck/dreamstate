@@ -1,3 +1,8 @@
+## 3.2.0 (3/3/2021)
+  * Separated provision logic and logic of observing
+  * Support of hot modules replacement
+  * Support of sources dynamic changes for observer elements (HMR part)
+
 ## 3.1.4 (2/26/2021)
   * No looped hooks creation for provider hooks
 
