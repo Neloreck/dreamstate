@@ -7,7 +7,8 @@ import type {
   TSignalSubscriptionMetadata,
   TUpdateObserver,
   TUpdateSubscriber,
-  TDreamstateService, TAnyObject
+  TDreamstateService,
+  TAnyObject
 } from "@/dreamstate/types";
 
 /**
@@ -22,6 +23,9 @@ export const EMPTY_ARR: [] = [];
 
 // Currently active services instance types.
 export const CONTEXT_SERVICES_ACTIVATED: Set<TDreamstateService> = new Set();
+
+// Currently active services instance types.
+export const CONTEXT_SERVICES_REFERENCES: TServiceMap<number> = new WeakMap();
 
 // ReactContext registry, lazy initialized constants.
 export const CONTEXT_REACT_CONTEXTS_REGISTRY: TServiceMap<Context<any>> = new WeakMap();

@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Mount order for providers Should correctly replace context managers: Provider tree 1`] = `
+<RootProvisioner
+  sources={
+    Array [
+      [Function],
+      [Function],
+      [Function],
+    ]
+  }
+>
+  <Memo(DS.Observer)>
+    <div>
+      nested
+    </div>
+  </Memo(DS.Observer)>
+</RootProvisioner>
+`;

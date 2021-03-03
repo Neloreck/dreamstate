@@ -4,7 +4,7 @@ import {
   CONTEXT_SIGNAL_HANDLERS_REGISTRY,
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SUBSCRIBERS_REGISTRY,
-  CONTEXT_SERVICES_ACTIVATED
+  CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REFERENCES
 } from "@/dreamstate/core/internals";
 import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
@@ -26,6 +26,7 @@ export function registerService<T extends TAnyObject>(
     CONTEXT_OBSERVERS_REGISTRY.set(Service, CONTEXT_OBSERVERS_REGISTRY.get(Service) || new Set());
     CONTEXT_SERVICES_REGISTRY.set(Service, instance);
     CONTEXT_SIGNAL_HANDLERS_REGISTRY.set(Service, signalHandler);
+    CONTEXT_SERVICES_REFERENCES.set(Service, 0);
 
     subscribeToSignals(signalHandler);
 

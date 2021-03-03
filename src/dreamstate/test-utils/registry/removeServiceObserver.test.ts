@@ -45,7 +45,7 @@ describe("Remove manager observer util", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
   });
 
-  it("Should properly trigger lifecycle of manager", async () => {
+  it("Should not trigger lifecycle of manager", async () => {
     const manager: TestContextManager = registerService(TestContextManager);
     const spy = jest.fn();
     const observer = jest.fn();
@@ -60,6 +60,6 @@ describe("Remove manager observer util", () => {
     removeServiceObserver(TestContextManager, observer);
 
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(0);
   });
 });

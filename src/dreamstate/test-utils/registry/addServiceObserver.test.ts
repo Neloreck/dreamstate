@@ -37,7 +37,7 @@ describe("Add manager observer util", () => {
     removeServiceObserver(TestContextManager, observer);
   });
 
-  it("Should properly trigger lifecycle of manager", async () => {
+  it("Should not trigger lifecycle of manager", async () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
 
     const manager: TestContextManager = registerService(TestContextManager);
@@ -48,7 +48,7 @@ describe("Add manager observer util", () => {
 
     addServiceObserver(TestContextManager, observer);
 
-    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(0);
     spy.mockClear();
   });
 });

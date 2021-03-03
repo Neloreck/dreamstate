@@ -19,19 +19,9 @@ describe("removeServiceObserverFromRegistry method functionality", () => {
     addServiceObserverToRegistry(TestContextManager, observer);
     removeServiceObserverFromRegistry(TestContextManager, observer);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
 
     CONTEXT_OBSERVERS_REGISTRY.delete(TestContextManager);
     CONTEXT_SERVICES_REGISTRY.delete(TestContextManager);
-  });
-
-  it("Should fail if service was not registered", () => {
-    expect(CONTEXT_OBSERVERS_REGISTRY.has(TestContextManager)).toBeFalsy();
-
-    CONTEXT_OBSERVERS_REGISTRY.set(TestContextManager, new Set());
-
-    expect(() => removeServiceObserverFromRegistry(TestContextManager, () => {})).toThrow();
-
-    CONTEXT_OBSERVERS_REGISTRY.delete(TestContextManager);
   });
 });
