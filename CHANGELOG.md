@@ -1,3 +1,7 @@
+## *
+  * Signal type update without optional data parameter
+  * Default param value for 'asMerged' method for nested objects
+
 ## 3.2.0 (3/3/2021)
   * Separated provision logic and logic of observing
   * Support of hot modules replacement

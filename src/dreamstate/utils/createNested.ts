@@ -4,7 +4,7 @@ import { TAnyObject, TNested } from "@/dreamstate/types";
 /**
  * Util for nested.
  */
-function asMerged<T extends TAnyObject>(this: TNested<T>, state: Partial<T>): T {
+function asMerged<T extends TAnyObject>(this: TNested<T>, state: Partial<T> = {}): T {
   return Object.assign(new NestedStore(), this as TNested<T>, state);
 }
 
