@@ -1,4 +1,4 @@
-import { MethodDescriptor } from "@/dreamstate/types";
+import { MethodDescriptor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Bind decorator wrappers factory for methods binding.
@@ -15,7 +15,7 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
 
   return {
     configurable: true,
-    get(this: object): T {
+    get(this: TAnyObject): T {
       if (
         definingProperty
         /*
@@ -56,7 +56,7 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
  */
 export function Bind(): MethodDecorator {
   return function <T>(
-    targetOrDescriptor: object | MethodDescriptor,
+    targetOrDescriptor: TAnyObject | MethodDescriptor,
     propertyKey: PropertyKey | undefined,
     descriptor: TypedPropertyDescriptor<T> | undefined
   ) {

@@ -1,10 +1,11 @@
 import { ContextManager, OnSignal } from "@/dreamstate";
+import { TAnyObject } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures/signals/ESignal";
 import { TNumberSignalEvent, TStringSignalEvent } from "@/fixtures/signals/types";
 
-export class SubscribedContextManager extends ContextManager<object> {
+export class SubscribedContextManager extends ContextManager<TAnyObject> {
 
-  public context: object = {};
+  public context: TAnyObject = {};
 
   @OnSignal(ESignal.NUMBER_SIGNAL)
   public onNumberSignal(signal: TNumberSignalEvent): void {

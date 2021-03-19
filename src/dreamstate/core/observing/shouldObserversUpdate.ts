@@ -4,14 +4,14 @@ import { dev } from "@/macroses/dev.macro";
 
 import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
 import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
-import { IStringIndexed } from "@/dreamstate/types";
+import { IStringIndexed, TAnyObject } from "@/dreamstate/types";
 
 // todo: Warn computed/nested switch between states when previous and next types are different?
 
 /**
  * Compare context manager state diff with shallow check + nested objects check.
  */
-export function shouldObserversUpdate<T extends object>(
+export function shouldObserversUpdate<T extends TAnyObject>(
   previousContext: IStringIndexed<any>,
   nextContext: IStringIndexed<any>
 ): boolean {

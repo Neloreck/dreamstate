@@ -3,7 +3,7 @@ import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServ
 import { TestContextManager } from "@/fixtures";
 
 describe("addServiceObserverToRegistry method functionality", () => {
-  it("Should properly add manager observer to set", () => {
+  it("Should properly add manager observer to set and ignore lifecycle", () => {
     expect(CONTEXT_OBSERVERS_REGISTRY.has(TestContextManager)).toBeFalsy();
 
     const observer = jest.fn();
@@ -17,7 +17,7 @@ describe("addServiceObserverToRegistry method functionality", () => {
 
     addServiceObserverToRegistry(TestContextManager, observer);
 
-    expect(spy).toHaveBeenCalled();
+    expect(spy).not.toHaveBeenCalled();
     expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextManager)!.has(observer)).toBeTruthy();
 
     CONTEXT_OBSERVERS_REGISTRY.delete(TestContextManager);

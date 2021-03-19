@@ -40,6 +40,7 @@ const createPortableConfig = (env) => ({
     }),
     babel(BABEL_CONFIG),
     replace({
+      preventAssignment: true,
       IS_DEV: env !== EEnvironment.PRODUCTION
     }),
     typescript({
@@ -59,7 +60,13 @@ const createPortableDtsConfig = (env) => ({
     format: "es"
   },
   plugins: [
-    dts({ compilerOptions: tsconfig.compilerOptions })
+    dts({
+      compilerOptions: {
+        baseUrl: tsconfig.compilerOptions.baseUrl,
+        paths: tsconfig.compilerOptions.paths,
+        rootDir: tsconfig.compilerOptions.rootDir
+      }
+    })
   ]
 });
 

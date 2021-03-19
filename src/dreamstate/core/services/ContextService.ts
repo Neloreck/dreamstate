@@ -32,8 +32,8 @@ export abstract class ContextService {
   /**
    * Emit signal for other managers and subscribers.
    */
-  protected emitSignal<D = undefined, T extends TSignalType = TSignalType>(baseSignal: ISignal<D, T>): void {
-    emitSignal(baseSignal, this.constructor as TDreamstateService);
+  protected emitSignal<D = undefined, T extends TSignalType = TSignalType>(baseSignal: ISignal<D, T>): Promise<void> {
+    return emitSignal(baseSignal, this.constructor as TDreamstateService);
   }
 
   /**

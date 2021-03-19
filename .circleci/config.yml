@@ -1,23 +1,50 @@
 version: 2.1
+
 orbs:
-  node: circleci/node@1.1.6
+  node: circleci/node@3.0.0
+
 jobs:
   build-and-test:
+    working_directory: ~/dreamstate
     executor:
       name: node/default
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm run setup
-            - run: npm run lint
-            - run: npm run test
-            - run: npm run build:dts
-            - run: npm run build:cjs
-            - run: npm run build:esm
-            - run: npm run build:ptb
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+      - run:
+          name: Install npm dependencies
+          command: npm install
+      - run:
+          name: Setup project dependencies
+          command: npm run setup
+      - save_cache:
+          key: dependency-cache-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - run:
+          name: Lint
+          command: npm run lint
+      - run:
+          name: Test
+          command: npm run test
+      - run:
+          name: Build DTS
+          command: npm run build:dts
+      - run:
+          name: Build CJS
+          command: npm run build:cjs
+      - run:
+          name: Build ESM
+          command: npm run build:esm
+      - run:
+          name: Build PTB
+          command: npm run build:ptb
+
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      - build-and-test

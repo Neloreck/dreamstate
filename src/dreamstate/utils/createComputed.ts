@@ -1,10 +1,10 @@
 import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
-import { TComputed } from "@/dreamstate/types";
+import { TAnyObject, TComputed } from "@/dreamstate/types";
 
 /**
  * Create computed value that will be populated after each update.
  */
-export function createComputed<T extends object, C extends object>(
+export function createComputed<T extends TAnyObject, C extends TAnyObject>(
   selector: (context: C) => T,
   memo?: (context: C) => Array<any>
 ): TComputed<T, C> {

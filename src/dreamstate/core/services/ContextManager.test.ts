@@ -11,6 +11,7 @@ import { unsubscribeFromManager } from "@/dreamstate/core/registry/unSubscribeFr
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
+import { TAnyObject } from "@/dreamstate/types";
 import {
   ExtendingTestContextManager,
   ITestContext,
@@ -185,9 +186,9 @@ describe("ContextManager class", () => {
   it("Should properly subscribe and unsubscribe only from contextManagers", () => {
     class ExampleClass {}
 
-    class ExampleManagerClass extends ContextManager<object> {
+    class ExampleManagerClass extends ContextManager<TAnyObject> {
 
-      public readonly context: object = {};
+      public readonly context: TAnyObject = {};
 
     }
 

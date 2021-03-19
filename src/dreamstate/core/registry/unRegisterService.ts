@@ -5,9 +5,9 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "@/dreamstate/core/internals";
 import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
-import { TDreamstateService } from "@/dreamstate/types";
+import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
 
-export function unRegisterService<T extends object>(
+export function unRegisterService<T extends TAnyObject>(
   Service: TDreamstateService,
   forceUnregister: boolean = false
 ): void {

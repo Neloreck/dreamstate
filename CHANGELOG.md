@@ -1,3 +1,18 @@
+## *
+  * Signal type update without optional data parameter
+  * Default param value for 'asMerged' method for nested objects
+
+## 3.2.0 (3/3/2021)
+  * Separated provision logic and logic of observing
+  * Support of hot modules replacement
+  * Support of sources dynamic changes for observer elements (HMR part)
+
+## 3.1.4 (2/26/2021)
+  * No looped hooks creation for provider hooks
+
+## 3.1.3 (9/17/2020)
+  * Added resolving promise as return value for emit signal method/function
+  
 ## 3.1.1 (9/2/2020)
   * Fixed issues with numeric signal types check (0)
   * Removed null from default queryData typing - now you should add it manually

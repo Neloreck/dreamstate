@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV === "production") {
-  module.export = require("./cjs/production/test-utils.js");
+  module.exports = require("./cjs/production/test-utils.js");
 } else {
-  module.export = require("./cjs/development/test-utils.js");
+  module.exports = require("./cjs/development/test-utils.js");
 }

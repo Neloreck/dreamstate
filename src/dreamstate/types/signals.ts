@@ -8,7 +8,7 @@ export interface ISignal<D = undefined, T extends TSignalType = TSignalType> {
   /**
    * Data of current signal.
    */
-  data?: D;
+  data: D;
 }
 
 export interface ISignalEvent<D = any, T extends TSignalType = TSignalType> extends ISignal<D, T> {

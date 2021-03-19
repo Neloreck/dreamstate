@@ -41,6 +41,7 @@ const createCjsConfig = (env) => ({
       namedExports: { react: Object.keys(react) }
     }),
     replace({
+      preventAssignment: true,
       IS_DEV: (env !== EEnvironment.PRODUCTION).toString()
     }),
     typescript({

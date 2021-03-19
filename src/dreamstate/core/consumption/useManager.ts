@@ -1,12 +1,12 @@
 import { useContext } from "react";
 
 import { useContextWithMemo } from "@/dreamstate/core/consumption/useContextWithMemo";
-import { IContextManagerConstructor } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Use manager hook, higher order wrapper for useContext.
  */
-export function useManager<T extends object, D extends IContextManagerConstructor<T>>(
+export function useManager<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
   Manager: D,
   depsSelector?: (context: D["prototype"]["context"]) => Array<any>
 ): D["prototype"]["context"] {

@@ -3,13 +3,13 @@ import { MutableRefObject, useCallback, useEffect, useRef, useState } from "reac
 import { CONTEXT_STATES_REGISTRY, EMPTY_ARR } from "@/dreamstate/core/internals";
 import { subscribeToManager } from "@/dreamstate/core/registry/subscribeToManager";
 import { unsubscribeFromManager } from "@/dreamstate/core/registry/unSubscribeFromManager";
-import { IContextManagerConstructor, TUpdateSubscriber } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dreamstate/types";
 
 /**
  * Use manager hook with subscribed updates.
  * Same like common useContext hook, but has memo checks.
  */
-export function useContextWithMemo<T extends object, D extends IContextManagerConstructor<T>>(
+export function useContextWithMemo<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
   Manager: D,
   depsSelector: (context: T) => Array<any>
 ): T {

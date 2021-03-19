@@ -7,10 +7,11 @@ import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
+import { TAnyObject } from "@/dreamstate/types";
 import { ITestContext, RenderCallbacker, TestContextManager, TextContextManagerProvider } from "@/fixtures";
 
 describe("@Consume selector observing", () => {
-  function mountProvided<T extends object>(element: ComponentType<T>, props: T): ReactWrapper {
+  function mountProvided<T extends TAnyObject>(element: ComponentType<T>, props: T): ReactWrapper {
     return mount(createElement(TextContextManagerProvider, {}, createElement(element, props)));
   }
 

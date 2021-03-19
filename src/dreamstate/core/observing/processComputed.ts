@@ -1,10 +1,10 @@
 import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
-import { IComputed } from "@/dreamstate/types";
+import { IComputed, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Process computed values and replace placeholders with selectors.
  */
-export function processComputed<T extends object>(
+export function processComputed<T extends TAnyObject>(
   context: T
 ): void {
   for (const key in context) {
