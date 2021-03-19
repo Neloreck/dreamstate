@@ -22,6 +22,7 @@
   - Scope component or something like it for query/signals scoping
 
 ##### Utils
+  - useSignal with pre-defined signals filter
   - createAsync as loadable copy with stored promise or extended createLoadable [!!!]
   - async code execution utils like takeLatest/takeLeading etc? [createAsync]
 
