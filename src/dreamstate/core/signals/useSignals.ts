@@ -8,8 +8,8 @@ import { TCallable, TSignalListener, TSignalType } from "@/dreamstate/types";
 /**
  * Hook for signals listening and custom UI handling.
  */
-export function useSignals<D = undefined, T extends TSignalType = TSignalType>(
-  subscriber: TSignalListener<D, T>
+export function useSignals<T extends TSignalType = TSignalType, D = undefined>(
+  subscriber: TSignalListener<T, D>
 ): void {
   useEffect(function(): TCallable {
     subscribeToSignals(subscriber);

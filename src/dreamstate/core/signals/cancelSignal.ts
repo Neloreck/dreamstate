@@ -1,5 +1,5 @@
-import { ISignalEvent } from "@/dreamstate/types";
+import { ISignalEvent, TSignalType } from "@/dreamstate/types";
 
-export function cancelSignal(this: ISignalEvent) {
+export function cancelSignal(this: ISignalEvent<TSignalType, unknown>) {
   this.canceled = true;
 }

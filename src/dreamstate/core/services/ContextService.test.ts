@@ -6,7 +6,11 @@ import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFro
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { ISignalEvent, TAnyContextManagerConstructor, TDreamstateService } from "@/dreamstate/types";
+import {
+  TAnyContextManagerConstructor,
+  TDerivedSignalEvent,
+  TDreamstateService
+} from "@/dreamstate/types";
 import {
   TestSingleContextService,
   TestContextService,
@@ -92,7 +96,7 @@ describe("ContextService class", () => {
 
   it("Should use emitSignal method when sending signals", async () => {
     const emittingContextManager: EmittingContextManager = registerService(EmittingContextManager);
-    const spy = jest.fn((signal: ISignalEvent) => {
+    const spy = jest.fn((signal: TDerivedSignalEvent) => {
       expect(signal.emitter).toBe(EmittingContextManager);
       expect(signal.type).toBe("TEST");
     });

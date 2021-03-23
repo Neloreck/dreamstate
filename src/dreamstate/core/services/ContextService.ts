@@ -1,8 +1,8 @@
 import { queryData } from "@/dreamstate/core/queries/queryData";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import {
+  IBaseSignal,
   IOptionalQueryRequest,
-  ISignal,
   TDreamstateService,
   TQueryType,
   TSignalType
@@ -32,7 +32,9 @@ export abstract class ContextService {
   /**
    * Emit signal for other managers and subscribers.
    */
-  protected emitSignal<D = undefined, T extends TSignalType = TSignalType>(baseSignal: ISignal<D, T>): Promise<void> {
+  protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
+    baseSignal: IBaseSignal<T, D>
+  ): Promise<void> {
     return emitSignal(baseSignal, this.constructor as TDreamstateService);
   }
 

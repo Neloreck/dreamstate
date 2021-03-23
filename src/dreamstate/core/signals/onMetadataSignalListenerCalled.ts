@@ -4,9 +4,9 @@ import { ISignalEvent, TConstructorKey, TDreamstateService, TSignalType } from "
 /**
  * Listen signal and call related metadata listeners of this manager.
  */
-export function onMetadataSignalListenerCalled<D = undefined, T extends TSignalType = TSignalType>(
+export function onMetadataSignalListenerCalled<T extends TSignalType = TSignalType, D = undefined>(
   this: InstanceType<TDreamstateService>,
-  signal: ISignalEvent<D, T>
+  signal: ISignalEvent<T, D>
 ): void {
   /**
    * Ignore managers without metadata.

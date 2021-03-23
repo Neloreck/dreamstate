@@ -28,7 +28,7 @@ describe("onMetadataSignalListenerCalled method functionality", () => {
 
     expect(CONTEXT_SIGNAL_METADATA_REGISTRY.has(SubscribedContextManager)).toBeTruthy();
 
-    manager.onNumberSignal = jest.fn((signal: ISignalEvent) => {
+    manager.onNumberSignal = jest.fn((signal: ISignalEvent<string, any>) => {
       expect(signal.type).toBe(ESignal.NUMBER_SIGNAL);
     });
 
@@ -84,7 +84,7 @@ describe("onMetadataSignalListenerCalled method functionality", () => {
   it("Should receive own signals with correct emitter field", () => {
     const manager: SubscribedContextManager = registerService(SubscribedContextManager);
 
-    manager.onStringSignal = jest.fn((it: ISignalEvent) => {
+    manager.onStringSignal = jest.fn((it: ISignalEvent<string, unknown>) => {
       expect(it.emitter).toBe(SubscribedContextManager);
     });
 

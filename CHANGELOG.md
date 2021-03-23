@@ -1,6 +1,7 @@
-## *
+## 3.2.1 (*/*/*)
   * Signal type update without optional data parameter
   * Default param value for 'asMerged' method for nested objects
+  * Better typing/type derivation for Signal/SignalEvent types
 
 ## 3.2.0 (3/3/2021)
   * Separated provision logic and logic of observing

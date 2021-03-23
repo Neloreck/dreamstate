@@ -1,20 +1,26 @@
 import { SIGNAL_LISTENERS_REGISTRY } from "@/dreamstate/core/internals";
 import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
-import { ISignal, ISignalEvent, TDreamstateService, TSignalListener, TSignalType } from "@/dreamstate/types";
+import {
+  IBaseSignal,
+  ISignalEvent,
+  TDreamstateService,
+  TSignalListener,
+  TSignalType
+} from "@/dreamstate/types";
 
 /**
  * Emit signal and notify all subscribers in async query.
  * If event is canceled, stop its propagation to next handlers.
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
-  base: ISignal<D, T>,
+  base: IBaseSignal<T, D>,
   emitter: TDreamstateService | null = null
 ): Promise<void> {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");
   }
 
-  const signal: ISignalEvent<D, T> = Object.assign(base as { data: D; type: T }, {
+  const signal: ISignalEvent<T, D> = Object.assign(base as { data: D; type: T }, {
     emitter,
     timestamp: Date.now(),
     cancel: cancelSignal
@@ -26,7 +32,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     const handlersToProcessCount: number = SIGNAL_LISTENERS_REGISTRY.size;
     let processedHandlers: number = 0;
 
-    SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D, T>) {
+    SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<T, D>) {
       setTimeout(function() {
         try {
           processedHandlers ++;

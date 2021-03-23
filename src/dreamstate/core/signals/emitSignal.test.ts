@@ -28,7 +28,7 @@ describe("emitSignal method", () => {
   });
 
   it("Should properly dispatch signals", async () => {
-    const subscriber = jest.fn((signal: ISignalEvent) => {
+    const subscriber = jest.fn((signal: ISignalEvent<string, undefined>) => {
       expect(signal.type).toBe("TEST");
       expect(signal.data).toBeUndefined();
       expect(signal.canceled).toBeFalsy();
@@ -51,7 +51,7 @@ describe("emitSignal method", () => {
   });
 
   it("Should properly inject data parameter", async () => {
-    const subscriber = jest.fn((signal: ISignalEvent) => {
+    const subscriber = jest.fn((signal: ISignalEvent<string, number>) => {
       if (signal.type === "WITH_PARAM") {
         expect(signal.data).toBe(155);
       }
@@ -59,15 +59,13 @@ describe("emitSignal method", () => {
 
     subscribeToSignals(subscriber);
 
-    emitSignal({ type: "WITH_PARAM", data: 155 });
-
-    await nextAsyncQueue();
+    await emitSignal({ type: "WITH_PARAM", data: 155 });
 
     expect(subscriber).toHaveBeenCalled();
   });
 
   it("Should properly inject emitter parameter", async () => {
-    const subscriber = jest.fn((signal: ISignalEvent) => {
+    const subscriber = jest.fn((signal: ISignalEvent<string, number>) => {
       if (signal.type === "WITH_EMITTER") {
         expect(signal.emitter).toBe(0);
       }
@@ -75,9 +73,7 @@ describe("emitSignal method", () => {
 
     subscribeToSignals(subscriber);
 
-    emitSignal({ type: "WITH_EMITTER" }, 0 as any);
-
-    await nextAsyncQueue();
+    await emitSignal({ type: "WITH_EMITTER" }, 0 as any);
 
     expect(subscriber).toHaveBeenCalled();
   });
@@ -94,8 +90,7 @@ describe("emitSignal method", () => {
     subscribeToSignals(firstSubscriber);
     subscribeToSignals(secondSubscriber);
 
-    emitSignal({ type: ESignal.STRING_SIGNAL });
-    await nextAsyncQueue();
+    await emitSignal({ type: ESignal.STRING_SIGNAL });
 
     expect(subscribedManager.onStringSignal).toHaveBeenCalled();
     expect(subscribedManager.onStringOrNumberSignal).toHaveBeenCalled();
