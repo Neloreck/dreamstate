@@ -34,6 +34,7 @@ describe("ContextService class", () => {
       expect(typeof service["onProvisionEnded"]).toBe("function");
       expect(typeof service["emitSignal"]).toBe("function");
       expect(typeof service["queryData"]).toBe("function");
+      expect(typeof service["queryDataSync"]).toBe("function");
 
       expect(Object.keys(Service)).toHaveLength(isSingle ? 1 : 0);
       expect(Object.keys(Service.prototype)).toHaveLength(0);

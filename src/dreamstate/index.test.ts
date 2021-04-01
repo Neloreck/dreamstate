@@ -39,6 +39,7 @@ describe("Library exported API", () => {
     // Queries.
     "OnQuery",
     "queryData",
+    "queryDataSync",
     // Utils.
     "createNested",
     "createComputed",

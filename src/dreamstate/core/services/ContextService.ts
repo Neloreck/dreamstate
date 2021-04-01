@@ -56,4 +56,18 @@ export abstract class ContextService<S extends TAnyObject = TAnyObject> {
     return queryData<R, D, T, Q>(queryRequest);
   }
 
+  /**
+   * Send sync context query to retrieve data from @OnQuery method with required types.
+   */
+  protected queryDataSync<
+    R extends any,
+    D extends any,
+    T extends TQueryType,
+    Q extends IOptionalQueryRequest<D, T>
+    >(
+    queryRequest: Q
+  ) {
+    return queryData<R, D, T, Q>(queryRequest);
+  }
+
 }

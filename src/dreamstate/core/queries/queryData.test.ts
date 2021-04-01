@@ -48,6 +48,6 @@ describe("queryData and queries processing", () => {
 
   it("Should properly handle errors in queries", () => {
     expect(queryData({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
-    expect(queryData({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
+    expect(queryData({ type: EQuery.SYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
   });
 });

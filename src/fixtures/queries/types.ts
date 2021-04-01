@@ -5,6 +5,8 @@ export type TAsyncNumberQuery = TQueryRequest<void, EQuery.ASYNC_NUMBER_QUERY>;
 
 export type TAsyncStringQuery = TQueryRequest<string, EQuery.ASYNC_STRING_QUERY>;
 
+export type TSyncStringQuery = TQueryRequest<string, EQuery.SYNC_STRING_QUERY>;
+
 export type TSyncBooleanQuery = TQueryRequest<void, EQuery.SYNC_BOOLEAN_QUERY>;
 
 export type TAsyncExceptionQuery = TQueryRequest<void, EQuery.ASYNC_EXCEPTION_QUERY>;

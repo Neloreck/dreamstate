@@ -5,7 +5,8 @@ import {
   TAsyncNumberQuery,
   TAsyncStringQuery,
   TSyncBooleanQuery,
-  TSyncExceptionQuery
+  TSyncExceptionQuery,
+  TSyncStringQuery
 } from "@/fixtures/queries/types";
 
 export class RespondingService extends ContextService {
@@ -23,6 +24,11 @@ export class RespondingService extends ContextService {
   @OnQuery(EQuery.SYNC_BOOLEAN_QUERY)
   public onSyncBooleanQuery(queryRequest: TSyncBooleanQuery): boolean {
     return true;
+  }
+
+  @OnQuery(EQuery.SYNC_STRING_QUERY)
+  public onSyncStringQuery(queryRequest: TSyncStringQuery): string {
+    return queryRequest.data;
   }
 
   @OnQuery(EQuery.ASYNC_NUMBER_QUERY)

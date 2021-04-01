@@ -35,6 +35,7 @@ export { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 
 export { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 export { queryData } from "@/dreamstate/core/queries/queryData";
+export { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 
 export { useManager } from "@/dreamstate/core/consumption/useManager";
 export { Consume } from "@/dreamstate/core/consumption/Consume";

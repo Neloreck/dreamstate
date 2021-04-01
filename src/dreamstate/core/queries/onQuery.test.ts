@@ -81,7 +81,7 @@ describe("@OnQuery and queries processing", () => {
     expect(duplicated).toBeDefined();
     expect(requesting).toBeUndefined();
 
-    expect(responding).toHaveLength(5);
+    expect(responding).toHaveLength(6);
     expect(duplicated).toHaveLength(1);
 
     responding.concat(duplicated).forEach(([ method, type ]) => {
