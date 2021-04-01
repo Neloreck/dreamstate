@@ -61,7 +61,7 @@ describe("Mount order for providers", () => {
 
     }
 
-    function RootProvisioner({ sources }: { sources: Array<TDreamstateService> }): ReactElement {
+    function RootProvisioner({ sources }: { sources: Array<TDreamstateService<any>> }): ReactElement {
       const provider = createProvider(sources);
 
       return createElement(provider, {}, createElement("div", {}, "nested"));
@@ -128,7 +128,7 @@ describe("Mount order for providers", () => {
 
     class Second extends Base {}
 
-    function RootProvisioner({ sources }: { sources: Array<TDreamstateService> }): ReactElement {
+    function RootProvisioner({ sources }: { sources: Array<TDreamstateService<any>> }): ReactElement {
       const provider = createProvider(sources);
 
       return createElement(

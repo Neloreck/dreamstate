@@ -9,7 +9,9 @@ import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dre
  * Use manager hook with subscribed updates.
  * Same like common useContext hook, but has memo checks.
  */
-export function useContextWithMemo<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
+export function useContextWithMemo<
+  T extends TAnyObject, C extends TAnyObject, D extends IContextManagerConstructor<T, C>
+>(
   Manager: D,
   depsSelector: (context: T) => Array<any>
 ): T {

@@ -8,7 +8,7 @@ import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFro
 import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
 
 export function unRegisterService<T extends TAnyObject>(
-  Service: TDreamstateService,
+  Service: TDreamstateService<T>,
   forceUnregister: boolean = false
 ): void {
   // @ts-ignore
@@ -20,7 +20,6 @@ export function unRegisterService<T extends TAnyObject>(
     CONTEXT_STATES_REGISTRY.delete(Service);
 
     // Do not clean observers and subscribers, automated by react.
-
     CONTEXT_SERVICES_ACTIVATED.delete(Service);
   }
 }

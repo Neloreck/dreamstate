@@ -14,16 +14,17 @@ export function notifyObservers<T extends IStringIndexed<any>>(
 ): void {
   const nextContext: T = manager.context;
 
-  CONTEXT_STATES_REGISTRY.set(manager.constructor as TDreamstateService, nextContext);
-  CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService)!.forEach(function(it: TUpdateObserver) {
-    it();
-  });
+  CONTEXT_STATES_REGISTRY.set(manager.constructor as TDreamstateService<any>, nextContext);
+  CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TDreamstateService<any>)!
+    .forEach(function(it: TUpdateObserver) {
+      it();
+    });
   /**
    * Async execution for subscribers.
    * There will be small amount of observers that work by the rules, but we cannot tell anything about subs.
    * Subscribers should not block code there with CPU usage/unhandled exceptions.
    */
-  CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TDreamstateService)!
+  CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TDreamstateService<any>)!
     .forEach(function(it: TUpdateSubscriber<T>) {
       setTimeout(it, 0, nextContext);
     });

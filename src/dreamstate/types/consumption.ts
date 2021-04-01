@@ -12,10 +12,12 @@ export type TTakeContextSelector<T extends TAnyObject> =
   | TContextFunctionalSelector<T>
   | undefined;
 
-export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<T> | T;
+export type TConsumable<T extends TAnyContextManagerConstructor> = IConsumePick<any, any, T> | T;
 
 export interface IConsumePick<
-  T extends IContextManagerConstructor<any>,
+  C extends TAnyObject,
+  D extends TAnyObject,
+  T extends IContextManagerConstructor<C, D>,
   S extends TAnyObject = T["prototype"]["context"]
 > {
   from: T;

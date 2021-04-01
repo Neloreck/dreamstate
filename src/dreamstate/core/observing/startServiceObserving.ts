@@ -7,7 +7,7 @@ import { TDreamstateService } from "@/dreamstate/types";
  * and force 'onProvisionStarted' to be used only once.
  */
 export function startServiceObserving(
-  Service: TDreamstateService
+  Service: TDreamstateService<any>
 ): void {
   const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! + 1;
 

@@ -1,3 +1,4 @@
+import { ContextService } from "@/dreamstate";
 import {
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_QUERY_METADATA_REGISTRY,
@@ -60,5 +61,25 @@ describe("Register service test util", () => {
     expect(testContextManager).toBe(nextContextManager);
 
     unRegisterService(TestContextManager);
+  });
+
+  it("Should correctly provide initial state", () => {
+    interface IInitialState {
+      field: number;
+    }
+
+    class InitializedService extends ContextService<IInitialState> {
+
+      public constructor(public initial?: IInitialState) {
+        super();
+      }
+
+    }
+
+    const initialized: InitializedService = registerService(InitializedService, { field: 123 });
+
+    expect(initialized.initial?.field).toBe(123);
+
+    unRegisterService(InitializedService);
   });
 });

@@ -6,8 +6,8 @@ import { TDreamstateService, TUpdateObserver } from "@/dreamstate/types";
 /**
  * Add context manager observer and trigger all related events (onProvisionStarted for first observer).
  */
-export function addServiceObserver<T extends TDreamstateService>(
-  Service: T,
+export function addServiceObserver(
+  Service: TDreamstateService<any>,
   observer: TUpdateObserver
 ) {
   if (!(Service.prototype instanceof ContextService)) {

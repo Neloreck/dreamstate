@@ -44,7 +44,7 @@ export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType
   /**
    * Query answerer.
    */
-  answerer: TDreamstateService;
+  answerer: TDreamstateService<any>;
 }
 
 export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = IQueryResponse<D, T>;

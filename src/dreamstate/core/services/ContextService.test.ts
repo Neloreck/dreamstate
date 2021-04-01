@@ -21,7 +21,7 @@ import {
 
 describe("ContextService class", () => {
   it("Should initialize service classes without any exceptions", () => {
-    const testContextManagerInit = (Service: TDreamstateService, isSingle: boolean = false) => {
+    const testContextManagerInit = (Service: TDreamstateService<any>, isSingle: boolean = false) => {
       const service = new Service();
 
       expect(service).toBeInstanceOf(ContextService);

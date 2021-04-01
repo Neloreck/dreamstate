@@ -7,7 +7,7 @@ import { TDreamstateService } from "@/dreamstate/types";
  * Decrement counted references and trigger lifecycle if observing was ended.
  */
 export function stopServiceObserving(
-  Service: TDreamstateService
+  Service: TDreamstateService<any>
 ): void {
   const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! - 1;
 

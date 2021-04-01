@@ -37,7 +37,7 @@ export interface ISignalEvent<T extends TSignalType, D> extends IBaseSignal<T, D
   /**
    * Signal sender.
    */
-  emitter: TDreamstateService | null;
+  emitter: TDreamstateService<any> | null;
   /**
    * Signal emit timestamp.
    */

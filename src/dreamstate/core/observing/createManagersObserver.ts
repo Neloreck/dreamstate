@@ -20,12 +20,16 @@ import { registerService } from "@/dreamstate/core/registry/registerService";
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { IStringIndexed, TAnyContextManagerConstructor, TDreamstateService } from "@/dreamstate/types";
+import {
+  IStringIndexed,
+  TAnyContextManagerConstructor,
+  TDreamstateService
+} from "@/dreamstate/types";
 
 /**
  * Utility method for observers creation.
  */
-export function createManagersObserver(children: ComponentType | null, sources: Array<TDreamstateService>) {
+export function createManagersObserver(children: ComponentType | null, sources: Array<TDreamstateService<any>>) {
   if (!Array.isArray(sources)) {
     throw new TypeError(
       "Wrong providers parameter supplied. Only array of context services is acceptable."
@@ -44,7 +48,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
    * Check only managers with required provision.
    * Do not include services for subTree rendering but add registering logic for services.
    */
-  const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(Service: TDreamstateService) {
+  const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(Service: TDreamstateService<any>) {
     return Service.prototype instanceof ContextManager;
   }) as Array<TAnyContextManagerConstructor>;
 
@@ -61,8 +65,8 @@ export function createManagersObserver(children: ComponentType | null, sources: 
      * Handle internal observing flags shared between re-renders and lifecycle effects.
      */
     const viewState: MutableRefObject<{
-      nextObservedSources: Array<TDreamstateService>;
-      observedSources: Array<TDreamstateService>;
+      nextObservedSources: Array<TDreamstateService<any>>;
+      observedSources: Array<TDreamstateService<any>>;
       isInitialProvision: boolean;
       isProvisionDisposing: boolean;
     }> = useRef({
@@ -82,7 +86,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
       viewState.current.nextObservedSources = sources;
 
       for (let it = 0; it < sources.length; it ++) {
-        registerService(sources[it]);
+        registerService(sources[it], props.initialState);
       }
     }, sources);
 
@@ -153,7 +157,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   }
 
   if (IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TDreamstateService) {
+    Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TDreamstateService<any>) {
       return it.name;
     })
     }]`;

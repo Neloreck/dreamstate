@@ -5,8 +5,8 @@ import { TDreamstateService } from "@/dreamstate/types";
 /**
  * Unregister service.
  */
-export function unRegisterService<T extends TDreamstateService>(
-  Service: T,
+export function unRegisterService(
+  Service: TDreamstateService<any>,
   forceUnregister: boolean = true
 ): void {
   if (!Service || !Service.prototype || !(Service.prototype instanceof ContextService)) {

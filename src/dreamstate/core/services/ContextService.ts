@@ -3,12 +3,13 @@ import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import {
   IBaseSignal,
   IOptionalQueryRequest,
+  TAnyObject,
   TDreamstateService,
   TQueryType,
   TSignalType
 } from "@/dreamstate/types";
 
-export abstract class ContextService {
+export abstract class ContextService<S extends TAnyObject = TAnyObject> {
 
   /**
    * Should core destroy store instance after observers removal or preserve it for application lifespan.
@@ -16,6 +17,9 @@ export abstract class ContextService {
    * Non-singleton objects are destroyed if all observers are removed.
    */
   protected static IS_SINGLE: boolean = false;
+
+  public constructor(initialState?: S) {
+  }
 
   /**
    * Lifecycle.
@@ -35,7 +39,7 @@ export abstract class ContextService {
   protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
     baseSignal: IBaseSignal<T, D>
   ): Promise<void> {
-    return emitSignal(baseSignal, this.constructor as TDreamstateService);
+    return emitSignal(baseSignal, this.constructor as TDreamstateService<S>);
   }
 
   /**

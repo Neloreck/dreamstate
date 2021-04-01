@@ -5,7 +5,7 @@ import { TDreamstateService, TUpdateObserver } from "@/dreamstate/types";
  * Add state changes observer.
  */
 export function addServiceObserverToRegistry(
-  Service: TDreamstateService,
+  Service: TDreamstateService<any>,
   observer: TUpdateObserver
 ): void {
   CONTEXT_OBSERVERS_REGISTRY.get(Service)!.add(observer);

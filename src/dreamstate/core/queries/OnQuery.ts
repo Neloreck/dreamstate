@@ -10,7 +10,7 @@ export function OnQuery(queryType: TQueryType): MethodDecorator {
 
   return createMethodDecorator<TAnyContextManagerConstructor>(function rememberMethodQuery(
     method: string | symbol,
-    Service: TDreamstateService
+    Service: TDreamstateService<any>
   ): void {
     if (!(Service.prototype instanceof ContextService)) {
       throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");

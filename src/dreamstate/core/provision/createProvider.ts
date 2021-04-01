@@ -8,7 +8,7 @@ import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
  * Useful if your root is functional component or you are using createComponent api without JSX.
  */
 export function createProvider(
-  sources: Array<TDreamstateService>
+  sources: Array<TDreamstateService<TAnyObject>>
 ): FunctionComponent<TAnyObject> {
   return createManagersObserver(null, sources);
 }

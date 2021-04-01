@@ -11,7 +11,7 @@ import { TDreamstateService } from "@/dreamstate/types";
  * Observes changes and uses default react Providers for data flow.
  */
 export function Provide<T extends ComponentType>(
-  sources: Array<TDreamstateService>
+  sources: Array<TDreamstateService<any>>
 ): ClassDecorator {
   return createClassWrapDecorator(function(targetClass: T): T {
     return hoistNonReactStatics(createManagersObserver(targetClass, sources), targetClass);

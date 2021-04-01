@@ -23,7 +23,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
         return result
           .then(function(data: any): void {
             resolve({
-              answerer: service.constructor as TDreamstateService,
+              answerer: service.constructor as TDreamstateService<any>,
               type: query.type,
               data,
               timestamp
@@ -32,7 +32,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
           .catch(reject);
       } else {
         return resolve({
-          answerer: service.constructor as TDreamstateService,
+          answerer: service.constructor as TDreamstateService<any>,
           type: query.type,
           data: result,
           timestamp

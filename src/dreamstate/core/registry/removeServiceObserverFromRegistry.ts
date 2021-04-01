@@ -5,7 +5,7 @@ import { TDreamstateService, TUpdateObserver } from "@/dreamstate/types";
  * Remove state changes observer and kill instance if it is not singleton.
  */
 export function removeServiceObserverFromRegistry(
-  Service: TDreamstateService,
+  Service: TDreamstateService<any>,
   observer: TUpdateObserver
 ): void {
   CONTEXT_OBSERVERS_REGISTRY.get(Service)!.delete(observer);

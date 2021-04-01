@@ -5,7 +5,10 @@ import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dre
 /**
  * Unsubscribe from manager updates.
  */
-export function unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
+export function unsubscribeFromManager<
+  T extends TAnyObject,
+  D extends IContextManagerConstructor<T, any>
+>(
   Manager: D,
   subscriber: TUpdateSubscriber<T>
 ): void {

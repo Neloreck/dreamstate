@@ -13,7 +13,7 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
 
   return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
-    Service: TDreamstateService
+    Service: TDreamstateService<any>
   ): void {
     if (!(Service.prototype instanceof ContextService)) {
       throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");

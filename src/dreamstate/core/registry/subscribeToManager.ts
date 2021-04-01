@@ -6,7 +6,10 @@ import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dre
  * Subscribe to manager updates/changes.
  * Callback will be fired after each state update.
  */
-export function subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
+export function subscribeToManager<
+  T extends TAnyObject,
+  D extends IContextManagerConstructor<T, any>
+>(
   Manager: D,
   subscriber: TUpdateSubscriber<T>
 ): void {
