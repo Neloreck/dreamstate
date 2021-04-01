@@ -29,9 +29,6 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 ## Requirements
 - `react >= 16.8.0`
 
-## Usage
-  - todo
-
 ## [Documentation](https://github.com/Neloreck/dreamstate/wiki/Home)
 
 #### [Services](https://github.com/Neloreck/dreamstate/wiki/services)
@@ -56,11 +53,12 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [subscribeToSignals](https://github.com/Neloreck/dreamstate/wiki/subscribeToSignals)
 - [unsubscribeFromSignals](https://github.com/Neloreck/dreamstate/wiki/unsubscribeFromSignals)
 - [@OnSignal](https://github.com/Neloreck/dreamstate/wiki/@OnSignal)
-- [useSignal](https://github.com/Neloreck/dreamstate/wiki/useSignal)
+- [useSignals](https://github.com/Neloreck/dreamstate/wiki/useSignals)
 
 #### [Queries](https://github.com/Neloreck/dreamstate/wiki/queries)
 - [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
 - [queryData](https://github.com/Neloreck/dreamstate/wiki/queryData)
+- [queryDataSync](https://github.com/Neloreck/dreamstate/wiki/queryDataSync)
 
 #### [Utils](https://github.com/Neloreck/dreamstate/wiki/utils)
 - [@Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind)

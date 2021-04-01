@@ -3,27 +3,21 @@
 ### Testing
   - test useContextWithMemo properly
   - more exotic cases
-  - review tests, simplify and cover more cases 
 
 ### Build
-  - wiki builder?
   - test dev assistance with logs and warnings for separate bundles
-  - dev.call macro with conditional calls
   
 ### Extension
   - ???
 
 ### Lib
-  - Global data provider for SSR/context managers constructors
   - Store schema registry/creating and validation when initializing context managers?
-  - Think about actions/state separation. [HoCs do not allow to do so]
   - Scoping for signals and queries?
   - check preact
   - assistance messages when consuming, but tree is not provided
   - Scope component or something like it for query/signals scoping
 
 ##### Utils
-  - useSignal with pre-defined signals filter
   - createAsync as loadable copy with stored promise or extended createLoadable
   - async code execution utils like takeLatest/takeLeading etc? [createAsync]
 

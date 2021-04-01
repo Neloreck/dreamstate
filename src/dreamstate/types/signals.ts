@@ -52,7 +52,7 @@ export interface ISignalEvent<T extends TSignalType, D> extends IBaseSignal<T, D
   canceled?: boolean;
 }
 
-export type TSignalType = Readonly<symbol | string | number>;
+export type TSignalType = symbol | string | number;
 
 export type TSignalListener<T extends TSignalType = TSignalType, D = undefined> = (signal: ISignalEvent<T, D>) => void;
 
@@ -65,8 +65,8 @@ export type TDerivedSignalEvent<
   T extends TSignalType | ISignalWithData | ISignalWithoutData = TSignalType,
   D = undefined
 > =
-  T extends ISignalWithData<TSignalType, any>
+  Readonly<T extends ISignalWithData<TSignalType, any>
     ? ISignalEvent<T["type"], T["data"]>
     : T extends ISignalWithoutData
       ? ISignalEvent<T["type"], undefined>
-      : ISignalEvent<T extends TSignalType ? T : never, D>;
+      : ISignalEvent<T extends TSignalType ? T : never, D>>;

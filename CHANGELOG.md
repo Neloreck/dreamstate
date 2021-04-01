@@ -1,6 +1,7 @@
 ## 3.3.0 (*/*/*)
   * 'initialState' for context providers while constructing servers before provision
   * 'queryDataSync' for sync queries execution without promises
+  * 'useSignals' now subscribes to provided dependencies and does proper re-subscription in useEffect
   * Signal type update without optional data parameter
   * Default param value for 'asMerged' method for nested objects
   * Better typing/type derivation for Signal/SignalEvent types

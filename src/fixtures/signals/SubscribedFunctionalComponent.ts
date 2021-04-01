@@ -15,7 +15,7 @@ export function SubscribedFunctionalComponent({
       // Emit parent callback for testing.
       onInternalSignal(signal);
     }
-  });
+  }, [ onInternalSignal ]);
 
   return createElement("div", {}, value);
 }
