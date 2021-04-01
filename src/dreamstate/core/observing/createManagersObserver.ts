@@ -48,7 +48,9 @@ export function createManagersObserver(children: ComponentType | null, sources: 
    * Check only managers with required provision.
    * Do not include services for subTree rendering but add registering logic for services.
    */
-  const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(Service: TAnyContextServiceConstructor) {
+  const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(
+    Service: TAnyContextServiceConstructor
+  ) {
     return Service.prototype instanceof ContextManager;
   }) as Array<TAnyContextManagerConstructor>;
 
