@@ -1,7 +1,7 @@
 import { FunctionComponent } from "react";
 
 import { createManagersObserver } from "@/dreamstate/core/observing/createManagersObserver";
-import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Create component for manual provision without HOC/Decorator-like api.
@@ -10,7 +10,7 @@ import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
 export function createProvider<
   T extends TAnyObject = TAnyObject
 >(
-  sources: Array<TDreamstateService<any>>
+  sources: Array<TAnyContextServiceConstructor>
 ): FunctionComponent<TAnyObject & { initialState?: T }> {
   return createManagersObserver(null, sources);
 }

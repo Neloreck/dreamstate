@@ -7,8 +7,8 @@ import type {
   TSignalSubscriptionMetadata,
   TUpdateObserver,
   TUpdateSubscriber,
-  TDreamstateService,
-  TAnyObject
+  TAnyObject,
+  TAnyContextServiceConstructor
 } from "@/dreamstate/types";
 
 /**
@@ -22,7 +22,7 @@ export const EMPTY_ARR: [] = [];
  */
 
 // Currently active services instance types.
-export const CONTEXT_SERVICES_ACTIVATED: Set<TDreamstateService<any>> = new Set();
+export const CONTEXT_SERVICES_ACTIVATED: Set<TAnyContextServiceConstructor> = new Set();
 
 // Currently active services instance types.
 export const CONTEXT_SERVICES_REFERENCES: TServiceMap<number> = new WeakMap();
@@ -31,7 +31,7 @@ export const CONTEXT_SERVICES_REFERENCES: TServiceMap<number> = new WeakMap();
 export const CONTEXT_REACT_CONTEXTS_REGISTRY: TServiceMap<Context<any>> = new WeakMap();
 
 // ContextService instances registry.
-export const CONTEXT_SERVICES_REGISTRY: TServiceMap<InstanceType<TDreamstateService<any>>> = new WeakMap();
+export const CONTEXT_SERVICES_REGISTRY: TServiceMap<InstanceType<TAnyContextServiceConstructor>> = new WeakMap();
 
 // ContextManagers context references registry.
 export const CONTEXT_STATES_REGISTRY: TServiceMap<TAnyObject> = new WeakMap();

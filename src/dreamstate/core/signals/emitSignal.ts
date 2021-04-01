@@ -3,7 +3,7 @@ import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
 import {
   IBaseSignal,
   ISignalEvent,
-  TDreamstateService,
+  TAnyContextServiceConstructor,
   TSignalListener,
   TSignalType
 } from "@/dreamstate/types";
@@ -14,7 +14,7 @@ import {
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: IBaseSignal<T, D>,
-  emitter: TDreamstateService<any> | null = null
+  emitter: TAnyContextServiceConstructor | null = null
 ): Promise<void> {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");
@@ -27,7 +27,6 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   });
 
   // Async processing of subscribed metadata to prevent exception blocking.
-  // todo: Add test cases for awaiting?
   return new Promise<void>(function(resolve: () => void): void {
     const handlersToProcessCount: number = SIGNAL_LISTENERS_REGISTRY.size;
     let processedHandlers: number = 0;

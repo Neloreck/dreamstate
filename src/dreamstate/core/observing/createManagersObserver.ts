@@ -23,13 +23,13 @@ import { ContextService } from "@/dreamstate/core/services/ContextService";
 import {
   IStringIndexed,
   TAnyContextManagerConstructor,
-  TDreamstateService
+  TAnyContextServiceConstructor
 } from "@/dreamstate/types";
 
 /**
  * Utility method for observers creation.
  */
-export function createManagersObserver(children: ComponentType | null, sources: Array<TDreamstateService<any>>) {
+export function createManagersObserver(children: ComponentType | null, sources: Array<TAnyContextServiceConstructor>) {
   if (!Array.isArray(sources)) {
     throw new TypeError(
       "Wrong providers parameter supplied. Only array of context services is acceptable."
@@ -48,7 +48,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
    * Check only managers with required provision.
    * Do not include services for subTree rendering but add registering logic for services.
    */
-  const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(Service: TDreamstateService<any>) {
+  const managers: Array<TAnyContextManagerConstructor> = sources.filter(function(Service: TAnyContextServiceConstructor) {
     return Service.prototype instanceof ContextManager;
   }) as Array<TAnyContextManagerConstructor>;
 
@@ -65,8 +65,8 @@ export function createManagersObserver(children: ComponentType | null, sources: 
      * Handle internal observing flags shared between re-renders and lifecycle effects.
      */
     const viewState: MutableRefObject<{
-      nextObservedSources: Array<TDreamstateService<any>>;
-      observedSources: Array<TDreamstateService<any>>;
+      nextObservedSources: Array<TAnyContextServiceConstructor>;
+      observedSources: Array<TAnyContextServiceConstructor>;
       isInitialProvision: boolean;
       isProvisionDisposing: boolean;
     }> = useRef({
@@ -157,7 +157,7 @@ export function createManagersObserver(children: ComponentType | null, sources: 
   }
 
   if (IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TDreamstateService<any>) {
+    Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextServiceConstructor) {
       return it.name;
     })
     }]`;

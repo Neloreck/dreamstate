@@ -1,13 +1,13 @@
 import { CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { TDreamstateService, TUpdateObserver } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor, TUpdateObserver } from "@/dreamstate/types";
 
 /**
  * Add context manager observer and trigger all related events (onProvisionEnded for last observer).
  */
 export function removeServiceObserver(
-  Service: TDreamstateService<any>,
+  Service: TAnyContextServiceConstructor,
   observer: TUpdateObserver
 ) {
   if (!(Service.prototype instanceof ContextService)) {

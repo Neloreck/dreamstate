@@ -1,4 +1,4 @@
-import { TDreamstateService } from "@/dreamstate/types/internal";
+import { TAnyContextServiceConstructor } from "@/dreamstate/types/internal";
 
 export interface IBaseSignal<T extends TSignalType = TSignalType, D = undefined> extends Object{
   /**
@@ -37,7 +37,7 @@ export interface ISignalEvent<T extends TSignalType, D> extends IBaseSignal<T, D
   /**
    * Signal sender.
    */
-  emitter: TDreamstateService<any> | null;
+  emitter: TAnyContextServiceConstructor | null;
   /**
    * Signal emit timestamp.
    */

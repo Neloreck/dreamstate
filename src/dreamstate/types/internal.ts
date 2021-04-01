@@ -21,6 +21,8 @@ export interface IContextManagerConstructor<
 
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any, any>;
 
+export type TAnyContextServiceConstructor = IContextServiceConstructor<any>;
+
 export type TDreamstateService<S extends TAnyObject> = IContextServiceConstructor<S>;
 
 export type TPartialTransformer<T> = (value: T) => Partial<T>;
@@ -31,4 +33,4 @@ export type TUpdateSubscriber<T extends TAnyObject> = (context: T) => void;
 
 export type TConstructorKey = any;
 
-export type TServiceMap<T> = WeakMap<TDreamstateService<any>, T>;
+export type TServiceMap<T> = WeakMap<TAnyContextServiceConstructor, T>;

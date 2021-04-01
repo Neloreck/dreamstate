@@ -1,13 +1,13 @@
 import { CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServiceObserverToRegistry";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { TDreamstateService, TUpdateObserver } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor, TUpdateObserver } from "@/dreamstate/types";
 
 /**
  * Add context manager observer and trigger all related events (onProvisionStarted for first observer).
  */
 export function addServiceObserver(
-  Service: TDreamstateService<any>,
+  Service: TAnyContextServiceConstructor,
   observer: TUpdateObserver
 ) {
   if (!(Service.prototype instanceof ContextService)) {

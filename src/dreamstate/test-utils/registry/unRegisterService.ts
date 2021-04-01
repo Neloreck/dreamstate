@@ -1,12 +1,12 @@
 import { unRegisterService as internalUnRegisterService } from "@/dreamstate/core/registry/unRegisterService";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { TDreamstateService } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor } from "@/dreamstate/types";
 
 /**
  * Unregister service.
  */
 export function unRegisterService(
-  Service: TDreamstateService<any>,
+  Service: TAnyContextServiceConstructor,
   forceUnregister: boolean = true
 ): void {
   if (!Service || !Service.prototype || !(Service.prototype instanceof ContextService)) {

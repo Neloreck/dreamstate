@@ -1,13 +1,13 @@
 import { CONTEXT_SERVICES_REFERENCES, CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { unRegisterService } from "@/dreamstate/core/registry/unRegisterService";
-import { TDreamstateService } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor } from "@/dreamstate/types";
 
 /**
  * Stop service observing.
  * Decrement counted references and trigger lifecycle if observing was ended.
  */
 export function stopServiceObserving(
-  Service: TDreamstateService<any>
+  Service: TAnyContextServiceConstructor
 ): void {
   const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! - 1;
 

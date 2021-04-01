@@ -8,8 +8,8 @@ import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterSe
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import {
   TAnyContextManagerConstructor,
-  TDerivedSignalEvent,
-  TDreamstateService
+  TAnyContextServiceConstructor,
+  TDerivedSignalEvent
 } from "@/dreamstate/types";
 import {
   TestSingleContextService,
@@ -21,7 +21,7 @@ import {
 
 describe("ContextService class", () => {
   it("Should initialize service classes without any exceptions", () => {
-    const testContextManagerInit = (Service: TDreamstateService<any>, isSingle: boolean = false) => {
+    const testContextManagerInit = (Service: TAnyContextServiceConstructor, isSingle: boolean = false) => {
       const service = new Service();
 
       expect(service).toBeInstanceOf(ContextService);

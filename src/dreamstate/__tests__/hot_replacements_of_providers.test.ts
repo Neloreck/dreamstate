@@ -3,7 +3,7 @@ import { createElement, ReactElement } from "react";
 
 import { ContextManager, createProvider } from "@/dreamstate";
 import { CONTEXT_SERVICES_ACTIVATED } from "@/dreamstate/core/internals";
-import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor, TAnyObject } from "@/dreamstate/types";
 
 describe("Mount order for providers", () => {
   it("Should correctly replace context managers", async () => {
@@ -61,7 +61,7 @@ describe("Mount order for providers", () => {
 
     }
 
-    function RootProvisioner({ sources }: { sources: Array<TDreamstateService<any>> }): ReactElement {
+    function RootProvisioner({ sources }: { sources: Array<TAnyContextServiceConstructor> }): ReactElement {
       const provider = createProvider(sources);
 
       return createElement(provider, {}, createElement("div", {}, "nested"));
@@ -128,7 +128,7 @@ describe("Mount order for providers", () => {
 
     class Second extends Base {}
 
-    function RootProvisioner({ sources }: { sources: Array<TDreamstateService<any>> }): ReactElement {
+    function RootProvisioner({ sources }: { sources: Array<TAnyContextServiceConstructor> }): ReactElement {
       const provider = createProvider(sources);
 
       return createElement(

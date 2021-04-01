@@ -1,5 +1,10 @@
 import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { IOptionalQueryRequest, IQueryResponse, TDreamstateService, TQueryType } from "@/dreamstate/types";
+import {
+  IOptionalQueryRequest,
+  IQueryResponse,
+  TAnyContextServiceConstructor,
+  TQueryType
+} from "@/dreamstate/types";
 
 /**
  * Promisify query handler.
@@ -23,7 +28,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
         return result
           .then(function(data: any): void {
             resolve({
-              answerer: service.constructor as TDreamstateService<any>,
+              answerer: service.constructor as TAnyContextServiceConstructor,
               type: query.type,
               data,
               timestamp
@@ -32,7 +37,7 @@ export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryTy
           .catch(reject);
       } else {
         return resolve({
-          answerer: service.constructor as TDreamstateService<any>,
+          answerer: service.constructor as TAnyContextServiceConstructor,
           type: query.type,
           data: result,
           timestamp

@@ -11,18 +11,18 @@ import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/signals/onMetadataSignalListenerCalled";
 import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
-import { TAnyObject, TDreamstateService, TSignalListener } from "@/dreamstate/types";
+import { TAnyContextServiceConstructor, TAnyObject, TSignalListener } from "@/dreamstate/types";
 
 /**
  * Register context manager entry.
  */
 export function registerService<S extends any = any>(
-  Service: TDreamstateService<any>,
+  Service: TAnyContextServiceConstructor,
   initialState?: S
 ): void {
   // Only if registry is empty -> create new instance, remember its context and save it to registry.
   if (!CONTEXT_SERVICES_REGISTRY.has(Service)) {
-    const instance: InstanceType<TDreamstateService<any>> = new Service(initialState);
+    const instance: InstanceType<TAnyContextServiceConstructor> = new Service(initialState);
     const signalHandler: TSignalListener = onMetadataSignalListenerCalled.bind(instance);
 
     CONTEXT_OBSERVERS_REGISTRY.set(Service, CONTEXT_OBSERVERS_REGISTRY.get(Service) || new Set());

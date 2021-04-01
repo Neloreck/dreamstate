@@ -1,7 +1,11 @@
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { createMethodDecorator } from "@/dreamstate/polyfills/createMethodDecorator";
-import { TAnyContextManagerConstructor, TDreamstateService, TSignalType } from "@/dreamstate/types";
+import {
+  TAnyContextManagerConstructor,
+  TAnyContextServiceConstructor,
+  TSignalType
+} from "@/dreamstate/types";
 
 /**
  * Write signal filter and bound method to class metadata.
@@ -13,7 +17,7 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
 
   return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
-    Service: TDreamstateService<any>
+    Service: TAnyContextServiceConstructor
   ): void {
     if (!(Service.prototype instanceof ContextService)) {
       throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");
