@@ -16,6 +16,8 @@ import {
   subscribeToSignals as DsubscribeToSignals,
   emitSignal as DemitSignal,
   OnQuery as DOnQuery,
+  queryData as DqueryData,
+  queryDataSync as DqueryDataSync,
   useManager as DuseManager,
   Consume as DConsume,
   withConsumption as DwithConsumption,
@@ -39,6 +41,8 @@ import {
   subscribeToSignals as PsubscribeToSignals,
   emitSignal as PemitSignal,
   OnQuery as POnQuery,
+  queryData as PqueryData,
+  queryDataSync as PqueryDataSync,
   useManager as PuseManager,
   Consume as PConsume,
   withConsumption as PwithConsumption,
@@ -68,6 +72,8 @@ export const subscribeToSignals = process.env.NODE_ENV === "production" ? Psubsc
 export const emitSignal = process.env.NODE_ENV === "production" ? PemitSignal : DemitSignal;
 
 export const OnQuery = process.env.NODE_ENV === "production" ? POnQuery : DOnQuery;
+export const queryData = process.env.NODE_ENV === "production" ? PqueryData : DqueryData;
+export const queryDataSync = process.env.NODE_ENV === "production" ? PqueryDataSync : DqueryDataSync;
 
 export const useManager = process.env.NODE_ENV === "production" ? PuseManager : DuseManager;
 export const Consume = process.env.NODE_ENV === "production" ? PConsume : DConsume;
