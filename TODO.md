@@ -43,8 +43,8 @@
   - [+] useManager
   - [+] withConsumption
   - [+] withProvision
-  
-  - [-] @OnSignal
+  - [+] @OnSignal
+
   - [-] addManagerObserver
   - [-] consumption
   - [-] createSetter
@@ -57,7 +57,6 @@
   - [-] nextAsyncQueue
   - [-] provision
   - [-] queries
-  - [-] queries
   - [-] registerService
   - [-] removeManagerObserver
   - [-] services
@@ -66,6 +65,7 @@
   - [-] testing
   - [-] unRegisterService
   - [-] unSubscribeFromSignals
-  - [-] useSignal
+  - [-] useSignals
   - [-] queryData
+  - [-] queryDataSync
   - [-] createComputed

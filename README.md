@@ -65,6 +65,7 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [createLoadable](https://github.com/Neloreck/dreamstate/wiki/createLoadable)
 - [createNested](https://github.com/Neloreck/dreamstate/wiki/createMutable)
 - [createComputed](https://github.com/Neloreck/dreamstate/wiki/createComputed)
+- [createActions](https://github.com/Neloreck/dreamstate/wiki/createActions)
 - [createSetter](https://github.com/Neloreck/dreamstate/wiki/createSetter)
 
 #### [Testing](https://github.com/Neloreck/dreamstate/wiki/testing)

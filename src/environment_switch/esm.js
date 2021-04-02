@@ -25,6 +25,7 @@ import {
   createLoadable as DcreateLoadable,
   createNested as DcreateNested,
   createComputed as DcreateComputed,
+  createActions as DcreateActions,
   createSetter as DcreateSetter
 } from "./development";
 import {
@@ -50,6 +51,7 @@ import {
   createLoadable as PcreateLoadable,
   createNested as PcreateNested,
   createComputed as PcreateComputed,
+  createActions as PcreateActions,
   createSetter as PcreateSetter
 } from "./production";
 
@@ -83,4 +85,5 @@ export const Bind = process.env.NODE_ENV === "production" ? PBind : DBind;
 export const createLoadable = process.env.NODE_ENV === "production" ? PcreateLoadable : DcreateLoadable;
 export const createNested = process.env.NODE_ENV === "production" ? PcreateNested : DcreateNested;
 export const createComputed = process.env.NODE_ENV === "production" ? PcreateComputed : DcreateComputed;
+export const createActions = process.env.NODE_ENV === "production" ? PcreateActions : DcreateActions;
 export const createSetter = process.env.NODE_ENV === "production" ? PcreateSetter : DcreateSetter;

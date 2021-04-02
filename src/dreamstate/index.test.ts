@@ -44,6 +44,7 @@ describe("Library exported API", () => {
     "createNested",
     "createComputed",
     "createLoadable",
+    "createActions",
     "createSetter",
     "Bind"
   ];

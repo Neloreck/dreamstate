@@ -46,3 +46,4 @@ export { createLoadable } from "@/dreamstate/utils/createLoadable";
 export { createNested } from "@/dreamstate/utils/createNested";
 export { createComputed } from "@/dreamstate/utils/createComputed";
 export { createSetter } from "@/dreamstate/utils/createSetter";
+export { createActions } from "@/dreamstate/utils/createActions";

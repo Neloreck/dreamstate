@@ -29,4 +29,4 @@ export interface IComputed<T extends TAnyObject, C extends TAnyObject> {
   __diff__?: Array<any>;
 }
 
-export type TComputed<T extends TAnyObject, C extends TAnyObject = any> = T & IComputed<T, C>;
+export type TComputed<T extends TAnyObject, C extends TAnyObject = any> = Readonly<T & IComputed<T, C>>;

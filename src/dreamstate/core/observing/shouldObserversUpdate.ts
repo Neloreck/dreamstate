@@ -2,6 +2,7 @@ import { shallowEqualObjects } from "shallow-equal";
 
 import { dev } from "@/macroses/dev.macro";
 
+import { ActionsStore } from "@/dreamstate/core/observing/ActionsStore";
 import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
 import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
 import { IStringIndexed, TAnyObject } from "@/dreamstate/types";
@@ -29,9 +30,13 @@ export function shouldObserversUpdate<T extends TAnyObject>(
     Object.keys(nextContext).some(function(key: string): boolean {
       /**
        * Ignore computed values.
+       * Ignore action values.
        * Since nested computed stores are not representing data itself, we should not verify anything there.
        */
-      if (nextContext[key] instanceof ComputedValue) {
+      if (
+        nextContext[key] instanceof ComputedValue ||
+        nextContext[key] instanceof ActionsStore
+      ) {
         return false;
       }
 

@@ -1,0 +1,14 @@
+import { ActionsStore } from "@/dreamstate/core/observing/ActionsStore";
+import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
+
+describe("ActionsStore value class", () => {
+  it("Should not be checked when comparing values before manager update", () => {
+    const firstActionsStore = { nested: Object.assign(new ActionsStore(), { a: () => {} }) };
+    const secondActionsStore = { nested: Object.assign(new ActionsStore(), { a: () => {} }) };
+    const thirdActionsStore = { nested: Object.assign(new ActionsStore(), { c: () => {} }) };
+
+    expect(shouldObserversUpdate(firstActionsStore, secondActionsStore)).toBeFalsy();
+    expect(shouldObserversUpdate(firstActionsStore, thirdActionsStore)).toBeFalsy();
+    expect(shouldObserversUpdate(secondActionsStore, thirdActionsStore)).toBeFalsy();
+  });
+});
