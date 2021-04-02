@@ -4,44 +4,44 @@ export interface IBaseSignal<T extends TSignalType = TSignalType, D = undefined>
   /**
    * Type of current signal.
    */
-  type: T;
+  readonly type: T;
   /**
    * Data of current signal base call.
    */
-  data?: D;
+  readonly data?: D;
 }
 
 export interface ISignalWithoutData<T extends TSignalType = TSignalType> extends Object {
   /**
    * Type of current signal.
    */
-  type: T;
+  readonly type: T;
 }
 
 export interface ISignalWithData<T extends TSignalType = TSignalType, D = undefined, > extends Object {
   /**
    * Type of current signal.
    */
-  type: T;
+  readonly type: T;
   /**
    * Data of current signal.
    */
-  data: D;
+  readonly data: D;
 }
 
 export interface ISignalEvent<T extends TSignalType, D> extends IBaseSignal<T, D> {
   /**
    * Strict type of current signal data.
    */
-  data: D;
+  readonly data: D;
   /**
    * Signal sender.
    */
-  emitter: TAnyContextServiceConstructor | null;
+  readonly emitter: TAnyContextServiceConstructor | null;
   /**
    * Signal emit timestamp.
    */
-  timestamp: number;
+  readonly timestamp: number;
   /**
    * Stop signal handling by next listeners.
    */
@@ -59,14 +59,14 @@ export type TSignalListener<T extends TSignalType = TSignalType, D = undefined> 
 export type TSignalSubscriptionMetadata = Array<[string | symbol, TSignalType | Array<TSignalType>]>;
 
 export type TDerivedSignal<T extends TSignalType = TSignalType, D = undefined> =
-  Readonly<D extends undefined ? ISignalWithoutData<T> : ISignalWithData<T, D>>;
+  D extends undefined ? ISignalWithoutData<T> : ISignalWithData<T, D>;
 
 export type TDerivedSignalEvent<
   T extends TSignalType | ISignalWithData | ISignalWithoutData = TSignalType,
   D = undefined
 > =
-  Readonly<T extends ISignalWithData<TSignalType, any>
+  T extends ISignalWithData<TSignalType, any>
     ? ISignalEvent<T["type"], T["data"]>
     : T extends ISignalWithoutData
       ? ISignalEvent<T["type"], undefined>
-      : ISignalEvent<T extends TSignalType ? T : never, D>>;
+      : ISignalEvent<T extends TSignalType ? T : never, D>;

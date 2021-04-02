@@ -11,8 +11,10 @@ import { TAnyObject, TConstructorKey, TDreamstateService, TPartialTransformer } 
  * Class based context manager for react.
  * Current Issue: Static items inside of each class instance.
  */
-export abstract class ContextManager
-  <T extends TAnyObject, S extends TAnyObject = TAnyObject> extends ContextService<S> {
+export abstract class ContextManager<
+  T extends TAnyObject,
+  S extends TAnyObject = TAnyObject
+> extends ContextService<S> {
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.

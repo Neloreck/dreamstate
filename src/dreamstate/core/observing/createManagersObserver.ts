@@ -29,7 +29,10 @@ import {
 /**
  * Utility method for observers creation.
  */
-export function createManagersObserver(children: ComponentType | null, sources: Array<TAnyContextServiceConstructor>) {
+export function createManagersObserver(
+  children: ComponentType | null,
+  sources: Array<TAnyContextServiceConstructor>
+) {
   if (!Array.isArray(sources)) {
     throw new TypeError(
       "Wrong providers parameter supplied. Only array of context services is acceptable."

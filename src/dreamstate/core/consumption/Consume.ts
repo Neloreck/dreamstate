@@ -11,7 +11,10 @@ import { IConsumeDecorator, IStringIndexed, TAnyObject, TConsumable, TTakeContex
 /**
  * Function for consume wrappers that maps selectors and allows class components to consume store data.
  */
-export function createManagersConsumer(Target: ComponentType, sources: Array<TConsumable<any>>) {
+export function createManagersConsumer(
+  Target: ComponentType,
+  sources: Array<TConsumable<any>>
+) {
   if (!Array.isArray(sources)) {
     throw new TypeError("Expecting 'source' parameter to be array type.");
   }

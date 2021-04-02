@@ -11,7 +11,11 @@ import {
  * If it is async, add then and catch handlers.
  * If it is sync - return value or reject on catch.
  */
-export function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
+export function promisifyQuery<
+  R,
+  D = undefined,
+  T extends TQueryType = TQueryType
+>(
   service: ContextService,
   method: TQueryType,
   query: IOptionalQueryRequest<D, T>

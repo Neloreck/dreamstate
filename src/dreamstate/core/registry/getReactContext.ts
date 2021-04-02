@@ -6,7 +6,9 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 /**
  * Get manager react context internal.
  */
-export function getReactContext<T extends TAnyContextManagerConstructor>(
+export function getReactContext<
+  T extends TAnyContextManagerConstructor
+>(
   Manager: T
 ): Context<T> {
   if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(Manager)) {
