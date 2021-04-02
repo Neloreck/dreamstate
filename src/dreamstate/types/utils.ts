@@ -15,7 +15,7 @@ export interface ILoadable<T, E = Error> extends INestedStore {
   asUpdated(value: T): ILoadable<T, E>;
 }
 
-export type TLoadable<T, E = Error> = ILoadable<T, E>;
+export type TLoadable<T, E = Error> = Readonly<ILoadable<T, E>>;
 
 export interface INested<T> extends INestedStore {
   asMerged(state: Partial<T>): TNested<T>;

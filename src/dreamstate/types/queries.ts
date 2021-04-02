@@ -47,6 +47,8 @@ export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType
   answerer: TAnyContextServiceConstructor;
 }
 
-export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = IQueryResponse<D, T>;
+export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType>
+  = Readonly<IQueryResponse<D, T>>;
 
-export type TOptionalQueryResponse<D = undefined, T extends TQueryType = TQueryType> = null | IQueryResponse<D, T>;
+export type TOptionalQueryResponse<D = undefined, T extends TQueryType
+  = TQueryType> = null | Readonly<IQueryResponse<D, T>>;
