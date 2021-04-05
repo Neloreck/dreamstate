@@ -4,6 +4,7 @@ import {
   IBaseSignal,
   ISignalEvent,
   TAnyContextServiceConstructor,
+  TCallable,
   TSignalListener,
   TSignalType
 } from "@/dreamstate/types";
@@ -27,7 +28,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   });
 
   // Async processing of subscribed metadata to prevent exception blocking.
-  return new Promise<void>(function(resolve: () => void): void {
+  return new Promise<void>(function(resolve: TCallable): void {
     const handlersToProcessCount: number = SIGNAL_LISTENERS_REGISTRY.size;
     let processedHandlers: number = 0;
 

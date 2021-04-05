@@ -1,6 +1,6 @@
 import { QUERY_PROVIDERS_REGISTRY } from "@/dreamstate/core/internals";
 import { unRegisterQueryProvider } from "@/dreamstate/core/queries/unRegisterQueryProvider";
-import { TQueryListener, TQueryType } from "@/dreamstate/types";
+import { TCallable, TQueryListener, TQueryType } from "@/dreamstate/types";
 
 /**
  * Register as query provider and answer calls.
@@ -12,7 +12,7 @@ import { TQueryListener, TQueryType } from "@/dreamstate/types";
 export function registerQueryProvider<T extends TQueryType>(
   queryType: T,
   listener: TQueryListener<T, any>
-): () => void {
+): TCallable {
   if (typeof listener !== "function") {
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
   }

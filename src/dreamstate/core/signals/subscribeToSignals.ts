@@ -1,5 +1,5 @@
 import { SIGNAL_LISTENERS_REGISTRY } from "@/dreamstate/core/internals";
-import { TSignalListener, TSignalType } from "@/dreamstate/types";
+import { TCallable, TSignalListener, TSignalType } from "@/dreamstate/types";
 
 /**
  * Subscribe to all signals and listen everything.
@@ -10,7 +10,7 @@ import { TSignalListener, TSignalType } from "@/dreamstate/types";
  */
 export function subscribeToSignals<T extends TSignalType, D = undefined>(
   listener: TSignalListener<T, D>
-): () => void {
+): TCallable {
   if (typeof listener !== "function") {
     throw new Error(`Signal listener must be function, '${typeof listener}' provided.`);
   }

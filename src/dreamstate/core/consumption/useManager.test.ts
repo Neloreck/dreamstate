@@ -7,7 +7,7 @@ import { CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 import {
   TestContextManager,
   ITestContext
@@ -18,7 +18,7 @@ describe("UseManager subscription and rendering", () => {
     onUpdate,
     onCheckContextDiff
   }: {
-    onUpdate: () => void;
+    onUpdate: TCallable;
     onCheckContextDiff?: (context: T["prototype"]["context"]) => Array<any>;
   }): ReactElement {
     const context: TAnyObject = useManager(TestContextManager as any, onCheckContextDiff as any);

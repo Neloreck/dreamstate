@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";
-import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
 import { TCallable, TSignalListener, TSignalType } from "@/dreamstate/types";
 
 /**
@@ -16,10 +15,6 @@ export function useSignals<
   dependencies: Array<any>
 ): void {
   useEffect(function(): TCallable {
-    subscribeToSignals(subscriber);
-
-    return function(): void {
-      unsubscribeFromSignals(subscriber);
-    };
+    return subscribeToSignals(subscriber);
   }, dependencies);
 }
