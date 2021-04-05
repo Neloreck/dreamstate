@@ -8,8 +8,8 @@ import { TSignalListener, TSignalType } from "@/dreamstate/types";
  *
  * Returns function that unsubscribe current handler.
  */
-export function subscribeToSignals(
-  listener: TSignalListener<TSignalType, any>
+export function subscribeToSignals<T extends TSignalType, D = undefined>(
+  listener: TSignalListener<T, D>
 ): () => void {
   if (typeof listener !== "function") {
     throw new Error(`Signal listener must be function, '${typeof listener}' provided.`);
