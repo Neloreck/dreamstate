@@ -1,4 +1,4 @@
-## 3.3.0 (*/*/*)
+## 3.3.0 (4/5/2021)
   * 'initialState' for context providers while constructing servers before provision
   * 'queryDataSync' for sync queries execution without promises
   * 'useSignals' now subscribes to provided dependencies and does proper re-subscription in useEffect

@@ -1,7 +1,7 @@
 # <a href='https://www.npmjs.com/package/dreamstate'> 🎸 dreamstate </a>
 
 [![npm version](https://img.shields.io/npm/v/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
-[![language-ts](https://img.shields.io/badge/language-typescript%3A%20100%25-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/search?l=typescript)
+[![language-ts](https://img.shields.io/badge/language-typescript%3A%95%25-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/search?l=typescript)
 <br/>
 [![start with wiki](https://img.shields.io/badge/docs-wiki-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/wiki)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/blob/master/LICENSE)
