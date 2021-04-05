@@ -40,6 +40,8 @@ describe("Library exported API", () => {
     "OnQuery",
     "queryData",
     "queryDataSync",
+    "registerQueryProvider",
+    "unRegisterQueryProvider",
     // Utils.
     "createNested",
     "createComputed",

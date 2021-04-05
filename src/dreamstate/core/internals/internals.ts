@@ -8,7 +8,9 @@ import type {
   TUpdateObserver,
   TUpdateSubscriber,
   TAnyObject,
-  TAnyContextServiceConstructor
+  TAnyContextServiceConstructor,
+  TQueryType,
+  TQueryListener
 } from "@/dreamstate/types";
 
 /**
@@ -53,3 +55,6 @@ export const CONTEXT_QUERY_METADATA_REGISTRY: TServiceMap<TQuerySubscriptionMeta
 
 // Global signal listeners registry.
 export const SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any, any>> = new Set();
+
+// Global query providers registry.
+export const QUERY_PROVIDERS_REGISTRY: Map<TQueryType, Array<TQueryListener<any, any>>> = new Map();

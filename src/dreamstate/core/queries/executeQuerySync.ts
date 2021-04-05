@@ -1,7 +1,8 @@
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import {
   IOptionalQueryRequest,
+  TAnyCallable,
   TAnyContextServiceConstructor,
+  TQueryListener,
   TQueryType
 } from "@/dreamstate/types";
 
@@ -13,14 +14,14 @@ export function executeQuerySync<
   D = undefined,
   T extends TQueryType = TQueryType
 >(
-  service: ContextService,
-  method: TQueryType,
-  query: IOptionalQueryRequest<D, T>
+  callback: TQueryListener<T, D>,
+  query: IOptionalQueryRequest<D, T>,
+  answerer: TAnyContextServiceConstructor | null
 ) {
   return ({
-    answerer: service.constructor as TAnyContextServiceConstructor,
+    answerer: answerer || callback as TAnyCallable,
     type: query.type,
-    data: (service as any)[method](query),
+    data: callback(query),
     timestamp: Date.now()
   });
 }

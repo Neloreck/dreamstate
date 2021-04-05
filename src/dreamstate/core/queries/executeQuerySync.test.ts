@@ -9,9 +9,10 @@ describe("executeQuerySync method", () => {
     };
 
     const data = 1000;
-    const result = executeQuerySync(service as any, "testMethod", data as any);
+    const result = executeQuerySync(service.testMethod, data as any, null);
 
     expect(result!.data).toBe(data);
+    expect(result!.answerer).toBe(service.testMethod);
   });
 
   it("Should properly call async methods", async () => {
@@ -22,7 +23,7 @@ describe("executeQuerySync method", () => {
     };
 
     const data = 1000;
-    const result = executeQuerySync(service as any, "testMethod", data as any);
+    const result = executeQuerySync(service.testMethod, data as any, null);
     const res = await result!.data;
 
     expect(res).toBe(data);
@@ -35,7 +36,7 @@ describe("executeQuerySync method", () => {
       }
     };
 
-    expect(() => executeQuerySync(service as any, "testMethod", 123 as any)).toThrow(Error);
+    expect(() => executeQuerySync(service.testMethod.bind(service), 123 as any, null)).toThrow(Error);
   });
 
   it("Should properly handle async exceptions", async () => {
@@ -46,7 +47,7 @@ describe("executeQuerySync method", () => {
     };
 
     const data = 1000;
-    const result = executeQuerySync(service as any, "testMethod", data as any);
+    const result = executeQuerySync(service.testMethod.bind(service), data as any, null);
 
     expect(result!.data).rejects.toBeInstanceOf(Error);
   });

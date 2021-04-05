@@ -18,6 +18,8 @@ import {
   OnQuery as DOnQuery,
   queryData as DqueryData,
   queryDataSync as DqueryDataSync,
+  registerQueryProvider as DregisterQueryProvider,
+  unRegisterQueryProvider as DunRegisterQueryProvider,
   useManager as DuseManager,
   Consume as DConsume,
   withConsumption as DwithConsumption,
@@ -44,6 +46,8 @@ import {
   OnQuery as POnQuery,
   queryData as PqueryData,
   queryDataSync as PqueryDataSync,
+  registerQueryProvider as PregisterQueryProvider,
+  unRegisterQueryProvider as PunRegisterQueryProvider,
   useManager as PuseManager,
   Consume as PConsume,
   withConsumption as PwithConsumption,
@@ -76,6 +80,12 @@ export const emitSignal = process.env.NODE_ENV === "production" ? PemitSignal : 
 export const OnQuery = process.env.NODE_ENV === "production" ? POnQuery : DOnQuery;
 export const queryData = process.env.NODE_ENV === "production" ? PqueryData : DqueryData;
 export const queryDataSync = process.env.NODE_ENV === "production" ? PqueryDataSync : DqueryDataSync;
+export const registerQueryProvider = process.env.NODE_ENV === "production"
+  ? PregisterQueryProvider
+  : DregisterQueryProvider;
+export const unRegisterQueryProvider = process.env.NODE_ENV === "production" ?
+  PunRegisterQueryProvider
+  : DunRegisterQueryProvider;
 
 export const useManager = process.env.NODE_ENV === "production" ? PuseManager : DuseManager;
 export const Consume = process.env.NODE_ENV === "production" ? PConsume : DConsume;

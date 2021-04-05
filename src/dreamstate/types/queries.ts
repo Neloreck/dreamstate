@@ -28,6 +28,9 @@ export type TQueryRequest<D = undefined, T extends TQueryType = TQueryType> = IQ
 
 export type TQuerySubscriptionMetadata = Array<[ string | symbol, TQueryType ]>;
 
+export type TQueryListener<T extends TQueryType = TQueryType, D = undefined, R = any> =
+  (query: IQueryRequest<D, T> | IOptionalQueryRequest<D, T>) => R | null;
+
 export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
@@ -44,7 +47,7 @@ export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType
   /**
    * Query answerer.
    */
-  readonly answerer: TAnyContextServiceConstructor;
+  readonly answerer: TAnyContextServiceConstructor | (() => any);
 }
 
 export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = IQueryResponse<D, T>;

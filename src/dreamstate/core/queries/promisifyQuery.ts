@@ -1,8 +1,8 @@
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import {
   IOptionalQueryRequest,
   IQueryResponse,
-  TAnyContextServiceConstructor,
+  TAnyCallable,
+  TAnyContextServiceConstructor, TQueryListener,
   TQueryType
 } from "@/dreamstate/types";
 
@@ -16,9 +16,9 @@ export function promisifyQuery<
   D = undefined,
   T extends TQueryType = TQueryType
 >(
-  service: ContextService,
-  method: TQueryType,
-  query: IOptionalQueryRequest<D, T>
+  callback: TQueryListener<T, D, R>,
+  query: IOptionalQueryRequest<D, T>,
+  answerer: TAnyContextServiceConstructor | null
 ) {
   return new Promise(function(
     resolve: (response: IQueryResponse<R, T> | null) => void,
@@ -26,13 +26,13 @@ export function promisifyQuery<
   ) {
     try {
       const timestamp: number = Date.now();
-      const result: any = (service as any)[method](query);
+      const result: any = callback(query);
 
       if (result instanceof Promise) {
         return result
           .then(function(data: any): void {
             resolve({
-              answerer: service.constructor as TAnyContextServiceConstructor,
+              answerer: answerer || callback as TAnyCallable,
               type: query.type,
               data,
               timestamp
@@ -41,7 +41,7 @@ export function promisifyQuery<
           .catch(reject);
       } else {
         return resolve({
-          answerer: service.constructor as TAnyContextServiceConstructor,
+          answerer: answerer || callback as TAnyCallable,
           type: query.type,
           data: result,
           timestamp

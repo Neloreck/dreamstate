@@ -10,9 +10,10 @@ describe("promisifyQuery method", () => {
 
     const data = 1000;
 
-    const result = await promisifyQuery(service as any, "testMethod", data as any);
+    const result = await promisifyQuery(service.testMethod, data as any, null);
 
     expect(result!.data).toBe(data);
+    expect(result!.answerer).toBe(service.testMethod);
   });
 
   it("Should properly call async methods", async () => {
@@ -24,9 +25,10 @@ describe("promisifyQuery method", () => {
 
     const data = 1000;
 
-    const result = await promisifyQuery(service as any, "testMethod", data as any);
+    const result = await promisifyQuery(service.testMethod, data as any, null);
 
     expect(result!.data).toBe(data);
+    expect(result!.answerer).toBe(service.testMethod);
   });
 
   it("Should properly handle sync exceptions", async () => {
@@ -36,7 +38,7 @@ describe("promisifyQuery method", () => {
       }
     };
 
-    expect(promisifyQuery(service as any, "testMethod", 123 as any)).rejects.toBeInstanceOf(Error);
+    expect(promisifyQuery(service.testMethod.bind(service), 123 as any, null)).rejects.toBeInstanceOf(Error);
   });
 
   it("Should properly handle async exceptions", async () => {
@@ -46,6 +48,6 @@ describe("promisifyQuery method", () => {
       }
     };
 
-    expect(promisifyQuery(service as any, "testMethod", 123 as any)).rejects.toBeInstanceOf(Error);
+    expect(promisifyQuery(service.testMethod.bind(service), 123 as any, null)).rejects.toBeInstanceOf(Error);
   });
 });

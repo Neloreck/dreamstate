@@ -1,10 +1,17 @@
+import { ContextService } from "@/dreamstate";
 import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
-  CONTEXT_SERVICES_REGISTRY
+  CONTEXT_SERVICES_REGISTRY,
+  QUERY_PROVIDERS_REGISTRY
 } from "@/dreamstate/core/internals";
 import { promisifyQuery } from "@/dreamstate/core/queries/promisifyQuery";
-import { IOptionalQueryRequest, TQueryResponse } from "@/dreamstate/types";
+import {
+  IOptionalQueryRequest,
+  TAnyContextServiceConstructor,
+  TQueryListener,
+  TQueryResponse
+} from "@/dreamstate/types";
 
 export function queryMultiple<R>(
   queries: Array<IOptionalQueryRequest>
@@ -16,7 +23,13 @@ export function queryMultiple<R>(
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         for (let it = 0; it < queries.length; it ++) {
           if (queries[it].type === type && !resolved[it]) {
-            resolved[it] = promisifyQuery(CONTEXT_SERVICES_REGISTRY.get(service)!, method, queries[it]);
+            const handlerService: ContextService = CONTEXT_SERVICES_REGISTRY.get(service)!;
+
+            resolved[it] = promisifyQuery(
+              (handlerService as any)[method].bind(handlerService),
+              queries[it],
+              handlerService.constructor as TAnyContextServiceConstructor
+            );
           }
         }
       }
@@ -24,6 +37,16 @@ export function queryMultiple<R>(
   }
 
   for (let it = 0; it < resolved.length; it ++) {
+    if (!resolved[it]) {
+      if (QUERY_PROVIDERS_REGISTRY.has(queries[it].type)) {
+        const handlerFunction: TQueryListener<any, any> = QUERY_PROVIDERS_REGISTRY.get(queries[it].type)![0];
+
+        resolved[it] = promisifyQuery(handlerFunction, queries[it], null);
+      } else {
+        resolved[it] = Promise.resolve(null);
+      }
+    }
+
     resolved[it] = resolved[it] || Promise.resolve(null);
   }
 

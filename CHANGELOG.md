@@ -1,3 +1,7 @@
+## 3.3.1 (*/*/2021)
+  * 'registerQueryProvider' method added
+  * 'unRegisterQueryProvider' method added
+
 ## 3.3.0 (4/5/2021)
   * 'initialState' for context providers while constructing servers before provision
   * 'queryDataSync' for sync queries execution without promises
