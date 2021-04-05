@@ -21,7 +21,7 @@ export function unRegisterQueryProvider<T extends TQueryType>(
       });
 
     if (nextProviders.length) {
-      QUERY_PROVIDERS_REGISTRY.set(queryType, nextProviders)
+      QUERY_PROVIDERS_REGISTRY.set(queryType, nextProviders);
     } else {
       QUERY_PROVIDERS_REGISTRY.delete(queryType);
     }
