@@ -6,9 +6,6 @@
 
 ### Build
   - test dev assistance with logs and warnings for separate bundles
-  
-### Extension
-  - ???
 
 ### Lib
   - Store schema registry/creating and validation when initializing context managers?
@@ -16,6 +13,8 @@
   - check preact
   - assistance messages when consuming, but tree is not provided
   - Scope component or something like it for query/signals scoping
+  - Optimize queries code
+  - Deprecate multiple queries support?
 
 ##### Utils
   - createAsync as loadable copy with stored promise or extended createLoadable
@@ -27,45 +26,3 @@
 
 ##### docs FAQ cover cases:
   - beforeUpdate for computed values?
-
-##### docs state:
-  - [+] @Bind
-  - [+] @Consume
-  - [+] @OnQuery
-  - [+] @Provide
-  - [+] ContextManager
-  - [+] ContextService
-  - [+] ContextService
-  - [+] createLoadable
-  - [+] createProvider
-  - [+] getCurrent
-  - [+] getCurrentContext
-  - [+] useManager
-  - [+] withConsumption
-  - [+] withProvision
-  - [+] @OnSignal
-
-  - [-] addManagerObserver
-  - [-] consumption
-  - [-] createSetter
-  - [-] emitSignal
-  - [-] FAQ
-  - [-] getReactConsumer
-  - [-] getReactProvider
-  - [-] getServiceObserversCount
-  - [-] isServiceProvided
-  - [-] nextAsyncQueue
-  - [-] provision
-  - [-] queries
-  - [-] registerService
-  - [-] removeManagerObserver
-  - [-] services
-  - [-] signals
-  - [-] subscribeToSignals
-  - [-] testing
-  - [-] unRegisterService
-  - [-] unSubscribeFromSignals
-  - [-] useSignals
-  - [-] queryData
-  - [-] queryDataSync
-  - [-] createComputed
