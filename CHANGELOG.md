@@ -1,6 +1,8 @@
-## 3.3.1 (*/*/2021)
+## 3.3.1 (4/6/2021)
   * 'registerQueryProvider' method added
   * 'unRegisterQueryProvider' method added
+  * syncQuery improvements
+  * types improvements
 
 ## 3.3.0 (4/5/2021)
   * 'initialState' for context providers while constructing servers before provision
