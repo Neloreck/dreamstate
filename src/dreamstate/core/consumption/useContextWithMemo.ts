@@ -11,8 +11,8 @@ import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dre
  */
 export function useContextWithMemo<
   T extends TAnyObject,
-  C extends TAnyObject,
-  D extends IContextManagerConstructor<T, C>
+  S extends TAnyObject,
+  D extends IContextManagerConstructor<S, T>
 >(
   Manager: D,
   depsSelector: (context: T) => Array<any>

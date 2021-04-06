@@ -23,6 +23,7 @@ export const TS_BUILD_CONFIG = path.resolve(__dirname, "./tsconfig.build.json");
 export const TS_PORTABLE_CONFIG = path.resolve(__dirname, "./tsconfig.portable.json");
 
 export const CORE_ENTRY = path.resolve(PROJECT_ROOT, "./src/dreamstate/index.ts");
+export const PORTABLE_ENTRY = path.resolve(PROJECT_ROOT, "./src/environment_switch/portable.ts");
 export const TEST_UTILS_ENTRY = path.resolve(PROJECT_ROOT, "./src/dreamstate/test-utils.ts");
 
 export const SRC_PATH = path.resolve(PROJECT_ROOT, "./src");

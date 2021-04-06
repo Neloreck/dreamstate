@@ -8,7 +8,7 @@ import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dre
  */
 export function subscribeToManager<
   T extends TAnyObject,
-  D extends IContextManagerConstructor<T, any>
+  D extends IContextManagerConstructor<any, T, any>
 >(
   Manager: D,
   subscriber: TUpdateSubscriber<T>

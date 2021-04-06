@@ -1,4 +1,5 @@
 import { queryData } from "@/dreamstate/core/queries/queryData";
+import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import {
   IBaseSignal,
@@ -46,28 +47,26 @@ export abstract class ContextService<S extends TAnyObject = TAnyObject> {
    * Send context query to retrieve data from @OnQuery method with required types.
    */
   protected queryData<
-    R extends any,
     D extends any,
     T extends TQueryType,
     Q extends IOptionalQueryRequest<D, T> | Array<IOptionalQueryRequest>
     >(
     queryRequest: Q
   ) {
-    return queryData<R, D, T, Q>(queryRequest);
+    return queryData<any, D, T, Q>(queryRequest);
   }
 
   /**
    * Send sync context query to retrieve data from @OnQuery method with required types.
    */
   protected queryDataSync<
-    R extends any,
     D extends any,
     T extends TQueryType,
     Q extends IOptionalQueryRequest<D, T>
     >(
     queryRequest: Q
   ) {
-    return queryData<R, D, T, Q>(queryRequest);
+    return queryDataSync<any, D, T, Q>(queryRequest);
   }
 
 }

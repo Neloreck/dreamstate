@@ -102,7 +102,7 @@ export function createManagersObserver(
     useEffect(function() {
       for (let it = 0; it < viewState.current.observedSources.length; it ++) {
         addServiceObserverToRegistry(viewState.current.observedSources[it], updateProviders);
-        registerService(viewState.current.observedSources[it]);
+        registerService(viewState.current.observedSources[it], props.initialState);
         startServiceObserving(viewState.current.observedSources[it]);
       }
 

@@ -10,7 +10,7 @@ import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 
 import { default as tsconfig } from "../../tsconfig.json";
 import {
-  CORE_ENTRY,
+  PORTABLE_ENTRY,
   TS_PORTABLE_CONFIG,
   SIZE_SNAPSHOT_PATH,
   PORTABLE_ROOT, EEnvironment
@@ -24,7 +24,7 @@ const createPortableConfig = (env) => ({
     "shallow-equal",
     "hoist-non-react-statics"
   ],
-  input: CORE_ENTRY,
+  input: PORTABLE_ENTRY,
   preserveModules: false,
   output: {
     compact: env === EEnvironment.PRODUCTION,
@@ -53,7 +53,7 @@ const createPortableConfig = (env) => ({
 
 const createPortableDtsConfig = (env) => ({
   input: [
-    CORE_ENTRY
+    PORTABLE_ENTRY
   ],
   output: {
     file: path.resolve(PORTABLE_ROOT, "dreamstate.d.ts"),
