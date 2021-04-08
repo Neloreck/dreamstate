@@ -1,3 +1,6 @@
+## 3.3.2 (4/6/2021)
+  * 'hotUpdates' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers
+
 ## 3.3.1 (4/6/2021)
   * 'registerQueryProvider' method added
   * 'unRegisterQueryProvider' method added
