@@ -15,6 +15,7 @@
   - Scope component or something like it for query/signals scoping
   - Optimize queries code
   - Deprecate multiple queries support?
+  - Deprecate/update createSetter method
 
 ##### Utils
   - createAsync as loadable copy with stored promise or extended createLoadable
