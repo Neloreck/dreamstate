@@ -55,7 +55,7 @@ export function createManagersObserver(
       forceRender({});
     }, EMPTY_ARR);
 
-    if (props.hotUpdates) {
+    if (props.partialHotReplacement) {
       useHotObservers(sources, props.initialState, updateProviders);
     } else {
       useStaticObservers(sources, props.initialState, updateProviders);
