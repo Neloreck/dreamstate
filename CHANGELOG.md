@@ -1,3 +1,7 @@
+## 3.3.2 (4/11/2021)
+  * 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers
+  * deprecated multiple queries at once for queryData methods
+
 ## 3.3.1 (4/6/2021)
   * 'registerQueryProvider' method added
   * 'unRegisterQueryProvider' method added

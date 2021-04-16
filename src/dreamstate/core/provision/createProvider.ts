@@ -11,6 +11,6 @@ export function createProvider<
   T extends TAnyObject = TAnyObject
 >(
   sources: Array<TAnyContextServiceConstructor>
-): FunctionComponent<TAnyObject & { initialState?: T }> {
+): FunctionComponent<TAnyObject & { initialState?: T, partialHotReplacement?: boolean; }> {
   return createManagersObserver(null, sources);
 }

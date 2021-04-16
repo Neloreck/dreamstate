@@ -4,6 +4,8 @@ import { TAnyObject, TPartialTransformer } from "@/dreamstate/types";
 /**
  * Setter method factory.
  * !Strictly typed generic method with 'update' lifecycle.
+ *
+ * todo: Deprecate or support nested stores/loadable etc.
  */
 export function createSetter<S extends TAnyObject, D extends keyof S>(
   manager: ContextManager<S>,
