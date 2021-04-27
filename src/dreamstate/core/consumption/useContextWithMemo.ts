@@ -42,7 +42,7 @@ export function useContextWithMemo<
     return function() {
       unsubscribeFromManager(Manager, updateMemoState);
     };
-  });
+  }, [ Manager ]);
 
   return state;
 }
