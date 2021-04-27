@@ -15,6 +15,8 @@
   - Scope component or something like it for query/signals scoping
   - Optimize queries code
   - Deprecate multiple queries support?
+  - Do not send signals/queries from disposed services
+  - Add some check for services? (check instance, not service class)
   - Deprecate/update createSetter method
 
 ##### Utils
