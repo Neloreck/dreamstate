@@ -27,4 +27,31 @@ describe("createProvider method", () => {
     expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
     expect(CONTEXT_SERVICES_ACTIVATED.has(TestSingleContextService)).toBeTruthy();
   });
+
+  it("Should create observers with validation", () => {
+    expect(() => createProvider(0 as any)).toThrow(TypeError);
+    expect(() => createProvider("0" as any)).toThrow(TypeError);
+    expect(() => createProvider(false as any)).toThrow(TypeError);
+    expect(() => createProvider(null as any)).toThrow(TypeError);
+    expect(() => createProvider(null as any)).toThrow(TypeError);
+    expect(() => createProvider([ null as any ])).toThrow(TypeError);
+    expect(() => createProvider([ 0 as any ])).toThrow(TypeError);
+    expect(() => createProvider([ "0" as any ])).toThrow(TypeError);
+    expect(() => createProvider([ false as any ])).toThrow(TypeError);
+    expect(() => createProvider([ {} as any ])).toThrow(TypeError);
+    expect(() => createProvider([ new Function() as any ])).toThrow(TypeError);
+    expect(() => createProvider([ [] as any ])).toThrow(TypeError);
+    expect(() => createProvider([ class ExampleClass {} as any ])).toThrow(TypeError);
+
+    expect(() => createProvider([])).not.toThrow();
+    expect(() => createProvider([ TestContextManager, TestContextService ])).not.toThrow();
+    expect(() => createProvider([ TestContextService ])).not.toThrow();
+    expect(() => createProvider([ TestContextManager ])).not.toThrow();
+  });
+  it("Should create correct component tree without children", () => {
+    const el = createProvider([ TestContextManager, TestContextService ]);
+    const tree = mount(createElement(el, {}, createElement("div", {}, "testChild")));
+
+    expect(tree).toMatchSnapshot();
+  });
 });

@@ -1,7 +1,15 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`createProvider method Should create correct component tree without children 1`] = `
+<DS.Observer>
+  <div>
+    testChild
+  </div>
+</DS.Observer>
+`;
+
 exports[`createProvider method Should render correct component tree 1`] = `
-<Memo(DS.Observer)>
+<DS.Observer>
   test
-</Memo(DS.Observer)>
+</DS.Observer>
 `;

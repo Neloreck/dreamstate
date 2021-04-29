@@ -1,7 +1,7 @@
 {
   "name": "dreamstate-cli",
   "private": true,
-  "dependencies": {
+  "devDependencies": {
     "colors": "^1.4.0",
     "ncp": "^2.0.0",
     "rollup-plugin-babel": "^4.4.0",

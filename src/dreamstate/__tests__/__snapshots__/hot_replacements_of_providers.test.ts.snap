@@ -10,11 +10,11 @@ exports[`Mount order for providers Should correctly replace context managers: Pr
     ]
   }
 >
-  <Memo(DS.Observer)>
+  <DS.Observer>
     <div>
       nested
     </div>
-  </Memo(DS.Observer)>
+  </DS.Observer>
 </RootProvisioner>
 `;
 
@@ -31,16 +31,16 @@ exports[`Mount order for providers Should correctly work with few providers of s
     <div>
       nested
     </div>
-    <Memo(DS.Observer)>
+    <DS.Observer>
       <div>
         nested
       </div>
-    </Memo(DS.Observer)>
-    <Memo(DS.Observer)>
+    </DS.Observer>
+    <DS.Observer>
       <div>
         nested
       </div>
-    </Memo(DS.Observer)>
+    </DS.Observer>
     <div>
       nested
     </div>

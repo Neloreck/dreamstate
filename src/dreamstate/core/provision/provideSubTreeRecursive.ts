@@ -1,4 +1,4 @@
-import { createElement, ReactElement } from "react";
+import { createElement, ReactNode } from "react";
 
 import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
@@ -8,10 +8,10 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
  * Recursive impl.
  */
 export function provideSubTreeRecursive(
-  bottom: ReactElement,
+  bottom: ReactNode = null,
   sources: Array<TAnyContextManagerConstructor>,
   current: number
-): ReactElement {
+): ReactNode {
   return current >= sources.length
     ? bottom
     : createElement(

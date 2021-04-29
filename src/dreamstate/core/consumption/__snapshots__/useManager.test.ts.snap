@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`UseManager subscription and rendering Functional components should properly subscribe to managers with diff-checking cb 1`] = `
-<Memo(DS.Observer)>
+<DS.Observer>
   <FunctionalConsumerWithUseEffect
     onCheckContextDiff={[Function]}
     onUpdate={
@@ -22,11 +22,11 @@ exports[`UseManager subscription and rendering Functional components should prop
       {"first":"first","second":2,"third":false}
     </div>
   </FunctionalConsumerWithUseEffect>
-</Memo(DS.Observer)>
+</DS.Observer>
 `;
 
 exports[`UseManager subscription and rendering Functional components should properly subscribe to managers without diff-checking cb 1`] = `
-<Memo(DS.Observer)>
+<DS.Observer>
   <FunctionalConsumerWithUseEffect
     onUpdate={
       [MockFunction] {
@@ -46,5 +46,5 @@ exports[`UseManager subscription and rendering Functional components should prop
       {"first":"first","second":2,"third":false}
     </div>
   </FunctionalConsumerWithUseEffect>
-</Memo(DS.Observer)>
+</DS.Observer>
 `;
