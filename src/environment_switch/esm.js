@@ -8,8 +8,6 @@ import {
   getCurrentContext as DgetCurrentContext,
   getCurrent as DgetCurrent,
   createProvider as DcreateProvider,
-  Provide as DProvide,
-  withProvision as DPwithProvision,
   OnSignal as DOnSignal,
   useSignals as DuseSignals,
   unsubscribeFromSignals as DunsubscribeFromSignals,
@@ -21,14 +19,11 @@ import {
   registerQueryProvider as DregisterQueryProvider,
   unRegisterQueryProvider as DunRegisterQueryProvider,
   useManager as DuseManager,
-  Consume as DConsume,
-  withConsumption as DwithConsumption,
   Bind as DBind,
   createLoadable as DcreateLoadable,
   createNested as DcreateNested,
   createComputed as DcreateComputed,
   createActions as DcreateActions,
-  createSetter as DcreateSetter
 } from "./development";
 import {
   ContextService as PContextService,
@@ -36,8 +31,6 @@ import {
   getCurrentContext as PgetCurrentContext,
   getCurrent as PgetCurrent,
   createProvider as PcreateProvider,
-  Provide as PProvide,
-  withProvision as PwithProvision,
   OnSignal as POnSignal,
   useSignals as PuseSignals,
   unsubscribeFromSignals as PunsubscribeFromSignals,
@@ -49,14 +42,11 @@ import {
   registerQueryProvider as PregisterQueryProvider,
   unRegisterQueryProvider as PunRegisterQueryProvider,
   useManager as PuseManager,
-  Consume as PConsume,
-  withConsumption as PwithConsumption,
   Bind as PBind,
   createLoadable as PcreateLoadable,
   createNested as PcreateNested,
   createComputed as PcreateComputed,
   createActions as PcreateActions,
-  createSetter as PcreateSetter
 } from "./production";
 
 export const ContextService = process.env.NODE_ENV === "production" ? PContextService : DContextService;
@@ -66,8 +56,6 @@ export const getCurrentContext = process.env.NODE_ENV === "production" ? PgetCur
 export const getCurrent = process.env.NODE_ENV === "production" ? PgetCurrent : DgetCurrent;
 
 export const createProvider = process.env.NODE_ENV === "production" ? PcreateProvider : DcreateProvider;
-export const Provide = process.env.NODE_ENV === "production" ? PProvide : DProvide;
-export const withProvision = process.env.NODE_ENV === "production" ? PwithProvision : DPwithProvision;
 
 export const OnSignal = process.env.NODE_ENV === "production" ? POnSignal : DOnSignal;
 export const useSignals = process.env.NODE_ENV === "production" ? PuseSignals : DuseSignals;
@@ -88,12 +76,9 @@ export const unRegisterQueryProvider = process.env.NODE_ENV === "production" ?
   : DunRegisterQueryProvider;
 
 export const useManager = process.env.NODE_ENV === "production" ? PuseManager : DuseManager;
-export const Consume = process.env.NODE_ENV === "production" ? PConsume : DConsume;
-export const withConsumption = process.env.NODE_ENV === "production" ? PwithConsumption : DwithConsumption;
 
 export const Bind = process.env.NODE_ENV === "production" ? PBind : DBind;
 export const createLoadable = process.env.NODE_ENV === "production" ? PcreateLoadable : DcreateLoadable;
 export const createNested = process.env.NODE_ENV === "production" ? PcreateNested : DcreateNested;
 export const createComputed = process.env.NODE_ENV === "production" ? PcreateComputed : DcreateComputed;
 export const createActions = process.env.NODE_ENV === "production" ? PcreateActions : DcreateActions;
-export const createSetter = process.env.NODE_ENV === "production" ? PcreateSetter : DcreateSetter;

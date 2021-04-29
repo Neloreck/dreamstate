@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`@Provide decorator Should render correct component tree 1`] = `
-<Memo(DS.Observer)>
-  <ExampleProvided>
-    test
-  </ExampleProvided>
-</Memo(DS.Observer)>
-`;

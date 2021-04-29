@@ -40,13 +40,9 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 
 #### [Provision](https://github.com/Neloreck/dreamstate/wiki/provision)
 - [createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider)
-- [@Provide](https://github.com/Neloreck/dreamstate/wiki/@Provide)
-- [withProvision](https://github.com/Neloreck/dreamstate/wiki/withProvision)
 
 #### [Consumption](https://github.com/Neloreck/dreamstate/wiki/consumption)
 - [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager)
-- [@Consume](https://github.com/Neloreck/dreamstate/wiki/@Consume)
-- [withConsumption](https://github.com/Neloreck/dreamstate/wiki/withConsumption)
 
 #### [Signals](https://github.com/Neloreck/dreamstate/wiki/signals)
 - [emitSignal](https://github.com/Neloreck/dreamstate/wiki/emitSignal)
@@ -68,7 +64,6 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [createNested](https://github.com/Neloreck/dreamstate/wiki/createMutable)
 - [createComputed](https://github.com/Neloreck/dreamstate/wiki/createComputed)
 - [createActions](https://github.com/Neloreck/dreamstate/wiki/createActions)
-- [createSetter](https://github.com/Neloreck/dreamstate/wiki/createSetter)
 
 #### [Testing](https://github.com/Neloreck/dreamstate/wiki/testing)
 - [registerService](https://github.com/Neloreck/dreamstate/wiki/registerService)

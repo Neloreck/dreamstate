@@ -2,28 +2,16 @@
 
 exports[`React tree for provided and consumed components Should correctly update subscribed to functional provider elements view: Initial state. 1`] = `
 <Memo(DS.Observer)>
-  <DS.Consumer>
-    <Component
-      first="first"
-      second={2}
-      third={false}
-    >
-      {"first":"first","second":2,"third":false}
-    </Component>
-  </DS.Consumer>
+  <Component>
+    {"first":"first","second":2,"third":false}
+  </Component>
 </Memo(DS.Observer)>
 `;
 
 exports[`React tree for provided and consumed components Should correctly update subscribed to functional provider elements view: Updated state. 1`] = `
 <Memo(DS.Observer)>
-  <DS.Consumer>
-    <Component
-      first="updated"
-      second={101010}
-      third={true}
-    >
-      {"first":"updated","second":101010,"third":true}
-    </Component>
-  </DS.Consumer>
+  <Component>
+    {"first":"updated","second":101010,"third":true}
+  </Component>
 </Memo(DS.Observer)>
 `;

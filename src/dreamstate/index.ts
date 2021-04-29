@@ -24,8 +24,6 @@ export { getCurrentContext } from "@/dreamstate/core/registry/getCurrentContext"
 export { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 
 export { createProvider } from "@/dreamstate/core/provision/createProvider";
-export { Provide } from "@/dreamstate/core/provision/Provide";
-export { withProvision } from "@/dreamstate/core/provision/withProvision";
 
 export { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 export { useSignals } from "@/dreamstate/core/signals/useSignals";
@@ -40,12 +38,9 @@ export { registerQueryProvider } from "@/dreamstate/core/queries/registerQueryPr
 export { unRegisterQueryProvider } from "@/dreamstate/core/queries/unRegisterQueryProvider";
 
 export { useManager } from "@/dreamstate/core/consumption/useManager";
-export { Consume } from "@/dreamstate/core/consumption/Consume";
-export { withConsumption } from "@/dreamstate/core/consumption/withConsumption";
 
 export { Bind } from "@/dreamstate/utils/Bind";
 export { createLoadable } from "@/dreamstate/utils/createLoadable";
 export { createNested } from "@/dreamstate/utils/createNested";
 export { createComputed } from "@/dreamstate/utils/createComputed";
-export { createSetter } from "@/dreamstate/utils/createSetter";
 export { createActions } from "@/dreamstate/utils/createActions";

@@ -23,12 +23,8 @@ describe("Library exported API", () => {
     "getCurrentContext",
     "getCurrent",
     // Provision.
-    "Provide",
-    "withProvision",
     "createProvider",
     // Consumption.
-    "Consume",
-    "withConsumption",
     "useManager",
     // Signals.
     "OnSignal",
@@ -47,7 +43,6 @@ describe("Library exported API", () => {
     "createComputed",
     "createLoadable",
     "createActions",
-    "createSetter",
     "Bind"
   ];
 

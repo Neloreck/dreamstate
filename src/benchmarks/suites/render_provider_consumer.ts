@@ -1,14 +1,12 @@
 import { Suite } from "benchmark";
-import { Consume, ContextManager, createProvider, Provide, useManager } from "dreamstate";
+import { ContextManager, createProvider, useManager } from "dreamstate";
 import { render, configure } from "enzyme";
 import {
   Context,
   createContext,
   createElement,
   PropsWithChildren,
-  PureComponent,
   ReactElement,
-  ReactNode,
   useContext
 } from "react";
 import { Provider, connect } from "react-redux";
@@ -33,26 +31,8 @@ function FunctionalProvidedComponent(props: TAnyObject): ReactElement {
   return createElement(SomeManagerProvider, props);
 }
 
-@Provide([ SomeManager ])
-class ClassProvidedComponent extends PureComponent {
-
-  public render(): ReactNode {
-    return this.props.children;
-  }
-
-}
-
 function FunctionalConsumedComponent({ data = useManager(SomeManager) }: { data: ISomeContext }): ReactElement {
   return createElement("div", {},JSON.stringify(data));
-}
-
-@Consume([ SomeManager ])
-class ClassConsumedComponent extends PureComponent {
-
-  public render(): ReactNode {
-    return createElement("div", {}, JSON.stringify(this.props));
-  }
-
 }
 
 const sampleContext: Context<ISomeContext> = createContext({ a: "-", b: 0 });
@@ -83,9 +63,6 @@ export const suite = new Suite()
   })
   .add("render#dreamstate-functional", () => {
     render(createElement(FunctionalProvidedComponent, {}, createElement(FunctionalConsumedComponent)));
-  })
-  .add("render#dreamstate-classes", () => {
-    render(createElement(ClassProvidedComponent, {}, createElement(ClassConsumedComponent)));
   })
   .add("render#redux-functional", () => {
     render(createElement(ReduxProvider, {}, createElement(ReduxConsumer)));
