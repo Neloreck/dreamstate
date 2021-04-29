@@ -2,8 +2,8 @@ import { mount } from "enzyme";
 import { createElement } from "react";
 
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { TAnyObject } from "@/dreamstate/types";
 
 describe("Initial state provision on service registration", () => {

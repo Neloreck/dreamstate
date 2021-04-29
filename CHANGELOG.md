@@ -5,6 +5,8 @@
   * withProvision HoC removed
   * withConsumption HoC removed
   * IS_SINGLE removed in favor of scoped storages without global storing // related to HMR problems
+  * getCurrent moved to test-utils
+  * getCurrentContext moved to test-utils
 
 ## 3.3.2 (4/11/2021)
   * 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers

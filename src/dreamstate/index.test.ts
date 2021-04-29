@@ -18,9 +18,6 @@ describe("Library exported API", () => {
     "QueryType",
     // Management.
     "ContextManager",
-    // Registry.
-    "getCurrentContext",
-    "getCurrent",
     // Provision.
     "createProvider",
     // Consumption.

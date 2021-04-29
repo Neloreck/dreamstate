@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { createElement } from "react";
 import { act } from "react-dom/test-utils";
 
-import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
+import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";

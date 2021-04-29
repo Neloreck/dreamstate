@@ -19,9 +19,6 @@ export {
 
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";
 
-export { getCurrentContext } from "@/dreamstate/core/registry/getCurrentContext";
-export { getCurrent } from "@/dreamstate/core/registry/getCurrent";
-
 export { createProvider } from "@/dreamstate/core/provision/createProvider";
 
 export { OnSignal } from "@/dreamstate/core/signals/OnSignal";

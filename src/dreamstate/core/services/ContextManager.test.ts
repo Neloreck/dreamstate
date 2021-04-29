@@ -4,12 +4,12 @@ import {
   CONTEXT_SUBSCRIBERS_REGISTRY,
   CONTEXT_SERVICES_REGISTRY
 } from "@/dreamstate/core/internals";
-import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
-import { getCurrentContext } from "@/dreamstate/core/registry/getCurrentContext";
 import { getReactContext } from "@/dreamstate/core/registry/getReactContext";
 import { subscribeToManager } from "@/dreamstate/core/registry/subscribeToManager";
 import { unsubscribeFromManager } from "@/dreamstate/core/registry/unSubscribeFromManager";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
+import { getCurrentContext } from "@/dreamstate/test-utils/registry/getCurrentContext";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";

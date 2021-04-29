@@ -1,4 +1,4 @@
-import { getCurrentContext } from "@/dreamstate/core/registry/getCurrentContext";
+import { getCurrentContext } from "@/dreamstate/test-utils/registry/getCurrentContext";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TestContextManager } from "@/fixtures";

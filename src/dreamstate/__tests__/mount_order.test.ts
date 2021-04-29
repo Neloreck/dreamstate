@@ -4,7 +4,7 @@ import { createElement } from "react";
 import { ContextManager } from "@/dreamstate";
 import { CONTEXT_SERVICES_ACTIVATED } from "@/dreamstate/core/internals";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
+import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 
 describe("Mount order for providers", () => {

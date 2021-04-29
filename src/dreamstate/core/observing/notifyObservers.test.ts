@@ -1,9 +1,9 @@
 import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
-import { getCurrentContext } from "@/dreamstate/core/registry/getCurrentContext";
 import { subscribeToManager } from "@/dreamstate/core/registry/subscribeToManager";
 import { unsubscribeFromManager } from "@/dreamstate/core/registry/unSubscribeFromManager";
 import { addServiceObserver } from "@/dreamstate/test-utils/registry/addServiceObserver";
+import { getCurrentContext } from "@/dreamstate/test-utils/registry/getCurrentContext";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { removeServiceObserver } from "@/dreamstate/test-utils/registry/removeServiceObserver";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
