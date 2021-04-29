@@ -1,6 +1,6 @@
 import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject, TCallable, TUpdateSubscriber } from "@/dreamstate/types";
 
 /**
  * Subscribe to manager updates/changes.
@@ -12,10 +12,14 @@ export function subscribeToManager<
 >(
   Manager: D,
   subscriber: TUpdateSubscriber<T>
-): void {
+): TCallable {
   if (!(Manager.prototype instanceof ContextManager)) {
     throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
   }
 
   CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.add(subscriber);
+
+  return function() {
+    CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.delete(subscriber);
+  };
 }

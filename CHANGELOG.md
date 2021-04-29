@@ -1,8 +1,8 @@
 ## 3.4 (*/*/*)
-  * todo
-  * todo
-  * todo
-  * todo
+  * Provide decorator removed
+  * Consume decorator removed
+  * withProvision HoC removed
+  * withConsumption HoC removed
 
 ## 3.3.2 (4/11/2021)
   * 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers
