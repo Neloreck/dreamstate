@@ -1,10 +1,11 @@
-import { ReactNode, useCallback, useState } from "react";
+import { FunctionComponent, ReactNode, useCallback, useState } from "react";
 
-import { ContextManager, ContextService } from "@/dreamstate";
 import { EMPTY_ARR } from "@/dreamstate/core/internals";
 import { useHotObservers } from "@/dreamstate/core/observing/useHotObservers";
 import { useStaticObservers } from "@/dreamstate/core/observing/useStaticObservers";
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/provideSubTreeRecursive";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextService } from "@/dreamstate/core/services/ContextService";
 import {
   TAnyContextManagerConstructor,
   TAnyContextServiceConstructor,
@@ -25,7 +26,7 @@ export function createProvider<
   T extends TAnyObject = TAnyObject
 >(
   sources: Array<TAnyContextServiceConstructor>
-) {
+): FunctionComponent<IProviderProps<T>> {
   if (!Array.isArray(sources)) {
     throw new TypeError(
       "Wrong providers parameter supplied. Only array of context services is acceptable."
@@ -75,5 +76,5 @@ export function createProvider<
     Observer.displayName = "DS.Observer";
   }
 
-  return Observer;
+  return Observer as FunctionComponent<IProviderProps<T>>;
 }

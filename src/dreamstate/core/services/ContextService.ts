@@ -12,13 +12,6 @@ import {
 
 export abstract class ContextService<S extends TAnyObject = TAnyObject> {
 
-  /**
-   * Should core destroy store instance after observers removal or preserve it for application lifespan.
-   * Singleton objects will never be destroyed once created.
-   * Non-singleton objects are destroyed if all observers are removed.
-   */
-  protected static IS_SINGLE: boolean = false;
-
   public constructor(initialState?: S) {
   }
 

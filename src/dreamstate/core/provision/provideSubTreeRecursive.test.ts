@@ -5,19 +5,17 @@ import { provideSubTreeIterative } from "@/dreamstate/core/provision/provideSubT
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/provideSubTreeRecursive";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
-import { NestedContextManager, TestContextManager, TestSingleContextManager } from "@/fixtures";
+import { NestedContextManager, TestContextManager } from "@/fixtures";
 
 describe("provideSubTreeRecursive rendering", () => {
   beforeAll(() => {
     registerService(TestContextManager);
     registerService(NestedContextManager);
-    registerService(TestSingleContextManager);
   });
 
   afterAll(() => {
     unRegisterService(TestContextManager);
     unRegisterService(NestedContextManager);
-    unRegisterService(TestSingleContextManager, true);
   });
 
   const provide = (method: typeof provideSubTreeIterative | typeof provideSubTreeRecursive) => {

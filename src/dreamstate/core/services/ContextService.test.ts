@@ -12,23 +12,18 @@ import {
   TDerivedSignalEvent
 } from "@/dreamstate/types";
 import {
-  TestSingleContextService,
   TestContextService,
   TestContextManager,
-  TestSingleContextManager,
   EmittingContextManager
 } from "@/fixtures";
 
 describe("ContextService class", () => {
   it("Should initialize service classes without any exceptions", () => {
-    const testContextManagerInit = (Service: TAnyContextServiceConstructor, isSingle: boolean = false) => {
+    const testContextManagerInit = (Service: TAnyContextServiceConstructor) => {
       const service = new Service();
 
       expect(service).toBeInstanceOf(ContextService);
       expect(service).toBeInstanceOf(Service);
-
-      // @ts-ignore Test to detect API changes of ContextManager class.
-      expect(Service["IS_SINGLE"]).toBe(isSingle);
 
       expect(typeof service["onProvisionStarted"]).toBe("function");
       expect(typeof service["onProvisionEnded"]).toBe("function");
@@ -36,7 +31,6 @@ describe("ContextService class", () => {
       expect(typeof service["queryData"]).toBe("function");
       expect(typeof service["queryDataSync"]).toBe("function");
 
-      expect(Object.keys(Service)).toHaveLength(isSingle ? 1 : 0);
       expect(Object.keys(Service.prototype)).toHaveLength(0);
 
       if (Service instanceof ContextManager) {
@@ -65,34 +59,10 @@ describe("ContextService class", () => {
 
     testContextManagerInit(TestContextManager);
     testContextManagerInit(TestContextService);
-    testContextManagerInit(TestSingleContextManager, true);
-    testContextManagerInit(TestSingleContextService, true);
   });
 
   it("Should properly handle onProvisionStarted and onProvision ended for context services", () => {
     // todo;
-  });
-
-  it("Should correctly save singleton services state after provision restart and force unregister", () => {
-    const first: TestSingleContextService = registerService(TestSingleContextService);
-
-    const createdAt: number = first.createdAt;
-
-    unRegisterService(TestSingleContextService, false);
-
-    const second = registerService(TestSingleContextService);
-
-    expect(second).toBe(first);
-    expect(second.createdAt).toBe(createdAt);
-
-    unRegisterService(TestSingleContextService);
-
-    const third: TestSingleContextService = registerService(TestSingleContextService);
-
-    expect(second).not.toBe(third);
-    expect(second.createdAt).not.toBe(third.createdAt);
-
-    unRegisterService(TestSingleContextService);
   });
 
   it("Should use emitSignal method when sending signals", async () => {

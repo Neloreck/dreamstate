@@ -14,16 +14,16 @@
     }
   },
   "dreamstate.js": {
-    "bundled": 25723,
-    "minified": 16324,
-    "gzipped": 3948,
+    "bundled": 25409,
+    "minified": 16163,
+    "gzipped": 3883,
     "treeshaked": {
       "rollup": {
         "code": 36,
         "import_statements": 36
       },
       "webpack": {
-        "code": 3386
+        "code": 1185
       }
     }
   }

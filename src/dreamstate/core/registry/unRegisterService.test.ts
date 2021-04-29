@@ -8,7 +8,7 @@ import {
 } from "@/dreamstate/core/internals";
 import { unRegisterService } from "@/dreamstate/core/registry//unRegisterService";
 import { registerService } from "@/dreamstate/core/registry/registerService";
-import { TestContextManager, TestContextService, TestSingleContextService } from "@/fixtures";
+import { TestContextManager, TestContextService } from "@/fixtures";
 
 describe("unRegisterService method functionality", () => {
   it("Should properly unregister generic services", () => {
@@ -35,28 +35,5 @@ describe("unRegisterService method functionality", () => {
     expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
-  });
-
-  it("Should unregister singletons only with force", () => {
-    registerService(TestSingleContextService);
-    unRegisterService(TestSingleContextService);
-
-    expect(CONTEXT_SERVICES_REGISTRY.has(TestSingleContextService)).toBeTruthy();
-    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
-    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestSingleContextService)).toBeDefined();
-    expect(CONTEXT_SERVICES_REGISTRY.get(TestSingleContextService)).toBeDefined();
-    expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestSingleContextService)).toBeDefined();
-    expect(CONTEXT_STATES_REGISTRY.get(TestSingleContextService)).toBeUndefined();
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestSingleContextService)).toBeUndefined();
-
-    unRegisterService(TestSingleContextService, true);
-
-    expect(CONTEXT_SERVICES_REGISTRY.has(TestSingleContextService)).toBeFalsy();
-    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
-    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestSingleContextService)).toBeDefined();
-    expect(CONTEXT_SERVICES_REGISTRY.get(TestSingleContextService)).toBeUndefined();
-    expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestSingleContextService)).toBeUndefined();
-    expect(CONTEXT_STATES_REGISTRY.get(TestSingleContextService)).toBeUndefined();
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestSingleContextService)).toBeUndefined();
   });
 });

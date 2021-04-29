@@ -6,12 +6,11 @@ import { TAnyContextServiceConstructor } from "@/dreamstate/types";
  * Unregister service.
  */
 export function unRegisterService(
-  Service: TAnyContextServiceConstructor,
-  forceUnregister: boolean = true
+  Service: TAnyContextServiceConstructor
 ): void {
   if (!Service || !Service.prototype || !(Service.prototype instanceof ContextService)) {
     throw new TypeError("Cannot register invalid service. Expected class extending ContextService.");
   }
 
-  internalUnRegisterService(Service, forceUnregister);
+  internalUnRegisterService(Service);
 }
