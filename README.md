@@ -52,7 +52,7 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 
 #### [Queries](https://github.com/Neloreck/dreamstate/wiki/queries)
 - [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
-- [queryData](https://github.com/Neloreck/dreamstate/wiki/queryData)
+- [queryDataAsync](https://github.com/Neloreck/dreamstate/wiki/queryDataAsync)
 - [queryDataSync](https://github.com/Neloreck/dreamstate/wiki/queryDataSync)
 - [registerQueryProvider](https://github.com/Neloreck/dreamstate/wiki/registerQueryProvider)
 - [unRegisterQueryProvider](https://github.com/Neloreck/dreamstate/wiki/unRegisterQueryProvider)

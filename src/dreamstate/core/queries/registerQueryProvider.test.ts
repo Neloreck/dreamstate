@@ -1,5 +1,5 @@
 import { QUERY_PROVIDERS_REGISTRY } from "@/dreamstate/core/internals";
-import { queryData } from "@/dreamstate/core/queries/queryData";
+import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { registerQueryProvider } from "@/dreamstate/core/queries/registerQueryProvider";
 import { unRegisterQueryProvider } from "@/dreamstate/core/queries/unRegisterQueryProvider";
@@ -16,7 +16,7 @@ describe("registerQueryProvider method", () => {
     const unsub = registerQueryProvider("ANY", provider);
 
     const resultSync: TQueryResponse<number> = queryDataSync({ type: "ANY" });
-    const resultAsync: TQueryResponse<number> = await queryData({ type: "ANY" });
+    const resultAsync: TQueryResponse<number> = await queryDataAsync({ type: "ANY" });
 
     expect(resultSync.data).toBe(1);
     expect(resultSync.type).toBe("ANY");

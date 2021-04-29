@@ -11,7 +11,7 @@ import {
   subscribeToSignals as DsubscribeToSignals,
   emitSignal as DemitSignal,
   OnQuery as DOnQuery,
-  queryData as DqueryData,
+  queryDataAsync as DqueryDataAsync,
   queryDataSync as DqueryDataSync,
   registerQueryProvider as DregisterQueryProvider,
   unRegisterQueryProvider as DunRegisterQueryProvider,
@@ -31,7 +31,7 @@ import {
   subscribeToSignals as PsubscribeToSignals,
   emitSignal as PemitSignal,
   OnQuery as POnQuery,
-  queryData as PqueryData,
+  queryDataAsync as PqueryDataAsync,
   queryDataSync as PqueryDataSync,
   registerQueryProvider as PregisterQueryProvider,
   unRegisterQueryProvider as PunRegisterQueryProvider,
@@ -56,7 +56,7 @@ export const subscribeToSignals = process.env.NODE_ENV === "production" ? Psubsc
 export const emitSignal = process.env.NODE_ENV === "production" ? PemitSignal : DemitSignal;
 
 export const OnQuery = process.env.NODE_ENV === "production" ? POnQuery : DOnQuery;
-export const queryData = process.env.NODE_ENV === "production" ? PqueryData : DqueryData;
+export const queryDataAsync = process.env.NODE_ENV === "production" ? PqueryDataAsync : DqueryDataAsync;
 export const queryDataSync = process.env.NODE_ENV === "production" ? PqueryDataSync : DqueryDataSync;
 export const registerQueryProvider = process.env.NODE_ENV === "production"
   ? PregisterQueryProvider

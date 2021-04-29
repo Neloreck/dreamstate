@@ -30,7 +30,7 @@ describe("Library exported API", () => {
     "emitSignal",
     // Queries.
     "OnQuery",
-    "queryData",
+    "queryDataAsync",
     "queryDataSync",
     "registerQueryProvider",
     "unRegisterQueryProvider",

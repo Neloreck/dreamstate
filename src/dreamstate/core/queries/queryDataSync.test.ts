@@ -13,7 +13,7 @@ describe("queryDataSync and queries processing", () => {
     unRegisterService(RespondingManager);
   });
 
-  it("Should validate queryData params", () => {
+  it("Should validate queryDataAsync params", () => {
     expect(() => queryDataSync({ type: "TEST", data: undefined })).not.toThrow(TypeError);
     expect(() => queryDataSync(undefined as any)).toThrow(TypeError);
     expect(() => queryDataSync(false as any)).toThrow(TypeError);
@@ -25,7 +25,7 @@ describe("queryDataSync and queries processing", () => {
     expect(() => queryDataSync({} as any)).toThrow(TypeError);
   });
 
-  it("Should properly handle sync and async queryData listeners", async () => {
+  it("Should properly handle sync and async queryDataAsync listeners", async () => {
     const stringResponse: TQueryResponse<string> = queryDataSync({ type: EQuery.SYNC_STRING_QUERY, data: "query" });
     const asyncNumberResponse: TQueryResponse<Promise<number>> = queryDataSync({
       type: EQuery.ASYNC_NUMBER_QUERY

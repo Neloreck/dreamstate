@@ -2,7 +2,7 @@ import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
 import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
-import { queryData } from "@/dreamstate/core/queries/queryData";
+import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { getReactContext } from "@/dreamstate/core/registry/getReactContext";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
@@ -68,14 +68,14 @@ export abstract class ContextManager<
   /**
    * Send context query to retrieve data from @OnQuery method with required types.
    */
-  protected queryData<
+  protected queryDataAsync<
     D extends any,
     T extends TQueryType,
-    Q extends IOptionalQueryRequest<D, T> | Array<IOptionalQueryRequest>
+    Q extends IOptionalQueryRequest<D, T>
     >(
     queryRequest: Q
   ) {
-    return queryData<any, D, T, Q>(queryRequest);
+    return queryDataAsync<any, D, T, Q>(queryRequest);
   }
 
   /**

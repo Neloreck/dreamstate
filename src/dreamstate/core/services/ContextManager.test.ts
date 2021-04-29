@@ -259,7 +259,7 @@ describe("ContextManager class", () => {
       expect(typeof service["onProvisionStarted"]).toBe("function");
       expect(typeof service["onProvisionEnded"]).toBe("function");
       expect(typeof service["emitSignal"]).toBe("function");
-      expect(typeof service["queryData"]).toBe("function");
+      expect(typeof service["queryDataAsync"]).toBe("function");
       expect(typeof service["queryDataSync"]).toBe("function");
 
       expect(Object.keys(Service.prototype)).toHaveLength(0);

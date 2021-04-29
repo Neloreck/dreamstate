@@ -28,7 +28,7 @@ export { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals
 export { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 
 export { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-export { queryData } from "@/dreamstate/core/queries/queryData";
+export { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 export { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 export { registerQueryProvider } from "@/dreamstate/core/queries/registerQueryProvider";
 export { unRegisterQueryProvider } from "@/dreamstate/core/queries/unRegisterQueryProvider";

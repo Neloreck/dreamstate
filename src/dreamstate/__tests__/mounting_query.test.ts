@@ -19,7 +19,7 @@ describe("Sending query on provision start", () => {
   class QueryingOnProvisionStart extends ContextManager {
 
     protected async onProvisionStarted() {
-      count(await this.queryData({ type: "START" }));
+      count(await this.queryDataAsync({ type: "START" }));
     }
 
   }
