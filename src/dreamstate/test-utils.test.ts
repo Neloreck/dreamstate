@@ -11,7 +11,9 @@ describe("Library test utils exports", () => {
     "isServiceProvided",
     "getReactProvider",
     "getReactConsumer",
-    "nextAsyncQueue"
+    "nextAsyncQueue",
+    "getCurrent",
+    "getCurrentContext"
   ];
 
   const assertListIntersection = (first: Array<string>, second: Array<string>) => {

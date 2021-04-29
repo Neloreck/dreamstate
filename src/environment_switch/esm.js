@@ -4,8 +4,6 @@
 
 import {
   ContextManager as DContextManager,
-  getCurrentContext as DgetCurrentContext,
-  getCurrent as DgetCurrent,
   createProvider as DcreateProvider,
   OnSignal as DOnSignal,
   useSignals as DuseSignals,
@@ -26,8 +24,6 @@ import {
 } from "./development";
 import {
   ContextManager as PContextManager,
-  getCurrentContext as PgetCurrentContext,
-  getCurrent as PgetCurrent,
   createProvider as PcreateProvider,
   OnSignal as POnSignal,
   useSignals as PuseSignals,
@@ -48,9 +44,6 @@ import {
 } from "./production";
 
 export const ContextManager = process.env.NODE_ENV === "production" ? PContextManager : DContextManager;
-
-export const getCurrentContext = process.env.NODE_ENV === "production" ? PgetCurrentContext : DgetCurrentContext;
-export const getCurrent = process.env.NODE_ENV === "production" ? PgetCurrent : DgetCurrent;
 
 export const createProvider = process.env.NODE_ENV === "production" ? PcreateProvider : DcreateProvider;
 

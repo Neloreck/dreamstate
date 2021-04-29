@@ -12,3 +12,6 @@ export * from "@/dreamstate/test-utils/registry/isServiceProvided";
 export * from "@/dreamstate/test-utils/registry/registerService";
 export * from "@/dreamstate/test-utils/registry/removeServiceObserver";
 export * from "@/dreamstate/test-utils/registry/unRegisterService";
+
+export * from "@/dreamstate/test-utils/registry/getCurrent";
+export * from "@/dreamstate/test-utils/registry/getCurrentContext";
