@@ -1,18 +1,18 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
+import { ContextManager } from "@/dreamstate";
 import { CONTEXT_SERVICES_ACTIVATED } from "@/dreamstate/core/internals";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 
 describe("Mount order for providers", () => {
-  class First extends ContextService {}
+  class First extends ContextManager {}
 
-  class Second extends ContextService {}
+  class Second extends ContextManager {}
 
-  class Third extends ContextService {}
+  class Third extends ContextManager {}
 
   const Provider = createProvider([ First, Second, Third ]);
 

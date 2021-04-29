@@ -32,7 +32,6 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 ## [Documentation](https://github.com/Neloreck/dreamstate/wiki/Home)
 
 #### [Services](https://github.com/Neloreck/dreamstate/wiki/services)
-- [ContextService](https://github.com/Neloreck/dreamstate/wiki/ContextService)
 - [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
 - [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
 - [getCurrentContext](https://github.com/Neloreck/dreamstate/wiki/getCurrentContext)

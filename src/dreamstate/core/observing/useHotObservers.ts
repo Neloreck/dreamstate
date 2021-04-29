@@ -6,13 +6,13 @@ import { stopServiceObserving } from "@/dreamstate/core/observing/stopServiceObs
 import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServiceObserverToRegistry";
 import { registerService } from "@/dreamstate/core/registry/registerService";
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
-import { TAnyContextServiceConstructor, TAnyObject } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Use observers dependencies that reload partially on HMR and handle partial updates.
  */
 export function useHotObservers(
-  sources: Array<TAnyContextServiceConstructor>,
+  sources: Array<TAnyContextManagerConstructor>,
   initialState: TAnyObject | undefined,
   onUpdateNeeded: () => void
 ): void {
@@ -20,8 +20,8 @@ export function useHotObservers(
    * Handle internal observing flags shared between re-renders and lifecycle effects.
    */
   const viewState: MutableRefObject<{
-    nextObservedSources: Array<TAnyContextServiceConstructor>;
-    observedSources: Array<TAnyContextServiceConstructor>;
+    nextObservedSources: Array<TAnyContextManagerConstructor>;
+    observedSources: Array<TAnyContextManagerConstructor>;
     isInitialProvision: boolean;
     isProvisionDisposing: boolean;
   }> = useRef({

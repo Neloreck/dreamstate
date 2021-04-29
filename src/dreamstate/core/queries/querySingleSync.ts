@@ -1,4 +1,4 @@
-import { ContextService } from "@/dreamstate";
+import { ContextManager } from "@/dreamstate";
 import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
@@ -8,7 +8,7 @@ import {
 import { executeQuerySync } from "@/dreamstate/core/queries/executeQuerySync";
 import {
   IOptionalQueryRequest,
-  TAnyContextServiceConstructor,
+  TAnyContextManagerConstructor,
   TOptionalQueryResponse, TQueryListener,
   TQueryType
 } from "@/dreamstate/types";
@@ -27,12 +27,12 @@ export function querySingleSync<
     if (CONTEXT_QUERY_METADATA_REGISTRY.has(service) && CONTEXT_SERVICES_REGISTRY.has(service)) {
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         if (type === query.type) {
-          const handlerService: ContextService = CONTEXT_SERVICES_REGISTRY.get(service)!;
+          const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
 
           return executeQuerySync(
             (handlerService as any)[method].bind(handlerService),
             query,
-            handlerService.constructor as TAnyContextServiceConstructor
+            handlerService.constructor as TAnyContextManagerConstructor
           );
         }
       }

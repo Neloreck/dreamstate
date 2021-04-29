@@ -2,7 +2,7 @@ import {
   IOptionalQueryRequest,
   IQueryResponse,
   TAnyCallable,
-  TAnyContextServiceConstructor, TQueryListener,
+  TAnyContextManagerConstructor, TQueryListener,
   TQueryType
 } from "@/dreamstate/types";
 
@@ -18,7 +18,7 @@ export function promisifyQuery<
 >(
   callback: TQueryListener<T, D, R>,
   query: IOptionalQueryRequest<D, T>,
-  answerer: TAnyContextServiceConstructor | null
+  answerer: TAnyContextManagerConstructor | null
 ) {
   return new Promise(function(
     resolve: (response: IQueryResponse<R, T> | null) => void,

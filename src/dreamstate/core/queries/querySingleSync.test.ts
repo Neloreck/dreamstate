@@ -2,15 +2,15 @@ import { querySingleSync } from "@/dreamstate/core/queries/querySingleSync";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TOptionalQueryResponse } from "@/dreamstate/types";
-import { EQuery, RespondingService } from "@/fixtures/queries";
+import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("querySingleSync method", () => {
   beforeEach(() => {
-    registerService(RespondingService);
+    registerService(RespondingManager);
   });
 
   afterEach(() => {
-    unRegisterService(RespondingService);
+    unRegisterService(RespondingManager);
   });
 
   it("Should properly find async query responders or fallback to null for single queries", async () => {
@@ -22,7 +22,7 @@ describe("querySingleSync method", () => {
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("string");
-    expect(stringResponse!.answerer).toBe(RespondingService);
+    expect(stringResponse!.answerer).toBe(RespondingManager);
     expect(typeof stringResponse!.timestamp).toBe("number");
 
     expect(undefinedResponse).toBeNull();

@@ -1,7 +1,7 @@
 import {
   IOptionalQueryRequest,
   TAnyCallable,
-  TAnyContextServiceConstructor,
+  TAnyContextManagerConstructor,
   TQueryListener,
   TQueryType
 } from "@/dreamstate/types";
@@ -16,7 +16,7 @@ export function executeQuerySync<
 >(
   callback: TQueryListener<T, D>,
   query: IOptionalQueryRequest<D, T>,
-  answerer: TAnyContextServiceConstructor | null
+  answerer: TAnyContextManagerConstructor | null
 ) {
   return ({
     answerer: answerer || callback as TAnyCallable,

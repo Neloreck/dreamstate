@@ -1,5 +1,5 @@
+import { ContextManager } from "@/dreamstate";
 import { CONTEXT_SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
@@ -85,7 +85,7 @@ describe("@OnSignal metadata decorator", () => {
 
   it("Should work only with context services", () => {
     expect(() => {
-      class Throwing extends ContextService {
+      class Throwing extends ContextManager {
 
         @OnSignal(undefined as any)
         public onSignal(): number {

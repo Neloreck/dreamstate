@@ -6,7 +6,7 @@ import {
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IStringIndexed,
-  TAnyContextServiceConstructor,
+  TAnyContextManagerConstructor,
   TUpdateObserver,
   TUpdateSubscriber
 } from "@/dreamstate/types";
@@ -19,8 +19,8 @@ export function notifyObservers<T extends IStringIndexed<any>>(
 ): void {
   const nextContext: T = manager.context;
 
-  CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextServiceConstructor, nextContext);
-  CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextServiceConstructor)!
+  CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextManagerConstructor, nextContext);
+  CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
     .forEach(function(it: TUpdateObserver) {
       it();
     });
@@ -29,7 +29,7 @@ export function notifyObservers<T extends IStringIndexed<any>>(
    * There will be small amount of observers that work by the rules, but we cannot tell anything about subs.
    * Subscribers should not block code there with CPU usage/unhandled exceptions.
    */
-  CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TAnyContextServiceConstructor)!
+  CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
     .forEach(function(it: TUpdateSubscriber<T>) {
       setTimeout(it, 0, nextContext);
     });

@@ -5,10 +5,10 @@ import {
   CONTEXT_SERVICES_ACTIVATED
 } from "@/dreamstate/core/internals";
 import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
-import { TAnyObject, TDreamstateService } from "@/dreamstate/types";
+import { TAnyObject, TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 export function unRegisterService<T extends TAnyObject>(
-  Service: TDreamstateService<T>
+  Service: TAnyContextManagerConstructor
 ): void {
   unsubscribeFromSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(Service)!);
 

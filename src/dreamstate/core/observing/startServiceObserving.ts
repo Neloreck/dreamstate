@@ -1,5 +1,5 @@
 import { CONTEXT_SERVICES_REFERENCES, CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
-import { TAnyContextServiceConstructor } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 /**
  * Start observing of service and trigger related lifecycle methods.
@@ -7,7 +7,7 @@ import { TAnyContextServiceConstructor } from "@/dreamstate/types";
  * and force 'onProvisionStarted' to be used only once.
  */
 export function startServiceObserving(
-  Service: TAnyContextServiceConstructor
+  Service: TAnyContextManagerConstructor
 ): void {
   const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! + 1;
 

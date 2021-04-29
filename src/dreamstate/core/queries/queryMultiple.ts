@@ -1,4 +1,3 @@
-import { ContextService } from "@/dreamstate";
 import {
   CONTEXT_QUERY_METADATA_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED,
@@ -6,9 +5,10 @@ import {
   QUERY_PROVIDERS_REGISTRY
 } from "@/dreamstate/core/internals";
 import { promisifyQuery } from "@/dreamstate/core/queries/promisifyQuery";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IOptionalQueryRequest,
-  TAnyContextServiceConstructor,
+  TAnyContextManagerConstructor,
   TQueryListener,
   TQueryResponse
 } from "@/dreamstate/types";
@@ -23,12 +23,12 @@ export function queryMultiple<R>(
       for (const [ method, type ] of CONTEXT_QUERY_METADATA_REGISTRY.get(service)!) {
         for (let it = 0; it < queries.length; it ++) {
           if (queries[it].type === type && !resolved[it]) {
-            const handlerService: ContextService = CONTEXT_SERVICES_REGISTRY.get(service)!;
+            const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
 
             resolved[it] = promisifyQuery(
               (handlerService as any)[method].bind(handlerService),
               queries[it],
-              handlerService.constructor as TAnyContextServiceConstructor
+              handlerService.constructor as TAnyContextManagerConstructor
             );
           }
         }

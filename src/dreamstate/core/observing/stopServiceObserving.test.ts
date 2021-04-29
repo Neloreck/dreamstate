@@ -1,4 +1,4 @@
-import { ContextService } from "@/dreamstate";
+import { ContextManager } from "@/dreamstate";
 import { CONTEXT_SERVICES_REFERENCES } from "@/dreamstate/core/internals";
 import { stopServiceObserving } from "@/dreamstate/core/observing/stopServiceObserving";
 import { registerService } from "@/dreamstate/core/registry/registerService";
@@ -7,7 +7,7 @@ import { unRegisterService } from "@/dreamstate/core/registry/unRegisterService"
 describe("Stop service observing method", () => {
   const spy = jest.fn();
 
-  class ExampleService extends ContextService {
+  class ExampleManager extends ContextManager {
 
     protected onProvisionEnded() {
       spy();
@@ -16,25 +16,25 @@ describe("Stop service observing method", () => {
   }
 
   it("Should properly count references", () => {
-    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleService)).toBeUndefined();
+    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleManager)).toBeUndefined();
 
-    registerService(ExampleService);
+    registerService(ExampleManager);
 
-    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleService)).toBe(0);
+    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleManager)).toBe(0);
     expect(spy).toHaveBeenCalledTimes(0);
 
-    CONTEXT_SERVICES_REFERENCES.set(ExampleService, 5);
-    stopServiceObserving(ExampleService);
+    CONTEXT_SERVICES_REFERENCES.set(ExampleManager, 5);
+    stopServiceObserving(ExampleManager);
 
-    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleService)).toBe(4);
+    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleManager)).toBe(4);
     expect(spy).toHaveBeenCalledTimes(0);
 
-    CONTEXT_SERVICES_REFERENCES.set(ExampleService, 1);
-    stopServiceObserving(ExampleService);
+    CONTEXT_SERVICES_REFERENCES.set(ExampleManager, 1);
+    stopServiceObserving(ExampleManager);
 
-    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleService)).toBe(0);
+    expect(CONTEXT_SERVICES_REFERENCES.get(ExampleManager)).toBe(0);
     expect(spy).toHaveBeenCalledTimes(1);
 
-    unRegisterService(ExampleService);
+    unRegisterService(ExampleManager);
   });
 });

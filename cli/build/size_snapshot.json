@@ -14,9 +14,9 @@
     }
   },
   "dreamstate.js": {
-    "bundled": 25409,
-    "minified": 16163,
-    "gzipped": 3883,
+    "bundled": 25344,
+    "minified": 16086,
+    "gzipped": 3860,
     "treeshaked": {
       "rollup": {
         "code": 36,

@@ -1,4 +1,4 @@
-import { TAnyContextServiceConstructor } from "@/dreamstate/types/internal";
+import { TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
 
 export type TQueryType = symbol | string | number;
 
@@ -47,7 +47,7 @@ export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType
   /**
    * Query answerer.
    */
-  readonly answerer: TAnyContextServiceConstructor | (() => any);
+  readonly answerer: TAnyContextManagerConstructor | (() => any);
 }
 
 export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = IQueryResponse<D, T>;

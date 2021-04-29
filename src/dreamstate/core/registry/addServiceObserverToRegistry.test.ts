@@ -8,12 +8,12 @@ describe("addServiceObserverToRegistry method functionality", () => {
 
     const observer = jest.fn();
     const spy = jest.fn();
-    const testContextService: TestContextManager = new TestContextManager();
+    const testContextManager: TestContextManager = new TestContextManager();
 
-    testContextService["onProvisionStarted"] = spy;
+    testContextManager["onProvisionStarted"] = spy;
 
     CONTEXT_OBSERVERS_REGISTRY.set(TestContextManager, new Set());
-    CONTEXT_SERVICES_REGISTRY.set(TestContextManager, testContextService);
+    CONTEXT_SERVICES_REGISTRY.set(TestContextManager, testContextManager);
 
     addServiceObserverToRegistry(TestContextManager, observer);
 

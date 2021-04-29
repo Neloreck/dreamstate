@@ -1,4 +1,5 @@
 ## 3.4 (*/*/*)
+  * ContextService removed in favor of ContextManager
   * Provide decorator removed
   * Consume decorator removed
   * withProvision HoC removed

@@ -2,15 +2,15 @@ import { queryMultiple } from "@/dreamstate/core/queries/queryMultiple";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TOptionalQueryResponse } from "@/dreamstate/types";
-import { EQuery, RespondingService } from "@/fixtures/queries";
+import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("querySingle method.", () => {
   beforeEach(() => {
-    registerService(RespondingService);
+    registerService(RespondingManager);
   });
 
   afterEach(() => {
-    unRegisterService(RespondingService);
+    unRegisterService(RespondingManager);
   });
 
   it("Should properly find async query responders or fallback to null for multi queries", async () => {

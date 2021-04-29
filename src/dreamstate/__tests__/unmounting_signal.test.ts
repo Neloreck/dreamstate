@@ -1,15 +1,15 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
+import { ContextManager } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("Emitting signal on provision end", () => {
   const count = jest.fn();
 
-  class EmittingOnProvisionEnd extends ContextService {
+  class EmittingOnProvisionEnd extends ContextManager {
 
     protected onProvisionEnded() {
       this.emitSignal({ type: "END" });
@@ -17,7 +17,7 @@ describe("Emitting signal on provision end", () => {
 
   }
 
-  class SubscribedToEndSignal extends ContextService {
+  class SubscribedToEndSignal extends ContextManager {
 
     @OnSignal("END")
     private onEnd(): void {

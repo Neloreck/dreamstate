@@ -3,7 +3,7 @@ import { addServiceObserver } from "@/dreamstate/test-utils/registry/addServiceO
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { removeServiceObserver } from "@/dreamstate/test-utils/registry/removeServiceObserver";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
-import { TestContextManager, TestContextService } from "@/fixtures";
+import { TestContextManager } from "@/fixtures";
 
 describe("Add manager observer util", () => {
   beforeAll(() => {
@@ -19,7 +19,6 @@ describe("Add manager observer util", () => {
     expect(() => addServiceObserver(undefined as any, jest.fn())).toThrow(TypeError);
     expect(() => addServiceObserver(0 as any, jest.fn())).toThrow(TypeError);
     expect(() => addServiceObserver(class Any {} as any, jest.fn())).toThrow(TypeError);
-    expect(() => addServiceObserver(TestContextService as any, jest.fn())).toThrow(Error);
     expect(() => addServiceObserver(class Ext extends TestContextManager {}, jest.fn())).toThrow(Error);
   });
 

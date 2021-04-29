@@ -1,7 +1,7 @@
 import { CONTEXT_SUBSCRIBERS_REGISTRY } from "@/dreamstate/core/internals";
 import { subscribeToManager } from "@/dreamstate/core/registry/subscribeToManager";
 import { unsubscribeFromManager } from "@/dreamstate/core/registry/unSubscribeFromManager";
-import { TestContextManager, TestContextService } from "@/fixtures";
+import { TestContextManager } from "@/fixtures";
 
 describe("unSubscribeFromManager method functionality", () => {
   it("Should properly remove subscribers from registry", () => {
@@ -33,7 +33,6 @@ describe("unSubscribeFromManager method functionality", () => {
   });
 
   it("Should not work with non-ContextManager classes", () => {
-    expect(() => unsubscribeFromManager(TestContextService as any, () => {})).toThrow(TypeError);
     expect(() => unsubscribeFromManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
   });
 });

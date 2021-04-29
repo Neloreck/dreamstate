@@ -5,13 +5,13 @@ import { stopServiceObserving } from "@/dreamstate/core/observing/stopServiceObs
 import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServiceObserverToRegistry";
 import { registerService } from "@/dreamstate/core/registry/registerService";
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
-import { TAnyContextServiceConstructor, TAnyObject } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Use observers dependencies that reload after changes and proceed full reload on HMR.
  */
 export function useStaticObservers(
-  sources: Array<TAnyContextServiceConstructor>,
+  sources: Array<TAnyContextManagerConstructor>,
   initialState: TAnyObject | undefined,
   onUpdateNeeded: () => void
 ): void {

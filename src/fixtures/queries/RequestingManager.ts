@@ -1,8 +1,8 @@
-import { ContextService } from "@/dreamstate/core/services/ContextService";
+import { ContextManager } from "@/dreamstate";
 import { TQueryResponse } from "@/dreamstate/types";
 import { EQuery } from "@/fixtures/queries/EQuery";
 
-export class RequestingService extends ContextService {
+export class RequestingManager extends ContextManager {
 
   public async queryUndefinedData(): Promise<TQueryResponse<any>> {
     return this.queryData({ type: EQuery.UNDEFINED_QUERY });

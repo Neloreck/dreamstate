@@ -8,22 +8,9 @@ import {
 } from "@/dreamstate/core/internals";
 import { unRegisterService } from "@/dreamstate/core/registry//unRegisterService";
 import { registerService } from "@/dreamstate/core/registry/registerService";
-import { TestContextManager, TestContextService } from "@/fixtures";
+import { TestContextManager } from "@/fixtures";
 
 describe("unRegisterService method functionality", () => {
-  it("Should properly unregister generic services", () => {
-    registerService(TestContextService);
-    unRegisterService(TestContextService);
-
-    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextService)).toBeFalsy();
-    expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
-    expect(CONTEXT_OBSERVERS_REGISTRY.get(TestContextService)).toBeDefined();
-    expect(CONTEXT_SERVICES_REGISTRY.get(TestContextService)).toBeUndefined();
-    expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestContextService)).toBeUndefined();
-    expect(CONTEXT_STATES_REGISTRY.get(TestContextService)).toBeUndefined();
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextService)).toBeUndefined();
-  });
-
   it("Should properly unregister context managers", () => {
     registerService(TestContextManager);
     unRegisterService(TestContextManager);

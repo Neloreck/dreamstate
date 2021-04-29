@@ -1,5 +1,5 @@
+import { ContextManager } from "@/dreamstate";
 import { CONTEXT_OBSERVERS_REGISTRY } from "@/dreamstate/core/internals";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { addServiceObserver } from "@/dreamstate/test-utils/registry/addServiceObserver";
 import { getServiceObserversCount } from "@/dreamstate/test-utils/registry/getServiceObserversCount";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
@@ -51,6 +51,6 @@ describe("Get service observers count util", () => {
     expect(() => getServiceObserversCount(null as any)).toThrow(Error);
     expect(() => getServiceObserversCount(true as any)).toThrow(Error);
     expect(() => getServiceObserversCount(class Any {} as any)).toThrow(Error);
-    expect(() => getServiceObserversCount(class AnyService extends ContextService {} as any)).toThrow(Error);
+    expect(() => getServiceObserversCount(class AnyService extends ContextManager {} as any)).toThrow(Error);
   });
 });

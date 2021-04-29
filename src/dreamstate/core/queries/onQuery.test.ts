@@ -1,25 +1,25 @@
 import { CONTEXT_QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { getCurrent } from "@/dreamstate/core/registry/getCurrent";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { IQueryResponse, TQueryResponse, TQuerySubscriptionMetadata } from "@/dreamstate/types";
-import { RequestingService, RespondingDuplicateService, RespondingService } from "@/fixtures/queries";
+import { RequestingManager, RespondingDuplicateManager, RespondingManager } from "@/fixtures/queries";
 
 describe("@OnQuery and queries processing", () => {
   beforeEach(() => {
-    registerService(RequestingService);
-    registerService(RespondingService);
+    registerService(RequestingManager);
+    registerService(RespondingManager);
   });
 
   afterEach(() => {
-    unRegisterService(RequestingService);
-    unRegisterService(RespondingService);
+    unRegisterService(RequestingManager);
+    unRegisterService(RespondingManager);
   });
 
   it("Should properly find async query responders or fallback to null", async () => {
-    const requestingService: RequestingService = getCurrent(RequestingService)!;
+    const requestingService: RequestingManager = getCurrent(RequestingManager)!;
 
     const numberResponse: TQueryResponse<number> = await requestingService.queryAsyncNumberData();
     const stringResponse: TQueryResponse<string> = await requestingService.queryAsyncStringData("query");
@@ -28,54 +28,54 @@ describe("@OnQuery and queries processing", () => {
 
     expect(numberResponse).not.toBeNull();
     expect(numberResponse!.data).toBe(100);
-    expect(numberResponse!.answerer).toBe(RespondingService);
+    expect(numberResponse!.answerer).toBe(RespondingManager);
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");
-    expect(booleanResponse!.answerer).toBe(RespondingService);
+    expect(booleanResponse!.answerer).toBe(RespondingManager);
 
     expect(booleanResponse).not.toBeNull();
     expect(booleanResponse!.data).toBe(true);
-    expect(booleanResponse!.answerer).toBe(RespondingService);
+    expect(booleanResponse!.answerer).toBe(RespondingManager);
 
     expect(undefinedResponse).toBeNull();
   });
 
   it("Should properly handle errors in queries", () => {
-    const requestingService: RequestingService = getCurrent(RequestingService)!;
+    const requestingService: RequestingManager = getCurrent(RequestingManager)!;
 
     expect(requestingService.queryAsyncThrowingData()).rejects.toBeInstanceOf(Error);
     expect(requestingService.querySyncThrowingData()).rejects.toBeInstanceOf(Error);
   });
 
   it("Should properly handle duplicated query listeners in order of register", async () => {
-    const requestingService: RequestingService = getCurrent(RequestingService)!;
+    const requestingService: RequestingManager = getCurrent(RequestingManager)!;
 
-    unRegisterService(RespondingService);
-    unRegisterService(RespondingDuplicateService);
+    unRegisterService(RespondingManager);
+    unRegisterService(RespondingDuplicateManager);
 
-    registerService(RespondingService);
-    registerService(RespondingDuplicateService);
+    registerService(RespondingManager);
+    registerService(RespondingDuplicateManager);
 
     const first: IQueryResponse<number> = (await requestingService.queryAsyncNumberData())!;
 
     expect(first.data).toBe(100);
 
-    unRegisterService(RespondingService);
-    unRegisterService(RespondingDuplicateService);
+    unRegisterService(RespondingManager);
+    unRegisterService(RespondingDuplicateManager);
 
-    registerService(RespondingDuplicateService);
-    registerService(RespondingService);
+    registerService(RespondingDuplicateManager);
+    registerService(RespondingManager);
 
     const second: IQueryResponse<number> = (await requestingService.queryAsyncNumberData())!;
 
     expect(second.data).toBe(-1);
   });
 
-  it("Should properly save methods metadata for ContextServices", () => {
-    const responding: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingService)!;
-    const requesting: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RequestingService)!;
-    const duplicated: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingDuplicateService)!;
+  it("Should properly save methods metadata for ContextManagers", () => {
+    const responding: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingManager)!;
+    const requesting: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RequestingManager)!;
+    const duplicated: TQuerySubscriptionMetadata = CONTEXT_QUERY_METADATA_REGISTRY.get(RespondingDuplicateManager)!;
 
     expect(responding).toBeDefined();
     expect(duplicated).toBeDefined();
@@ -100,7 +100,7 @@ describe("@OnQuery and queries processing", () => {
       }
     }).toThrow(TypeError);
     expect(() => {
-      class Service extends ContextService {
+      class Service extends ContextManager {
 
         @OnQuery(undefined as any)
         private willWork(): void {}

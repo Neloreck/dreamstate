@@ -2,9 +2,17 @@ import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
 import { processComputed } from "@/dreamstate/core/observing/processComputed";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
+import { queryData } from "@/dreamstate/core/queries/queryData";
+import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { getReactContext } from "@/dreamstate/core/registry/getReactContext";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
-import { TAnyObject, TConstructorKey, TDreamstateService, TPartialTransformer } from "@/dreamstate/types";
+import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
+import {
+  IBaseSignal, IOptionalQueryRequest, TAnyContextManagerConstructor,
+  TAnyObject,
+  TConstructorKey,
+  TPartialTransformer, TQueryType,
+  TSignalType
+} from "@/dreamstate/types";
 
 /**
  * Abstract class.
@@ -12,9 +20,9 @@ import { TAnyObject, TConstructorKey, TDreamstateService, TPartialTransformer } 
  * Current Issue: Static items inside of each class instance.
  */
 export abstract class ContextManager<
-  T extends TAnyObject,
+  T extends TAnyObject = TAnyObject,
   S extends TAnyObject = TAnyObject
-> extends ContextService<S> {
+> {
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
@@ -31,10 +39,65 @@ export abstract class ContextManager<
   /**
    * Abstract store/actions bundle.
    */
-  public abstract context: T;
+  public context: T = {} as T;
+
+  public constructor(initialState?: S) {
+  }
+
+  /**
+   * Lifecycle.
+   * First provider was injected into DOM.
+   */
+  protected onProvisionStarted(): void {}
+
+  /**
+   * Lifecycle.
+   * Last provider was removed from DOM.
+   */
+  protected onProvisionEnded(): void {}
+
+  /**
+   * Emit signal for other managers and subscribers.
+   */
+  protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
+    baseSignal: IBaseSignal<T, D>
+  ): Promise<void> {
+    return emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
+  }
+
+  /**
+   * Send context query to retrieve data from @OnQuery method with required types.
+   */
+  protected queryData<
+    D extends any,
+    T extends TQueryType,
+    Q extends IOptionalQueryRequest<D, T> | Array<IOptionalQueryRequest>
+    >(
+    queryRequest: Q
+  ) {
+    return queryData<any, D, T, Q>(queryRequest);
+  }
+
+  /**
+   * Send sync context query to retrieve data from @OnQuery method with required types.
+   */
+  protected queryDataSync<
+    D extends any,
+    T extends TQueryType,
+    Q extends IOptionalQueryRequest<D, T>
+    >(
+    queryRequest: Q
+  ) {
+    return queryDataSync<any, D, T, Q>(queryRequest);
+  }
+
+  /*
+   * Store related lifecycle.
+   */
 
   /**
    * Forces update and render of subscribed components.
+   * Just in case when you need forced update to keep everything in sync with your context.
    */
   public forceUpdate(): void {
     // Update computed values if something was updated manually.
@@ -63,7 +126,7 @@ export abstract class ContextManager<
      */
     if (
       shouldObserversUpdate(
-        CONTEXT_STATES_REGISTRY.get(this.constructor as TDreamstateService<S>)!,
+        CONTEXT_STATES_REGISTRY.get(this.constructor as TAnyContextManagerConstructor)!,
         nextContext
       )
     ) {
@@ -73,6 +136,8 @@ export abstract class ContextManager<
       this.context = nextContext;
       notifyObservers(this);
       this.afterUpdate(previousContext);
+    } else {
+      this.context = processComputed(nextContext);
     }
   }
 

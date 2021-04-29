@@ -1,11 +1,7 @@
 import { CONTEXT_QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { createMethodDecorator } from "@/dreamstate/polyfills/createMethodDecorator";
-import {
-  TAnyContextManagerConstructor,
-  TAnyContextServiceConstructor,
-  TQueryType
-} from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
 
 export function OnQuery(
   queryType: TQueryType
@@ -16,10 +12,10 @@ export function OnQuery(
 
   return createMethodDecorator<TAnyContextManagerConstructor>(function rememberMethodQuery(
     method: string | symbol,
-    Service: TAnyContextServiceConstructor
+    Service: TAnyContextManagerConstructor
   ): void {
-    if (!(Service.prototype instanceof ContextService)) {
-      throw new TypeError("Only ContextService extending classes methods can be decorated as handlers.");
+    if (!(Service.prototype instanceof ContextManager)) {
+      throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
     }
 
     if (!CONTEXT_QUERY_METADATA_REGISTRY.has(Service)) {

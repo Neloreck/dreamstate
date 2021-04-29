@@ -2,15 +2,15 @@ import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TQueryResponse } from "@/dreamstate/types";
-import { EQuery, RespondingService } from "@/fixtures/queries";
+import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("queryDataSync and queries processing", () => {
   beforeEach(() => {
-    registerService(RespondingService);
+    registerService(RespondingManager);
   });
 
   afterEach(() => {
-    unRegisterService(RespondingService);
+    unRegisterService(RespondingManager);
   });
 
   it("Should validate queryData params", () => {
@@ -33,12 +33,12 @@ describe("queryDataSync and queries processing", () => {
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");
-    expect(stringResponse!.answerer).toBe(RespondingService);
+    expect(stringResponse!.answerer).toBe(RespondingManager);
     expect(typeof stringResponse!.timestamp).toBe("number");
 
     expect(asyncNumberResponse).not.toBeNull();
     expect(await asyncNumberResponse!.data).toBe(100);
-    expect(asyncNumberResponse!.answerer).toBe(RespondingService);
+    expect(asyncNumberResponse!.answerer).toBe(RespondingManager);
     expect(typeof asyncNumberResponse!.timestamp).toBe("number");
   });
 

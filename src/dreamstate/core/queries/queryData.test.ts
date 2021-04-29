@@ -2,15 +2,15 @@ import { queryData } from "@/dreamstate/core/queries/queryData";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TQueryResponse } from "@/dreamstate/types";
-import { EQuery, RespondingService } from "@/fixtures/queries";
+import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("queryData and queries processing", () => {
   beforeEach(() => {
-    registerService(RespondingService);
+    registerService(RespondingManager);
   });
 
   afterEach(() => {
-    unRegisterService(RespondingService);
+    unRegisterService(RespondingManager);
   });
 
   it("Should validate queryData params", () => {
@@ -37,12 +37,12 @@ describe("queryData and queries processing", () => {
 
     expect(stringResponse).not.toBeNull();
     expect(stringResponse!.data).toBe("query");
-    expect(stringResponse!.answerer).toBe(RespondingService);
+    expect(stringResponse!.answerer).toBe(RespondingManager);
     expect(typeof stringResponse!.timestamp).toBe("number");
 
     expect(booleanResponse).not.toBeNull();
     expect(booleanResponse!.data).toBe(true);
-    expect(booleanResponse!.answerer).toBe(RespondingService);
+    expect(booleanResponse!.answerer).toBe(RespondingManager);
     expect(typeof booleanResponse!.timestamp).toBe("number");
   });
 

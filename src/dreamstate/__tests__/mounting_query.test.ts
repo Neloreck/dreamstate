@@ -1,9 +1,9 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
+import { ContextManager } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 /**
@@ -16,7 +16,7 @@ describe("Sending query on provision start", () => {
     expect(value.data).toBe("value");
   });
 
-  class QueryingOnProvisionStart extends ContextService {
+  class QueryingOnProvisionStart extends ContextManager {
 
     protected async onProvisionStarted() {
       count(await this.queryData({ type: "START" }));
@@ -24,7 +24,7 @@ describe("Sending query on provision start", () => {
 
   }
 
-  class AnsweringOnProvisionStart extends ContextService {
+  class AnsweringOnProvisionStart extends ContextManager {
 
     @OnQuery("START")
     private onQuery(): string {

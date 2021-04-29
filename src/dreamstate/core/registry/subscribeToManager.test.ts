@@ -4,7 +4,7 @@ import { unsubscribeFromManager } from "@/dreamstate/core/registry/unSubscribeFr
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { ITestContext, TestContextManager, TestContextService } from "@/fixtures";
+import { ITestContext, TestContextManager } from "@/fixtures";
 
 describe("subscribeToManager method functionality", () => {
   it("Should not work before registering", () => {
@@ -12,7 +12,6 @@ describe("subscribeToManager method functionality", () => {
   });
 
   it("Should not work with non-ContextManager classes", () => {
-    expect(() => subscribeToManager(TestContextService as any, () => {})).toThrow(TypeError);
     expect(() => subscribeToManager(class AnyClass {} as any, () => {})).toThrow(TypeError);
   });
 

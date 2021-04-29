@@ -6,7 +6,7 @@ import { IComputed, TAnyObject } from "@/dreamstate/types";
  */
 export function processComputed<T extends TAnyObject>(
   context: T
-): void {
+): T {
   for (const key in context) {
     // Cast as possible computed value because it is the only one that we expect to process here.
     const it: IComputed<any, any> = context[key] as any;
@@ -54,4 +54,6 @@ export function processComputed<T extends TAnyObject>(
       }
     }
   }
+
+  return context;
 }

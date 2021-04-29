@@ -1,4 +1,4 @@
-import { ContextService } from "@/dreamstate";
+import { ContextManager } from "@/dreamstate";
 import {
   CONTEXT_OBSERVERS_REGISTRY,
   CONTEXT_QUERY_METADATA_REGISTRY,
@@ -68,7 +68,7 @@ describe("Register service test util", () => {
       field: number;
     }
 
-    class InitializedService extends ContextService<IInitialState> {
+    class InitializedService extends ContextManager<IInitialState> {
 
       public constructor(public initial?: IInitialState) {
         super();

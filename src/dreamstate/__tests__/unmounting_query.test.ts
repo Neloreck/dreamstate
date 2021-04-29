@@ -3,13 +3,13 @@ import { createElement } from "react";
 
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("Emitting signal on provision end", () => {
   const count = jest.fn();
 
-  class QueryingOnProvisionEnd extends ContextService {
+  class QueryingOnProvisionEnd extends ContextManager {
 
     protected async onProvisionEnded() {
       await this.queryData({ type: "END" });
@@ -17,7 +17,7 @@ describe("Emitting signal on provision end", () => {
 
   }
 
-  class AnsweringOnProvisionEnd extends ContextService {
+  class AnsweringOnProvisionEnd extends ContextManager {
 
     @OnQuery("END")
     private onQuery(): void {

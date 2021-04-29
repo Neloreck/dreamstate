@@ -17,7 +17,6 @@ export {
   TQueryType as QueryType
 } from "@/dreamstate/types";
 
-export { ContextService } from "@/dreamstate/core/services/ContextService";
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";
 
 export { getCurrentContext } from "@/dreamstate/core/registry/getCurrentContext";

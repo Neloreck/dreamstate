@@ -18,7 +18,6 @@ describe("Library exported API", () => {
     "QueryType",
     // Management.
     "ContextManager",
-    "ContextService",
     // Registry.
     "getCurrentContext",
     "getCurrent",

@@ -3,7 +3,6 @@
  */
 
 import {
-  ContextService as DContextService,
   ContextManager as DContextManager,
   getCurrentContext as DgetCurrentContext,
   getCurrent as DgetCurrent,
@@ -26,7 +25,6 @@ import {
   createActions as DcreateActions
 } from "./development";
 import {
-  ContextService as PContextService,
   ContextManager as PContextManager,
   getCurrentContext as PgetCurrentContext,
   getCurrent as PgetCurrent,
@@ -49,7 +47,6 @@ import {
   createActions as PcreateActions
 } from "./production";
 
-export const ContextService = process.env.NODE_ENV === "production" ? PContextService : DContextService;
 export const ContextManager = process.env.NODE_ENV === "production" ? PContextManager : DContextManager;
 
 export const getCurrentContext = process.env.NODE_ENV === "production" ? PgetCurrentContext : DgetCurrentContext;

@@ -3,7 +3,7 @@ import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
 import {
   IBaseSignal,
   ISignalEvent,
-  TAnyContextServiceConstructor,
+  TAnyContextManagerConstructor,
   TCallable,
   TSignalListener,
   TSignalType
@@ -15,7 +15,7 @@ import {
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: IBaseSignal<T, D>,
-  emitter: TAnyContextServiceConstructor | null = null
+  emitter: TAnyContextManagerConstructor | null = null
 ): Promise<void> {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");

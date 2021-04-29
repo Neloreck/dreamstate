@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { createElement } from "react";
 
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { ContextService } from "@/dreamstate/core/services/ContextService";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TDerivedSignal, TDerivedSignalEvent } from "@/dreamstate/types";
@@ -32,7 +32,7 @@ describe("Signal subscription of test classes", () => {
     type: "EMPTY"
   };
 
-  class EmittingOnProvisionStart extends ContextService {
+  class EmittingOnProvisionStart extends ContextManager {
 
     protected onProvisionStarted(): void {
       this.emitSignal(demoSignal);
@@ -41,7 +41,7 @@ describe("Signal subscription of test classes", () => {
 
   }
 
-  class SubscribedToStartSignal extends ContextService {
+  class SubscribedToStartSignal extends ContextManager {
 
     @OnSignal(demoSignal.type)
     private onDemo(signal: TDerivedSignalEvent<IDemoSignal>): void {

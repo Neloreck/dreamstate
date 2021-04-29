@@ -1,4 +1,4 @@
-import { ContextService, OnQuery } from "@/dreamstate";
+import { ContextManager, OnQuery } from "@/dreamstate";
 import { EQuery } from "@/fixtures/queries/EQuery";
 import {
   TAsyncExceptionQuery,
@@ -9,7 +9,9 @@ import {
   TSyncStringQuery
 } from "@/fixtures/queries/types";
 
-export class RespondingService extends ContextService {
+export class RespondingManager extends ContextManager {
+
+  public context = {};
 
   @OnQuery(EQuery.ASYNC_EXCEPTION_QUERY)
   public async onAsyncExceptionQuery(queryRequest: TAsyncExceptionQuery): Promise<never> {
