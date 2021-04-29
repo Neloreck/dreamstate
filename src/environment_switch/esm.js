@@ -23,7 +23,7 @@ import {
   createLoadable as DcreateLoadable,
   createNested as DcreateNested,
   createComputed as DcreateComputed,
-  createActions as DcreateActions,
+  createActions as DcreateActions
 } from "./development";
 import {
   ContextService as PContextService,
@@ -46,7 +46,7 @@ import {
   createLoadable as PcreateLoadable,
   createNested as PcreateNested,
   createComputed as PcreateComputed,
-  createActions as PcreateActions,
+  createActions as PcreateActions
 } from "./production";
 
 export const ContextService = process.env.NODE_ENV === "production" ? PContextService : DContextService;
