@@ -22,7 +22,6 @@ const createPortableConfig = (env) => ({
   external: [
     "react",
     "shallow-equal",
-    "hoist-non-react-statics"
   ],
   input: PORTABLE_ENTRY,
   preserveModules: false,

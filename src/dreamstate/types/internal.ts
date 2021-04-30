@@ -4,8 +4,8 @@ import type { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import type { TAnyObject } from "@/dreamstate/types/general";
 
 export interface IContextManagerConstructor<
-  S extends TAnyObject,
   T extends TAnyObject,
+  S extends TAnyObject,
   C extends ContextManager<T> = ContextManager<T>
 > {
   REACT_CONTEXT: Context<T>;

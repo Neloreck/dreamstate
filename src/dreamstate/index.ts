@@ -14,7 +14,8 @@ export {
   TQueryResponse as QueryResponse,
   TOptionalQueryResponse as OptionalQueryResponse,
   TQueryRequest as QueryRequest,
-  TQueryType as QueryType
+  TQueryType as QueryType,
+  IContextManagerConstructor as ContextManagerConstructor
 } from "@/dreamstate/types";
 
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";

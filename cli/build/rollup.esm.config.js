@@ -20,7 +20,6 @@ const createEsmConfig = (env) => ({
   external: [
     "react",
     "shallow-equal",
-    "hoist-non-react-statics",
     "tslib"
   ],
   preserveModules: true,

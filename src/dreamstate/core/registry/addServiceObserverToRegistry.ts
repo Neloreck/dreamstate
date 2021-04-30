@@ -1,12 +1,16 @@
 import { CONTEXT_OBSERVERS_REGISTRY } from "@/dreamstate/core/internals";
-import { TAnyContextManagerConstructor, TUpdateObserver } from "@/dreamstate/types";
+import {
+  IContextManagerConstructor,
+  TAnyObject,
+  TUpdateObserver
+} from "@/dreamstate/types";
 
 /**
  * Add state changes observer.
  */
-export function addServiceObserverToRegistry(
-  Service: TAnyContextManagerConstructor,
-  observer: TUpdateObserver
+export function addServiceObserverToRegistry<T extends TAnyObject = TAnyObject>(
+  Service: IContextManagerConstructor<T, TAnyObject>,
+  observer: TUpdateObserver<T>
 ): void {
   CONTEXT_OBSERVERS_REGISTRY.get(Service)!.add(observer);
 }

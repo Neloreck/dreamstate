@@ -1,11 +1,14 @@
-import { FunctionComponent, ReactNode, useCallback, useState } from "react";
+import { FunctionComponent, ReactNode, useReducer } from "react";
 
-import { EMPTY_ARR } from "@/dreamstate/core/internals";
 import { useHotObservers } from "@/dreamstate/core/observing/useHotObservers";
 import { useStaticObservers } from "@/dreamstate/core/observing/useStaticObservers";
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/provideSubTreeRecursive";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+
+function forceUpdateReducer(): TAnyObject | null {
+  return {};
+}
 
 export interface IProviderProps<T> {
   initialState?: T;
@@ -38,10 +41,7 @@ export function createProvider<
    * Create observer component that will handle observing.
    */
   function Observer(props: IProviderProps<T>): ReactNode {
-    const [ , forceRender ] = useState({});
-    const updateProviders = useCallback(function() {
-      forceRender({});
-    }, EMPTY_ARR);
+    const [ , updateProviders ] = useReducer(forceUpdateReducer, null);
 
     if (props.partialHotReplacement) {
       useHotObservers(sources, props.initialState, updateProviders);

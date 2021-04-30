@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 
 import { startServiceObserving } from "@/dreamstate/core/observing/startServiceObserving";
 import { stopServiceObserving } from "@/dreamstate/core/observing/stopServiceObserving";

@@ -34,17 +34,14 @@ export function registerService<S extends any = any>(
 
     CONTEXT_SERVICES_ACTIVATED.add(Service);
 
-    // Currently only context managers require additional information initialization.
-    if (Service.prototype instanceof ContextManager) {
-      CONTEXT_STATES_REGISTRY.set(Service, (instance as ContextManager<TAnyObject>).context);
-      // Subscribers are not always sync, should not block their un-sub later.
-      CONTEXT_SUBSCRIBERS_REGISTRY.set(
-        Service,
-        CONTEXT_SUBSCRIBERS_REGISTRY.get(Service) || new Set()
-      );
+    CONTEXT_STATES_REGISTRY.set(Service, (instance as ContextManager<TAnyObject>).context);
+    // Subscribers are not always sync, should not block their un-sub later.
+    CONTEXT_SUBSCRIBERS_REGISTRY.set(
+      Service,
+      CONTEXT_SUBSCRIBERS_REGISTRY.get(Service) || new Set()
+    );
 
-      // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
-      processComputed((instance as ContextManager<any>).context);
-    }
+    // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
+    processComputed((instance as ContextManager<any>).context);
   }
 }

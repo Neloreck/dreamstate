@@ -30,7 +30,6 @@
   ],
   "dependencies": {
     "tslib": "^2.1.0",
-    "hoist-non-react-statics": ">=3.0.0",
     "shallow-equal": ">=1.0.0"
   },
   "peerDependencies": {
