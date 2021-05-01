@@ -20,7 +20,7 @@ export {
 
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";
 
-export { createProvider } from "@/dreamstate/core/provision/createProvider";
+export { IProviderProps as ProviderProps, createProvider } from "@/dreamstate/core/provision/createProvider";
 
 export { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 export { useSignals } from "@/dreamstate/core/signals/useSignals";

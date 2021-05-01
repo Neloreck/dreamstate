@@ -21,6 +21,7 @@ describe("Library exported API", () => {
     "ContextManager",
     // Provision.
     "createProvider",
+    "ProviderProps",
     // Consumption.
     "useManager",
     // Signals.
