@@ -9,15 +9,20 @@ exports[`createProvider method Should create correct component tree without chil
 `;
 
 exports[`createProvider method Should create correct component tree without children 2`] = `
-<DS.Provider>
-  <ScopedProvider
+<DS.Observer>
+  <ScopedObserver
+    dependencies={
+      Array [
+        [Function],
+      ]
+    }
     manager={[Function]}
   >
     <div>
       testChild
     </div>
-  </ScopedProvider>
-</DS.Provider>
+  </ScopedObserver>
+</DS.Observer>
 `;
 
 exports[`createProvider method Should create correct component tree without children 3`] = `
@@ -39,11 +44,16 @@ exports[`createProvider method Should render correct component tree 1`] = `
 `;
 
 exports[`createProvider method Should render correct component tree 2`] = `
-<DS.Provider>
-  <ScopedProvider
+<DS.Observer>
+  <ScopedObserver
+    dependencies={
+      Array [
+        [Function],
+      ]
+    }
     manager={[Function]}
   >
     test
-  </ScopedProvider>
-</DS.Provider>
+  </ScopedObserver>
+</DS.Observer>
 `;

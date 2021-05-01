@@ -16,7 +16,6 @@
   - Optimize queries code
   - Deprecate multiple queries support?
   - Do not send signals/queries from disposed services
-  - Add some check for services? (check instance, not service class)
 
 ##### Utils
   - createAsync as loadable copy with stored promise or extended createLoadable

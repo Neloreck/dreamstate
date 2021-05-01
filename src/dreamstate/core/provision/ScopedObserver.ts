@@ -9,16 +9,22 @@ import { registerService } from "@/dreamstate/core/registry/registerService";
 import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
-export interface IScopedProviderProps<T> {
+export interface IScopedObserverProps<T> {
   children?: ReactChild;
   initialState?: T;
   manager: TAnyContextManagerConstructor;
+  dependencies: Array<TAnyContextManagerConstructor>;
 }
 
 /**
  * Provider that observes
  */
-export function ScopedProvider<T>({ children, initialState, manager }: IScopedProviderProps<T>): ReactElement {
+export function ScopedObserver<T>({
+  children,
+  initialState,
+  dependencies,
+  manager
+}: IScopedObserverProps<T>): ReactElement {
   const [ , onUpdateNeeded ] = useReducer(forceUpdateReducer, null);
 
   /**
@@ -29,7 +35,7 @@ export function ScopedProvider<T>({ children, initialState, manager }: IScopedPr
    */
   useMemo(function(): void {
     registerService(manager, initialState);
-  }, [ manager ]);
+  }, [ dependencies ]);
 
   /**
    * Mount current observers.
@@ -47,7 +53,7 @@ export function ScopedProvider<T>({ children, initialState, manager }: IScopedPr
       removeServiceObserverFromRegistry(manager, onUpdateNeeded);
       stopServiceObserving(manager);
     };
-  }, [ manager ]);
+  }, [ dependencies ]);
 
   return createElement(manager.REACT_CONTEXT.Provider, { value: CONTEXT_STATES_REGISTRY.get(manager) }, children);
 }

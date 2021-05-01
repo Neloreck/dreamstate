@@ -1,0 +1,42 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createScopedObserverTreeRecursive rendering Should match snapshot 1`] = `
+<div>
+  <ScopedObserver
+    dependencies={
+      Array [
+        [Function],
+        [Function],
+        [Function],
+      ]
+    }
+    manager={[Function]}
+  >
+    <ScopedObserver
+      dependencies={
+        Array [
+          [Function],
+          [Function],
+          [Function],
+        ]
+      }
+      manager={[Function]}
+    >
+      <ScopedObserver
+        dependencies={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+        manager={[Function]}
+      >
+        <div>
+          bottom
+        </div>
+      </ScopedObserver>
+    </ScopedObserver>
+  </ScopedObserver>
+</div>
+`;
