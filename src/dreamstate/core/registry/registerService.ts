@@ -7,7 +7,7 @@ import {
   CONTEXT_SERVICES_ACTIVATED,
   CONTEXT_SERVICES_REFERENCES
 } from "@/dreamstate/core/internals";
-import { processComputed } from "@/dreamstate/core/observing/processComputed";
+import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/signals/onMetadataSignalListenerCalled";
 import { subscribeToSignals } from "@/dreamstate/core/signals/subscribeToSignals";

@@ -1,4 +1,4 @@
-import { ActionsStore } from "@/dreamstate/core/observing/ActionsStore";
+import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 
 /**
  * Create computed value that will be populated after each update.

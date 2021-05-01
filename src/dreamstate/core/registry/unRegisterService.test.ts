@@ -9,7 +9,7 @@ import {
 import { unRegisterService } from "@/dreamstate/core/registry//unRegisterService";
 import { registerService } from "@/dreamstate/core/registry/registerService";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { TestContextManager } from "@/fixtures";
+import { TestContextManager, ExtendingTestContextManager } from "@/fixtures";
 
 describe("unRegisterService method functionality", () => {
   it("Should properly unregister context managers", () => {
@@ -26,15 +26,15 @@ describe("unRegisterService method functionality", () => {
   });
 
   it("Should properly restrict signaling and data queries after unregistering", () => {
-    registerService(TestContextManager);
+    registerService(ExtendingTestContextManager);
 
-    const service: TestContextManager = getCurrent(TestContextManager)!;
+    const service: ExtendingTestContextManager = getCurrent(ExtendingTestContextManager)!;
 
     expect(() => service["emitSignal"]({ type: "TMP" })).not.toThrow(Error);
     expect(() => service["queryDataSync"]({ type: "TMP" })).not.toThrow(Error);
     expect(() => service["queryDataAsync"]({ type: "TMP" })).not.toThrow(Error);
 
-    unRegisterService(TestContextManager);
+    unRegisterService(ExtendingTestContextManager);
 
     expect(() => service["emitSignal"]({ type: "TMP" })).toThrow(Error);
     expect(() => service["queryDataSync"]({ type: "TMP" })).toThrow(Error);

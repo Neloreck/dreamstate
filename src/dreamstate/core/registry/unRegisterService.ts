@@ -15,7 +15,14 @@ function throwAfterDisposal(): never {
 export function unRegisterService<T extends IContextManagerConstructor<any, any>>(
   Service: T
 ): void {
-  const instance: ContextManager<any> = CONTEXT_SERVICES_REGISTRY.get(Service) as ContextManager<any>;
+  // Block instance from calling this.* signaling methods after disposing.
+  if (CONTEXT_SERVICES_REGISTRY.has(Service)) {
+    const instance: ContextManager<any> = CONTEXT_SERVICES_REGISTRY.get(Service) as ContextManager<any>;
+
+    instance["emitSignal"] = throwAfterDisposal;
+    instance["queryDataSync"] = throwAfterDisposal;
+    instance["queryDataAsync"] = throwAfterDisposal;
+  }
 
   unsubscribeFromSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(Service)!);
 
@@ -24,9 +31,5 @@ export function unRegisterService<T extends IContextManagerConstructor<any, any>
   CONTEXT_STATES_REGISTRY.delete(Service);
 
   CONTEXT_SERVICES_ACTIVATED.delete(Service);
-  // Do not clean observers and subscribers, automated by react.
-
-  instance["emitSignal"] = throwAfterDisposal;
-  instance["queryDataSync"] = throwAfterDisposal;
-  instance["queryDataAsync"] = throwAfterDisposal;
+  // Do not clean observers and subscribers, automated by react.}
 }

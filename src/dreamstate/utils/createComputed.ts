@@ -1,4 +1,4 @@
-import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
+import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 import { TAnyObject, TComputed } from "@/dreamstate/types";
 
 /**

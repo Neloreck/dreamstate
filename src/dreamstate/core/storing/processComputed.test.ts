@@ -1,5 +1,5 @@
-import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
-import { processComputed } from "@/dreamstate/core/observing/processComputed";
+import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
+import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 

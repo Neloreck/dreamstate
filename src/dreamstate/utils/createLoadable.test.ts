@@ -1,4 +1,4 @@
-import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
+import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
 import { ILoadable } from "@/dreamstate/types";
 import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "@/dreamstate/utils/createLoadable";
 

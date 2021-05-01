@@ -1,4 +1,4 @@
-import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
+import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
 
 describe("Nested store class", () => {

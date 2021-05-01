@@ -1,5 +1,5 @@
 import { ContextManager } from "@/dreamstate";
-import { processComputed } from "@/dreamstate/core/observing/processComputed";
+import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
 import { TComputed } from "@/dreamstate/types";

@@ -2,9 +2,9 @@ import { shallowEqualObjects } from "shallow-equal";
 
 import { dev } from "@/macroses/dev.macro";
 
-import { ActionsStore } from "@/dreamstate/core/observing/ActionsStore";
-import { ComputedValue } from "@/dreamstate/core/observing/ComputedValue";
-import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
+import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
+import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
+import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
 import { IStringIndexed, TAnyObject } from "@/dreamstate/types";
 
 // todo: Warn computed/nested switch between states when previous and next types are different?

@@ -1,6 +1,6 @@
 import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
 import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
-import { processComputed } from "@/dreamstate/core/observing/processComputed";
+import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";

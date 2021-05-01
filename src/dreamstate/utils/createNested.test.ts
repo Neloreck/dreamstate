@@ -1,4 +1,4 @@
-import { NestedStore } from "@/dreamstate/core/observing/NestedStore";
+import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
 import { TNested } from "@/dreamstate/types";
 import { createNested } from "@/dreamstate/utils/createNested";
 

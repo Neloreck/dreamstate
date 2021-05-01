@@ -1,4 +1,4 @@
-import { ActionsStore } from "@/dreamstate/core/observing/ActionsStore";
+import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
 
 describe("ActionsStore value class", () => {
