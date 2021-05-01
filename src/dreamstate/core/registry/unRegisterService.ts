@@ -4,12 +4,19 @@ import {
   CONTEXT_STATES_REGISTRY,
   CONTEXT_SERVICES_ACTIVATED
 } from "@/dreamstate/core/internals";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { unsubscribeFromSignals } from "@/dreamstate/core/signals/unsubscribeFromSignals";
-import { TAnyObject, TAnyContextManagerConstructor } from "@/dreamstate/types";
+import { IContextManagerConstructor } from "@/dreamstate/types";
 
-export function unRegisterService<T extends TAnyObject>(
-  Service: TAnyContextManagerConstructor
+function throwAfterDisposal(): never {
+  throw new Error("Disposed context are not supposed to access signaling scope.");
+}
+
+export function unRegisterService<T extends IContextManagerConstructor<any, any>>(
+  Service: T
 ): void {
+  const instance: ContextManager<any> = CONTEXT_SERVICES_REGISTRY.get(Service) as ContextManager<any>;
+
   unsubscribeFromSignals(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(Service)!);
 
   CONTEXT_SERVICES_REGISTRY.delete(Service);
@@ -18,4 +25,8 @@ export function unRegisterService<T extends TAnyObject>(
 
   CONTEXT_SERVICES_ACTIVATED.delete(Service);
   // Do not clean observers and subscribers, automated by react.
+
+  instance["emitSignal"] = throwAfterDisposal;
+  instance["queryDataSync"] = throwAfterDisposal;
+  instance["queryDataAsync"] = throwAfterDisposal;
 }

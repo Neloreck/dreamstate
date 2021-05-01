@@ -8,6 +8,7 @@ import {
 } from "@/dreamstate/core/internals";
 import { unRegisterService } from "@/dreamstate/core/registry//unRegisterService";
 import { registerService } from "@/dreamstate/core/registry/registerService";
+import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { TestContextManager } from "@/fixtures";
 
 describe("unRegisterService method functionality", () => {
@@ -22,5 +23,21 @@ describe("unRegisterService method functionality", () => {
     expect(CONTEXT_SIGNAL_HANDLERS_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeDefined();
+  });
+
+  it("Should properly restrict signaling and data queries after unregistering", () => {
+    registerService(TestContextManager);
+
+    const service: TestContextManager = getCurrent(TestContextManager)!;
+
+    expect(() => service["emitSignal"]({ type: "TMP" })).not.toThrow(Error);
+    expect(() => service["queryDataSync"]({ type: "TMP" })).not.toThrow(Error);
+    expect(() => service["queryDataAsync"]({ type: "TMP" })).not.toThrow(Error);
+
+    unRegisterService(TestContextManager);
+
+    expect(() => service["emitSignal"]({ type: "TMP" })).toThrow(Error);
+    expect(() => service["queryDataSync"]({ type: "TMP" })).toThrow(Error);
+    expect(() => service["queryDataAsync"]({ type: "TMP" })).toThrow(Error);
   });
 });

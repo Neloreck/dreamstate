@@ -14,8 +14,6 @@
   - assistance messages when consuming, but tree is not provided
   - Scope component or something like it for query/signals scoping
   - Optimize queries code
-  - Deprecate multiple queries support?
-  - Do not send signals/queries from disposed services
 
 ##### Utils
   - createAsync as loadable copy with stored promise or extended createLoadable
