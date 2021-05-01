@@ -8,9 +8,9 @@ import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/re
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
- * Use observers dependencies that reload after changes and proceed full reload on HMR.
+ * Use observers dependencies that reload after changes.
  */
-export function useStaticObservers(
+export function useSourceObserving(
   sources: Array<TAnyContextManagerConstructor>,
   initialState: TAnyObject | undefined,
   onUpdateNeeded: () => void
@@ -32,7 +32,7 @@ export function useStaticObservers(
    * Count references of providers to detect whether we start provisioning or ending it.
    */
   useEffect(function() {
-    for (let it = 0; it < sources.length; it ++) {
+    for (let it = sources.length - 1; it >= 0; it --) {
       addServiceObserverToRegistry(sources[it], onUpdateNeeded);
       registerService(sources[it], initialState);
       startServiceObserving(sources[it]);
@@ -42,7 +42,7 @@ export function useStaticObservers(
      * Unmount current observers.
      */
     return function() {
-      for (let it = sources.length - 1; it >= 0; it --) {
+      for (let it = 0; it < sources.length; it ++) {
         removeServiceObserverFromRegistry(sources[it], onUpdateNeeded);
         stopServiceObserving(sources[it]);
       }

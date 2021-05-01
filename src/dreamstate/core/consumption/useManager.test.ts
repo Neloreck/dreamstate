@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { mount, render } from "enzyme";
 import { createElement, ReactElement, useEffect } from "react";
 import { act } from "react-dom/test-utils";
 
@@ -41,8 +41,7 @@ describe("UseManager subscription and rendering", () => {
   }
 
   it("Functional components should properly subscribe to managers without diff-checking cb", async () => {
-    const mockFn = jest.fn();
-    const tree = mount(
+    const getRoot = () => (
       createElement(
         createProvider([ TestContextManager ]),
         {},
@@ -52,8 +51,11 @@ describe("UseManager subscription and rendering", () => {
       )
     );
 
+    const mockFn = jest.fn();
+    const tree = mount(getRoot());
+
     expect(mockFn).toHaveBeenCalledTimes(1);
-    expect(tree).toMatchSnapshot();
+    expect(render(getRoot())).toMatchSnapshot();
 
     mockFn.mockClear();
 
@@ -89,8 +91,7 @@ describe("UseManager subscription and rendering", () => {
   });
 
   it("Functional components should properly subscribe to managers with diff-checking cb", async () => {
-    const mockFn = jest.fn(() => {});
-    const tree = mount(
+    const getRoot = () => (
       createElement(
         createProvider([ TestContextManager ]),
         {},
@@ -101,7 +102,10 @@ describe("UseManager subscription and rendering", () => {
       )
     );
 
-    expect(tree).toMatchSnapshot();
+    const mockFn = jest.fn(() => {});
+    const tree = mount(getRoot());
+
+    expect(render(getRoot())).toMatchSnapshot();
     expect(mockFn).toHaveBeenCalledTimes(1);
 
     mockFn.mockClear();

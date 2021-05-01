@@ -8,8 +8,42 @@ exports[`createProvider method Should create correct component tree without chil
 </DS.Observer>
 `;
 
+exports[`createProvider method Should create correct component tree without children 2`] = `
+<DS.Provider>
+  <ScopedProvider
+    manager={[Function]}
+  >
+    <div>
+      testChild
+    </div>
+  </ScopedProvider>
+</DS.Provider>
+`;
+
+exports[`createProvider method Should create correct component tree without children 3`] = `
+<div>
+  testChild
+</div>
+`;
+
+exports[`createProvider method Should create correct component tree without children 4`] = `
+<div>
+  testChild
+</div>
+`;
+
 exports[`createProvider method Should render correct component tree 1`] = `
 <DS.Observer>
   test
 </DS.Observer>
+`;
+
+exports[`createProvider method Should render correct component tree 2`] = `
+<DS.Provider>
+  <ScopedProvider
+    manager={[Function]}
+  >
+    test
+  </ScopedProvider>
+</DS.Provider>
 `;

@@ -14,11 +14,10 @@ describe("Mount order for providers", () => {
 
   class Third extends ContextManager {}
 
-  const Provider = createProvider([ First, Second, Third ]);
+  const CombinedProvider = createProvider([ First, Second, Third ], { isCombined: true });
+  const ScopedProvider = createProvider([ First, Second, Third ], { isCombined: false });
 
-  it("Should properly mount provided components", async () => {
-    const list: Array<string> = [];
-
+  it("Should properly mount combined provider components", async () => {
     registerService(First)["onProvisionStarted"] = () => {
       expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
       list.push(First.name);
@@ -32,22 +31,46 @@ describe("Mount order for providers", () => {
       list.push(Third.name);
     };
 
-    const tree = mount(createElement(Provider, {}));
+    const list: Array<string> = [];
 
-    tree.unmount();
+    mount(createElement(CombinedProvider, {})).unmount();
 
     expect(list).toHaveLength(3);
-    expect(list[0]).toBe(First.name);
+    expect(list[2]).toBe(First.name);
     expect(list[1]).toBe(Second.name);
-    expect(list[2]).toBe(Third.name);
+    expect(list[0]).toBe(Third.name);
   });
 
-  it("Should properly unmount provided components", async () => {
+  it("Should properly mount scoped provider components", async () => {
+    registerService(First)["onProvisionStarted"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
+      list.push(First.name);
+    };
+    registerService(Second)["onProvisionStarted"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
+      list.push(Second.name);
+    };
+    registerService(Third)["onProvisionStarted"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
+      list.push(Third.name);
+    };
+
     const list: Array<string> = [];
-    const tree = mount(createElement(Provider, {}));
+
+    mount(createElement(ScopedProvider, {})).unmount();
+
+    expect(list).toHaveLength(3);
+    expect(list[2]).toBe(First.name);
+    expect(list[1]).toBe(Second.name);
+    expect(list[0]).toBe(Third.name);
+  });
+
+  it("Should properly unmount scoped provider components", async () => {
+    const list: Array<string> = [];
+    const tree = mount(createElement(ScopedProvider, {}));
 
     getCurrent(First)!["onProvisionEnded"] = () => {
-      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
       list.push(First.name);
     };
     getCurrent(Second)!["onProvisionEnded"] = () => {
@@ -55,15 +78,40 @@ describe("Mount order for providers", () => {
       list.push(Second.name);
     };
     getCurrent(Third)!["onProvisionEnded"] = () => {
-      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
       list.push(Third.name);
     };
 
     tree.unmount();
 
     expect(list).toHaveLength(3);
-    expect(list[0]).toBe(Third.name);
+    expect(list[2]).toBe(Third.name);
     expect(list[1]).toBe(Second.name);
-    expect(list[2]).toBe(First.name);
+    expect(list[0]).toBe(First.name);
+  });
+
+  it("Should properly unmount combined provider components", async () => {
+    const list: Array<string> = [];
+    const tree = mount(createElement(CombinedProvider, {}));
+
+    getCurrent(First)!["onProvisionEnded"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(3);
+      list.push(First.name);
+    };
+    getCurrent(Second)!["onProvisionEnded"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(2);
+      list.push(Second.name);
+    };
+    getCurrent(Third)!["onProvisionEnded"] = () => {
+      expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
+      list.push(Third.name);
+    };
+
+    tree.unmount();
+
+    expect(list).toHaveLength(3);
+    expect(list[2]).toBe(Third.name);
+    expect(list[1]).toBe(Second.name);
+    expect(list[0]).toBe(First.name);
   });
 });

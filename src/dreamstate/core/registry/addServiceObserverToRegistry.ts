@@ -10,7 +10,7 @@ import {
  */
 export function addServiceObserverToRegistry<T extends TAnyObject = TAnyObject>(
   Service: IContextManagerConstructor<T, TAnyObject>,
-  observer: TUpdateObserver<T>
+  observer: TUpdateObserver
 ): void {
   CONTEXT_OBSERVERS_REGISTRY.get(Service)!.add(observer);
 }

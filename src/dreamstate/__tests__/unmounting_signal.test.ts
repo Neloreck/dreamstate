@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import { createElement } from "react";
+import { createElement, FunctionComponent } from "react";
 
 import { ContextManager } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
@@ -7,7 +7,7 @@ import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("Emitting signal on provision end", () => {
-  const count = jest.fn();
+  const mock = jest.fn();
 
   class EmittingOnProvisionEnd extends ContextManager {
 
@@ -21,29 +21,27 @@ describe("Emitting signal on provision end", () => {
 
     @OnSignal("END")
     private onEnd(): void {
-      count();
+      mock();
     }
 
   }
 
-  const FirstProvider = createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ]);
-  const SecondProvider = createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ]);
+  it("Should properly notify current managers when sending signal on unmount with combined provision", async () => {
+    async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
+      const tree = mount(createElement(provider, {}));
 
-  it("Should properly notify current managers when sending signal on unmount", async () => {
-    const firstTree = mount(createElement(FirstProvider, {}));
+      tree.unmount();
 
-    firstTree.unmount();
+      await nextAsyncQueue();
 
-    await nextAsyncQueue();
+      expect(mock).toHaveBeenCalledTimes(times);
 
-    expect(count).toHaveBeenCalledTimes(1);
+      mock.mockClear();
+    }
 
-    const secondTree = mount(createElement(SecondProvider, {}));
-
-    secondTree.unmount();
-
-    await nextAsyncQueue();
-
-    expect(count).toHaveBeenCalledTimes(1);
+    await testProvider(createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ], { isCombined: false }), 0);
+    await testProvider(createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ], { isCombined: true }), 0);
+    await testProvider(createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ], { isCombined: false }), 1);
+    await testProvider(createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ], { isCombined: true }), 1);
   });
 });

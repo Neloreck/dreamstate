@@ -39,7 +39,7 @@ export const CONTEXT_SERVICES_REGISTRY: TServiceMap<InstanceType<TAnyContextMana
 export const CONTEXT_STATES_REGISTRY: TServiceMap<TAnyObject> = new WeakMap();
 
 // ContextManagers observers registry - Providers of related context.
-export const CONTEXT_OBSERVERS_REGISTRY: TServiceMap<Set<TUpdateObserver<any>>> = new WeakMap();
+export const CONTEXT_OBSERVERS_REGISTRY: TServiceMap<Set<TUpdateObserver>> = new WeakMap();
 
 // ContextManagers subscribers registry for data updates.
 export const CONTEXT_SUBSCRIBERS_REGISTRY: TServiceMap<Set<TUpdateSubscriber<any>>> = new WeakMap();

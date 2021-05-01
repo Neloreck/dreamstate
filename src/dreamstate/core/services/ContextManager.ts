@@ -136,8 +136,6 @@ export abstract class ContextManager<
       this.context = nextContext;
       notifyObservers(this);
       this.afterUpdate(previousContext);
-    } else {
-      this.context = processComputed(nextContext);
     }
   }
 

@@ -21,7 +21,7 @@ import { BABEL_CONFIG } from "./babel.modern.config";
 const createPortableConfig = (env) => ({
   external: [
     "react",
-    "shallow-equal",
+    "shallow-equal"
   ],
   input: PORTABLE_ENTRY,
   preserveModules: false,

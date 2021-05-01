@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import { createElement } from "react";
+import { createElement, FunctionComponent } from "react";
 
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
@@ -7,7 +7,7 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("Emitting signal on provision end", () => {
-  const count = jest.fn();
+  const mock = jest.fn();
 
   class QueryingOnProvisionEnd extends ContextManager {
 
@@ -21,29 +21,27 @@ describe("Emitting signal on provision end", () => {
 
     @OnQuery("END")
     private onQuery(): void {
-      count();
+      mock();
     }
 
   }
 
-  const FirstProvider = createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ]);
-  const SecondProvider = createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ]);
+  it("Should properly notify current managers when sending signal on unmount with combined provision", async () => {
+    async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
+      const tree = mount(createElement(provider, {}));
 
-  it("Should properly query data while unmounting", async () => {
-    const firstTree = mount(createElement(FirstProvider, {}));
+      tree.unmount();
 
-    firstTree.unmount();
+      await nextAsyncQueue();
 
-    await nextAsyncQueue();
+      expect(mock).toHaveBeenCalledTimes(times);
 
-    expect(count).toHaveBeenCalledTimes(1);
+      mock.mockClear();
+    }
 
-    const secondTree = mount(createElement(SecondProvider, {}));
-
-    secondTree.unmount();
-
-    await nextAsyncQueue();
-
-    expect(count).toHaveBeenCalledTimes(1);
+    await testProvider(createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], { isCombined: false }), 0);
+    await testProvider(createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], { isCombined: true }), 0);
+    await testProvider(createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], { isCombined: false }), 1);
+    await testProvider(createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], { isCombined: true }), 1);
   });
 });

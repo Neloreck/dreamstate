@@ -33,9 +33,6 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 
 #### [Services](https://github.com/Neloreck/dreamstate/wiki/services)
 - [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
-- [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
-- [getCurrentContext](https://github.com/Neloreck/dreamstate/wiki/getCurrentContext)
-
 
 #### [Provision](https://github.com/Neloreck/dreamstate/wiki/provision)
 - [createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider)
@@ -74,6 +71,8 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [getReactConsumer](https://github.com/Neloreck/dreamstate/wiki/getReactConsumer)
 - [getReactProvider](https://github.com/Neloreck/dreamstate/wiki/getReactProvider)
 - [nextAsyncQueue](https://github.com/Neloreck/dreamstate/wiki/nextAsyncQueue)
+- [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
+- [getCurrentContext](https://github.com/Neloreck/dreamstate/wiki/getCurrentContext)
 
 ## Proposals and contribution:
 Feel free to open PRs or issues. <br/>

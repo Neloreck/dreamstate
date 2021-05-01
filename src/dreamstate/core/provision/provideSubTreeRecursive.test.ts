@@ -1,7 +1,6 @@
 import { shallow } from "enzyme";
 import { createElement } from "react";
 
-import { provideSubTreeIterative } from "@/dreamstate/core/provision/provideSubTreeIterative";
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/provideSubTreeRecursive";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
@@ -18,7 +17,7 @@ describe("provideSubTreeRecursive rendering", () => {
     unRegisterService(NestedContextManager);
   });
 
-  const provide = (method: typeof provideSubTreeIterative | typeof provideSubTreeRecursive) => {
+  const provide = (method: typeof provideSubTreeRecursive) => {
     shallow(
       createElement(
         "div",
@@ -40,12 +39,5 @@ describe("provideSubTreeRecursive rendering", () => {
     const recursive = provide(provideSubTreeRecursive);
 
     expect(recursive).toMatchSnapshot();
-  });
-
-  it("Should be same as iterative implementation", () => {
-    const iterative = provide(provideSubTreeIterative);
-    const recursive = provide(provideSubTreeRecursive);
-
-    expect(recursive).toEqual(iterative);
   });
 });
