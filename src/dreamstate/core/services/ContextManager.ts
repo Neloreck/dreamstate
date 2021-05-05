@@ -1,15 +1,12 @@
-import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
-import { notifyObservers } from "@/dreamstate/core/observing/notifyObservers";
+import { QUERY_METADATA_SYMBOL, SCOPE_SYMBOL, SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { getReactContext } from "@/dreamstate/core/services/getReactContext";
+import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
-import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
-import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
-import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
-import { getReactContext } from "@/dreamstate/core/registry/getReactContext";
-import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import {
   IBaseSignal, IOptionalQueryRequest, TAnyContextManagerConstructor,
   TAnyObject,
-  TConstructorKey,
+  TConstructorKey, TEmptyObject,
   TPartialTransformer, TQueryType,
   TSignalType
 } from "@/dreamstate/types";
@@ -20,19 +17,20 @@ import {
  * Current Issue: Static items inside of each class instance.
  */
 export abstract class ContextManager<
-  T extends TAnyObject = TAnyObject,
+  T extends TAnyObject = TEmptyObject,
   S extends TAnyObject = TAnyObject
 > {
+
+  public static readonly [SIGNAL_METADATA_SYMBOL] = [];
+  public static readonly [QUERY_METADATA_SYMBOL] = [];
+
+  private [SCOPE_SYMBOL]!: IScopeContext;
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
    * Allows to get related React.Context for manual renders.
    */
   public static get REACT_CONTEXT() {
-    if (this === ContextManager) {
-      throw new Error("Cannot reference to ContextManager statics directly. Only inherited classes allowed.");
-    }
-
     return getReactContext(this as TConstructorKey);
   }
 
@@ -62,7 +60,7 @@ export abstract class ContextManager<
   protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
     baseSignal: IBaseSignal<T, D>
   ): Promise<void> {
-    return emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
+    return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
   }
 
   /**
@@ -75,7 +73,7 @@ export abstract class ContextManager<
     >(
     queryRequest: Q
   ) {
-    return queryDataAsync<any, D, T, Q>(queryRequest);
+    return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
   }
 
   /**
@@ -88,7 +86,7 @@ export abstract class ContextManager<
     >(
     queryRequest: Q
   ) {
-    return queryDataSync<any, D, T, Q>(queryRequest);
+    return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
   }
 
   /*
@@ -105,7 +103,7 @@ export abstract class ContextManager<
     // Force updates and common lifecycle with same params.
     this.beforeUpdate(this.context);
     this.context = Object.assign({}, this.context);
-    notifyObservers(this);
+    this[SCOPE_SYMBOL].notifyObservers(this);
     this.afterUpdate(this.context);
   }
 
@@ -126,7 +124,7 @@ export abstract class ContextManager<
      */
     if (
       shouldObserversUpdate(
-        CONTEXT_STATES_REGISTRY.get(this.constructor as TAnyContextManagerConstructor)!,
+        this[SCOPE_SYMBOL].REGISTRY.CONTEXT_STATES_REGISTRY.get(this.constructor as TAnyContextManagerConstructor)!,
         nextContext
       )
     ) {
@@ -134,7 +132,7 @@ export abstract class ContextManager<
 
       this.beforeUpdate(nextContext);
       this.context = nextContext;
-      notifyObservers(this);
+      this[SCOPE_SYMBOL].notifyObservers(this);
       this.afterUpdate(previousContext);
     }
   }

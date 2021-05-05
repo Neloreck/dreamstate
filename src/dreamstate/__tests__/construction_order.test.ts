@@ -1,11 +1,8 @@
 import { mount } from "enzyme";
 import { createElement } from "react";
 
-import { ContextManager } from "@/dreamstate";
-import { CONTEXT_SERVICES_ACTIVATED } from "@/dreamstate/core/internals";
+import { ContextManager, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 
 describe("Mount order for providers", () => {
   it("Should create elements in an expected order", async () => {
@@ -40,7 +37,7 @@ describe("Mount order for providers", () => {
     const ScopedProvider = createProvider([ First, Second, Third ], { isCombined: false });
     let list: Array<string> = [];
 
-    const combinedTree = mount(createElement(CombinedProvider, {}));
+    const combinedTree = mount(createElement(ScopeProvider, {}, createElement(CombinedProvider, {})));
 
     combinedTree.unmount();
 
@@ -51,7 +48,7 @@ describe("Mount order for providers", () => {
 
     list = [];
 
-    const scopedTree = mount(createElement(ScopedProvider, {}));
+    const scopedTree = mount(createElement(ScopeProvider, {}, createElement(ScopedProvider, {})))
 
     scopedTree.unmount();
 

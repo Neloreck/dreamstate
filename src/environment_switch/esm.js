@@ -5,16 +5,10 @@
 import {
   ContextManager as DContextManager,
   createProvider as DcreateProvider,
+  ScopeProvider as DScopeProvider,
+  useScope as DuseScope,
   OnSignal as DOnSignal,
-  useSignals as DuseSignals,
-  unsubscribeFromSignals as DunsubscribeFromSignals,
-  subscribeToSignals as DsubscribeToSignals,
-  emitSignal as DemitSignal,
   OnQuery as DOnQuery,
-  queryDataAsync as DqueryDataAsync,
-  queryDataSync as DqueryDataSync,
-  registerQueryProvider as DregisterQueryProvider,
-  unRegisterQueryProvider as DunRegisterQueryProvider,
   useManager as DuseManager,
   Bind as DBind,
   createLoadable as DcreateLoadable,
@@ -25,16 +19,10 @@ import {
 import {
   ContextManager as PContextManager,
   createProvider as PcreateProvider,
+  ScopeProvider as PScopeProvider,
+  useScope as PuseScope,
   OnSignal as POnSignal,
-  useSignals as PuseSignals,
-  unsubscribeFromSignals as PunsubscribeFromSignals,
-  subscribeToSignals as PsubscribeToSignals,
-  emitSignal as PemitSignal,
   OnQuery as POnQuery,
-  queryDataAsync as PqueryDataAsync,
-  queryDataSync as PqueryDataSync,
-  registerQueryProvider as PregisterQueryProvider,
-  unRegisterQueryProvider as PunRegisterQueryProvider,
   useManager as PuseManager,
   Bind as PBind,
   createLoadable as PcreateLoadable,
@@ -47,23 +35,12 @@ export const ContextManager = process.env.NODE_ENV === "production" ? PContextMa
 
 export const createProvider = process.env.NODE_ENV === "production" ? PcreateProvider : DcreateProvider;
 
+export const ScopeProvider = process.env.NODE_ENV === "production" ? PScopeProvider : DScopeProvider;
+export const useScope = process.env.NODE_ENV === "production" ? PuseScope : DuseScope;
+
 export const OnSignal = process.env.NODE_ENV === "production" ? POnSignal : DOnSignal;
-export const useSignals = process.env.NODE_ENV === "production" ? PuseSignals : DuseSignals;
-export const unsubscribeFromSignals = process.env.NODE_ENV === "production"
-  ? PunsubscribeFromSignals
-  : DunsubscribeFromSignals;
-export const subscribeToSignals = process.env.NODE_ENV === "production" ? PsubscribeToSignals : DsubscribeToSignals;
-export const emitSignal = process.env.NODE_ENV === "production" ? PemitSignal : DemitSignal;
 
 export const OnQuery = process.env.NODE_ENV === "production" ? POnQuery : DOnQuery;
-export const queryDataAsync = process.env.NODE_ENV === "production" ? PqueryDataAsync : DqueryDataAsync;
-export const queryDataSync = process.env.NODE_ENV === "production" ? PqueryDataSync : DqueryDataSync;
-export const registerQueryProvider = process.env.NODE_ENV === "production"
-  ? PregisterQueryProvider
-  : DregisterQueryProvider;
-export const unRegisterQueryProvider = process.env.NODE_ENV === "production" ?
-  PunRegisterQueryProvider
-  : DunRegisterQueryProvider;
 
 export const useManager = process.env.NODE_ENV === "production" ? PuseManager : DuseManager;
 

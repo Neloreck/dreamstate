@@ -3,9 +3,7 @@ import { createElement, ReactElement, useEffect } from "react";
 import { act } from "react-dom/test-utils";
 
 import { createProvider, useManager } from "@/dreamstate";
-import { CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 import {

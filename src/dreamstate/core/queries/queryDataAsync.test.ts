@@ -1,7 +1,7 @@
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { registerService } from "@/dreamstate/test-utils/registry/registerService";
 import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
-import { TQueryResponse } from "@/dreamstate/types";
+import {TOptionalQueryResponse, TQueryResponse} from "@/dreamstate/types";
 import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("queryDataAsync and queries processing", () => {
@@ -47,5 +47,17 @@ describe("queryDataAsync and queries processing", () => {
   it("Should properly handle errors in queries", () => {
     expect(queryDataAsync({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
     expect(queryDataAsync({ type: EQuery.SYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
+  });
+
+  it("Should properly find async query responders or fallback to null for single queries", async () => {
+    const numberResponse: TOptionalQueryResponse<number> = await queryDataAsync({ type: EQuery.ASYNC_NUMBER_QUERY });
+    const undefinedResponse: TOptionalQueryResponse<215> = await queryDataAsync({ type: EQuery.UNDEFINED_QUERY });
+
+    expect(numberResponse).not.toBeNull();
+    expect(numberResponse!.data).toBe(100);
+    expect(numberResponse!.answerer).toBe(RespondingManager);
+    expect(typeof numberResponse!.timestamp).toBe("number");
+
+    expect(undefinedResponse).toBeNull();
   });
 });

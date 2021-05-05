@@ -1,7 +1,10 @@
-import { FunctionComponent, ReactNode } from "react";
+import { FunctionComponent, ReactNode, useContext } from "react";
+
+import { dev } from "@/macroses/dev.macro";
 
 import { IProviderProps } from "@/dreamstate/core/provision/createProvider";
 import { createScopedObserverTreeRecursive } from "@/dreamstate/core/provision/createScopedObserverTreeRecursive";
+import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 /**
@@ -12,7 +15,13 @@ export function createScopedProvider<T extends IProviderProps<any>>(
   sources: Array<TAnyContextManagerConstructor>
 ): FunctionComponent<IProviderProps<T>> {
   function Observer(props: T): ReactNode {
-    return createScopedObserverTreeRecursive(sources, props);
+    const scope: IScopeContext = useContext(ScopeContext);
+
+    if (IS_DEV) {
+      dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+    }
+
+    return createScopedObserverTreeRecursive(sources, props, scope);
   }
 
   if (IS_DEV) {

@@ -3,7 +3,7 @@ import { FunctionComponent, ReactNode } from "react";
 import { createCombinedProvider } from "@/dreamstate/core/provision/createCombinedProvider";
 import { createScopedProvider } from "@/dreamstate/core/provision/createScopedProvider";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 export interface ICreateProviderProps {
   isCombined?: boolean;
@@ -24,7 +24,7 @@ export interface IProviderProps<T> {
 export function createProvider<
   T extends TAnyObject = TAnyObject
 >(
-  sources: Array<TAnyContextManagerConstructor>,
+  sources: Array<IContextManagerConstructor>,
   { isCombined = true }: ICreateProviderProps = {}
 ): FunctionComponent<IProviderProps<T>> {
   if (!Array.isArray(sources)) {

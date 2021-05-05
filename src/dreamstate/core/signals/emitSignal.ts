@@ -1,5 +1,4 @@
-import { SIGNAL_LISTENERS_REGISTRY } from "@/dreamstate/core/internals";
-import { cancelSignal } from "@/dreamstate/core/signals/cancelSignal";
+import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
 import {
   IBaseSignal,
   ISignalEvent,
@@ -9,13 +8,18 @@ import {
   TSignalType
 } from "@/dreamstate/types";
 
+function cancelSignal(this: ISignalEvent<TSignalType, unknown>): void {
+  this.canceled = true;
+}
+
 /**
  * Emit signal and notify all subscribers in async query.
  * If event is canceled, stop its propagation to next handlers.
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: IBaseSignal<T, D>,
-  emitter: TAnyContextManagerConstructor | null = null
+  emitter: TAnyContextManagerConstructor | null = null,
+  { SIGNAL_LISTENERS_REGISTRY }: IRegistry
 ): Promise<void> {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");

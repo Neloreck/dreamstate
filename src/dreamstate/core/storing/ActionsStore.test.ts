@@ -1,5 +1,5 @@
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
-import { shouldObserversUpdate } from "@/dreamstate/core/observing/shouldObserversUpdate";
+import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 
 describe("ActionsStore value class", () => {
   it("Should not be checked when comparing values before manager update", () => {

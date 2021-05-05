@@ -22,20 +22,15 @@ describe("Library exported API", () => {
     // Provision.
     "createProvider",
     "ProviderProps",
+    // Scoping
+    "ScopeProvider",
+    "useScope",
     // Consumption.
     "useManager",
     // Signals.
     "OnSignal",
-    "unsubscribeFromSignals",
-    "subscribeToSignals",
-    "useSignals",
-    "emitSignal",
     // Queries.
     "OnQuery",
-    "queryDataAsync",
-    "queryDataSync",
-    "registerQueryProvider",
-    "unRegisterQueryProvider",
     // Utils.
     "createNested",
     "createComputed",

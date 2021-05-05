@@ -1,10 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useContext, useEffect, useMemo, useReducer } from "react";
 
-import { startServiceObserving } from "@/dreamstate/core/observing/startServiceObserving";
-import { stopServiceObserving } from "@/dreamstate/core/observing/stopServiceObserving";
-import { addServiceObserverToRegistry } from "@/dreamstate/core/registry/addServiceObserverToRegistry";
-import { registerService } from "@/dreamstate/core/registry/registerService";
-import { removeServiceObserverFromRegistry } from "@/dreamstate/core/registry/removeServiceObserverFromRegistry";
+import { dev } from "@/macroses/dev.macro";
+
+import { forceUpdateReducer } from "@/dreamstate/core/provision/forceUpdateReducer";
+import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
@@ -12,9 +11,15 @@ import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  */
 export function useSourceObserving(
   sources: Array<TAnyContextManagerConstructor>,
-  initialState: TAnyObject | undefined,
-  onUpdateNeeded: () => void
-): void {
+  initialState: TAnyObject | undefined
+): Map<TAnyContextManagerConstructor, TAnyObject> {
+  const scope: IScopeContext = useContext(ScopeContext);
+  const [ , updateProviders ] = useReducer(forceUpdateReducer, null);
+
+  if (IS_DEV) {
+    dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+  }
+
   /**
    * Use memo for first and single init of required components.
    * useLayoutEffect will not work for some environments and SSR.
@@ -23,7 +28,7 @@ export function useSourceObserving(
    */
   useMemo(function(): void {
     for (let it = 0; it < sources.length; it ++) {
-      registerService(sources[it], initialState);
+      scope.registerService(sources[it], initialState);
     }
   }, sources);
 
@@ -33,9 +38,9 @@ export function useSourceObserving(
    */
   useEffect(function() {
     for (let it = sources.length - 1; it >= 0; it --) {
-      addServiceObserverToRegistry(sources[it], onUpdateNeeded);
-      registerService(sources[it], initialState);
-      startServiceObserving(sources[it]);
+      scope.addServiceObserver(sources[it], updateProviders);
+      scope.registerService(sources[it], initialState);
+      scope.incrementServiceObserving(sources[it]);
     }
 
     /**
@@ -43,9 +48,11 @@ export function useSourceObserving(
      */
     return function() {
       for (let it = 0; it < sources.length; it ++) {
-        removeServiceObserverFromRegistry(sources[it], onUpdateNeeded);
-        stopServiceObserving(sources[it]);
+        scope.removeServiceObserver(sources[it], updateProviders);
+        scope.decrementServiceObserving(sources[it]);
       }
     };
   }, sources);
+
+  return scope.REGISTRY.CONTEXT_STATES_REGISTRY;
 }

@@ -16,7 +16,8 @@ describe("createScopedObserverTreeRecursive rendering", () => {
             NestedContextManager,
             TestContextManager
           ],
-          { children: createElement("div", {}, "bottom") }
+          { children: createElement("div", {}, "bottom") },
+          null as any
         )
       )
     );

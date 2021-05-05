@@ -8,13 +8,13 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  */
 export function useManager<
   T extends TAnyObject,
-  D extends IContextManagerConstructor<any, T, any>
+  D extends IContextManagerConstructor<T>
 >(
   Manager: D,
   depsSelector?: (context: D["prototype"]["context"]) => Array<any>
 ): D["prototype"]["context"] {
   if (depsSelector) {
-    return useContextWithMemo<any, T, D>(Manager, depsSelector);
+    return useContextWithMemo<T, D>(Manager, depsSelector);
   } else {
     return useContext(Manager.REACT_CONTEXT);
   }

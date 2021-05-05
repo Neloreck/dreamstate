@@ -1,8 +1,7 @@
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 
-import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
-import { subscribeToManager } from "@/dreamstate/core/registry/subscribeToManager";
-import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dreamstate/types";
+import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import {IContextManagerConstructor, TAnyObject, TUpdateSubscriber} from "@/dreamstate/types";
 
 /**
  * Use manager hook with subscribed updates.
@@ -13,15 +12,15 @@ import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dre
  */
 export function useContextWithMemo<
   T extends TAnyObject,
-  S extends TAnyObject,
-  D extends IContextManagerConstructor<S, T>
+  D extends IContextManagerConstructor<T>
 >(
   Manager: D,
   depsSelector: (context: T) => Array<any>
 ): T {
+  const scope: IScopeContext = useContext(ScopeContext);
   const observed: MutableRefObject<Array<any> | null> = useRef(null);
   const [ state, setState ] = useState(function() {
-    return CONTEXT_STATES_REGISTRY.get(Manager) as T;
+    return scope.REGISTRY.CONTEXT_STATES_REGISTRY.get(Manager) as T;
   });
 
   // Calculate changes like react core does and fire change only after update.
@@ -46,10 +45,10 @@ export function useContextWithMemo<
     };
 
     // Set ref after mount, update state if Manager dependency changes on hot reload/something changes in between.
-    checkMemoState(CONTEXT_STATES_REGISTRY.get(Manager) as T);
+    checkMemoState(scope.REGISTRY.CONTEXT_STATES_REGISTRY.get(Manager) as T);
 
-    return subscribeToManager(Manager, checkMemoState);
-  }, [ Manager ]);
+    return scope.subscribeToManager(Manager, checkMemoState);
+  }, [ Manager, scope ]);
 
   return state;
 }

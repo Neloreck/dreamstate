@@ -49,7 +49,75 @@
           "k": 1.8469404427473115
         }
       ]
+    },
+    "property_access": {
+      "name": "property_access",
+      "lastRun": 1619990498261,
+      "fastest": "access#direct-name",
+      "suites": [
+        {
+          "name": "access#string-prop",
+          "period": 1.2252061429929007e-9,
+          "frequency": 816189182301.3773,
+          "k": 1.0065687703748516
+        },
+        {
+          "name": "access#number-prop",
+          "period": 1.2603404468007797e-9,
+          "frequency": 793436410406.7102,
+          "k": 1.0354333766977388
+        },
+        {
+          "name": "access#symbol-prop",
+          "period": 1.246054942643371e-9,
+          "frequency": 802532830437.3225,
+          "k": 1.0236971130198715
+        },
+        {
+          "name": "access#direct-name",
+          "period": 1.2172105662851305e-9,
+          "frequency": 821550541622.353,
+          "k": 1.0000000000000002
+        }
+      ]
+    },
+    "dictionary_performance": {
+      "name": "dictionary_performance",
+      "lastRun": 1619990931326,
+      "fastest": "access#object + normal map",
+      "suites": [
+        {
+          "name": "access#string+normal map",
+          "period": 1.1545156806365083e-9,
+          "frequency": 866164069290.6652,
+          "k": 1.0062125291618402
+        },
+        {
+          "name": "access#string+object dictionary",
+          "period": 1.2427213465380734e-9,
+          "frequency": 804685622232.0173,
+          "k": 1.0830877484956187
+        },
+        {
+          "name": "access#string+null proto object",
+          "period": 9.296783820737328e-9,
+          "frequency": 107564080146.6641,
+          "k": 8.102566745717679
+        },
+        {
+          "name": "access#object + normal map",
+          "period": 1.147387502318424e-9,
+          "frequency": 871545138830.0717,
+          "k": 1
+        },
+        {
+          "name": "access#object + weak map",
+          "period": 7.1201871927614305e-9,
+          "frequency": 140445745726.54865,
+          "k": 6.205564535411359
+        }
+      ]
     }
   },
-  "lastRun": 1589662133502
+  "lastRun": 1619990931326
 }

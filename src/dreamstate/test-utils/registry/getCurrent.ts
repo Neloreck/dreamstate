@@ -1,4 +1,3 @@
-import { CONTEXT_SERVICES_REGISTRY } from "@/dreamstate/core/internals";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 /**
@@ -8,5 +7,6 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 export function getCurrent<T extends TAnyContextManagerConstructor>(
   Service: T
 ): InstanceType<T> | null {
-  return CONTEXT_SERVICES_REGISTRY.get(Service) as InstanceType<T> || null;
+  // todo: return CONTEXT_SERVICES_REGISTRY.get(Service) as InstanceType<T> || null;
+  return null as any;
 }

@@ -3,11 +3,6 @@ describe("Library test utils exports", () => {
   const testUtilsRoot = require("./test-utils");
 
   const expectedTestUtilsExports: Array<string> = [
-    "registerService",
-    "unRegisterService",
-    "addServiceObserver",
-    "removeServiceObserver",
-    "getServiceObserversCount",
     "isServiceProvided",
     "getReactProvider",
     "getReactConsumer",

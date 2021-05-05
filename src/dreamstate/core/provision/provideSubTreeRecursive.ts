@@ -1,7 +1,6 @@
 import { createElement, ReactNode } from "react";
 
-import { CONTEXT_STATES_REGISTRY } from "@/dreamstate/core/internals";
-import { TAnyContextManagerConstructor } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Subtree provider as global scope helper.
@@ -10,13 +9,14 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 export function provideSubTreeRecursive(
   bottom: ReactNode = null,
   sources: Array<TAnyContextManagerConstructor>,
-  current: number
+  registry: Map<TAnyContextManagerConstructor, TAnyObject>,
+  current: number = 0
 ): ReactNode {
   return current >= sources.length
     ? bottom
     : createElement(
       sources[current].REACT_CONTEXT.Provider,
-      { value: CONTEXT_STATES_REGISTRY.get(sources[current]) },
-      provideSubTreeRecursive(bottom, sources, current + 1)
+      { value: registry.get(sources[current]) },
+      provideSubTreeRecursive(bottom, sources, registry, current + 1)
     );
 }
