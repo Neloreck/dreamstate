@@ -1,5 +1,5 @@
-import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
+import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 
 describe("Computed value class", () => {
   it("Should not be checked when comparing values before manager update", () => {

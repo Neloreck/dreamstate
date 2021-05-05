@@ -9,14 +9,14 @@ import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 export function provideSubTreeRecursive(
   bottom: ReactNode = null,
   sources: Array<TAnyContextManagerConstructor>,
-  registry: Map<TAnyContextManagerConstructor, TAnyObject>,
+  contextStateRegistry: Map<TAnyContextManagerConstructor, TAnyObject>,
   current: number = 0
 ): ReactNode {
   return current >= sources.length
     ? bottom
     : createElement(
       sources[current].REACT_CONTEXT.Provider,
-      { value: registry.get(sources[current]) },
-      provideSubTreeRecursive(bottom, sources, registry, current + 1)
+      { value: contextStateRegistry.get(sources[current]) },
+      provideSubTreeRecursive(bottom, sources, contextStateRegistry, current + 1)
     );
 }

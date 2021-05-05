@@ -11,8 +11,6 @@ import {
 
 export class RespondingManager extends ContextManager {
 
-  public context = {};
-
   @OnQuery(EQuery.ASYNC_EXCEPTION_QUERY)
   public async onAsyncExceptionQuery(queryRequest: TAsyncExceptionQuery): Promise<never> {
     throw new Error();

@@ -1,20 +1,24 @@
-import { createElement, ReactElement, useState } from "react";
+import { createElement, ReactElement, useEffect, useState } from "react";
 
-import { useSignals } from "@/dreamstate";
+import { useScope } from "@/dreamstate";
+import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ESignal } from "@/fixtures/signals/ESignal";
 import { TStringSignalEvent } from "@/fixtures/signals/types";
 
 export function SubscribedFunctionalComponent({
   onInternalSignal
 }: { onInternalSignal: (signal: TStringSignalEvent) => void }): ReactElement {
+  const { subscribeToSignals }: IPublicScopeContext = useScope();
   const [ value, setValue ] = useState("initial");
 
-  useSignals((signal: TStringSignalEvent) => {
-    if (signal.type === ESignal.STRING_SIGNAL) {
-      setValue(signal.data);
-      // Emit parent callback for testing.
-      onInternalSignal(signal);
-    }
+  useEffect(() => {
+    return subscribeToSignals((signal: TStringSignalEvent) => {
+      if (signal.type === ESignal.STRING_SIGNAL) {
+        setValue(signal.data);
+        // Emit parent callback for testing.
+        onInternalSignal(signal);
+      }
+    });
   }, [ onInternalSignal ]);
 
   return createElement("div", {}, value);

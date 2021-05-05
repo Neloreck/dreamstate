@@ -1,4 +1,3 @@
-import { ContextManager } from "@/dreamstate";
 import { SCOPE_SYMBOL, SIGNALING_HANDLER_SYMBOL } from "@/dreamstate/core/internals";
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
@@ -7,6 +6,7 @@ import { registerQueryProvider } from "@/dreamstate/core/scoping/queries/registe
 import { unRegisterQueryProvider } from "@/dreamstate/core/scoping/queries/unRegisterQueryProvider";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/scoping/signals/onMetadataSignalListenerCalled";
+import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
@@ -43,15 +43,14 @@ export function initializeScopeContext(): IScopeContext {
         // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
         processComputed((instance as ContextManager<any>).context);
 
-        // todo: add query handling
-
         instance[SCOPE_SYMBOL] = this;
-        instance[SIGNALING_HANDLER_SYMBOL] = onMetadataSignalListenerCalled.bind(this);
+        instance[SIGNALING_HANDLER_SYMBOL] = onMetadataSignalListenerCalled.bind(instance);
 
         CONTEXT_SERVICES_ACTIVATED.add(Service);
         CONTEXT_STATES_REGISTRY.set(Service, (instance as ContextManager).context);
         CONTEXT_SERVICES_REFERENCES.set(Service, 0);
         CONTEXT_OBSERVERS_REGISTRY.set(Service, new Set());
+        CONTEXT_SUBSCRIBERS_REGISTRY.set(Service, new Set());
         // Subscribers are not always sync, should not block their un-sub later.
 
         SIGNAL_LISTENERS_REGISTRY.add(instance[SIGNALING_HANDLER_SYMBOL]);
@@ -73,7 +72,6 @@ export function initializeScopeContext(): IScopeContext {
       CONTEXT_SERVICES_ACTIVATED.delete(Service);
       CONTEXT_SERVICES_REGISTRY.delete(Service);
       CONTEXT_STATES_REGISTRY.delete(Service);
-      CONTEXT_OBSERVERS_REGISTRY.delete(Service);
     },
     addServiceObserver(Service: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
       CONTEXT_OBSERVERS_REGISTRY.get(Service)!.add(observer);
@@ -152,7 +150,9 @@ export function initializeScopeContext(): IScopeContext {
     ): Promise<void> {
       return emitSignal(base, emitter, registry);
     },
-    subscribeToSignals(listener: TSignalListener): TCallable {
+    subscribeToSignals<T extends TSignalType, D = undefined>(
+      listener: TSignalListener<T, D>
+    ): TCallable {
       if (typeof listener !== "function") {
         throw new Error(`Signal listener must be function, '${typeof listener}' provided.`);
       }
@@ -163,7 +163,9 @@ export function initializeScopeContext(): IScopeContext {
         SIGNAL_LISTENERS_REGISTRY.delete(listener);
       };
     },
-    unsubscribeFromSignals(listener: TSignalListener): void {
+    unsubscribeFromSignals<T extends TSignalType, D = undefined>(
+      listener: TSignalListener<T, D>
+    ): void {
       SIGNAL_LISTENERS_REGISTRY.delete(listener);
     },
     registerQueryProvider<T extends TQueryType>(
@@ -179,24 +181,22 @@ export function initializeScopeContext(): IScopeContext {
       return unRegisterQueryProvider(queryType, listener, registry);
     },
     queryDataSync<
-      R,
       D extends any,
       T extends TQueryType,
       Q extends IOptionalQueryRequest<D, T>
       >(
       query: Q
-    ): TQueryResponse<R, T> {
-      return queryDataSync<R, D, T>(query, registry)!;
+    ): TQueryResponse<any, T> {
+      return queryDataSync<any, D, T, Q>(query, registry)!;
     },
     queryDataAsync<
-      R,
       D extends any,
       T extends TQueryType,
       Q extends IOptionalQueryRequest<D, T>
     >(
       queryRequest: Q
-    ): Promise<TQueryResponse<R, T>> {
-      return queryDataAsync<R, D, T>(queryRequest, registry);
+    ): Promise<TQueryResponse<any, T>> {
+      return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any, T>>;
     }
   }
   );

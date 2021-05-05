@@ -12,14 +12,14 @@ import { TCallable, TQueryListener, TQueryType } from "@/dreamstate/types";
 export function registerQueryProvider<T extends TQueryType>(
   queryType: T,
   listener: TQueryListener<T, any>,
-  { QUERY_PROVIDERS_REGISTRY }: IRegistry
+  registry: IRegistry
 ): TCallable {
   if (typeof listener !== "function") {
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
   }
 
-  if (QUERY_PROVIDERS_REGISTRY.has(queryType)) {
-    const currentProviders: Array<TQueryListener<any, any>> = QUERY_PROVIDERS_REGISTRY.get(queryType)!;
+  if (registry.QUERY_PROVIDERS_REGISTRY.has(queryType)) {
+    const currentProviders: Array<TQueryListener<any, any>> = registry.QUERY_PROVIDERS_REGISTRY.get(queryType)!;
 
     // Do not overwrite same listeners.
     if (!currentProviders.includes(listener)) {
@@ -27,10 +27,10 @@ export function registerQueryProvider<T extends TQueryType>(
     }
   } else {
     // Just add new entry.
-    QUERY_PROVIDERS_REGISTRY.set(queryType, [ listener ]);
+    registry.QUERY_PROVIDERS_REGISTRY.set(queryType, [ listener ]);
   }
 
-  return function() {
-    unRegisterQueryProvider(queryType, listener, QUERY_PROVIDERS_REGISTRY);
+  return function(): void {
+    unRegisterQueryProvider(queryType, listener, registry);
   };
 }

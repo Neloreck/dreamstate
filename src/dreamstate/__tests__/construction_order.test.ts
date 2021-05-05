@@ -48,7 +48,7 @@ describe("Mount order for providers", () => {
 
     list = [];
 
-    const scopedTree = mount(createElement(ScopeProvider, {}, createElement(ScopedProvider, {})))
+    const scopedTree = mount(createElement(ScopeProvider, {}, createElement(ScopedProvider, {})));
 
     scopedTree.unmount();
 

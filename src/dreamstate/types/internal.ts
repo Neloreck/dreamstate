@@ -3,19 +3,19 @@ import { Context } from "react";
 import { QUERY_METADATA_SYMBOL, SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import type { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import type { TAnyObject } from "@/dreamstate/types/general";
-import type { TQueryType } from "@/dreamstate/types/queries";
-import type { TSignalType } from "@/dreamstate/types/signals";
+import type { TQuerySubscriptionMetadata } from "@/dreamstate/types/queries";
+import type { TSignalSubscriptionMetadata } from "@/dreamstate/types/signals";
 
 export interface IContextManagerConstructor<
   T extends TAnyObject = TAnyObject,
-  S extends TAnyObject = TAnyObject,
+  S extends TAnyObject = any,
   C extends ContextManager<T> = ContextManager<T>
 > {
   REACT_CONTEXT: Context<T>;
   prototype: C;
   new (initialState?: S): C;
-  [QUERY_METADATA_SYMBOL]: Array<[ string | symbol, TQueryType]>;
-  [SIGNAL_METADATA_SYMBOL]: Array<[ string | symbol, Array<TSignalType> | TSignalType ]>;
+  [QUERY_METADATA_SYMBOL]: TQuerySubscriptionMetadata;
+  [SIGNAL_METADATA_SYMBOL]: TSignalSubscriptionMetadata;
 }
 
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any, any>;

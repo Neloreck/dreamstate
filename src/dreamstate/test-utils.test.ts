@@ -3,12 +3,14 @@ describe("Library test utils exports", () => {
   const testUtilsRoot = require("./test-utils");
 
   const expectedTestUtilsExports: Array<string> = [
-    "isServiceProvided",
+    "InternalScopeContext",
     "getReactProvider",
     "getReactConsumer",
-    "nextAsyncQueue",
     "getCurrent",
-    "getCurrentContext"
+    "mockManagerWithScope",
+    "mockScopeProvider",
+    "mockScope",
+    "nextAsyncQueue"
   ];
 
   const assertListIntersection = (first: Array<string>, second: Array<string>) => {

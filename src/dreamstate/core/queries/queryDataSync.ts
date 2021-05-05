@@ -49,15 +49,17 @@ export function queryDataSync<
   }
 
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
-    for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
-      if (type === query.type) {
-        const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
+    if (service[QUERY_METADATA_SYMBOL]) {
+      for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
+        if (type === query.type) {
+          const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
 
-        return executeQuerySync(
-          (handlerService as any)[method].bind(handlerService),
-          query,
+          return executeQuerySync(
+            (handlerService as any)[method].bind(handlerService),
+            query,
             handlerService.constructor as TAnyContextManagerConstructor
-        );
+          );
+        }
       }
     }
   }

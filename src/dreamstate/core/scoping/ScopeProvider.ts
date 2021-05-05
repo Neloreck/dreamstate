@@ -1,10 +1,10 @@
-import { createElement, ReactChild, ReactElement, useState } from "react";
+import { createElement, ReactElement, ReactNode, useState } from "react";
 
 import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
 import { ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 
 export interface IScopeProviderProps {
-  children?: ReactChild;
+  children?: ReactNode;
 }
 
 /**

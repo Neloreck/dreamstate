@@ -1,29 +1,15 @@
 {
-  "../../target/dist/portable/dreamstate.js": {
-    "bundled": 20594,
-    "minified": 12667,
-    "gzipped": 3426,
+  "dreamstate.js": {
+    "bundled": 23432,
+    "minified": 13608,
+    "gzipped": 3706,
     "treeshaked": {
       "rollup": {
         "code": 68,
-        "import_statements": 68
+        "import_statements": 60
       },
       "webpack": {
-        "code": 2651
-      }
-    }
-  },
-  "dreamstate.js": {
-    "bundled": 21521,
-    "minified": 13977,
-    "gzipped": 3444,
-    "treeshaked": {
-      "rollup": {
-        "code": 36,
-        "import_statements": 36
-      },
-      "webpack": {
-        "code": 1185
+        "code": 1212
       }
     }
   }

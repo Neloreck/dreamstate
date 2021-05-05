@@ -12,7 +12,7 @@ export function createCombinedProvider<T extends TAnyObject>(
   sources: Array<TAnyContextManagerConstructor>
 ): FunctionComponent<IProviderProps<T>> {
   function Observer(props: IProviderProps<T>): ReactNode {
-    const registry: Map<TAnyContextManagerConstructor, TAnyObject> = useSourceObserving(sources, props);
+    const registry: Map<TAnyContextManagerConstructor, TAnyObject> = useSourceObserving(sources, props.initialState);
 
     return provideSubTreeRecursive(props.children, sources, registry);
   }

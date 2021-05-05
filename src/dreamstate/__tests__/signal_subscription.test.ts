@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
-import { createElement } from "react";
+import { createElement, FunctionComponent } from "react";
 
+import { ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
@@ -68,24 +69,20 @@ describe("Signal subscription of test classes", () => {
 
   }
 
-  const FirstProvider = createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ]);
-  const SecondProvider = createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ]);
-
   it("Should properly catch signals from other managers", async () => {
-    const firstTree = mount(createElement(FirstProvider, {}));
+    async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
+      const firstTree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 
-    await nextAsyncQueue();
+      await nextAsyncQueue();
 
-    expect(count).toHaveBeenCalledTimes(2);
+      expect(count).toHaveBeenCalledTimes(times);
 
-    firstTree.unmount();
+      firstTree.unmount();
+    }
 
-    const secondTree = mount(createElement(SecondProvider, {}));
-
-    await nextAsyncQueue();
-
-    expect(count).toHaveBeenCalledTimes(4);
-
-    secondTree.unmount();
+    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: true }), 2);
+    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: true }), 4);
+    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: false }), 6);
+    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: false }), 8);
   });
 });

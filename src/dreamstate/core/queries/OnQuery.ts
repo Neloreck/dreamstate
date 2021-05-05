@@ -13,12 +13,16 @@ export function OnQuery(
     throw new TypeError("Query type should be provided for OnQuery decorator.");
   }
 
-  return createMethodDecorator<TAnyContextManagerConstructor>(function rememberMethodQuery(
+  return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
     Service: TAnyContextManagerConstructor
   ): void {
     if (!(Service.prototype instanceof ContextManager)) {
       throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
+    }
+
+    if (!Service[QUERY_METADATA_SYMBOL]) {
+      Service[QUERY_METADATA_SYMBOL] = [];
     }
 
     Service[QUERY_METADATA_SYMBOL].push([ method, queryType ]);

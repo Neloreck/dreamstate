@@ -1,14 +1,17 @@
 import {
-  CONTEXT_REACT_CONTEXTS_REGISTRY
+  CONTEXT_REACT_CONTEXTS_REGISTRY,
+  SCOPE_SYMBOL,
+  SIGNALING_HANDLER_SYMBOL
 } from "@/dreamstate/core/internals";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { getCurrentContext } from "@/dreamstate/test-utils/registry/getCurrentContext";
+import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
+import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import {
   TAnyContextManagerConstructor,
-  TAnyObject,
   TDerivedSignalEvent
 } from "@/dreamstate/types";
 import {
@@ -19,12 +22,8 @@ import {
 } from "@/fixtures";
 
 describe("ContextManager class", () => {
-  it("Should not allow base class REACT_CONTEXT", () => {
-    expect(() => ContextManager.REACT_CONTEXT).toThrow(Error);
-  });
-
   it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
-    const manager: TestContextManager = registerService(TestContextManager);
+    const [ manager ] = mockManagerWithScope(TestContextManager);
 
     manager["beforeUpdate"] = jest.fn(
       function(this: TestContextManager, nextContext: ITestContext) {
@@ -91,150 +90,26 @@ describe("ContextManager class", () => {
 
     expect(manager["beforeUpdate"]).toHaveBeenCalled();
     expect(manager["afterUpdate"]).toHaveBeenCalled();
-
-    unRegisterService(TestContextManager);
-  });
-
-  it("Should correctly register context and get current context/manager", () => {
-    expect(getCurrent(TestContextManager)).toBeNull();
-    expect(getCurrentContext(TestContextManager)).toBeNull();
-
-    registerService(TestContextManager);
-
-    expect(getCurrent(TestContextManager)).not.toBeNull();
-    expect(getCurrentContext(TestContextManager)).not.toBeNull();
-
-    unRegisterService(TestContextManager);
-
-    expect(getCurrent(TestContextManager)).toBeNull();
-    expect(getCurrentContext(TestContextManager)).toBeNull();
-  });
-
-  it("Should correctly create new managers after provision restart", () => {
-    registerService(TestContextManager);
-
-    getCurrent(TestContextManager)!.setContext({
-      first: "15",
-      second: 15
-    });
-
-    expect(getCurrentContext(TestContextManager)!.first).toBe("15");
-    expect(getCurrentContext(TestContextManager)!.second).toBe(15);
-
-    unRegisterService(TestContextManager);
-
-    registerService(TestContextManager);
-
-    expect(getCurrentContext(TestContextManager)!.first).toBe("first");
-    expect(getCurrentContext(TestContextManager)!.second).toBe(2);
-
-    unRegisterService(TestContextManager);
   });
 
   it("Should properly manage extended managers", () => {
-    expect(getCurrent(ExtendingTestContextManager)).toBeNull();
-    expect(getCurrent(TestContextManager)).toBeNull();
+    const scope: IScopeContext = mockScope();
 
-    registerService(TestContextManager);
+    scope.registerService(TestContextManager);
+    scope.registerService(ExtendingTestContextManager);
 
-    expect(getCurrent(TestContextManager)).not.toBeNull();
-    expect(getCurrent(ExtendingTestContextManager)).toBeNull();
+    expect(getCurrent(TestContextManager, scope)).not.toBeNull();
+    expect(getCurrent(ExtendingTestContextManager, scope)).not.toBeNull();
+    expect(getCurrent(TestContextManager, scope)).not.toBe(getCurrent(ExtendingTestContextManager, scope));
 
-    registerService(ExtendingTestContextManager);
+    expect(scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeTruthy();
+    expect(scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
 
-    expect(getCurrent(TestContextManager)).not.toBeNull();
-    expect(getCurrent(ExtendingTestContextManager)).not.toBeNull();
-    expect(getCurrent(TestContextManager)).not.toBe(getCurrent(ExtendingTestContextManager));
-    expect(getCurrentContext(TestContextManager)).not.toBe(getCurrentContext(ExtendingTestContextManager));
+    scope.unRegisterService(TestContextManager);
+    scope.unRegisterService(ExtendingTestContextManager);
 
-    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeTruthy();
-    expect(CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
-
-    unRegisterService(TestContextManager);
-    unRegisterService(ExtendingTestContextManager);
-
-    expect(CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeFalsy();
-    expect(CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeFalsy();
-  });
-
-  it("Should properly add contextManagers subscribers", () => {
-    const exampleSubscriber = () => {};
-
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBeInstanceOf(Set);
-
-    registerService(TestContextManager);
-
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
-
-    subscribeToManager(TestContextManager, exampleSubscriber);
-
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
-
-    unsubscribeFromManager(TestContextManager, exampleSubscriber);
-
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
-
-    unRegisterService(TestContextManager);
-
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
-  });
-
-  it("Should properly subscribe and unsubscribe only from contextManagers", () => {
-    class ExampleClass {}
-
-    class ExampleManagerClass extends ContextManager<TAnyObject> {
-
-      public readonly context: TAnyObject = {};
-
-    }
-
-    const exampleSubscriber = jest.fn();
-
-    expect(() => subscribeToManager(ExampleClass as any, exampleSubscriber)).toThrow();
-    expect(() => unsubscribeFromManager(ExampleClass as any, exampleSubscriber)).toThrow();
-
-    registerService(ExampleManagerClass);
-
-    expect(() => subscribeToManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
-    expect(() => unsubscribeFromManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
-
-    unRegisterService(ExampleManagerClass);
-  });
-
-  it("Should correctly change computed values beforeUpdate", () => {
-    interface IExampleContext {
-      a: number;
-      b: number;
-    }
-
-    class ExampleManagerClass extends ContextManager<IExampleContext> {
-
-      public readonly context: IExampleContext = {
-        a: 5,
-        b: 10
-      };
-
-      protected beforeUpdate(nextContext: IExampleContext) {
-        nextContext.b = nextContext.a * 2;
-      }
-
-    }
-
-    const manager = registerService(ExampleManagerClass);
-
-    manager.setContext({ a: 200 });
-
-    expect(manager.context.b).toBe(400);
-
-    manager.setContext({ a: 400 });
-
-    expect(manager.context.b).toBe(800);
-
-    unRegisterService(ExampleManagerClass);
+    expect(getCurrent(TestContextManager, scope)).toBeNull();
+    expect(getCurrent(ExtendingTestContextManager, scope)).toBeNull();
   });
 
   it("Should use getReactContext for REACT_CONTEXT and return same result", () => {
@@ -257,53 +132,45 @@ describe("ContextManager class", () => {
 
       expect(Object.keys(Service.prototype)).toHaveLength(0);
 
-      if (Service instanceof ContextManager) {
-        const ManagerConstructor: TAnyContextManagerConstructor = Service as any;
-        const manager: ContextManager<any> = service as ContextManager<any>;
+      expect(service[SCOPE_SYMBOL]).toBeUndefined();
+      expect(service[SIGNALING_HANDLER_SYMBOL]).toBeUndefined();
 
-        expect(Object.keys(manager)).toHaveLength(1);
-        expect(manager).toBeInstanceOf(ContextManager);
-        expect(manager.context).toBeInstanceOf(Object);
+      expect(Object.keys(service)).toHaveLength(1);
+      expect(service).toBeInstanceOf(ContextManager);
+      expect(service.context).toBeInstanceOf(Object);
 
-        expect(typeof manager.setContext).toBe("function");
-        expect(typeof manager.forceUpdate).toBe("function");
-        expect(typeof manager["beforeUpdate"]).toBe("function");
-        expect(typeof manager["afterUpdate"]).toBe("function");
+      expect(typeof service.setContext).toBe("function");
+      expect(typeof service.forceUpdate).toBe("function");
+      expect(typeof service["beforeUpdate"]).toBe("function");
+      expect(typeof service["afterUpdate"]).toBe("function");
 
-        expect(typeof ManagerConstructor.REACT_CONTEXT).toBe("object");
-        expect(typeof ManagerConstructor.REACT_CONTEXT.Provider).toBe("object");
-        expect(typeof ManagerConstructor.REACT_CONTEXT.Consumer).toBe("object");
+      expect(typeof Service.REACT_CONTEXT).toBe("object");
+      expect(typeof Service.REACT_CONTEXT.Provider).toBe("object");
+      expect(typeof Service.REACT_CONTEXT.Consumer).toBe("object");
 
-        // Cleanup persistent REACT_CONTEXT ref.
-        CONTEXT_REACT_CONTEXTS_REGISTRY.delete(Service);
-      }
+      // Cleanup persistent REACT_CONTEXT ref.
+      CONTEXT_REACT_CONTEXTS_REGISTRY.delete(Service);
     };
 
     expect(Object.keys(ContextManager.prototype)).toHaveLength(0);
 
     testContextManagerInit(TestContextManager);
-  });
-
-  it("Should properly handle onProvisionStarted and onProvision ended for context services", () => {
-    // todo;
+    testContextManagerInit(EmittingContextManager);
   });
 
   it("Should use emitSignal method when sending signals", async () => {
-    const emittingContextManager: EmittingContextManager = registerService(EmittingContextManager);
+    const [ emittingContextManager, scope ] = mockManagerWithScope(EmittingContextManager);
     const spy = jest.fn((signal: TDerivedSignalEvent) => {
       expect(signal.emitter).toBe(EmittingContextManager);
       expect(signal.type).toBe("TEST");
     });
 
-    subscribeToSignals(spy);
+    scope.subscribeToSignals(spy);
 
     emittingContextManager["emitSignal"]({ type: "TEST" });
 
     await nextAsyncQueue();
 
     expect(spy).toHaveBeenCalled();
-
-    unsubscribeFromSignals(spy);
-    unRegisterService(EmittingContextManager);
   });
 });

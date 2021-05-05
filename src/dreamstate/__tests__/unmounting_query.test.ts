@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { createElement, FunctionComponent } from "react";
 
+import { ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
@@ -28,7 +29,7 @@ describe("Emitting signal on provision end", () => {
 
   it("Should properly notify current managers when sending signal on unmount with combined provision", async () => {
     async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
-      const tree = mount(createElement(provider, {}));
+      const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 
       tree.unmount();
 

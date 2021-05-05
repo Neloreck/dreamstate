@@ -14,7 +14,7 @@ import {
 
 export interface IScopeContext {
   REGISTRY: IRegistry;
-  registerService<T>(Service: TAnyContextManagerConstructor, initialState: T): void;
+  registerService<T>(Service: TAnyContextManagerConstructor, initialState?: T): void;
   unRegisterService(Service: TAnyContextManagerConstructor): void;
   addServiceObserver(Service: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
   removeServiceObserver(Service: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
@@ -34,7 +34,8 @@ export interface IScopeContext {
    */
   notifyObservers<T>(manager: ContextManager<T>): void;
   /**
-   * todo;
+   * Subscribe to manager context updates.
+   * Returns unsubscriber function.
    */
   subscribeToManager<
     T extends TAnyObject,
@@ -44,7 +45,7 @@ export interface IScopeContext {
     subscriber: TUpdateSubscriber<T>
   ): TCallable;
   /**
-   * todo;
+   * Unsubscribe from manager context updates.
    */
   unsubscribeFromManager<
     T extends TAnyObject,
@@ -54,19 +55,17 @@ export interface IScopeContext {
     subscriber: TUpdateSubscriber<T>
   ): void;
   /**
-   * todo;
+   * Emit signal and trigger all listeners that are in current scope.
    */
   emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     base: IBaseSignal<T, D>,
-    emitter: TAnyContextManagerConstructor | null
+    emitter?: TAnyContextManagerConstructor | null
   ): Promise<void>;
   subscribeToSignals<T extends TSignalType, D = undefined>(
-    listener: TSignalListener<T, D>,
-    registry: Set<TSignalListener<T, D>>
+    listener: TSignalListener<T, D>
   ): TCallable;
   unsubscribeFromSignals<T extends TSignalType, D = undefined>(
-    listener: TSignalListener<T, D>,
-    registry: Set<TSignalListener<T, D>>
+    listener: TSignalListener<T, D>
   ): void;
   registerQueryProvider<T extends TQueryType>(
     queryType: T,
@@ -77,21 +76,19 @@ export interface IScopeContext {
     listener: TQueryListener<T, any>
   ): void;
   queryDataSync<
-    R,
     D extends any,
     T extends TQueryType,
     Q extends IOptionalQueryRequest<D, T>
     >(
     query: Q
-  ): TQueryResponse<R, T>;
+  ): TQueryResponse<any, T>;
   queryDataAsync<
-    R,
     D extends any,
     T extends TQueryType,
     Q extends IOptionalQueryRequest<D, T>
     >(
     queryRequest: Q
-  ): Promise<TQueryResponse<R, T>>;
+  ): Promise<TQueryResponse<any, T>>;
 }
 
 export interface IPublicScopeContext extends Pick<

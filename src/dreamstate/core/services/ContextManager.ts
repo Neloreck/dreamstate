@@ -1,13 +1,25 @@
-import { QUERY_METADATA_SYMBOL, SCOPE_SYMBOL, SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
+import {
+  QUERY_METADATA_SYMBOL,
+  SCOPE_SYMBOL,
+  SIGNAL_METADATA_SYMBOL,
+  SIGNALING_HANDLER_SYMBOL
+} from "@/dreamstate/core/internals";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
-  IBaseSignal, IOptionalQueryRequest, TAnyContextManagerConstructor,
+  IBaseSignal,
+  IOptionalQueryRequest,
+  TAnyContextManagerConstructor,
   TAnyObject,
-  TConstructorKey, TEmptyObject,
-  TPartialTransformer, TQueryType,
+  TConstructorKey,
+  TEmptyObject,
+  TPartialTransformer,
+  TQuerySubscriptionMetadata,
+  TQueryType,
+  TSignalListener,
+  TSignalSubscriptionMetadata,
   TSignalType
 } from "@/dreamstate/types";
 
@@ -21,10 +33,11 @@ export abstract class ContextManager<
   S extends TAnyObject = TAnyObject
 > {
 
-  public static readonly [SIGNAL_METADATA_SYMBOL] = [];
-  public static readonly [QUERY_METADATA_SYMBOL] = [];
+  public static readonly [SIGNAL_METADATA_SYMBOL]: TSignalSubscriptionMetadata;
+  public static readonly [QUERY_METADATA_SYMBOL]: TQuerySubscriptionMetadata;
 
-  private [SCOPE_SYMBOL]!: IScopeContext;
+  public [SCOPE_SYMBOL]!: IScopeContext;
+  public [SIGNALING_HANDLER_SYMBOL]!: TSignalListener;
 
   /**
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
@@ -40,6 +53,7 @@ export abstract class ContextManager<
   public context: T = {} as T;
 
   public constructor(initialState?: S) {
+    processComputed(this.context);
   }
 
   /**

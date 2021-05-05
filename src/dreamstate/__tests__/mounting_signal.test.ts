@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
-import { createElement } from "react";
+import { createElement, FunctionComponent } from "react";
 
-import { ContextManager } from "@/dreamstate";
+import { ContextManager, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
@@ -26,24 +26,20 @@ describe("Emitting signal on provision start", () => {
 
   }
 
-  const FirstProvider = createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ]);
-  const SecondProvider = createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ]);
-
   it("Should properly notify current managers when sending signal on mount", async () => {
-    const firstTree = mount(createElement(FirstProvider, {}));
+    async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
+      const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 
-    await nextAsyncQueue();
+      tree.unmount();
 
-    expect(count).toHaveBeenCalledTimes(1);
+      await nextAsyncQueue();
 
-    firstTree.unmount();
+      expect(count).toHaveBeenCalledTimes(times);
+    }
 
-    const secondTree = mount(createElement(SecondProvider, {}));
-
-    await nextAsyncQueue();
-
-    expect(count).toHaveBeenCalledTimes(2);
-
-    secondTree.unmount();
+    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: false }), 1);
+    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: true }), 2);
+    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: false }), 3);
+    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: true }), 4);
   });
 });

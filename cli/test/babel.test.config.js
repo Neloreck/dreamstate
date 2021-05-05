@@ -10,7 +10,8 @@ module.exports = {
         loose: true
       }
     ],
-    "@babel/preset-typescript"
+    "@babel/preset-typescript",
+    "@babel/preset-react"
   ],
   plugins: [
     "@babel/plugin-transform-modules-commonjs",

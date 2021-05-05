@@ -1,7 +1,7 @@
 import { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import {IContextManagerConstructor, TAnyObject, TUpdateSubscriber} from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject, TUpdateSubscriber } from "@/dreamstate/types";
 
 /**
  * Use manager hook with subscribed updates.

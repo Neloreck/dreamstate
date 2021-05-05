@@ -1,7 +1,6 @@
 import { ContextManager } from "@/dreamstate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
-import { registerService } from "@/dreamstate/test-utils/registry/registerService";
-import { unRegisterService } from "@/dreamstate/test-utils/registry/unRegisterService";
+import { mockManagerWithScope } from "@/dreamstate/test-utils";
 import { TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 
@@ -67,7 +66,7 @@ describe("createComputed method functionality", () => {
 
     }
 
-    const computedManager: ComputedManager = registerService(ComputedManager);
+    const [ computedManager ] = mockManagerWithScope(ComputedManager);
 
     expect(computedManager.context.testValue).toBe(25);
     expect(computedManager.context.example.multipliedByTwo).toBe(50);
@@ -78,8 +77,6 @@ describe("createComputed method functionality", () => {
     expect(computedManager.context.testValue).toBe(1000);
     expect(computedManager.context.example.multipliedByTwo).toBe(2000);
     expect(computedManager.context.example.multipliedByThree).toBe(3000);
-
-    unRegisterService(ComputedManager);
   });
 
   it("Should correctly compute non-primitive values", () => {
@@ -101,7 +98,7 @@ describe("createComputed method functionality", () => {
 
     }
 
-    const computedManager: ComputedManager = registerService(ComputedManager);
+    const [ computedManager ] = mockManagerWithScope(ComputedManager);
 
     expect(computedManager.context.numbers).toHaveLength(6);
     expect(computedManager.context.computed.greaterThanFive).toHaveLength(3);
@@ -110,7 +107,5 @@ describe("createComputed method functionality", () => {
 
     expect(computedManager.context.numbers).toHaveLength(3);
     expect(computedManager.context.computed.greaterThanFive).toHaveLength(1);
-
-    unRegisterService(ComputedManager);
   });
 });

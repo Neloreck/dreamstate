@@ -12,7 +12,7 @@ export function getReactContext<
   Manager: T
 ): Context<T> {
   if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(Manager)) {
-    return CONTEXT_REACT_CONTEXTS_REGISTRY.get(Manager)!;
+    return CONTEXT_REACT_CONTEXTS_REGISTRY.get(Manager) as Context<T>;
   } else {
     const reactContext: Context<T> = createContext(null as any);
 

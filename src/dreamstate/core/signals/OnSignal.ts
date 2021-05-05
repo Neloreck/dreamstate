@@ -22,6 +22,10 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
       throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
     }
 
+    if (!Service[SIGNAL_METADATA_SYMBOL]) {
+      Service[SIGNAL_METADATA_SYMBOL] = [];
+    }
+
     Service[SIGNAL_METADATA_SYMBOL].push([ method, signalType ]);
   });
 }

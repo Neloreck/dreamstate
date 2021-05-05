@@ -23,6 +23,7 @@ describe("Library exported API", () => {
     "createProvider",
     "ProviderProps",
     // Scoping
+    "ScopeContext",
     "ScopeProvider",
     "useScope",
     // Consumption.

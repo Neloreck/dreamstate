@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createProvider method Should create correct component tree without children 1`] = `
+<div>
+   testChild 
+</div>
+`;
+
+exports[`createProvider method Should create correct component tree without children 2`] = `
+<div>
+   testChild 
+</div>
+`;
+
+exports[`createProvider method Should create correct component tree without children 3`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <div>
+       testChild 
+    </div>
+  </DS.Observer>
+</ScopeProvider>
+`;
+
+exports[`createProvider method Should create correct component tree without children 4`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <ScopedObserver
+      dependencies={
+        Array [
+          [Function],
+        ]
+      }
+      manager={[Function]}
+      scope={
+        Object {
+          "REGISTRY": Object {
+            "CONTEXT_OBSERVERS_REGISTRY": Map {
+              [Function] => Set {
+                [Function],
+              },
+            },
+            "CONTEXT_SERVICES_ACTIVATED": Set {
+              [Function],
+            },
+            "CONTEXT_SERVICES_REFERENCES": Map {
+              [Function] => 1,
+            },
+            "CONTEXT_SERVICES_REGISTRY": Map {
+              [Function] => TestContextManager {
+                "context": Object {
+                  "first": "first",
+                  "second": 2,
+                  "third": false,
+                },
+                Symbol(SCOPE): [Circular],
+                Symbol(SIGNALING_HANDLER): [Function],
+              },
+            },
+            "CONTEXT_STATES_REGISTRY": Map {
+              [Function] => Object {
+                "first": "first",
+                "second": 2,
+                "third": false,
+              },
+            },
+            "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+              [Function] => Set {},
+            },
+            "QUERY_PROVIDERS_REGISTRY": Map {},
+            "SIGNAL_LISTENERS_REGISTRY": Set {
+              [Function],
+            },
+          },
+          "addServiceObserver": [Function],
+          "decrementServiceObserving": [Function],
+          "emitSignal": [Function],
+          "incrementServiceObserving": [Function],
+          "notifyObservers": [Function],
+          "queryDataAsync": [Function],
+          "queryDataSync": [Function],
+          "registerQueryProvider": [Function],
+          "registerService": [Function],
+          "removeServiceObserver": [Function],
+          "subscribeToManager": [Function],
+          "subscribeToSignals": [Function],
+          "unRegisterQueryProvider": [Function],
+          "unRegisterService": [Function],
+          "unsubscribeFromManager": [Function],
+          "unsubscribeFromSignals": [Function],
+        }
+      }
+    >
+      <div>
+         testChild 
+      </div>
+    </ScopedObserver>
+  </DS.Observer>
+</ScopeProvider>
+`;
+
+exports[`createProvider method Should render correct component tree 1`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <ScopeConsumer>
+      <div>
+         Content 
+      </div>
+    </ScopeConsumer>
+  </DS.Observer>
+</ScopeProvider>
+`;
+
+exports[`createProvider method Should render correct component tree 2`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <ScopedObserver
+      dependencies={
+        Array [
+          [Function],
+        ]
+      }
+      manager={[Function]}
+      scope={
+        Object {
+          "REGISTRY": Object {
+            "CONTEXT_OBSERVERS_REGISTRY": Map {
+              [Function] => Set {
+                [Function],
+              },
+            },
+            "CONTEXT_SERVICES_ACTIVATED": Set {
+              [Function],
+            },
+            "CONTEXT_SERVICES_REFERENCES": Map {
+              [Function] => 1,
+            },
+            "CONTEXT_SERVICES_REGISTRY": Map {
+              [Function] => TestContextManager {
+                "context": Object {
+                  "first": "first",
+                  "second": 2,
+                  "third": false,
+                },
+                Symbol(SCOPE): [Circular],
+                Symbol(SIGNALING_HANDLER): [Function],
+              },
+            },
+            "CONTEXT_STATES_REGISTRY": Map {
+              [Function] => Object {
+                "first": "first",
+                "second": 2,
+                "third": false,
+              },
+            },
+            "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+              [Function] => Set {},
+            },
+            "QUERY_PROVIDERS_REGISTRY": Map {},
+            "SIGNAL_LISTENERS_REGISTRY": Set {
+              [Function],
+            },
+          },
+          "addServiceObserver": [Function],
+          "decrementServiceObserving": [Function],
+          "emitSignal": [Function],
+          "incrementServiceObserving": [Function],
+          "notifyObservers": [Function],
+          "queryDataAsync": [Function],
+          "queryDataSync": [Function],
+          "registerQueryProvider": [Function],
+          "registerService": [Function],
+          "removeServiceObserver": [Function],
+          "subscribeToManager": [Function],
+          "subscribeToSignals": [Function],
+          "unRegisterQueryProvider": [Function],
+          "unRegisterService": [Function],
+          "unsubscribeFromManager": [Function],
+          "unsubscribeFromSignals": [Function],
+        }
+      }
+    >
+      <ScopeConsumer>
+        <div>
+           Content 
+        </div>
+      </ScopeConsumer>
+    </ScopedObserver>
+  </DS.Observer>
+</ScopeProvider>
+`;

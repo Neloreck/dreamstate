@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UseManager subscription and rendering Should properly fire provision events for functional subscribers and clean-up memory 1`] = `
+<span>
+   {"example":1000,"text":"value"} 
+</span>
+`;
+
+exports[`UseManager subscription and rendering Should properly fire provision events for functional subscribers and clean-up memory 2`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <SampleConsumer>
+      <span>
+         
+        {"example":-1,"text":"value"}
+         
+      </span>
+    </SampleConsumer>
+  </DS.Observer>
+</ScopeProvider>
+`;
+
+exports[`UseManager subscription and rendering Should properly fire provision events for functional subscribers and clean-up memory 3`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <SampleConsumer>
+      <span>
+         
+        {"example":-1,"text":"anything"}
+         
+      </span>
+    </SampleConsumer>
+  </DS.Observer>
+</ScopeProvider>
+`;
+
+exports[`UseManager subscription and rendering Should properly handle memoized subscriptions 1`] = `
+<span>
+   {"example":1000,"text":"value"} 
+</span>
+`;
+
+exports[`UseManager subscription and rendering Should properly handle memoized subscriptions 2`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <SampleConsumer>
+      <span>
+         
+        {"example":1000,"text":"value"}
+         
+      </span>
+    </SampleConsumer>
+  </DS.Observer>
+</ScopeProvider>
+`;
+
+exports[`UseManager subscription and rendering Should properly handle memoized subscriptions 3`] = `
+<ScopeProvider>
+  <DS.Observer>
+    <SampleConsumer>
+      <span>
+         
+        {"example":-1,"text":"anything"}
+         
+      </span>
+    </SampleConsumer>
+  </DS.Observer>
+</ScopeProvider>
+`;

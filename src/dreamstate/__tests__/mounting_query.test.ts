@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
-import { createElement } from "react";
+import { createElement, FunctionComponent } from "react";
 
-import { ContextManager } from "@/dreamstate";
+import { ContextManager, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
@@ -16,7 +16,7 @@ describe("Sending query on provision start", () => {
     expect(value.data).toBe("value");
   });
 
-  class QueryingOnProvisionStart extends ContextManager {
+  class QueryingOnStart extends ContextManager {
 
     protected async onProvisionStarted() {
       count(await this.queryDataAsync({ type: "START" }));
@@ -24,7 +24,7 @@ describe("Sending query on provision start", () => {
 
   }
 
-  class AnsweringOnProvisionStart extends ContextManager {
+  class AnsweringOnStart extends ContextManager {
 
     @OnQuery("START")
     private onQuery(): string {
@@ -33,24 +33,22 @@ describe("Sending query on provision start", () => {
 
   }
 
-  const FirstProvider = createProvider([ AnsweringOnProvisionStart, QueryingOnProvisionStart ]);
-  const SecondProvider = createProvider([ QueryingOnProvisionStart, AnsweringOnProvisionStart ]);
-
   it("Should properly query data while mounting", async () => {
-    const firstTree = mount(createElement(FirstProvider, {}));
+    async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
+      const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 
-    await nextAsyncQueue();
+      tree.unmount();
 
-    expect(count).toHaveBeenCalledTimes(1);
+      await nextAsyncQueue();
 
-    firstTree.unmount();
+      expect(count).toHaveBeenCalledTimes(times);
 
-    const secondTree = mount(createElement(SecondProvider, {}));
+      count.mockClear();
+    }
 
-    await nextAsyncQueue();
-
-    expect(count).toHaveBeenCalledTimes(2);
-
-    secondTree.unmount();
+    await testProvider(createProvider([ AnsweringOnStart, QueryingOnStart ], { isCombined: true }),1);
+    await testProvider(createProvider([ QueryingOnStart, AnsweringOnStart ], { isCombined: true }),1);
+    await testProvider(createProvider([ AnsweringOnStart, QueryingOnStart ], { isCombined: false }),1);
+    await testProvider(createProvider([ QueryingOnStart, AnsweringOnStart ], { isCombined: false }),1);
   });
 });

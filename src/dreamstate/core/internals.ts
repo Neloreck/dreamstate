@@ -21,4 +21,4 @@ export const SCOPE_SYMBOL: unique symbol = Symbol.for("SCOPE");
  */
 
 // ReactContext registry, lazy initialized constants.
-export const CONTEXT_REACT_CONTEXTS_REGISTRY: WeakMap<TAnyContextManagerConstructor, Context<unknown>> = new WeakMap();
+export const CONTEXT_REACT_CONTEXTS_REGISTRY: WeakMap<TAnyContextManagerConstructor, Context<any>> = new WeakMap();

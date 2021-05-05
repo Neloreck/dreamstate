@@ -1,5 +1,4 @@
 import { Suite } from "benchmark";
-import { ContextManager, createProvider, useManager } from "dreamstate";
 import { render, configure } from "enzyme";
 import {
   Context,
@@ -12,6 +11,7 @@ import {
 import { Provider, connect } from "react-redux";
 import { createStore } from "redux";
 
+import { ContextManager, createProvider, useManager } from "@/dreamstate";
 import { TAnyObject } from "@/dreamstate/types";
 
 interface ISomeContext {

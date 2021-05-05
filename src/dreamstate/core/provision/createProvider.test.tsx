@@ -1,8 +1,9 @@
-import { mount, render } from "enzyme";
-import { createElement } from "react";
+import { mount } from "enzyme";
+import React, { ReactElement } from "react";
 
-import { CONTEXT_SERVICES_ACTIVATED } from "@/dreamstate/core/internals";
+import { ScopeProvider, useScope } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
+import { IPublicScopeContext, IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TestContextManager } from "@/fixtures";
 
 describe("createProvider method", () => {
@@ -10,25 +11,41 @@ describe("createProvider method", () => {
   const ScopedProvider = createProvider([ TestContextManager ], { isCombined: false });
 
   it("Should render correct component tree", async () => {
-    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    let currentScope: IScopeContext = null as any;
 
-    const combinedTree = mount(createElement(CombinedProvider, {}, "test"));
+    function ScopeConsumer(): ReactElement {
+      const scope: IPublicScopeContext = useScope();
+
+      currentScope = scope as IScopeContext;
+
+      return <div> Content </div>;
+    }
+
+    const combinedTree = mount(<ScopeProvider>
+      <CombinedProvider>
+        <ScopeConsumer/>
+      </CombinedProvider>
+    </ScopeProvider>);
 
     expect(combinedTree).toMatchSnapshot();
-    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
+    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
 
     combinedTree.unmount();
 
-    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
 
-    const scopedTree = mount(createElement(ScopedProvider, {}, "test"));
+    const scopedTree = mount(<ScopeProvider>
+      <ScopedProvider>
+        <ScopeConsumer/>
+      </ScopedProvider>
+    </ScopeProvider>);
 
     expect(scopedTree).toMatchSnapshot();
-    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
+    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
 
     scopedTree.unmount();
 
-    expect(CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
   });
 
   it("Should create observers with validation", () => {
@@ -51,19 +68,20 @@ describe("createProvider method", () => {
   });
 
   it("Should create correct component tree without children", () => {
-    const combinedProvider = createProvider([ TestContextManager ], { isCombined: true });
-    const scopedProvider = createProvider([ TestContextManager ], { isCombined: false });
+    const combinedTree = mount(<ScopeProvider>
+      <CombinedProvider>
+        <div> testChild </div>
+      </CombinedProvider>
+    </ScopeProvider>);
+    const scopedTree = mount(<ScopeProvider>
+      <ScopedProvider>
+        <div> testChild </div>
+      </ScopedProvider>
+    </ScopeProvider>);
 
-    const combinedTree = mount(createElement(combinedProvider, {}, createElement("div", {}, "testChild")));
-    const scopedTree = mount(createElement(scopedProvider, {}, createElement("div", {}, "testChild")));
-
-    const combinedRender = render(createElement(combinedProvider, {}, createElement("div", {}, "testChild")));
-    const scopedRender = render(createElement(combinedProvider, {}, createElement("div", {}, "testChild")));
-
+    expect(combinedTree.render()).toMatchSnapshot();
+    expect(scopedTree.render()).toMatchSnapshot();
     expect(combinedTree).toMatchSnapshot();
     expect(scopedTree).toMatchSnapshot();
-    expect(combinedRender).toMatchSnapshot();
-    expect(scopedRender).toMatchSnapshot();
-    expect(combinedRender).toMatchObject(scopedRender);
   });
 });

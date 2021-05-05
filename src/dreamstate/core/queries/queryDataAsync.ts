@@ -27,7 +27,7 @@ function promisifyQuery<
   answerer: TAnyContextManagerConstructor | null
 ): Promise<TQueryResponse<R, T>> {
   return new Promise(function(
-    resolve: (response: IQueryResponse<R, T> | null) => void,
+    resolve: (response: IQueryResponse<R, T>) => void,
     reject: (error: Error) => void
   ) {
     try {
@@ -77,15 +77,17 @@ export function queryDataAsync<
   }
 
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
-    for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
-      if (type === query.type) {
-        const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
+    if (service[QUERY_METADATA_SYMBOL]) {
+      for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
+        if (type === query.type) {
+          const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
 
-        return promisifyQuery(
-          (handlerService as any)[method].bind(handlerService),
-          query,
-          handlerService.constructor as TAnyContextManagerConstructor
-        );
+          return promisifyQuery(
+            (handlerService as any)[method].bind(handlerService),
+            query,
+            handlerService.constructor as TAnyContextManagerConstructor
+          );
+        }
       }
     }
   }

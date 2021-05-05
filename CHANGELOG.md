@@ -6,7 +6,8 @@
   * withConsumption HoC removed
   * IS_SINGLE removed in favor of scoped storages without global storing // related to HMR problems
   * getCurrent moved to test-utils
-  * getCurrentContext moved to test-utils
+  * getCurrentContext removed from test utils
+  * register/observing methods removed from test utils
   * queryData renamed to queryDataAsync
   * queryDataAsync stopped array of queries supporting
   * mount/unmount order now matches react components
