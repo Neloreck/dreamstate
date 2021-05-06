@@ -40,19 +40,15 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 #### [Consumption](https://github.com/Neloreck/dreamstate/wiki/consumption)
 - [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager)
 
+#### [Scope](https://github.com/Neloreck/dreamstate/wiki/scope)
+- [ScopeProvider](https://github.com/Neloreck/dreamstate/wiki/ScopeProvider)
+- [useScope](https://github.com/Neloreck/dreamstate/wiki/useScope)
+
 #### [Signals](https://github.com/Neloreck/dreamstate/wiki/signals)
 - [emitSignal](https://github.com/Neloreck/dreamstate/wiki/emitSignal)
-- [subscribeToSignals](https://github.com/Neloreck/dreamstate/wiki/subscribeToSignals)
-- [unsubscribeFromSignals](https://github.com/Neloreck/dreamstate/wiki/unsubscribeFromSignals)
-- [@OnSignal](https://github.com/Neloreck/dreamstate/wiki/@OnSignal)
-- [useSignals](https://github.com/Neloreck/dreamstate/wiki/useSignals)
 
 #### [Queries](https://github.com/Neloreck/dreamstate/wiki/queries)
 - [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
-- [queryDataAsync](https://github.com/Neloreck/dreamstate/wiki/queryDataAsync)
-- [queryDataSync](https://github.com/Neloreck/dreamstate/wiki/queryDataSync)
-- [registerQueryProvider](https://github.com/Neloreck/dreamstate/wiki/registerQueryProvider)
-- [unRegisterQueryProvider](https://github.com/Neloreck/dreamstate/wiki/unRegisterQueryProvider)
 
 #### [Utils](https://github.com/Neloreck/dreamstate/wiki/utils)
 - [@Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind)
@@ -62,6 +58,9 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [createActions](https://github.com/Neloreck/dreamstate/wiki/createActions)
 
 #### [Testing](https://github.com/Neloreck/dreamstate/wiki/testing)
+- [mockManagerWithScope](https://github.com/Neloreck/dreamstate/wiki/mockManagerWithScope)
+- [mockScope](https://github.com/Neloreck/dreamstate/wiki/mockScope)
+- [mockScopeProvider](https://github.com/Neloreck/dreamstate/wiki/mockScopeProvider)
 - [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
 - [getReactConsumer](https://github.com/Neloreck/dreamstate/wiki/getReactConsumer)
 - [getReactProvider](https://github.com/Neloreck/dreamstate/wiki/getReactProvider)
