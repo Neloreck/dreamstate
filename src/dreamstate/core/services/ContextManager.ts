@@ -16,6 +16,7 @@ import {
   TConstructorKey,
   TEmptyObject,
   TPartialTransformer,
+  TQueryResponse,
   TQuerySubscriptionMetadata,
   TQueryType,
   TSignalListener,
@@ -86,7 +87,7 @@ export abstract class ContextManager<
     Q extends IOptionalQueryRequest<D, T>
     >(
     queryRequest: Q
-  ) {
+  ): Promise<TQueryResponse<any, T>> {
     return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
   }
 
@@ -99,7 +100,7 @@ export abstract class ContextManager<
     Q extends IOptionalQueryRequest<D, T>
     >(
     queryRequest: Q
-  ) {
+  ): TQueryResponse<any, T> {
     return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
   }
 

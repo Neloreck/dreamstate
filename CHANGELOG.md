@@ -13,6 +13,10 @@
   * mount/unmount order now matches react components
   * signals/queries cannot be sent from disposed context manager class
   * useSignals method removed
+  * global methods/getters moved to scope context
+  * mockScope test-util added
+  * mockScopeProvider test-util added
+  * mockManagerWithScope test-util added
 
 ## 3.3.2 (4/11/2021)
   * 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers
