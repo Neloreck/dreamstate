@@ -68,10 +68,10 @@ describe("UseManager subscription and rendering", () => {
     expect(onStarted).toHaveBeenCalledTimes(1);
     expect(onEnded).toHaveBeenCalledTimes(0);
     expect(stateScope.REGISTRY.CONTEXT_STATES_REGISTRY.get(SampleContextManager)).toBeDefined();
-    expect(stateScope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(SampleContextManager)).toBeDefined();
+    expect(stateScope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)).toBeDefined();
 
     act(() => {
-      stateScope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(SampleContextManager)!.setContext({ example: -1 });
+      stateScope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({ example: -1 });
     });
     tree.update();
 
@@ -79,7 +79,7 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(2);
 
     act(() => {
-      stateScope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(SampleContextManager)!.setContext({ text: "anything" });
+      stateScope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({ text: "anything" });
     });
     tree.update();
 
@@ -94,7 +94,7 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(3);
 
     expect(stateScope.REGISTRY.CONTEXT_STATES_REGISTRY.get(SampleContextManager)).toBeUndefined();
-    expect(stateScope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(SampleContextManager)).toBeUndefined();
+    expect(stateScope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)).toBeUndefined();
   });
 
   it("Should properly handle memoized subscriptions", async () => {
@@ -124,7 +124,7 @@ describe("UseManager subscription and rendering", () => {
     await nextAsyncQueue();
 
     act(() => {
-      stateScope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(SampleContextManager)!.setContext({ example: -1 });
+      stateScope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({ example: -1 });
     });
     tree.update();
 
@@ -132,7 +132,7 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(1);
 
     act(() => {
-      stateScope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(SampleContextManager)!.setContext({ text: "anything" });
+      stateScope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({ text: "anything" });
     });
     tree.update();
 

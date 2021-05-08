@@ -74,7 +74,7 @@ export function queryDataAsync<
   Q extends IOptionalQueryRequest<D, T>
 >(
   query: Q,
-  { CONTEXT_SERVICES_ACTIVATED, CONTEXT_SERVICES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
+  { CONTEXT_SERVICES_ACTIVATED, CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): Promise<TQueryResponse<R, T> | null> {
   if (!query || !(query as IQueryRequest<D, T>).type) {
     throw new TypeError("Query must be an object with declared type or array of objects with type.");
@@ -91,7 +91,7 @@ export function queryDataAsync<
     if (service[QUERY_METADATA_SYMBOL]) {
       for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
         if (type === query.type) {
-          const handlerService: ContextManager = CONTEXT_SERVICES_REGISTRY.get(service)!;
+          const handlerService: ContextManager = CONTEXT_INSTANCES_REGISTRY.get(service)!;
 
           return promisifyQuery(
             (handlerService as any)[method].bind(handlerService),

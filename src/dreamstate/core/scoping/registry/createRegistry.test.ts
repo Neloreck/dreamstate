@@ -10,9 +10,9 @@ describe("createRegistry method", () => {
     expect(registry.CONTEXT_STATES_REGISTRY).toBeInstanceOf(Map);
     expect(registry.CONTEXT_STATES_REGISTRY.size).toBe(0);
 
-    expect(registry.CONTEXT_SERVICES_REGISTRY).toBeDefined();
-    expect(registry.CONTEXT_SERVICES_REGISTRY).toBeInstanceOf(Map);
-    expect(registry.CONTEXT_SERVICES_REGISTRY.size).toBe(0);
+    expect(registry.CONTEXT_INSTANCES_REGISTRY).toBeDefined();
+    expect(registry.CONTEXT_INSTANCES_REGISTRY).toBeInstanceOf(Map);
+    expect(registry.CONTEXT_INSTANCES_REGISTRY.size).toBe(0);
 
     expect(registry.CONTEXT_SERVICES_ACTIVATED).toBeDefined();
     expect(registry.CONTEXT_SERVICES_ACTIVATED).toBeInstanceOf(Set);

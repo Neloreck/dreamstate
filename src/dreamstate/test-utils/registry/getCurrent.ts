@@ -14,5 +14,5 @@ export function getCurrent<T extends TAnyContextManagerConstructor>(
   ManagerClass: T,
   scope: IPublicScopeContext
 ): InstanceType<T> | null {
-  return scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(ManagerClass) as InstanceType<T>|| null;
+  return scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as InstanceType<T>|| null;
 }

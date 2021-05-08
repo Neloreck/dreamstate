@@ -22,5 +22,5 @@ export function mockManagerWithScope<
 
   scope.registerService(ManagerClass, initialState);
 
-  return [ scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.get(ManagerClass) as InstanceType<M>, scope ];
+  return [ scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as InstanceType<M>, scope ];
 }

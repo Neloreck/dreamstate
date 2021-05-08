@@ -19,9 +19,8 @@ type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;
 export interface IRegistry {
   /**
    * Registry of currently provided context managers instances.
-   * todo: Rename to CONTEXT_INSTANCES_REGISTRY.
    */
-  CONTEXT_SERVICES_REGISTRY: TServiceMap<InstanceType<TAnyContextManagerConstructor>>;
+  CONTEXT_INSTANCES_REGISTRY: TServiceMap<InstanceType<TAnyContextManagerConstructor>>;
   /**
    * Registry of current scope manager states.
    * Used for data accessing and sync across providers.
@@ -68,7 +67,7 @@ export function createRegistry(): IRegistry {
     CONTEXT_SERVICES_ACTIVATED: new Set(),
     QUERY_PROVIDERS_REGISTRY: new Map(),
     SIGNAL_LISTENERS_REGISTRY: new Set(),
-    CONTEXT_SERVICES_REGISTRY: new Map(),
+    CONTEXT_INSTANCES_REGISTRY: new Map(),
     CONTEXT_STATES_REGISTRY: new Map(),
     CONTEXT_SERVICES_REFERENCES: new Map(),
     CONTEXT_OBSERVERS_REGISTRY: new Map(),

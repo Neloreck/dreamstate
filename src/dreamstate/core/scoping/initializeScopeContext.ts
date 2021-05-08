@@ -29,14 +29,14 @@ export function initializeScopeContext(): IScopeContext {
   const registry: IRegistry = createRegistry();
   const {
     SIGNAL_LISTENERS_REGISTRY, CONTEXT_STATES_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, QUERY_PROVIDERS_REGISTRY,
-    CONTEXT_SERVICES_REFERENCES, CONTEXT_SERVICES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_SERVICES_ACTIVATED
+    CONTEXT_SERVICES_REFERENCES, CONTEXT_INSTANCES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_SERVICES_ACTIVATED
   } = registry;
 
   return ({
     REGISTRY: registry,
     registerService<T>(Service: TAnyContextManagerConstructor, initialState: T): void {
       // Only if registry is empty -> create new instance, remember its context and save it to registry.
-      if (!CONTEXT_SERVICES_REGISTRY.has(Service)) {
+      if (!CONTEXT_INSTANCES_REGISTRY.has(Service)) {
         const instance: InstanceType<TAnyContextManagerConstructor> = new Service(initialState);
 
         // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
@@ -54,12 +54,12 @@ export function initializeScopeContext(): IScopeContext {
 
         SIGNAL_LISTENERS_REGISTRY.add(instance[SIGNALING_HANDLER_SYMBOL]);
 
-        CONTEXT_SERVICES_REGISTRY.set(Service, instance);
+        CONTEXT_INSTANCES_REGISTRY.set(Service, instance);
       }
     },
     unRegisterService(Service: TAnyContextManagerConstructor): void {
-      if (CONTEXT_SERVICES_REGISTRY.has(Service)) {
-        const instance: ContextManager<any> = CONTEXT_SERVICES_REGISTRY.get(Service) as ContextManager<any>;
+      if (CONTEXT_INSTANCES_REGISTRY.has(Service)) {
+        const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(Service) as ContextManager<any>;
 
         instance["emitSignal"] = throwAfterDisposal;
         instance["queryDataSync"] = throwAfterDisposal;
@@ -69,7 +69,7 @@ export function initializeScopeContext(): IScopeContext {
       }
 
       CONTEXT_SERVICES_ACTIVATED.delete(Service);
-      CONTEXT_SERVICES_REGISTRY.delete(Service);
+      CONTEXT_INSTANCES_REGISTRY.delete(Service);
       CONTEXT_STATES_REGISTRY.delete(Service);
     },
     addServiceObserver(Service: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
@@ -84,7 +84,7 @@ export function initializeScopeContext(): IScopeContext {
       CONTEXT_SERVICES_REFERENCES.set(Service, referencesCount);
 
       if (referencesCount === 1) {
-        CONTEXT_SERVICES_REGISTRY.get(Service)!["onProvisionStarted"]();
+        CONTEXT_INSTANCES_REGISTRY.get(Service)!["onProvisionStarted"]();
       }
     },
     decrementServiceObserving(Service: TAnyContextManagerConstructor): void {
@@ -93,7 +93,7 @@ export function initializeScopeContext(): IScopeContext {
       CONTEXT_SERVICES_REFERENCES.set(Service, referencesCount);
 
       if (referencesCount === 0) {
-        CONTEXT_SERVICES_REGISTRY.get(Service)!["onProvisionEnded"]();
+        CONTEXT_INSTANCES_REGISTRY.get(Service)!["onProvisionEnded"]();
         this.unRegisterService(Service);
       }
     },

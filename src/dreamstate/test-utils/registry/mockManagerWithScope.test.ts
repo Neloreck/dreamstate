@@ -8,7 +8,7 @@ describe("mockManager test util", () => {
     expect(manager).toBeInstanceOf(TestContextManager);
     expect(scope).toBeInstanceOf(Object);
     expect(manager.context.first).toBe("first");
-    expect(scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.size).toBe(1);
+    expect(scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.size).toBe(1);
     expect(scope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
   });
 });

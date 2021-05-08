@@ -102,8 +102,8 @@ describe("ContextManager class", () => {
     expect(getCurrent(ExtendingTestContextManager, scope)).not.toBeNull();
     expect(getCurrent(TestContextManager, scope)).not.toBe(getCurrent(ExtendingTestContextManager, scope));
 
-    expect(scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.has(TestContextManager)).toBeTruthy();
-    expect(scope.REGISTRY.CONTEXT_SERVICES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
+    expect(scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(TestContextManager)).toBeTruthy();
+    expect(scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
 
     scope.unRegisterService(TestContextManager);
     scope.unRegisterService(ExtendingTestContextManager);

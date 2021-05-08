@@ -35,6 +35,17 @@ exports[`createProvider method Should create correct component tree without chil
       scope={
         Object {
           "REGISTRY": Object {
+            "CONTEXT_INSTANCES_REGISTRY": Map {
+              [Function] => TestContextManager {
+                "context": Object {
+                  "first": "first",
+                  "second": 2,
+                  "third": false,
+                },
+                Symbol(SCOPE): [Circular],
+                Symbol(SIGNALING_HANDLER): [Function],
+              },
+            },
             "CONTEXT_OBSERVERS_REGISTRY": Map {
               [Function] => Set {
                 [Function],
@@ -45,17 +56,6 @@ exports[`createProvider method Should create correct component tree without chil
             },
             "CONTEXT_SERVICES_REFERENCES": Map {
               [Function] => 1,
-            },
-            "CONTEXT_SERVICES_REGISTRY": Map {
-              [Function] => TestContextManager {
-                "context": Object {
-                  "first": "first",
-                  "second": 2,
-                  "third": false,
-                },
-                Symbol(SCOPE): [Circular],
-                Symbol(SIGNALING_HANDLER): [Function],
-              },
             },
             "CONTEXT_STATES_REGISTRY": Map {
               [Function] => Object {
@@ -124,6 +124,17 @@ exports[`createProvider method Should render correct component tree 2`] = `
       scope={
         Object {
           "REGISTRY": Object {
+            "CONTEXT_INSTANCES_REGISTRY": Map {
+              [Function] => TestContextManager {
+                "context": Object {
+                  "first": "first",
+                  "second": 2,
+                  "third": false,
+                },
+                Symbol(SCOPE): [Circular],
+                Symbol(SIGNALING_HANDLER): [Function],
+              },
+            },
             "CONTEXT_OBSERVERS_REGISTRY": Map {
               [Function] => Set {
                 [Function],
@@ -134,17 +145,6 @@ exports[`createProvider method Should render correct component tree 2`] = `
             },
             "CONTEXT_SERVICES_REFERENCES": Map {
               [Function] => 1,
-            },
-            "CONTEXT_SERVICES_REGISTRY": Map {
-              [Function] => TestContextManager {
-                "context": Object {
-                  "first": "first",
-                  "second": 2,
-                  "third": false,
-                },
-                Symbol(SCOPE): [Circular],
-                Symbol(SIGNALING_HANDLER): [Function],
-              },
             },
             "CONTEXT_STATES_REGISTRY": Map {
               [Function] => Object {

@@ -16,12 +16,12 @@ describe("Mount order for providers", () => {
 
     render(createElement(ScopeProvider, {}, () => {
       const {
-        REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_SERVICES_REGISTRY }
+        REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
       } = useScope();
 
       expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
       expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
-      expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeUndefined();
+      expect(CONTEXT_INSTANCES_REGISTRY.get(TestContextManager)).toBeUndefined();
 
       return null;
     }));
@@ -38,12 +38,12 @@ describe("Mount order for providers", () => {
 
     render(createElement(ScopeProvider, {}, () => {
       const {
-        REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_SERVICES_REGISTRY }
+        REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
       } = useScope();
 
       expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
       expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeDefined();
-      expect(CONTEXT_SERVICES_REGISTRY.get(TestContextManager)).toBeDefined();
+      expect(CONTEXT_INSTANCES_REGISTRY.get(TestContextManager)).toBeDefined();
 
       return null;
     }));
