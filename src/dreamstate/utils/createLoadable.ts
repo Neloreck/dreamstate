@@ -72,6 +72,9 @@ export function asUpdated<T, E>(
 
 /**
  * Create loadable value utility.
+ * Useful when your context value has error/loading states.
+ *
+ * Note: dreamstate applies deeper shallow checking for loadable values, same as for 'createNested'.
  */
 export function createLoadable<T, E = Error>(
   value: T | null = null,

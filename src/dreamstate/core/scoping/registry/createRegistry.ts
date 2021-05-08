@@ -13,6 +13,9 @@ import {
  */
 type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;
 
+/**
+ * Internal registry object that stores mutable references accounting all dreamstate scope data.
+ */
 export interface IRegistry {
   /**
    * Registry of currently provided context managers instances.

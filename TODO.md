@@ -2,6 +2,8 @@
 
 ### Testing
   - more exotic cases
+  - samples folder
+  - check RxJS
 
 ### Build
   - test dev assistance with logs and warnings for separate bundles
@@ -9,6 +11,9 @@
 ### Lib
   - Store schema registry/creating and validation when initializing context managers?
   - assistance messages when consuming, but tree is not provided
+  - hide scope internals
+  - rename CONTEXT_SERVICES_REGISTRY registry part
+  - add TSC typechecking step before tests
 
 ##### Utils
   - createAsync as loadable copy with stored promise or extended createLoadable
@@ -18,5 +23,3 @@
 - Docs update
 - Simple examples of library usage
 
-##### docs FAQ cover cases:
-  - beforeUpdate for computed values?
