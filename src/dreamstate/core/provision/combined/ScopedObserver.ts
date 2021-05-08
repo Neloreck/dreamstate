@@ -1,6 +1,6 @@
 import { createElement, ReactChild, ReactElement, useEffect, useMemo, useReducer } from "react";
 
-import { forceUpdateReducer } from "@/dreamstate/core/provision/forceUpdateReducer";
+import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 

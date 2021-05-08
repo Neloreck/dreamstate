@@ -1,9 +1,9 @@
 import { FunctionComponent, ReactNode } from "react";
 
-import { IProviderProps } from "@/dreamstate/core/provision/createProvider";
-import { provideSubTreeRecursive } from "@/dreamstate/core/provision/provideSubTreeRecursive";
-import { useSourceObserving } from "@/dreamstate/core/provision/useSourceObserving";
+import { provideSubTreeRecursive } from "@/dreamstate/core/provision/combined/provideSubTreeRecursive";
+import { useSourceObserving } from "@/dreamstate/core/provision/combined/useSourceObserving";
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
  * Create provider that unifies all data sources and tries to re-render providers on every update.

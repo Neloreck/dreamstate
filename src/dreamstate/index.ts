@@ -20,7 +20,7 @@ export {
 
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";
 
-export { IProviderProps as ProviderProps, createProvider } from "@/dreamstate/core/provision/createProvider";
+export { createProvider } from "@/dreamstate/core/provision/createProvider";
 
 export { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 
@@ -37,3 +37,4 @@ export { createLoadable } from "@/dreamstate/utils/createLoadable";
 export { createNested } from "@/dreamstate/utils/createNested";
 export { createComputed } from "@/dreamstate/utils/createComputed";
 export { createActions } from "@/dreamstate/utils/createActions";
+export { IProviderProps as ProviderProps } from "@/dreamstate/types/provision";

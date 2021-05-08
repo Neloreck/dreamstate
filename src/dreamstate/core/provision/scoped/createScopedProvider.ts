@@ -2,10 +2,10 @@ import { FunctionComponent, ReactNode, useContext } from "react";
 
 import { dev } from "@/macroses/dev.macro";
 
-import { IProviderProps } from "@/dreamstate/core/provision/createProvider";
-import { createScopedObserverTreeRecursive } from "@/dreamstate/core/provision/createScopedObserverTreeRecursive";
+import { createScopedObserverTreeRecursive } from "@/dreamstate/core/provision/scoped/createScopedObserverTreeRecursive";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
+import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
  * Create provider that bundles all observers in a scoped nodes and

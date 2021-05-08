@@ -1,7 +1,7 @@
 import { shallow } from "enzyme";
 import { createElement } from "react";
 
-import { createScopedObserverTreeRecursive } from "@/dreamstate/core/provision/createScopedObserverTreeRecursive";
+import { createScopedObserverTreeRecursive } from "@/dreamstate/core/provision/scoped/createScopedObserverTreeRecursive";
 import { NestedContextManager, TestContextManager } from "@/fixtures";
 
 describe("createScopedObserverTreeRecursive rendering", () => {

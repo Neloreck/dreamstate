@@ -1,9 +1,9 @@
 import { createElement, ReactNode } from "react";
 
-import { IProviderProps } from "@/dreamstate/core/provision/createProvider";
-import { ScopedObserver } from "@/dreamstate/core/provision/ScopedObserver";
+import { ScopedObserver } from "@/dreamstate/core/provision/combined/ScopedObserver";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
  * Subtree provider as global scope helper.

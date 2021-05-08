@@ -2,7 +2,7 @@ import { useContext, useEffect, useMemo, useReducer } from "react";
 
 import { dev } from "@/macroses/dev.macro";
 
-import { forceUpdateReducer } from "@/dreamstate/core/provision/forceUpdateReducer";
+import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
