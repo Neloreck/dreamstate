@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`createScopedObserverTree rendering Should match snapshot 1`] = `
+<div>
+  <ScopedObserver
+    ManagerClass={[Function]}
+    dependencies={
+      Array [
+        [Function],
+        [Function],
+        [Function],
+      ]
+    }
+    scope={null}
+  >
+    <ScopedObserver
+      ManagerClass={[Function]}
+      dependencies={
+        Array [
+          [Function],
+          [Function],
+          [Function],
+        ]
+      }
+      scope={null}
+    >
+      <ScopedObserver
+        ManagerClass={[Function]}
+        dependencies={
+          Array [
+            [Function],
+            [Function],
+            [Function],
+          ]
+        }
+        scope={null}
+      >
+        <div>
+          bottom
+        </div>
+      </ScopedObserver>
+    </ScopedObserver>
+  </ScopedObserver>
+</div>
+`;

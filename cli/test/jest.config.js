@@ -2,10 +2,13 @@
 const path = require("path");
 
 module.exports = {
-  "coveragePathIgnorePatterns": [
-    "node_modules",
-    "<rootDir>/src/dreamstate/__tests__/"
+  coveragePathIgnorePatterns: [
+    "/node_modules/",
+    "/fixtures/",
+    "/types/",
+    "/__tests__/"
   ],
+  coverageDirectory: "<rootDir>/target/coverage",
   setupFilesAfterEnv: [
     path.resolve(__dirname, "setup_tests.js")
   ],
