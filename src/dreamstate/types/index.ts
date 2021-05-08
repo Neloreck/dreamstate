@@ -1,4 +1,3 @@
-export * from "@/dreamstate/types/consumption";
 export * from "@/dreamstate/types/queries";
 export * from "@/dreamstate/types/signals";
 export * from "@/dreamstate/types/general";

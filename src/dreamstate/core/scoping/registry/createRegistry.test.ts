@@ -1,4 +1,4 @@
-import { createRegistry, IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 
 describe("createRegistry method", () => {
   it("Should correctly initialize empty registry", () => {

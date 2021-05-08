@@ -61,10 +61,10 @@ describe("Signal subscription of test classes", () => {
     private onEmpty(signal: TDerivedSignalEvent<IEmptySignal>): void {
       count();
 
-      const { type } = signal;
+      const { type, data } = signal;
 
       expect(type).toBe("EMPTY");
-      expect(Object.hasOwnProperty.call(signal, "data")).toBeFalsy();
+      expect(data).toBeUndefined();
     }
 
   }

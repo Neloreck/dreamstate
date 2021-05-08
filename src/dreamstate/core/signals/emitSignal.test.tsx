@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import React, { ReactElement, useCallback, useEffect } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
-import { createRegistry, IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";

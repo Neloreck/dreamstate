@@ -1,4 +1,4 @@
-import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import {
   IBaseSignal,
   ISignalEvent,
@@ -8,44 +8,56 @@ import {
   TSignalType
 } from "@/dreamstate/types";
 
+/**
+ * Callback for signal canceling.
+ * Used in signal events for propagation stopping.
+ */
 function cancelSignal(this: ISignalEvent<TSignalType, unknown>): void {
   this.canceled = true;
 }
 
 /**
- * Emit signal and notify all subscribers in async query.
+ * Emit signal and notify all subscribers in an async way.
+ * Composes signal event from base data and notifies all listeners in current scope.
  * If event is canceled, stop its propagation to next handlers.
  */
 export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: IBaseSignal<T, D>,
   emitter: TAnyContextManagerConstructor | null = null,
-  { SIGNAL_LISTENERS_REGISTRY }: IRegistry
+  REGISTRY: IRegistry
 ): Promise<void> {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");
   }
 
-  const signal: ISignalEvent<T, D> = Object.assign(base as { data: D; type: T }, {
+  const signalListenersCount: number = REGISTRY.SIGNAL_LISTENERS_REGISTRY.size;
+  const signalEvent: ISignalEvent<T, D> = {
+    type: base.type,
+    data: base.data as D,
     emitter,
     timestamp: Date.now(),
     cancel: cancelSignal
-  });
+  };
 
-  // Async processing of subscribed metadata to prevent exception blocking.
+  /**
+   * Async processing of subscribed metadata to prevent exception blocking when one handler error stops propagation.
+   */
   return new Promise<void>(function(resolve: TCallable): void {
-    const handlersToProcessCount: number = SIGNAL_LISTENERS_REGISTRY.size;
     let processedHandlers: number = 0;
 
-    SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<T, D>) {
-      setTimeout(function() {
+    /**
+     * Add signal event processing to the queue.
+     */
+    REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<T, D>) {
+      setTimeout(function(): void {
         try {
           processedHandlers ++;
 
-          if (!signal.canceled) {
-            it(signal);
+          if (!signalEvent.canceled) {
+            it(signalEvent);
           }
         } finally {
-          if (processedHandlers === handlersToProcessCount) {
+          if (processedHandlers === signalListenersCount) {
             resolve();
           }
         }

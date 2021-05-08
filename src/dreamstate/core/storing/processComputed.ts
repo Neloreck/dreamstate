@@ -3,6 +3,7 @@ import { IComputed, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Process computed values and replace placeholders with selectors.
+ * Mutates context param and updates computed values withing object reference.
  */
 export function processComputed<T extends TAnyObject>(
   context: T

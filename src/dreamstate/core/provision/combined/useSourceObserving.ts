@@ -2,12 +2,14 @@ import { useContext, useEffect, useMemo, useReducer } from "react";
 
 import { dev } from "@/macroses/dev.macro";
 
-import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
+import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 /**
- * Use observers dependencies that reload after changes.
+ * Hook for internal usage.
+ * Consumes current scope and does injection and data provision based on it.
+ * Returns current state registry for data provisioning.
  */
 export function useSourceObserving(
   sources: Array<TAnyContextManagerConstructor>,
@@ -16,15 +18,21 @@ export function useSourceObserving(
   const scope: IScopeContext = useContext(ScopeContext);
   const [ , updateProviders ] = useReducer(forceUpdateReducer, null);
 
+  /**
+   * Warn if current observer is mounted out of scope in dev mode.
+   */
   if (IS_DEV) {
-    dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+    if (!scope) {
+      dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+    }
   }
 
   /**
    * Use memo for first and single init of required components.
-   * useLayoutEffect will not work for some environments and SSR.
+   * The point is to force registering before provider rendering for first init.
    *
-   * Note: Shared between components that do mount-unmount is the same node.
+   * Registering will work in the same way even if it is called multiple times.
+   * Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useMemo(function(): void {
     for (let it = 0; it < sources.length; it ++) {
@@ -33,20 +41,20 @@ export function useSourceObserving(
   }, sources);
 
   /**
-   * Mount current observers.
+   * Mount current observers and trigger related lifecycle methods when needed.
    * Count references of providers to detect whether we start provisioning or ending it.
+   *
+   * ! Iteration order is related to actual tree mount-unmount order imitating.
+   * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
-  useEffect(function() {
+  useEffect(function(): TCallable {
     for (let it = sources.length - 1; it >= 0; it --) {
       scope.addServiceObserver(sources[it], updateProviders);
       scope.registerService(sources[it], initialState);
       scope.incrementServiceObserving(sources[it]);
     }
 
-    /**
-     * Unmount current observers.
-     */
-    return function() {
+    return function(): void {
       for (let it = 0; it < sources.length; it ++) {
         scope.removeServiceObserver(sources[it], updateProviders);
         scope.decrementServiceObserving(sources[it]);

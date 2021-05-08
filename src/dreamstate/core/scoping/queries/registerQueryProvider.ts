@@ -1,13 +1,15 @@
-import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
 import { unRegisterQueryProvider } from "@/dreamstate/core/scoping/queries/unRegisterQueryProvider";
+import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TCallable, TQueryListener, TQueryType } from "@/dreamstate/types";
 
 /**
- * Register as query provider and answer calls.
- * Should be filtered by users like redux does.
- * Not intended to be used as core feature, just for some elegant decisions.
+ * Register callback as query provider and answer calls.
  *
- * Returns function that unsubscribe current handler.
+ * @param {TQueryType} queryType - type of query for data provisioning.
+ * @param {TQueryListener} listener - callback that will listen data queries and return requested data.
+ * @param {IRegistry} registry - current scope registry.
+ *
+ * @return {TCallable} function that unsubscribes subscribed handler.
  */
 export function registerQueryProvider<T extends TQueryType>(
   queryType: T,
@@ -18,6 +20,9 @@ export function registerQueryProvider<T extends TQueryType>(
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
   }
 
+  /**
+   * Handle query providers as array so for one type many queries can be provided, but only first one will be called.
+   */
   if (registry.QUERY_PROVIDERS_REGISTRY.has(queryType)) {
     const currentProviders: Array<TQueryListener<any, any>> = registry.QUERY_PROVIDERS_REGISTRY.get(queryType)!;
 
@@ -30,6 +35,9 @@ export function registerQueryProvider<T extends TQueryType>(
     registry.QUERY_PROVIDERS_REGISTRY.set(queryType, [ listener ]);
   }
 
+  /**
+   * Return un-subscriber callback.
+   */
   return function(): void {
     unRegisterQueryProvider(queryType, listener, registry);
   };

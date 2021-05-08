@@ -2,14 +2,14 @@ import { FunctionComponent, ReactNode, useContext } from "react";
 
 import { dev } from "@/macroses/dev.macro";
 
-import { createScopedObserverTreeRecursive } from "@/dreamstate/core/provision/scoped/createScopedObserverTreeRecursive";
+import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/createScopedObserverTree";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
  * Create provider that bundles all observers in a scoped nodes and
- * it does not affect all providers if only one was actually changed.
+ * does not affect all providers if only one was actually changed.
  */
 export function createScopedProvider<T extends IProviderProps<any>>(
   sources: Array<TAnyContextManagerConstructor>
@@ -17,13 +17,21 @@ export function createScopedProvider<T extends IProviderProps<any>>(
   function Observer(props: T): ReactNode {
     const scope: IScopeContext = useContext(ScopeContext);
 
+    /**
+     * Warn if current observer is mounted out of scope in dev mode.
+     */
     if (IS_DEV) {
-      dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+      if (!scope) {
+        dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+      }
     }
 
-    return createScopedObserverTreeRecursive(sources, props, scope);
+    return createScopedObserverTree(sources, props, scope);
   }
 
+  /**
+   * Single wrapper, many observers + providers in isolated scopes.
+   */
   if (IS_DEV) {
     Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextManagerConstructor) {
       return it.name;

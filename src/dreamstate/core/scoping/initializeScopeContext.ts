@@ -1,9 +1,9 @@
 import { SCOPE_SYMBOL, SIGNALING_HANDLER_SYMBOL } from "@/dreamstate/core/internals";
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
-import { createRegistry, IRegistry } from "@/dreamstate/core/registry/createRegistry";
 import { registerQueryProvider } from "@/dreamstate/core/scoping/queries/registerQueryProvider";
 import { unRegisterQueryProvider } from "@/dreamstate/core/scoping/queries/unRegisterQueryProvider";
+import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/scoping/signals/onMetadataSignalListenerCalled";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
@@ -24,7 +24,6 @@ function throwAfterDisposal(): never {
 
 /**
  * Initialize scope that handles stores, signaling and queries in a tree.
- * todo: Objects instead of weak maps since scope is controlled by a local renderer.
  */
 export function initializeScopeContext(): IScopeContext {
   const registry: IRegistry = createRegistry();
@@ -118,31 +117,31 @@ export function initializeScopeContext(): IScopeContext {
       T extends TAnyObject,
       D extends IContextManagerConstructor<any, T, any>
     >(
-      Manager: D,
+      ManagerClass: D,
       subscriber: TUpdateSubscriber<T>
     ): TCallable {
-      if (!(Manager.prototype instanceof ContextManager)) {
+      if (!(ManagerClass.prototype instanceof ContextManager)) {
         throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
       }
 
-      CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.add(subscriber);
+      CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.add(subscriber);
 
-      return function() {
-        CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.delete(subscriber);
+      return function(): void {
+        CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
       };
     },
     unsubscribeFromManager<
       T extends TAnyObject,
       D extends IContextManagerConstructor<any, T>
     >(
-      Manager: D,
+      ManagerClass: D,
       subscriber: TUpdateSubscriber<T>
     ): void {
-      if (!(Manager.prototype instanceof ContextManager)) {
+      if (!(ManagerClass.prototype instanceof ContextManager)) {
         throw new TypeError("Cannot unsubscribe from class that does not extend ContextManager.");
       }
 
-      registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(Manager)!.delete(subscriber);
+      registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
     },
     emitSignal<D = undefined, T extends TSignalType = TSignalType>(
       base: IBaseSignal<T, D>,
@@ -159,7 +158,7 @@ export function initializeScopeContext(): IScopeContext {
 
       SIGNAL_LISTENERS_REGISTRY.add(listener);
 
-      return function() {
+      return function(): void {
         SIGNAL_LISTENERS_REGISTRY.delete(listener);
       };
     },

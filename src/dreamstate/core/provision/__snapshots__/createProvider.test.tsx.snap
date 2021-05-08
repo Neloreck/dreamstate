@@ -26,12 +26,12 @@ exports[`createProvider method Should create correct component tree without chil
 <ScopeProvider>
   <DS.Observer>
     <ScopedObserver
+      ManagerClass={[Function]}
       dependencies={
         Array [
           [Function],
         ]
       }
-      manager={[Function]}
       scope={
         Object {
           "REGISTRY": Object {
@@ -115,12 +115,12 @@ exports[`createProvider method Should render correct component tree 2`] = `
 <ScopeProvider>
   <DS.Observer>
     <ScopedObserver
+      ManagerClass={[Function]}
       dependencies={
         Array [
           [Function],
         ]
       }
-      manager={[Function]}
       scope={
         Object {
           "REGISTRY": Object {

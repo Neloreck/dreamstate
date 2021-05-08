@@ -7,7 +7,6 @@ export {
   TNested as Nested,
   TComputed as Computed,
   TStateSetter as StateSetter,
-  TConsumable as Consumable,
   TDerivedSignalEvent as SignalEvent,
   TDerivedSignal as Signal,
   TSignalType as SignalType,

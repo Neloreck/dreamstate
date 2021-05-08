@@ -8,7 +8,6 @@ describe("Library exported API", () => {
     "Nested",
     "Computed",
     "StateSetter",
-    "Consumable",
     "SignalEvent",
     "Signal",
     "SignalType",

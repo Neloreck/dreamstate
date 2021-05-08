@@ -7,6 +7,10 @@ import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
  * Create provider that unifies all data sources and tries to re-render providers on every update.
+ * The main difference is that following provider will try to re-render all 'source' component providers and
+ * match difference with react ref checking later.
+ *
+ * As example, if you have 10 sources, all 10 context providers will try to render on single manager update.
  */
 export function createCombinedProvider<T extends TAnyObject>(
   sources: Array<TAnyContextManagerConstructor>
@@ -17,6 +21,9 @@ export function createCombinedProvider<T extends TAnyObject>(
     return provideSubTreeRecursive(props.children, sources, registry);
   }
 
+  /**
+   * One observer for all provider sources and many context providers.
+   */
   if (IS_DEV) {
     Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextManagerConstructor) {
       return it.name;

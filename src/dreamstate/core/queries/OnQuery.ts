@@ -4,7 +4,11 @@ import { createMethodDecorator } from "@/dreamstate/polyfills/createMethodDecora
 import { TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
 
 /**
- * Decorator that binds specific method as query handler.
+ * Class method decorator.
+ * Marks decorated method as handler of provided type(s) queries.
+ * All queries in current scope with specified type will be handled by callback.
+ *
+ * @param {(TQueryType|Array.<TQueryType>>)} queryType - signal or array of signals that should be handled.
  */
 export function OnQuery(
   queryType: TQueryType
@@ -13,6 +17,9 @@ export function OnQuery(
     throw new TypeError("Query type should be provided for OnQuery decorator.");
   }
 
+  /**
+   * Support old and new decorators with polyfill.
+   */
   return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
     Service: TAnyContextManagerConstructor

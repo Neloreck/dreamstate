@@ -62,8 +62,8 @@ describe("createProvider method", () => {
     expect(() => createProvider([ new Function() as any ])).toThrow(TypeError);
     expect(() => createProvider([ [] as any ])).toThrow(TypeError);
     expect(() => createProvider([ class ExampleClass {} as any ])).toThrow(TypeError);
+    expect(() => createProvider([])).toThrow();
 
-    expect(() => createProvider([])).not.toThrow();
     expect(() => createProvider([ TestContextManager ])).not.toThrow();
   });
 

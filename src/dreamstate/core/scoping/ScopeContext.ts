@@ -1,6 +1,6 @@
 import { Context, createContext } from "react";
 
-import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IBaseSignal, IContextManagerConstructor, IOptionalQueryRequest,
@@ -41,7 +41,7 @@ export interface IScopeContext {
     T extends TAnyObject,
     D extends IContextManagerConstructor<any, T>
     >(
-    Manager: D,
+    ManagerClass: D,
     subscriber: TUpdateSubscriber<T>
   ): TCallable;
   /**
@@ -51,7 +51,7 @@ export interface IScopeContext {
     T extends TAnyObject,
     D extends IContextManagerConstructor<any, T>
     >(
-    Manager: D,
+    ManagerClass: D,
     subscriber: TUpdateSubscriber<T>
   ): void;
   /**

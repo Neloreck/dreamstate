@@ -5,22 +5,30 @@ import { dev } from "@/macroses/dev.macro";
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
-import { IStringIndexed, TAnyObject } from "@/dreamstate/types";
-
-// todo: Warn computed/nested switch between states when previous and next types are different?
-// todo: Generate context map on creation and work with it.
+import { TAnyObject } from "@/dreamstate/types";
 
 /**
  * Compare context manager state diff with shallow check + nested objects check.
+ * Respect all meta-fields like NestedStore/ComputedValue/ActionsStore etc.
+ *
+ * @param previousContext - previous context to match.
+ * @param nextContext - next context to match.
+ *
+ * @return {boolean} result of context objects comparison, whether observers should update or not.
  */
-export function shouldObserversUpdate<T extends TAnyObject>(
-  previousContext: IStringIndexed<any>,
-  nextContext: IStringIndexed<any>
+export function shouldObserversUpdate<
+  T extends TAnyObject
+>(
+  previousContext: T,
+  nextContext: T
 ): boolean {
-  if (IS_DEV) {
-    if (!nextContext) {
-      dev.warn("Next context value is null, but ContextManager context field is not nullable. Is it expected?");
-    }
+  // todo: Warn computed/nested switch between states when previous and next types are different?
+  // todo: Generate context map on creation and work with it.
+  // todo: Check context key count on every check?
+
+  if (!nextContext || typeof nextContext !== "object") {
+    dev.warn("Next context value is null, but ContextManager context field is not nullable. Is it expected?");
+    throw new TypeError(`Context should be non-nullable object, supplied '${typeof nextContext}' type instead.`);
   }
 
   if (!previousContext) {

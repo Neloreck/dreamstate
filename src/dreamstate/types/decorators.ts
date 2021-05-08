@@ -1,8 +1,9 @@
-import { TConstructor } from "@/dreamstate/types/general";
+import type { TConstructor } from "@/dreamstate/types/general";
 
 /**
- * From the TC39 Decorators proposal.
+ * Typedefs from the TC39 Decorators proposal.
  */
+
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export interface ClassElement {
   kind: "field" | "method";

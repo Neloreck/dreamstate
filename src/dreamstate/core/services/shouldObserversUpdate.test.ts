@@ -3,16 +3,26 @@ import { TAnyObject } from "@/dreamstate/types";
 
 describe("shouldObserversUpdate method functionality", () => {
   it("Should return true of previous context does not exist", () => {
-    const previous: null = null;
+    const previous: TAnyObject = null as any;
     const next: TAnyObject = { a: 15, b: 50 };
 
-    expect(shouldObserversUpdate(previous as any, next)).toBeTruthy();
+    expect(shouldObserversUpdate(previous, next)).toBeTruthy();
+  });
+
+  it("Should fail if next context is invalid", () => {
+    const previous: TAnyObject = { a: 50 };
+
+    expect(() => shouldObserversUpdate(previous, null as any)).toThrow(TypeError);
+    expect(() => shouldObserversUpdate(previous, 1 as any)).toThrow(TypeError);
+    expect(() => shouldObserversUpdate(previous, false as any)).toThrow(TypeError);
+    expect(() => shouldObserversUpdate(previous, NaN as any)).toThrow(TypeError);
+    expect(() => shouldObserversUpdate(previous, undefined as any)).toThrow(TypeError);
   });
 
   it("Should check properly same nested primitives and objects", () => {
-    const first = { first: 1 };
-    const firstDifferent = { first: 1 };
-    const second = { second: 2 };
+    const first: TAnyObject = { first: 1 };
+    const firstDifferent: TAnyObject = { first: 1 };
+    const second: TAnyObject = { second: 2 };
 
     expect(shouldObserversUpdate(first, firstDifferent)).toBeFalsy();
     expect(shouldObserversUpdate(first, second)).toBeTruthy();
@@ -25,9 +35,9 @@ describe("shouldObserversUpdate method functionality", () => {
     expect(shouldObserversUpdate(firstNested, firstSameNested)).toBeFalsy();
     expect(shouldObserversUpdate(firstNested, firstDifferentNested)).toBeTruthy();
 
-    const firstString = { first: "first" };
-    const firstStringDifferent = { first: "first" };
-    const secondString = { second: "second" };
+    const firstString: TAnyObject = { first: "first" };
+    const firstStringDifferent: TAnyObject = { first: "first" };
+    const secondString: TAnyObject = { second: "second" };
 
     expect(shouldObserversUpdate(firstString, firstStringDifferent)).toBeFalsy();
     expect(shouldObserversUpdate(firstString, secondString)).toBeTruthy();

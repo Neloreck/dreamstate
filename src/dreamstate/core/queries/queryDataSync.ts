@@ -1,5 +1,5 @@
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
-import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IOptionalQueryRequest,
@@ -48,7 +48,14 @@ export function queryDataSync<
     throw new TypeError("Query must be an object with declared type or array of objects with type.");
   }
 
+  /**
+   * Managers classes are in priority over custom handlers.
+   * Registered in order of creation.
+   */
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
+    /**
+     * Only if service has related metadata.
+     */
     if (service[QUERY_METADATA_SYMBOL]) {
       for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
         if (type === query.type) {

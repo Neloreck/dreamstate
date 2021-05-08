@@ -1,9 +1,14 @@
-import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TQueryListener, TQueryType } from "@/dreamstate/types";
 
 /**
- * Unsubscribe from all queries for specified listener.
- * Not intended to be used as core feature, just for some elegant decisions.
+ * Unsubscribe from all queries for specified listener and type.
+ *
+ * @param {TQueryType} queryType - type of query for data provisioning.
+ * @param {TQueryListener} listener - callback that will listen data queries and return requested data.
+ * @param {IRegistry} registry - current scope registry.
+ *
+ * @return {TCallable} function that unsubscribes subscribed handler.
  */
 export function unRegisterQueryProvider<T extends TQueryType>(
   queryType: T,

@@ -6,28 +6,25 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
 
-/**
- * Provider creation configuration object.
- */
 export interface ICreateProviderProps {
   isCombined?: boolean;
 }
 
 /**
- * Method for provision component creation.
- * Observes context changes and uses react context for data provision.
+ * Method for provisioning component creation.
+ * Observes context changes and uses react context providers.
  * All data can be consumed anywhere in react tree below created provider component with useManager/useContext hooks.
  *
  * @param {Array.<IContextManagerConstructor>>} sources - array of source classes references
- *   that should be provided in react tree when returned component renders
- * @param {Object} config - store provider configuration
+ *   that should be provided in react tree when returned component renders.
+ * @param {Object} config - store provider configuration.
  * @param {boolean} config.isCombined - boolean flag that switches observing between one big react node
- *   vs small scoped nodes
+ *   vs small scoped nodes.
  *
- * @returns {FunctionComponent} react provider component for source classes
+ * @returns {FunctionComponent} react provider component for source classes.
  *
- * @throws {TypeError} - wrong sources param type supplied, should be array
- * @throws {TypeError} - wrong source object in array supplied, should be class extending ContextManager
+ * @throws {TypeError} - wrong sources param type supplied, should be array.
+ * @throws {TypeError} - wrong source object in array supplied, should be class extending ContextManager.
  */
 export function createProvider<
   T extends TAnyObject = TAnyObject

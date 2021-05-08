@@ -1,8 +1,8 @@
 import { shallow } from "enzyme";
-import React from "react";
+import { default as React } from "react";
 
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/combined/provideSubTreeRecursive";
-import { createRegistry, IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 import { NestedContextManager, TestContextManager } from "@/fixtures";
 

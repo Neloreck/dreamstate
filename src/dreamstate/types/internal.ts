@@ -1,6 +1,6 @@
-import { Context } from "react";
+import type { Context } from "react";
 
-import { QUERY_METADATA_SYMBOL, SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
+import type { QUERY_METADATA_SYMBOL, SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import type { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import type { TAnyObject } from "@/dreamstate/types/general";
 import type { TQuerySubscriptionMetadata } from "@/dreamstate/types/queries";

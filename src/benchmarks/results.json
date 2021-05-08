@@ -117,7 +117,63 @@
           "k": 6.205564535411359
         }
       ]
+    },
+    "object_vs_number_creation": {
+      "name": "object_vs_number_creation",
+      "lastRun": 1620435834038,
+      "fastest": "null_object_creation",
+      "suites": [
+        {
+          "name": "object_creation",
+          "period": 1.169735703061347e-8,
+          "frequency": 85489397081.99664,
+          "k": 1.2411849908247772
+        },
+        {
+          "name": "null_object_creation",
+          "period": 9.424346182949316e-9,
+          "frequency": 106108156532.83372,
+          "k": 1
+        },
+        {
+          "name": "number_increment+offset",
+          "period": 5.68821205040604e-8,
+          "frequency": 17580216615.317944,
+          "k": 6.035656946364352
+        }
+      ]
+    },
+    "fail_with_or_without_object_check": {
+      "name": "fail_with_or_without_object_check",
+      "lastRun": 1620474342532,
+      "fastest": "without_error_with_check",
+      "suites": [
+        {
+          "name": "error_without_check",
+          "period": 0.0000050413419066761615,
+          "frequency": 198359884.83060777,
+          "k": 364.5431924010885
+        },
+        {
+          "name": "error_with_check",
+          "period": 0.000004403999265289617,
+          "frequency": 227066341.2415982,
+          "k": 318.4564707612191
+        },
+        {
+          "name": "without_error_without_check",
+          "period": 1.536856258481572e-8,
+          "frequency": 65067893921.84335,
+          "k": 1.111312220237502
+        },
+        {
+          "name": "without_error_with_check",
+          "period": 1.3829203265245526e-8,
+          "frequency": 72310745660.462,
+          "k": 1
+        }
+      ]
     }
   },
-  "lastRun": 1619990931326
+  "lastRun": 1620474342532
 }

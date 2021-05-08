@@ -1,6 +1,6 @@
 import { ContextManager } from "@/dreamstate";
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
-import { IRegistry } from "@/dreamstate/core/registry/createRegistry";
+import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import {
   IOptionalQueryRequest,
   IQueryRequest,
@@ -34,6 +34,10 @@ function promisifyQuery<
       const timestamp: number = Date.now();
       const result: any = callback(query);
 
+      /**
+       * Not all query responders are sync or async.
+       * Here we expect it to be either sync or async and handle it in an async way.
+       */
       if (result instanceof Promise) {
         return result
           .then(function(data: any): void {
@@ -60,7 +64,7 @@ function promisifyQuery<
 }
 
 /**
- * Find correct async listener or array of listeners and return response or null.
+ * Find correct async listener or array of listeners and return Promise response or null.
  * Try to find matching type and call related method.
  */
 export function queryDataAsync<
@@ -76,7 +80,14 @@ export function queryDataAsync<
     throw new TypeError("Query must be an object with declared type or array of objects with type.");
   }
 
+  /**
+   * Managers classes are in priority over custom handlers.
+   * Registered in order of creation.
+   */
   for (const service of CONTEXT_SERVICES_ACTIVATED) {
+    /**
+     * Only if service has related metadata.
+     */
     if (service[QUERY_METADATA_SYMBOL]) {
       for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
         if (type === query.type) {
@@ -101,5 +112,8 @@ export function queryDataAsync<
     return promisifyQuery(handlerFunction, query, null);
   }
 
+  /**
+   * Resolve null if nothing was found to handle request.
+   */
   return Promise.resolve(null);
 }
