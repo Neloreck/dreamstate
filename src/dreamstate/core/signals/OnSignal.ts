@@ -26,16 +26,16 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
    */
   return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
-    Service: TAnyContextManagerConstructor
+    ManagerClass: TAnyContextManagerConstructor
   ): void {
-    if (!(Service.prototype instanceof ContextManager)) {
+    if (!(ManagerClass.prototype instanceof ContextManager)) {
       throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
     }
 
-    if (!Service[SIGNAL_METADATA_SYMBOL]) {
-      Service[SIGNAL_METADATA_SYMBOL] = [];
+    if (!ManagerClass[SIGNAL_METADATA_SYMBOL]) {
+      ManagerClass[SIGNAL_METADATA_SYMBOL] = [];
     }
 
-    Service[SIGNAL_METADATA_SYMBOL].push([ method, signalType ]);
+    ManagerClass[SIGNAL_METADATA_SYMBOL].push([ method, signalType ]);
   });
 }

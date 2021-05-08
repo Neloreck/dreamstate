@@ -118,11 +118,11 @@ describe("ContextManager class", () => {
   });
 
   it("Should initialize service classes without any exceptions", () => {
-    const testContextManagerInit = (Service: TAnyContextManagerConstructor) => {
-      const service = new Service();
+    const testContextManagerInit = (ManagerClass: TAnyContextManagerConstructor) => {
+      const service = new ManagerClass();
 
       expect(service).toBeInstanceOf(ContextManager);
-      expect(service).toBeInstanceOf(Service);
+      expect(service).toBeInstanceOf(ManagerClass);
 
       expect(typeof service["onProvisionStarted"]).toBe("function");
       expect(typeof service["onProvisionEnded"]).toBe("function");
@@ -130,7 +130,7 @@ describe("ContextManager class", () => {
       expect(typeof service["queryDataAsync"]).toBe("function");
       expect(typeof service["queryDataSync"]).toBe("function");
 
-      expect(Object.keys(Service.prototype)).toHaveLength(0);
+      expect(Object.keys(ManagerClass.prototype)).toHaveLength(0);
 
       expect(service[SCOPE_SYMBOL]).toBeUndefined();
       expect(service[SIGNALING_HANDLER_SYMBOL]).toBeUndefined();
@@ -144,12 +144,12 @@ describe("ContextManager class", () => {
       expect(typeof service["beforeUpdate"]).toBe("function");
       expect(typeof service["afterUpdate"]).toBe("function");
 
-      expect(typeof Service.REACT_CONTEXT).toBe("object");
-      expect(typeof Service.REACT_CONTEXT.Provider).toBe("object");
-      expect(typeof Service.REACT_CONTEXT.Consumer).toBe("object");
+      expect(typeof ManagerClass.REACT_CONTEXT).toBe("object");
+      expect(typeof ManagerClass.REACT_CONTEXT.Provider).toBe("object");
+      expect(typeof ManagerClass.REACT_CONTEXT.Consumer).toBe("object");
 
       // Cleanup persistent REACT_CONTEXT ref.
-      CONTEXT_REACT_CONTEXTS_REGISTRY.delete(Service);
+      CONTEXT_REACT_CONTEXTS_REGISTRY.delete(ManagerClass);
     };
 
     expect(Object.keys(ContextManager.prototype)).toHaveLength(0);

@@ -22,29 +22,67 @@ import {
  * Scope internals that normally should remain private and should not be accessed externally.
  */
 export interface IScopeContextInternals {
+  /**
+   * Mutable registry that contains all references and scope data.
+   */
   REGISTRY: IRegistry;
-  registerService<T>(Service: TAnyContextManagerConstructor, initialState?: T): void;
-  unRegisterService(Service: TAnyContextManagerConstructor): void;
-  addServiceObserver(Service: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
-  removeServiceObserver(Service: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
+  /**
+   * Register ManagerClass in current scope and create instance for context provision.
+   *
+   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference that should be registered in scope.
+   * @param {*=} initialState - initial state param that will be injected in manager constructor on creation.
+   */
+  registerService<T>(ManagerClass: TAnyContextManagerConstructor, initialState?: T): void;
+  /**
+   * Dispose ManagerClass from current scope.
+   * Cleanup memory and delete all internal references.
+   *
+   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference that should be unregistered from scope.
+   */
+  unRegisterService(ManagerClass: TAnyContextManagerConstructor): void;
+  /**
+   * Add observer to specified service.
+   *
+   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for observer addition.
+   * @param {TUpdateObserver} serviceObserver - observer that should be notified on manager updates.
+   */
+  addServiceObserver(ManagerClass: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
+  /**
+   * Remove observer from specified service.
+   *
+   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for observer removal.
+   * @param {TUpdateObserver} serviceObserver - observer that should be removed from registry.
+   */
+  removeServiceObserver(ManagerClass: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
   /**
    * Start observing of service and trigger related lifecycle methods.
    * Count providers references so it will work with few different providers
    * and force 'onProvisionStarted' to be used only once.
+   *
+   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for references increment.
    */
-  incrementServiceObserving(Service: TAnyContextManagerConstructor): void;
+  incrementServiceObserving(ManagerClass: TAnyContextManagerConstructor): void;
   /**
    * Stop service observing.
    * Decrement counted references and trigger lifecycle if observing was ended.
-   */
-  decrementServiceObserving(Service: TAnyContextManagerConstructor): void;
-  /**
    *
+   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for references decrement.
+   */
+  decrementServiceObserving(ManagerClass: TAnyContextManagerConstructor): void;
+  /**
+   * Notify observers method that updates all providers state based on manager instance context.
+   *
+   * @param {ContextManager} manager - manager instance that should update subscribed providers.
    */
   notifyObservers<T>(manager: ContextManager<T>): void;
   /**
    * Subscribe to manager context updates.
-   * Returns unsubscriber function.
+   * Provided callback will be fired on every manager instance context update.
+   *
+   * @param {IContextManagerConstructor} ManagerClass - manager class reference for subscription.
+   * @param {TUpdateSubscriber} subscriber - callback that will be triggered on context updates.
+   *
+   * @return {TCallable} un-subscriber function.
    */
   subscribeToManager<
     T extends TAnyObject,
@@ -55,6 +93,9 @@ export interface IScopeContextInternals {
   ): TCallable;
   /**
    * Unsubscribe from manager context updates.
+   *
+   * @param {IContextManagerConstructor} ManagerClass - manager class reference for un-subscription.
+   * @param {TUpdateSubscriber} subscriber - callback that should be removed from context updates subscription.
    */
   unsubscribeFromManager<
     T extends TAnyObject,
@@ -76,7 +117,14 @@ export interface IScopeContext {
    */
   INTERNAL: IScopeContextInternals;
   /**
-   * todo;
+   * Emit signal for all subscribers in current dreamstate scope.
+   *
+   * @param {Object} base - base signal that should trigger signal event for subscribers.
+   * @param {TSignalType} base.type - signal type.
+   * @param {*=} base.data - signal data that will be received by subscribers.
+   * @param {(TAnyContextManagerConstructor | null)=} emitter - signal emitter reference.
+   *
+   * @return {Promise} promise that resolves after all handlers execution.
    */
   emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     base: IBaseSignal<T, D>,

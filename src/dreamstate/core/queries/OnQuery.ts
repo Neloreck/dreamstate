@@ -22,16 +22,16 @@ export function OnQuery(
    */
   return createMethodDecorator<TAnyContextManagerConstructor>(function(
     method: string | symbol,
-    Service: TAnyContextManagerConstructor
+    ManagerClass: TAnyContextManagerConstructor
   ): void {
-    if (!(Service.prototype instanceof ContextManager)) {
+    if (!(ManagerClass.prototype instanceof ContextManager)) {
       throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
     }
 
-    if (!Service[QUERY_METADATA_SYMBOL]) {
-      Service[QUERY_METADATA_SYMBOL] = [];
+    if (!ManagerClass[QUERY_METADATA_SYMBOL]) {
+      ManagerClass[QUERY_METADATA_SYMBOL] = [];
     }
 
-    Service[QUERY_METADATA_SYMBOL].push([ method, queryType ]);
+    ManagerClass[QUERY_METADATA_SYMBOL].push([ method, queryType ]);
   });
 }
