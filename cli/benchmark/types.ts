@@ -9,6 +9,7 @@ export interface IBenchmarkResult {
   name: string;
   lastRun: number;
   fastest: string;
+  nodeVersion: string;
   suites: Array<ISuiteResult>;
 }
 

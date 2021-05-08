@@ -36,7 +36,7 @@ export function useSourceObserving(
    */
   useMemo(function(): void {
     for (let it = 0; it < sources.length; it ++) {
-      scope.registerService(sources[it], initialState);
+      scope.INTERNAL.registerService(sources[it], initialState);
     }
   }, sources);
 
@@ -49,18 +49,18 @@ export function useSourceObserving(
    */
   useEffect(function(): TCallable {
     for (let it = sources.length - 1; it >= 0; it --) {
-      scope.addServiceObserver(sources[it], updateProviders);
-      scope.registerService(sources[it], initialState);
-      scope.incrementServiceObserving(sources[it]);
+      scope.INTERNAL.addServiceObserver(sources[it], updateProviders);
+      scope.INTERNAL.registerService(sources[it], initialState);
+      scope.INTERNAL.incrementServiceObserving(sources[it]);
     }
 
     return function(): void {
       for (let it = 0; it < sources.length; it ++) {
-        scope.removeServiceObserver(sources[it], updateProviders);
-        scope.decrementServiceObserving(sources[it]);
+        scope.INTERNAL.removeServiceObserver(sources[it], updateProviders);
+        scope.INTERNAL.decrementServiceObserving(sources[it]);
       }
     };
   }, sources);
 
-  return scope.REGISTRY.CONTEXT_STATES_REGISTRY;
+  return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY;
 }

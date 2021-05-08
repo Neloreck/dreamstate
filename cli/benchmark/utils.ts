@@ -21,6 +21,7 @@ export function saveResults(target: string, suite: Suite): void {
     name: target,
     lastRun: now,
     fastest: fastest.name,
+    nodeVersion: process.version,
     suites: []
   };
 

@@ -6,9 +6,11 @@ describe("mockManager test util", () => {
     const [ manager, scope ] = mockManagerWithScope(TestContextManager);
 
     expect(manager).toBeInstanceOf(TestContextManager);
-    expect(scope).toBeInstanceOf(Object);
     expect(manager.context.first).toBe("first");
-    expect(scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.size).toBe(1);
-    expect(scope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
+
+    expect(scope).toBeInstanceOf(Object);
+    expect(scope.INTERNAL).toBeInstanceOf(Object);
+    expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.size).toBe(1);
+    expect(scope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
   });
 });

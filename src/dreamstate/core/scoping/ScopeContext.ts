@@ -3,16 +3,25 @@ import { Context, createContext } from "react";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
-  IBaseSignal, IContextManagerConstructor, IOptionalQueryRequest,
-  TAnyContextManagerConstructor, TAnyObject,
+  IBaseSignal,
+  IContextManagerConstructor,
+  IOptionalQueryRequest,
+  TAnyContextManagerConstructor,
+  TAnyObject,
   TCallable,
-  TQueryListener, TQueryResponse,
+  TQueryListener,
+  TQueryResponse,
   TQueryType,
   TSignalListener,
-  TSignalType, TUpdateObserver, TUpdateSubscriber
+  TSignalType,
+  TUpdateObserver,
+  TUpdateSubscriber
 } from "@/dreamstate/types";
 
-export interface IScopeContext {
+/**
+ * Scope internals that normally should remain private and should not be accessed externally.
+ */
+export interface IScopeContextInternals {
   REGISTRY: IRegistry;
   registerService<T>(Service: TAnyContextManagerConstructor, initialState?: T): void;
   unRegisterService(Service: TAnyContextManagerConstructor): void;
@@ -54,27 +63,54 @@ export interface IScopeContext {
     ManagerClass: D,
     subscriber: TUpdateSubscriber<T>
   ): void;
+}
+
+/**
+ * Current scope context.
+ * Includes public methods to work with current scope.
+ */
+export interface IScopeContext {
   /**
-   * Emit signal and trigger all listeners that are in current scope.
+   * Lib internals.
+   * Should not be used normally except unit testing.
+   */
+  INTERNAL: IScopeContextInternals;
+  /**
+   * todo;
    */
   emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     base: IBaseSignal<T, D>,
     emitter?: TAnyContextManagerConstructor | null
   ): Promise<void>;
+  /**
+   * todo;
+   */
   subscribeToSignals<T extends TSignalType, D = undefined>(
     listener: TSignalListener<T, D>
   ): TCallable;
+  /**
+   * todo;
+   */
   unsubscribeFromSignals<T extends TSignalType, D = undefined>(
     listener: TSignalListener<T, D>
   ): void;
+  /**
+   * todo;
+   */
   registerQueryProvider<T extends TQueryType>(
     queryType: T,
     listener: TQueryListener<T, any>
   ): TCallable;
+  /**
+   * todo;
+   */
   unRegisterQueryProvider<T extends TQueryType>(
     queryType: T,
     listener: TQueryListener<T, any>
   ): void;
+  /**
+   * todo;
+   */
   queryDataSync<
     D extends any,
     T extends TQueryType,
@@ -82,6 +118,9 @@ export interface IScopeContext {
     >(
     query: Q
   ): TQueryResponse<any, T>;
+  /**
+   * todo;
+   */
   queryDataAsync<
     D extends any,
     T extends TQueryType,
@@ -91,17 +130,7 @@ export interface IScopeContext {
   ): Promise<TQueryResponse<any, T>>;
 }
 
-export interface IPublicScopeContext extends Pick<
-  IScopeContext,
-  "REGISTRY" |
-  "emitSignal" |
-  "subscribeToSignals" |
-  "unsubscribeFromSignals" |
-  "registerQueryProvider" |
-  "unRegisterQueryProvider" |
-  "queryDataAsync" |
-  "queryDataSync"
-  > {
-}
-
+/**
+ * React context reference for dreamstate scope wrapping of VDOM tree.
+ */
 export const ScopeContext: Context<IScopeContext> = createContext(null as any);

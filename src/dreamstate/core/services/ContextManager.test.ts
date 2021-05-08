@@ -3,7 +3,7 @@ import {
   SCOPE_SYMBOL,
   SIGNALING_HANDLER_SYMBOL
 } from "@/dreamstate/core/internals";
-import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext, IScopeContextInternals } from "@/dreamstate/core/scoping/ScopeContext";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
@@ -95,18 +95,18 @@ describe("ContextManager class", () => {
   it("Should properly manage extended managers", () => {
     const scope: IScopeContext = mockScope();
 
-    scope.registerService(TestContextManager);
-    scope.registerService(ExtendingTestContextManager);
+    scope.INTERNAL.registerService(TestContextManager);
+    scope.INTERNAL.registerService(ExtendingTestContextManager);
 
     expect(getCurrent(TestContextManager, scope)).not.toBeNull();
     expect(getCurrent(ExtendingTestContextManager, scope)).not.toBeNull();
     expect(getCurrent(TestContextManager, scope)).not.toBe(getCurrent(ExtendingTestContextManager, scope));
 
-    expect(scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(TestContextManager)).toBeTruthy();
-    expect(scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
+    expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(TestContextManager)).toBeTruthy();
+    expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(ExtendingTestContextManager)).toBeTruthy();
 
-    scope.unRegisterService(TestContextManager);
-    scope.unRegisterService(ExtendingTestContextManager);
+    scope.INTERNAL.unRegisterService(TestContextManager);
+    scope.INTERNAL.unRegisterService(ExtendingTestContextManager);
 
     expect(getCurrent(TestContextManager, scope)).toBeNull();
     expect(getCurrent(ExtendingTestContextManager, scope)).toBeNull();

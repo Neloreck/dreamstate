@@ -34,59 +34,61 @@ exports[`createProvider method Should create correct component tree without chil
       }
       scope={
         Object {
-          "REGISTRY": Object {
-            "CONTEXT_INSTANCES_REGISTRY": Map {
-              [Function] => TestContextManager {
-                "context": Object {
+          "INTERNAL": Object {
+            "REGISTRY": Object {
+              "CONTEXT_INSTANCES_REGISTRY": Map {
+                [Function] => TestContextManager {
+                  "context": Object {
+                    "first": "first",
+                    "second": 2,
+                    "third": false,
+                  },
+                  Symbol(SCOPE): [Circular],
+                  Symbol(SIGNALING_HANDLER): [Function],
+                },
+              },
+              "CONTEXT_OBSERVERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "CONTEXT_SERVICES_ACTIVATED": Set {
+                [Function],
+              },
+              "CONTEXT_SERVICES_REFERENCES": Map {
+                [Function] => 1,
+              },
+              "CONTEXT_STATES_REGISTRY": Map {
+                [Function] => Object {
                   "first": "first",
                   "second": 2,
                   "third": false,
                 },
-                Symbol(SCOPE): [Circular],
-                Symbol(SIGNALING_HANDLER): [Function],
               },
-            },
-            "CONTEXT_OBSERVERS_REGISTRY": Map {
-              [Function] => Set {
+              "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+                [Function] => Set {},
+              },
+              "QUERY_PROVIDERS_REGISTRY": Map {},
+              "SIGNAL_LISTENERS_REGISTRY": Set {
                 [Function],
               },
             },
-            "CONTEXT_SERVICES_ACTIVATED": Set {
-              [Function],
-            },
-            "CONTEXT_SERVICES_REFERENCES": Map {
-              [Function] => 1,
-            },
-            "CONTEXT_STATES_REGISTRY": Map {
-              [Function] => Object {
-                "first": "first",
-                "second": 2,
-                "third": false,
-              },
-            },
-            "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
-              [Function] => Set {},
-            },
-            "QUERY_PROVIDERS_REGISTRY": Map {},
-            "SIGNAL_LISTENERS_REGISTRY": Set {
-              [Function],
-            },
+            "addServiceObserver": [Function],
+            "decrementServiceObserving": [Function],
+            "incrementServiceObserving": [Function],
+            "notifyObservers": [Function],
+            "registerService": [Function],
+            "removeServiceObserver": [Function],
+            "subscribeToManager": [Function],
+            "unRegisterService": [Function],
+            "unsubscribeFromManager": [Function],
           },
-          "addServiceObserver": [Function],
-          "decrementServiceObserving": [Function],
           "emitSignal": [Function],
-          "incrementServiceObserving": [Function],
-          "notifyObservers": [Function],
           "queryDataAsync": [Function],
           "queryDataSync": [Function],
           "registerQueryProvider": [Function],
-          "registerService": [Function],
-          "removeServiceObserver": [Function],
-          "subscribeToManager": [Function],
           "subscribeToSignals": [Function],
           "unRegisterQueryProvider": [Function],
-          "unRegisterService": [Function],
-          "unsubscribeFromManager": [Function],
           "unsubscribeFromSignals": [Function],
         }
       }
@@ -123,59 +125,61 @@ exports[`createProvider method Should render correct component tree 2`] = `
       }
       scope={
         Object {
-          "REGISTRY": Object {
-            "CONTEXT_INSTANCES_REGISTRY": Map {
-              [Function] => TestContextManager {
-                "context": Object {
+          "INTERNAL": Object {
+            "REGISTRY": Object {
+              "CONTEXT_INSTANCES_REGISTRY": Map {
+                [Function] => TestContextManager {
+                  "context": Object {
+                    "first": "first",
+                    "second": 2,
+                    "third": false,
+                  },
+                  Symbol(SCOPE): [Circular],
+                  Symbol(SIGNALING_HANDLER): [Function],
+                },
+              },
+              "CONTEXT_OBSERVERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "CONTEXT_SERVICES_ACTIVATED": Set {
+                [Function],
+              },
+              "CONTEXT_SERVICES_REFERENCES": Map {
+                [Function] => 1,
+              },
+              "CONTEXT_STATES_REGISTRY": Map {
+                [Function] => Object {
                   "first": "first",
                   "second": 2,
                   "third": false,
                 },
-                Symbol(SCOPE): [Circular],
-                Symbol(SIGNALING_HANDLER): [Function],
               },
-            },
-            "CONTEXT_OBSERVERS_REGISTRY": Map {
-              [Function] => Set {
+              "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+                [Function] => Set {},
+              },
+              "QUERY_PROVIDERS_REGISTRY": Map {},
+              "SIGNAL_LISTENERS_REGISTRY": Set {
                 [Function],
               },
             },
-            "CONTEXT_SERVICES_ACTIVATED": Set {
-              [Function],
-            },
-            "CONTEXT_SERVICES_REFERENCES": Map {
-              [Function] => 1,
-            },
-            "CONTEXT_STATES_REGISTRY": Map {
-              [Function] => Object {
-                "first": "first",
-                "second": 2,
-                "third": false,
-              },
-            },
-            "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
-              [Function] => Set {},
-            },
-            "QUERY_PROVIDERS_REGISTRY": Map {},
-            "SIGNAL_LISTENERS_REGISTRY": Set {
-              [Function],
-            },
+            "addServiceObserver": [Function],
+            "decrementServiceObserving": [Function],
+            "incrementServiceObserving": [Function],
+            "notifyObservers": [Function],
+            "registerService": [Function],
+            "removeServiceObserver": [Function],
+            "subscribeToManager": [Function],
+            "unRegisterService": [Function],
+            "unsubscribeFromManager": [Function],
           },
-          "addServiceObserver": [Function],
-          "decrementServiceObserving": [Function],
           "emitSignal": [Function],
-          "incrementServiceObserving": [Function],
-          "notifyObservers": [Function],
           "queryDataAsync": [Function],
           "queryDataSync": [Function],
           "registerQueryProvider": [Function],
-          "registerService": [Function],
-          "removeServiceObserver": [Function],
-          "subscribeToManager": [Function],
           "subscribeToSignals": [Function],
           "unRegisterQueryProvider": [Function],
-          "unRegisterService": [Function],
-          "unsubscribeFromManager": [Function],
           "unsubscribeFromSignals": [Function],
         }
       }

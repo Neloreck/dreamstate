@@ -3,7 +3,7 @@ import React, { ReactElement } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { IPublicScopeContext, IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TestContextManager } from "@/fixtures";
 
 describe("createProvider method", () => {
@@ -14,7 +14,7 @@ describe("createProvider method", () => {
     let currentScope: IScopeContext = null as any;
 
     function ScopeConsumer(): ReactElement {
-      const scope: IPublicScopeContext = useScope();
+      const scope: IScopeContext = useScope();
 
       currentScope = scope as IScopeContext;
 
@@ -28,11 +28,11 @@ describe("createProvider method", () => {
     </ScopeProvider>);
 
     expect(combinedTree).toMatchSnapshot();
-    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
+    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
 
     combinedTree.unmount();
 
-    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
 
     const scopedTree = mount(<ScopeProvider>
       <ScopedProvider>
@@ -41,11 +41,11 @@ describe("createProvider method", () => {
     </ScopeProvider>);
 
     expect(scopedTree).toMatchSnapshot();
-    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
+    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
 
     scopedTree.unmount();
 
-    expect(currentScope.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
+    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
   });
 
   it("Should create observers with validation", () => {

@@ -26,7 +26,7 @@ export { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 
 export { useManager } from "@/dreamstate/core/consumption/useManager";
 
-export { IPublicScopeContext as ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+export { IScopeContext as ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 export { ScopeProvider } from "@/dreamstate/core/scoping/ScopeProvider";
 export { useScope } from "@/dreamstate/core/scoping/useScope";
 

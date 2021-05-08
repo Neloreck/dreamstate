@@ -165,7 +165,7 @@ export abstract class ContextManager<
 
     this.beforeUpdate(nextContext);
     this.context = nextContext;
-    this[SCOPE_SYMBOL].notifyObservers(this);
+    this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
     this.afterUpdate(previousContext);
   }
 
@@ -192,7 +192,8 @@ export abstract class ContextManager<
      */
     if (
       shouldObserversUpdate(
-        this[SCOPE_SYMBOL].REGISTRY.CONTEXT_STATES_REGISTRY.get(this.constructor as TAnyContextManagerConstructor)!,
+        this[SCOPE_SYMBOL].INTERNAL
+          .REGISTRY.CONTEXT_STATES_REGISTRY.get(this.constructor as TAnyContextManagerConstructor)!,
         nextContext
       )
     ) {
@@ -200,7 +201,7 @@ export abstract class ContextManager<
 
       this.beforeUpdate(nextContext);
       this.context = nextContext;
-      this[SCOPE_SYMBOL].notifyObservers(this);
+      this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
       this.afterUpdate(previousContext);
     }
   }

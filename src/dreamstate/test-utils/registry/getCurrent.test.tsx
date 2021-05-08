@@ -1,8 +1,8 @@
 import { mount } from "enzyme";
-import React, { ReactElement } from "react";
+import { default as React, ReactElement } from "react";
 
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
-import { IPublicScopeContext, IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { TestContextManager } from "@/fixtures";
 
@@ -13,7 +13,7 @@ describe("getCurrent method functionality", () => {
     const Provider = createProvider([ TestContextManager ]);
 
     function Consumer(): ReactElement {
-      const scope: IPublicScopeContext = useScope();
+      const scope: IScopeContext = useScope();
 
       globalScope = scope as IScopeContext;
 

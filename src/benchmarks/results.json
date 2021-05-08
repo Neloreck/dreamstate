@@ -173,7 +173,45 @@
           "k": 1
         }
       ]
+    },
+    "double_index_vs_direct_access": {
+      "name": "double_index_vs_direct_access",
+      "lastRun": 1620516108326,
+      "fastest": "access#double_index",
+      "nodeVersion": "v16.1.0",
+      "suites": [
+        {
+          "name": "access#direct",
+          "period": 0.0000011515788897873464,
+          "frequency": 868372986.7474929,
+          "k": 1.0073863637010583
+        },
+        {
+          "name": "access#double_index",
+          "period": 0.0000011431352768728537,
+          "frequency": 874787105.4557841,
+          "k": 1
+        },
+        {
+          "name": "access#single_index",
+          "period": 0.0000011544157423576544,
+          "frequency": 866239053.4953271,
+          "k": 1.0098680057496427
+        },
+        {
+          "name": "access#single_dot_access",
+          "period": 0.0000011544586363574187,
+          "frequency": 866206868.3164163,
+          "k": 1.0099055288675378
+        },
+        {
+          "name": "access#double_dot_access",
+          "period": 0.000001148875237874307,
+          "frequency": 870416531.7813258,
+          "k": 1.0050212438698904
+        }
+      ]
     }
   },
-  "lastRun": 1620474342532
+  "lastRun": 1620516108326
 }

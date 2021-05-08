@@ -9,21 +9,28 @@ import { onMetadataSignalListenerCalled } from "@/dreamstate/core/scoping/signal
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
+import { throwAfterDisposal } from "@/dreamstate/core/utils/throwAfterDisposal";
 import {
-  IBaseSignal, IContextManagerConstructor, IOptionalQueryRequest, TAnyContextManagerConstructor, TAnyObject,
+  IBaseSignal,
+  IContextManagerConstructor,
+  IOptionalQueryRequest,
+  TAnyContextManagerConstructor,
+  TAnyObject,
   TCallable,
-  TQueryListener, TQueryResponse,
+  TQueryListener,
+  TQueryResponse,
   TQueryType,
   TSignalListener,
-  TSignalType, TUpdateObserver, TUpdateSubscriber
+  TSignalType,
+  TUpdateObserver,
+  TUpdateSubscriber
 } from "@/dreamstate/types";
 
-function throwAfterDisposal(): never {
-  throw new Error("Disposed context are not supposed to access signaling scope.");
-}
-
 /**
- * Initialize scope that handles stores, signaling and queries in a tree.
+ * Dreamstate core processing of scope and existing data registry.
+ * Initialize scope that handles stores, signaling and queries in a VDOM tree.
+ *
+ * @return {IScopeContext} mutable scope with set of methods and registry stores for react VDOM tree
  */
 export function initializeScopeContext(): IScopeContext {
   const registry: IRegistry = createRegistry();
@@ -32,75 +39,76 @@ export function initializeScopeContext(): IScopeContext {
     CONTEXT_SERVICES_REFERENCES, CONTEXT_INSTANCES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_SERVICES_ACTIVATED
   } = registry;
 
-  return ({
-    REGISTRY: registry,
-    registerService<T>(Service: TAnyContextManagerConstructor, initialState: T): void {
-      // Only if registry is empty -> create new instance, remember its context and save it to registry.
-      if (!CONTEXT_INSTANCES_REGISTRY.has(Service)) {
-        const instance: InstanceType<TAnyContextManagerConstructor> = new Service(initialState);
+  const scope: IScopeContext = ({
+    INTERNAL: {
+      REGISTRY: registry,
+      registerService<T>(Service: TAnyContextManagerConstructor, initialState: T): void {
+        // Only if registry is empty -> create new instance, remember its context and save it to registry.
+        if (!CONTEXT_INSTANCES_REGISTRY.has(Service)) {
+          const instance: InstanceType<TAnyContextManagerConstructor> = new Service(initialState);
 
-        // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
-        processComputed((instance as ContextManager<any>).context);
+          // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
+          processComputed((instance as ContextManager<any>).context);
 
-        instance[SCOPE_SYMBOL] = this;
-        instance[SIGNALING_HANDLER_SYMBOL] = onMetadataSignalListenerCalled.bind(instance);
+          instance[SCOPE_SYMBOL] = scope;
+          instance[SIGNALING_HANDLER_SYMBOL] = onMetadataSignalListenerCalled.bind(instance);
 
-        CONTEXT_SERVICES_ACTIVATED.add(Service);
-        CONTEXT_STATES_REGISTRY.set(Service, (instance as ContextManager).context);
-        CONTEXT_SERVICES_REFERENCES.set(Service, 0);
-        CONTEXT_OBSERVERS_REGISTRY.set(Service, new Set());
-        CONTEXT_SUBSCRIBERS_REGISTRY.set(Service, new Set());
-        // Subscribers are not always sync, should not block their un-sub later.
+          CONTEXT_SERVICES_ACTIVATED.add(Service);
+          CONTEXT_STATES_REGISTRY.set(Service, (instance as ContextManager).context);
+          CONTEXT_SERVICES_REFERENCES.set(Service, 0);
+          CONTEXT_OBSERVERS_REGISTRY.set(Service, new Set());
+          CONTEXT_SUBSCRIBERS_REGISTRY.set(Service, new Set());
+          // Subscribers are not always sync, should not block their un-sub later.
 
-        SIGNAL_LISTENERS_REGISTRY.add(instance[SIGNALING_HANDLER_SYMBOL]);
+          SIGNAL_LISTENERS_REGISTRY.add(instance[SIGNALING_HANDLER_SYMBOL]);
 
-        CONTEXT_INSTANCES_REGISTRY.set(Service, instance);
-      }
-    },
-    unRegisterService(Service: TAnyContextManagerConstructor): void {
-      if (CONTEXT_INSTANCES_REGISTRY.has(Service)) {
-        const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(Service) as ContextManager<any>;
+          CONTEXT_INSTANCES_REGISTRY.set(Service, instance);
+        }
+      },
+      unRegisterService(Service: TAnyContextManagerConstructor): void {
+        if (CONTEXT_INSTANCES_REGISTRY.has(Service)) {
+          const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(Service) as ContextManager<any>;
 
-        instance["emitSignal"] = throwAfterDisposal;
-        instance["queryDataSync"] = throwAfterDisposal;
-        instance["queryDataAsync"] = throwAfterDisposal;
+          instance["emitSignal"] = throwAfterDisposal;
+          instance["queryDataSync"] = throwAfterDisposal;
+          instance["queryDataAsync"] = throwAfterDisposal;
 
-        SIGNAL_LISTENERS_REGISTRY.delete(instance[SIGNALING_HANDLER_SYMBOL]);
-      }
+          SIGNAL_LISTENERS_REGISTRY.delete(instance[SIGNALING_HANDLER_SYMBOL]);
+        }
 
-      CONTEXT_SERVICES_ACTIVATED.delete(Service);
-      CONTEXT_INSTANCES_REGISTRY.delete(Service);
-      CONTEXT_STATES_REGISTRY.delete(Service);
-    },
-    addServiceObserver(Service: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
-      CONTEXT_OBSERVERS_REGISTRY.get(Service)!.add(observer);
-    },
-    removeServiceObserver(Service: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
-      CONTEXT_OBSERVERS_REGISTRY.get(Service)!.delete(observer);
-    },
-    incrementServiceObserving(Service: TAnyContextManagerConstructor): void {
-      const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! + 1;
+        CONTEXT_SERVICES_ACTIVATED.delete(Service);
+        CONTEXT_INSTANCES_REGISTRY.delete(Service);
+        CONTEXT_STATES_REGISTRY.delete(Service);
+      },
+      addServiceObserver(Service: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
+        CONTEXT_OBSERVERS_REGISTRY.get(Service)!.add(observer);
+      },
+      removeServiceObserver(Service: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
+        CONTEXT_OBSERVERS_REGISTRY.get(Service)!.delete(observer);
+      },
+      incrementServiceObserving(Service: TAnyContextManagerConstructor): void {
+        const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! + 1;
 
-      CONTEXT_SERVICES_REFERENCES.set(Service, referencesCount);
+        CONTEXT_SERVICES_REFERENCES.set(Service, referencesCount);
 
-      if (referencesCount === 1) {
-        CONTEXT_INSTANCES_REGISTRY.get(Service)!["onProvisionStarted"]();
-      }
-    },
-    decrementServiceObserving(Service: TAnyContextManagerConstructor): void {
-      const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! - 1;
+        if (referencesCount === 1) {
+          CONTEXT_INSTANCES_REGISTRY.get(Service)!["onProvisionStarted"]();
+        }
+      },
+      decrementServiceObserving(Service: TAnyContextManagerConstructor): void {
+        const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(Service)! - 1;
 
-      CONTEXT_SERVICES_REFERENCES.set(Service, referencesCount);
+        CONTEXT_SERVICES_REFERENCES.set(Service, referencesCount);
 
-      if (referencesCount === 0) {
-        CONTEXT_INSTANCES_REGISTRY.get(Service)!["onProvisionEnded"]();
-        this.unRegisterService(Service);
-      }
-    },
-    notifyObservers<T>(manager: ContextManager<T>): void {
-      const nextContext: T = manager.context;
+        if (referencesCount === 0) {
+          CONTEXT_INSTANCES_REGISTRY.get(Service)!["onProvisionEnded"]();
+          this.unRegisterService(Service);
+        }
+      },
+      notifyObservers<T>(manager: ContextManager<T>): void {
+        const nextContext: T = manager.context;
 
-      CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextManagerConstructor, nextContext);
+        CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextManagerConstructor, nextContext);
         CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
           .forEach(function(it: TUpdateObserver) {
             it();
@@ -112,36 +120,37 @@ export function initializeScopeContext(): IScopeContext {
           .forEach(function(it: TUpdateSubscriber<T>) {
             it(nextContext);
           });
-    },
-    subscribeToManager<
-      T extends TAnyObject,
-      D extends IContextManagerConstructor<any, T, any>
-    >(
-      ManagerClass: D,
-      subscriber: TUpdateSubscriber<T>
-    ): TCallable {
-      if (!(ManagerClass.prototype instanceof ContextManager)) {
-        throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
+      },
+      subscribeToManager<
+        T extends TAnyObject,
+        D extends IContextManagerConstructor<any, T, any>
+        >(
+        ManagerClass: D,
+        subscriber: TUpdateSubscriber<T>
+      ): TCallable {
+        if (!(ManagerClass.prototype instanceof ContextManager)) {
+          throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
+        }
+
+        CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.add(subscriber);
+
+        return function(): void {
+          CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
+        };
+      },
+      unsubscribeFromManager<
+        T extends TAnyObject,
+        D extends IContextManagerConstructor<any, T>
+        >(
+        ManagerClass: D,
+        subscriber: TUpdateSubscriber<T>
+      ): void {
+        if (!(ManagerClass.prototype instanceof ContextManager)) {
+          throw new TypeError("Cannot unsubscribe from class that does not extend ContextManager.");
+        }
+
+        registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
       }
-
-      CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.add(subscriber);
-
-      return function(): void {
-        CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
-      };
-    },
-    unsubscribeFromManager<
-      T extends TAnyObject,
-      D extends IContextManagerConstructor<any, T>
-    >(
-      ManagerClass: D,
-      subscriber: TUpdateSubscriber<T>
-    ): void {
-      if (!(ManagerClass.prototype instanceof ContextManager)) {
-        throw new TypeError("Cannot unsubscribe from class that does not extend ContextManager.");
-      }
-
-      registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
     },
     emitSignal<D = undefined, T extends TSignalType = TSignalType>(
       base: IBaseSignal<T, D>,
@@ -199,4 +208,6 @@ export function initializeScopeContext(): IScopeContext {
     }
   }
   );
+
+  return scope;
 }

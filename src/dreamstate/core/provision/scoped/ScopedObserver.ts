@@ -33,7 +33,7 @@ export function ScopedObserver<T>({
    * Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useMemo(function(): void {
-    scope.registerService(ManagerClass, initialState);
+    scope.INTERNAL.registerService(ManagerClass, initialState);
   }, dependencies);
 
   /**
@@ -43,13 +43,13 @@ export function ScopedObserver<T>({
    * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useEffect(function(): TCallable {
-    scope.addServiceObserver(ManagerClass, onUpdateNeeded);
-    scope.registerService(ManagerClass, initialState);
-    scope.incrementServiceObserving(ManagerClass);
+    scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
+    scope.INTERNAL.registerService(ManagerClass, initialState);
+    scope.INTERNAL.incrementServiceObserving(ManagerClass);
 
     return function(): void {
-      scope.removeServiceObserver(ManagerClass, onUpdateNeeded);
-      scope.decrementServiceObserving(ManagerClass);
+      scope.INTERNAL.removeServiceObserver(ManagerClass, onUpdateNeeded);
+      scope.INTERNAL.decrementServiceObserving(ManagerClass);
     };
   }, dependencies);
 
@@ -58,7 +58,7 @@ export function ScopedObserver<T>({
    */
   return createElement(
     ManagerClass.REACT_CONTEXT.Provider,
-    { value: scope.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) },
+    { value: scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) },
     children
   );
 }

@@ -1,7 +1,7 @@
 import { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { IContextManagerConstructor, TAnyObject, TCallable, TUpdateSubscriber } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 /**
  * Use manager hook with subscribed updates.
@@ -20,7 +20,7 @@ export function useContextWithMemo<
   const scope: IScopeContext = useContext(ScopeContext);
   const observed: MutableRefObject<Array<any> | null> = useRef(null);
   const [ state, setState ] = useState(function(): T {
-    return scope.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
+    return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
   });
 
   // Calculate changes like react core does and fire change only after update.
@@ -55,13 +55,13 @@ export function useContextWithMemo<
      *
      * ! Will be triggered after HMR for data initialization and checking.
      */
-    checkMemoState(scope.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T);
+    checkMemoState(scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T);
 
     /**
      * Returns un-subscriber callback.
      */
-    return scope.subscribeToManager(ManagerClass, checkMemoState);
-  }, [ ManagerClass, scope ]);
+    return scope.INTERNAL.subscribeToManager(ManagerClass, checkMemoState);
+  }, [ ManagerClass, scope.INTERNAL ]);
 
   return state;
 }

@@ -18,9 +18,9 @@ export function mockManagerWithScope<
   ManagerClass: M,
   initialState?: S
 ): [ InstanceType<M>, IScopeContext ] {
-  const scope = initializeScopeContext();
+  const scope: IScopeContext = initializeScopeContext();
 
-  scope.registerService(ManagerClass, initialState);
+  scope.INTERNAL.registerService(ManagerClass, initialState);
 
-  return [ scope.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as InstanceType<M>, scope ];
+  return [ scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as InstanceType<M>, scope ];
 }
