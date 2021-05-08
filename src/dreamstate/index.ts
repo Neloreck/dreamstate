@@ -6,7 +6,6 @@ export {
   ILoadable as Loadable,
   TNested as Nested,
   TComputed as Computed,
-  TStateSetter as StateSetter,
   TDerivedSignalEvent as SignalEvent,
   TDerivedSignal as Signal,
   TSignalType as SignalType,

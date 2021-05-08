@@ -3,11 +3,15 @@ import {
   TAnyObject,
   TQueryListener,
   TQueryType,
-  TServiceMap,
   TSignalListener,
   TUpdateObserver,
   TUpdateSubscriber
 } from "@/dreamstate/types";
+
+/**
+ * Mutable map for manager class references.
+ */
+type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;
 
 export interface IRegistry {
   /**

@@ -1,6 +1,17 @@
-import { TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
+import type { TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
 
-export interface IBaseSignal<T extends TSignalType = TSignalType, D = undefined> extends Object{
+/**
+ * Allowed signal types.
+ */
+export type TSignalType = symbol | string | number;
+
+/**
+ * Base signal that contains type and optional data fields.
+ */
+export interface IBaseSignal<
+  T extends TSignalType = TSignalType,
+  D = undefined
+> extends Object {
   /**
    * Type of current signal.
    */
@@ -11,14 +22,25 @@ export interface IBaseSignal<T extends TSignalType = TSignalType, D = undefined>
   readonly data?: D;
 }
 
-export interface ISignalWithoutData<T extends TSignalType = TSignalType> extends Object {
+/**
+ * Signal that contains type field.
+ */
+export interface ISignalWithoutData<
+  T extends TSignalType = TSignalType
+> extends Object {
   /**
    * Type of current signal.
    */
   readonly type: T;
 }
 
-export interface ISignalWithData<T extends TSignalType = TSignalType, D = undefined, > extends Object {
+/**
+ * Signal that contains type and data fields.
+ */
+export interface ISignalWithData<
+  T extends TSignalType = TSignalType,
+  D = undefined
+> extends Object {
   /**
    * Type of current signal.
    */
@@ -29,6 +51,9 @@ export interface ISignalWithData<T extends TSignalType = TSignalType, D = undefi
   readonly data: D;
 }
 
+/**
+ * Signal event emitted in scope.
+ */
 export interface ISignalEvent<T extends TSignalType, D> extends IBaseSignal<T, D> {
   /**
    * Strict type of current signal data.
@@ -52,15 +77,26 @@ export interface ISignalEvent<T extends TSignalType, D> extends IBaseSignal<T, D
   canceled?: boolean;
 }
 
-export type TSignalType = symbol | string | number;
-
+/**
+ * Generic signal listening method.
+ */
 export type TSignalListener<T extends TSignalType = TSignalType, D = undefined> = (signal: ISignalEvent<T, D>) => void;
 
+/**
+ * Class metadata containing information about signal handlers.
+ */
 export type TSignalSubscriptionMetadata = Array<[string | symbol, TSignalType | Array<TSignalType>]>;
 
+/**
+ * Derived signal type based on supplied parameters.
+ */
 export type TDerivedSignal<T extends TSignalType = TSignalType, D = undefined> =
   D extends undefined ? ISignalWithoutData<T> : ISignalWithData<T, D>;
 
+/**
+ * Derived signal event type based on supplied parameters.
+ * Allows signal event declaration in a few ways - object/few parameters.
+ */
 export type TDerivedSignalEvent<
   T extends TSignalType | ISignalWithData | ISignalWithoutData = TSignalType,
   D = undefined

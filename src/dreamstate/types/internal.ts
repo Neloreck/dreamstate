@@ -6,6 +6,9 @@ import type { TAnyObject } from "@/dreamstate/types/general";
 import type { TQuerySubscriptionMetadata } from "@/dreamstate/types/queries";
 import type { TSignalSubscriptionMetadata } from "@/dreamstate/types/signals";
 
+/**
+ * Context manager class reference.
+ */
 export interface IContextManagerConstructor<
   T extends TAnyObject = TAnyObject,
   S extends TAnyObject = any,
@@ -18,8 +21,14 @@ export interface IContextManagerConstructor<
   [SIGNAL_METADATA_SYMBOL]: TSignalSubscriptionMetadata;
 }
 
+/**
+ * Any context manager class reference.
+ */
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any, any>;
 
+/**
+ * Partial context manager 'context' field transformer.
+ */
 export type TPartialTransformer<T> = (value: T) => Partial<T>;
 
 /**
@@ -33,5 +42,3 @@ export type TUpdateObserver = () => void;
 export type TUpdateSubscriber<T extends TAnyObject> = (context: T) => void;
 
 export type TConstructorKey = any;
-
-export type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;

@@ -1,12 +1,12 @@
 import { createNested } from "@/dreamstate";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { TComputed, TLoadable, TNested } from "@/dreamstate/types";
+import { TComputed, ILoadable, TNested } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 import { createLoadable } from "@/dreamstate/utils/createLoadable";
 
 export interface IContextWithUtils {
   nested: TNested<{
-    loadable: TLoadable<number>;
+    loadable: ILoadable<number>;
     simpleString: string;
   }>;
   computed: TComputed<{

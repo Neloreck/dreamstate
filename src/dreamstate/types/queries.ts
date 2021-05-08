@@ -1,7 +1,13 @@
 import { TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
 
+/**
+ * Allowed query types.
+ */
 export type TQueryType = symbol | string | number;
 
+/**
+ * Base query request with optional query field.
+ */
 export interface IOptionalQueryRequest<D extends any = any, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
@@ -13,6 +19,9 @@ export interface IOptionalQueryRequest<D extends any = any, T extends TQueryType
   readonly data?: D;
 }
 
+/**
+ * Base query request with optional supplied field.
+ */
 export interface IQueryRequest<D extends any = undefined, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
@@ -24,13 +33,22 @@ export interface IQueryRequest<D extends any = undefined, T extends TQueryType =
   readonly data: D;
 }
 
+/**
+ * Query request typing that contains base information.
+ */
 export type TQueryRequest<D = undefined, T extends TQueryType = TQueryType> = IQueryRequest<D, T>;
 
 export type TQuerySubscriptionMetadata = Array<[ string | symbol, TQueryType ]>;
 
+/**
+ * Query responding listener that provides data for a specific query types.
+ */
 export type TQueryListener<T extends TQueryType = TQueryType, D = undefined, R = any> =
   (query: IQueryRequest<D, T> | IOptionalQueryRequest<D, T>) => R | null;
 
+/**
+ * Query response that is composed as answer to query requests.
+ */
 export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
