@@ -1,5 +1,5 @@
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
-import { IComputed, TAnyObject } from "@/dreamstate/types";
+import { TComputed, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Process computed values and replace placeholders with selectors.
@@ -10,7 +10,7 @@ export function processComputed<T extends TAnyObject>(
 ): T {
   for (const key in context) {
     // Cast as possible computed value because it is the only one that we expect to process here.
-    const it: IComputed<any, any> = context[key] as any;
+    const it: TComputed<any> = context[key] as any;
 
     if (it instanceof ComputedValue) {
       // Warn if someone deleted __selector__ prop.
