@@ -29,6 +29,9 @@ jobs:
           name: Lint
           command: npm run lint
       - run:
+          name: Typecheck
+          command: npm run tsc
+      - run:
           name: Test
           command: npm run test
       - run:
