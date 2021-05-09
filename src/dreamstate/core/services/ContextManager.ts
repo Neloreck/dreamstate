@@ -1,3 +1,5 @@
+import { Context } from "react";
+
 import {
   QUERY_METADATA_SYMBOL,
   SCOPE_SYMBOL,
@@ -67,7 +69,7 @@ export abstract class ContextManager<
    * Method allows to get related React.Context for manual renders or testing.
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
    */
-  public static get REACT_CONTEXT() {
+  public static get REACT_CONTEXT(): Context<any> {
     if (this === ContextManager) {
       throw new Error("Cannot reference to ContextManager statics directly. Only inherited classes allowed.");
     }
