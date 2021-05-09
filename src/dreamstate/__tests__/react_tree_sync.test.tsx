@@ -1,10 +1,10 @@
 import { mount } from "enzyme";
-import React, { ReactElement } from "react";
+import { default as React, ReactElement } from "react";
 import { act } from "react-dom/test-utils";
 
 import { ScopeProvider, useManager, useScope } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { ITestContext, TestContextManager } from "@/fixtures";
 
@@ -25,7 +25,7 @@ describe("React tree for provided and consumed components", () => {
     let testContextManager: TestContextManager | null = null;
 
     function Consumer(): ReactElement {
-      const scope: IPublicScopeContext = useScope();
+      const scope: IScopeContext = useScope();
       const context: ITestContext = useManager(TestContextManager);
 
       testContextManager = getCurrent(TestContextManager, scope);

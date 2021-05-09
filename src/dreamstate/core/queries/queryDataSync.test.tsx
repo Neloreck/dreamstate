@@ -2,13 +2,13 @@ import { mount, ReactWrapper } from "enzyme";
 import React, { ReactElement, useEffect } from "react";
 
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
-import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TQueryResponse } from "@/dreamstate/types";
 import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("queryDataSync and queries processing", () => {
-  type TQueryCb = (scope: IPublicScopeContext) => void;
+  type TQueryCb = (scope: IScopeContext) => void;
 
   const Provider = createProvider([ RespondingManager ]);
 
@@ -20,7 +20,7 @@ describe("queryDataSync and queries processing", () => {
     </ScopeProvider>);
 
     function Consumer(): ReactElement {
-      const scope: IPublicScopeContext = useScope();
+      const scope: IScopeContext = useScope();
 
       useEffect(() => {
         checker(scope);

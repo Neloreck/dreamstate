@@ -1,14 +1,14 @@
 import { createElement, ReactElement, useEffect, useState } from "react";
 
 import { useScope } from "@/dreamstate";
-import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ESignal } from "@/fixtures/signals/ESignal";
 import { TStringSignalEvent } from "@/fixtures/signals/types";
 
 export function SubscribedFunctionalComponent({
   onInternalSignal
 }: { onInternalSignal: (signal: TStringSignalEvent) => void }): ReactElement {
-  const { subscribeToSignals }: IPublicScopeContext = useScope();
+  const { subscribeToSignals }: IScopeContext = useScope();
   const [ value, setValue ] = useState("initial");
 
   useEffect(() => {

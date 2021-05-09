@@ -4,6 +4,7 @@
   - more exotic cases
   - samples folder
   - check RxJS
+  - improve coverage stats
 
 ### Build
   - test dev assistance with logs and warnings for separate bundles

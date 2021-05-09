@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import React, { ReactElement } from "react";
 
 import { ContextManager, createProvider, ScopeProvider, useScope } from "@/dreamstate";
-import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils";
 import { TAnyObject } from "@/dreamstate/types";
 
@@ -31,7 +31,7 @@ describe("Initial state provision on service registration", () => {
     let contextManager: ContextManagerWithInitialState | null = null;
 
     function Consumer(): ReactElement {
-      const scope: IPublicScopeContext = useScope();
+      const scope: IScopeContext = useScope();
 
       contextManager = getCurrent(ContextManagerWithInitialState, scope);
 

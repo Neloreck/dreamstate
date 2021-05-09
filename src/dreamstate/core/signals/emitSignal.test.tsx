@@ -1,9 +1,9 @@
 import { mount } from "enzyme";
-import React, { ReactElement, useCallback, useEffect } from "react";
+import { default as React, ReactElement, useCallback, useEffect } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
-import { IPublicScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { IBaseSignal, ISignalEvent, ISignalWithData, TSignalType } from "@/dreamstate/types";
@@ -38,7 +38,7 @@ describe("emitSignal method", () => {
     subscriber: (signal: ISignalEvent<any, any>) => void;
     emitter: () => [ IBaseSignal | ISignalWithData<TSignalType, any>, any ];
   }): ReactElement {
-    const scope: IPublicScopeContext = useScope();
+    const scope: IScopeContext = useScope();
 
     useEffect(() => {
       scope.subscribeToSignals(subscriber);
@@ -117,7 +117,7 @@ describe("emitSignal method", () => {
     });
 
     function Subscriber(): ReactElement {
-      const scope: IPublicScopeContext = useScope();
+      const scope: IScopeContext = useScope();
 
       emitter = scope.emitSignal;
 

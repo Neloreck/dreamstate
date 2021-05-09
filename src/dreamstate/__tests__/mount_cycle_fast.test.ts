@@ -16,7 +16,9 @@ describe("Mount order for providers", () => {
 
     render(createElement(ScopeProvider, {}, () => {
       const {
-        REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
+        INTERNAL: {
+          REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
+        }
       } = useScope();
 
       expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
@@ -38,7 +40,9 @@ describe("Mount order for providers", () => {
 
     render(createElement(ScopeProvider, {}, () => {
       const {
-        REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
+        INTERNAL: {
+          REGISTRY: { CONTEXT_SERVICES_ACTIVATED, CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
+        }
       } = useScope();
 
       expect(CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
