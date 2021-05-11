@@ -1,7 +1,8 @@
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
-  ISignalEvent, TAnyContextManagerConstructor,
+  ISignalEvent,
+  TAnyContextManagerConstructor,
   TSignalType
 } from "@/dreamstate/types";
 

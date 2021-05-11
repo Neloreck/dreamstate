@@ -255,7 +255,27 @@
           "k": 36.86992419100569
         }
       ]
+    },
+    "array_values_iteration": {
+      "name": "array_values_iteration",
+      "lastRun": 1620772027534,
+      "fastest": "object_values_for",
+      "nodeVersion": "v16.1.0",
+      "suites": [
+        {
+          "name": "object_values_for",
+          "period": 4.295035444827297e-9,
+          "frequency": 232826949357.15717,
+          "k": 1
+        },
+        {
+          "name": "object_values_for_of",
+          "period": 2.7581428501591962e-8,
+          "frequency": 36256280197.46263,
+          "k": 6.421699856938203
+        }
+      ]
     }
   },
-  "lastRun": 1620764811004
+  "lastRun": 1620772027534
 }

@@ -89,8 +89,9 @@ export function queryDataAsync<
      * Only if service has related metadata.
      */
     if (service[QUERY_METADATA_SYMBOL]) {
-      for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
-        if (type === query.type) {
+      for (const entry of service[QUERY_METADATA_SYMBOL]) {
+        if (query.type === entry[1]) {
+          const method: string | symbol = entry[0];
           const handlerService: ContextManager = CONTEXT_INSTANCES_REGISTRY.get(service)!;
 
           return promisifyQuery(

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useMemo, useReducer } from "react";
+import { DispatchWithoutAction, useContext, useEffect, useMemo, useReducer } from "react";
 
-import { dev } from "@/macroses/dev.macro";
+import { log } from "@/macroses/log.macro";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
@@ -16,14 +16,14 @@ export function useSourceObserving(
   initialState: TAnyObject | undefined
 ): Map<TAnyContextManagerConstructor, TAnyObject> {
   const scope: IScopeContext = useContext(ScopeContext);
-  const [ , updateProviders ] = useReducer(forceUpdateReducer, null);
+  const reducer: [ TAnyObject | null, DispatchWithoutAction ] = useReducer(forceUpdateReducer, null);
 
   /**
    * Warn if current observer is mounted out of scope in dev mode.
    */
   if (IS_DEV) {
     if (!scope) {
-      dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+      log.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
     }
   }
 
@@ -48,15 +48,17 @@ export function useSourceObserving(
    * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useEffect(function(): TCallable {
+    const onUpdateNeeded: TCallable = reducer[1];
+
     for (let it = sources.length - 1; it >= 0; it --) {
-      scope.INTERNAL.addServiceObserver(sources[it], updateProviders);
+      scope.INTERNAL.addServiceObserver(sources[it], onUpdateNeeded);
       scope.INTERNAL.registerService(sources[it], initialState);
       scope.INTERNAL.incrementServiceObserving(sources[it]);
     }
 
     return function(): void {
       for (let it = 0; it < sources.length; it ++) {
-        scope.INTERNAL.removeServiceObserver(sources[it], updateProviders);
+        scope.INTERNAL.removeServiceObserver(sources[it], onUpdateNeeded);
         scope.INTERNAL.decrementServiceObserving(sources[it]);
       }
     };

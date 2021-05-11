@@ -1,4 +1,4 @@
-import { createElement, ProviderProps, ReactElement, ReactNode, useState } from "react";
+import { createElement, Dispatch, ProviderProps, ReactElement, ReactNode, SetStateAction, useState } from "react";
 
 import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
@@ -24,9 +24,10 @@ export interface IScopeProviderProps {
  * @return {ReactElement} react tree element.
  */
 export function ScopeProvider(props: IScopeProviderProps): ReactElement {
-  const [ scopeContextProviderProps ] = useState(scopeStateInitializer);
+  const scopeState: [ ProviderProps<IScopeContext>, Dispatch<SetStateAction<ProviderProps<IScopeContext>>> ]
+    = useState(scopeStateInitializer);
 
-  return createElement(ScopeContext.Provider, scopeContextProviderProps, props.children);
+  return createElement(ScopeContext.Provider, scopeState[0], props.children);
 }
 
 /**

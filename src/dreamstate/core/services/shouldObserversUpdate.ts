@@ -1,6 +1,6 @@
 import { shallowEqualObjects } from "shallow-equal";
 
-import { dev } from "@/macroses/dev.macro";
+import { log } from "@/macroses/log.macro";
 
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
@@ -27,7 +27,7 @@ export function shouldObserversUpdate<
   // todo: Check context key count on every check?
 
   if (!nextContext || typeof nextContext !== "object") {
-    dev.warn("Next context value is null, but ContextManager context field is not nullable. Is it expected?");
+    log.warn("Next context value is null, but ContextManager context field is not nullable. Is it expected?");
     throw new TypeError(`Context should be non-nullable object, supplied '${typeof nextContext}' type instead.`);
   }
 

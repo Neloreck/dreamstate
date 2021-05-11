@@ -1,4 +1,12 @@
-import { MutableRefObject, useContext, useEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { IContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
@@ -19,12 +27,15 @@ export function useContextWithMemo<
 ): T {
   const scope: IScopeContext = useContext(ScopeContext);
   const observed: MutableRefObject<Array<any> | null> = useRef(null);
-  const [ state, setState ] = useState(function(): T {
-    return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
-  });
+  const state: [ T, Dispatch<SetStateAction<T>> ]
+    = useState(function(): T {
+      return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
+    });
 
   // Calculate changes like react core does and fire change only after update.
   useEffect(function(): TCallable {
+    const setState: Dispatch<SetStateAction<T>> = state[1];
+
     /**
      * Callback to update current ref state + actual provided state.
      */
@@ -63,5 +74,5 @@ export function useContextWithMemo<
     return scope.INTERNAL.subscribeToManager(ManagerClass, checkMemoState);
   }, [ ManagerClass, scope.INTERNAL ]);
 
-  return state;
+  return state[0];
 }

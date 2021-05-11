@@ -1,6 +1,6 @@
 import { FunctionComponent, ReactNode, useContext } from "react";
 
-import { dev } from "@/macroses/dev.macro";
+import { log } from "@/macroses/log.macro";
 
 import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/createScopedObserverTree";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
@@ -22,7 +22,7 @@ export function createScopedProvider<T extends IProviderProps<any>>(
      */
     if (IS_DEV) {
       if (!scope) {
-        dev.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
+        log.error("Dreamstate providers should be used in a scope. Wrap your component tree with ScopeProvider");
       }
     }
 

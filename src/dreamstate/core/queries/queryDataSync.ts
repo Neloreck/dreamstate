@@ -3,7 +3,8 @@ import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IOptionalQueryRequest,
-  IQueryRequest, TAnyCallable,
+  IQueryRequest,
+  TAnyCallable,
   TAnyContextManagerConstructor,
   TQueryListener,
   TQueryResponse,
@@ -57,8 +58,9 @@ export function queryDataSync<
      * Only if service has related metadata.
      */
     if (service[QUERY_METADATA_SYMBOL]) {
-      for (const [ method, type ] of service[QUERY_METADATA_SYMBOL]) {
-        if (type === query.type) {
+      for (const entry of service[QUERY_METADATA_SYMBOL]) {
+        if (query.type === entry[1]) {
+          const method: string | symbol = entry[0];
           const handlerService: ContextManager = CONTEXT_INSTANCES_REGISTRY.get(service)!;
 
           return executeQuerySync(

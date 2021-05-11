@@ -5,4 +5,4 @@ export interface ILogger {
   debug(...args: Array<any>): void;
 }
 
-export const dev: ILogger;
+export const log: ILogger;

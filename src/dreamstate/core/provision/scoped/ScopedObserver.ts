@@ -1,8 +1,16 @@
-import { createElement, ReactChild, ReactElement, useEffect, useMemo, useReducer } from "react";
+import {
+  createElement,
+  DispatchWithoutAction,
+  ReactChild,
+  ReactElement,
+  useEffect,
+  useMemo,
+  useReducer
+} from "react";
 
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
-import { TAnyContextManagerConstructor, TCallable } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 export interface IScopedObserverProps<T> {
   children?: ReactChild;
@@ -23,7 +31,7 @@ export function ScopedObserver<T>({
   ManagerClass,
   scope
 }: IScopedObserverProps<T>): ReactElement {
-  const [ , onUpdateNeeded ] = useReducer(forceUpdateReducer, null);
+  const reducer: [ TAnyObject | null, DispatchWithoutAction ] = useReducer(forceUpdateReducer, null);
 
   /**
    * Use memo for first and single init of required components.
@@ -43,6 +51,8 @@ export function ScopedObserver<T>({
    * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useEffect(function(): TCallable {
+    const onUpdateNeeded: TCallable = reducer[1];
+
     scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
     scope.INTERNAL.registerService(ManagerClass, initialState);
     scope.INTERNAL.incrementServiceObserving(ManagerClass);
