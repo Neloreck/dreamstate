@@ -14,17 +14,17 @@ exports[`createProvider method Should create correct component tree without chil
 
 exports[`createProvider method Should create correct component tree without children 3`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <div>
        testChild 
     </div>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;
 
 exports[`createProvider method Should create correct component tree without children 4`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <ScopedObserver
       ManagerClass={[Function]}
       dependencies={
@@ -97,25 +97,25 @@ exports[`createProvider method Should create correct component tree without chil
          testChild 
       </div>
     </ScopedObserver>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;
 
 exports[`createProvider method Should render correct component tree 1`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <ScopeConsumer>
       <div>
          Content 
       </div>
     </ScopeConsumer>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;
 
 exports[`createProvider method Should render correct component tree 2`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <ScopedObserver
       ManagerClass={[Function]}
       dependencies={
@@ -190,6 +190,6 @@ exports[`createProvider method Should render correct component tree 2`] = `
         </div>
       </ScopeConsumer>
     </ScopedObserver>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;

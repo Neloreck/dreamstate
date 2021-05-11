@@ -37,8 +37,6 @@ export function createScopedProvider<T extends IProviderProps<any>>(
       return it.name;
     })
     }]`;
-  } else {
-    Observer.displayName = "DS.Observer";
   }
 
   return Observer as FunctionComponent<IProviderProps<T>>;

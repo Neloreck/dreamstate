@@ -8,7 +8,7 @@ exports[`UseManager subscription and rendering Should properly fire provision ev
 
 exports[`UseManager subscription and rendering Should properly fire provision events for functional subscribers and clean-up memory 2`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <SampleConsumer>
       <span>
          
@@ -16,13 +16,13 @@ exports[`UseManager subscription and rendering Should properly fire provision ev
          
       </span>
     </SampleConsumer>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;
 
 exports[`UseManager subscription and rendering Should properly fire provision events for functional subscribers and clean-up memory 3`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <SampleConsumer>
       <span>
          
@@ -30,7 +30,7 @@ exports[`UseManager subscription and rendering Should properly fire provision ev
          
       </span>
     </SampleConsumer>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;
 
@@ -42,7 +42,7 @@ exports[`UseManager subscription and rendering Should properly handle memoized s
 
 exports[`UseManager subscription and rendering Should properly handle memoized subscriptions 2`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <SampleConsumer>
       <span>
          
@@ -50,13 +50,13 @@ exports[`UseManager subscription and rendering Should properly handle memoized s
          
       </span>
     </SampleConsumer>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;
 
 exports[`UseManager subscription and rendering Should properly handle memoized subscriptions 3`] = `
 <ScopeProvider>
-  <DS.Observer>
+  <Observer>
     <SampleConsumer>
       <span>
          
@@ -64,6 +64,6 @@ exports[`UseManager subscription and rendering Should properly handle memoized s
          
       </span>
     </SampleConsumer>
-  </DS.Observer>
+  </Observer>
 </ScopeProvider>
 `;

@@ -29,8 +29,6 @@ export function createCombinedProvider<T extends TAnyObject>(
       return it.name;
     })
     }]`;
-  } else {
-    Observer.displayName = "DS.Observer";
   }
 
   return Observer as FunctionComponent<IProviderProps<T>>;

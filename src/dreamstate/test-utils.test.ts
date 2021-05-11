@@ -3,7 +3,6 @@ describe("Library test utils exports", () => {
   const testUtilsRoot = require("./test-utils");
 
   const expectedTestUtilsExports: Array<string> = [
-    "InternalScopeContext",
     "getReactProvider",
     "getReactConsumer",
     "getCurrent",
