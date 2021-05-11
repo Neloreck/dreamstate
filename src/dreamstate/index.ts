@@ -2,6 +2,7 @@
  * 'https://github.com/Neloreck/dreamstate'
  */
 
+export { IProviderProps as ProviderProps } from "@/dreamstate/types/provision";
 export {
   ILoadable as Loadable,
   TNested as Nested,
@@ -35,4 +36,4 @@ export { createLoadable } from "@/dreamstate/utils/createLoadable";
 export { createNested } from "@/dreamstate/utils/createNested";
 export { createComputed } from "@/dreamstate/utils/createComputed";
 export { createActions } from "@/dreamstate/utils/createActions";
-export { IProviderProps as ProviderProps } from "@/dreamstate/types/provision";
+

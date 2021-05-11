@@ -1,4 +1,5 @@
 ## 4.0.0 (*/*/*)
+  * much faster loadable/nested values
   * ContextService removed in favor of ContextManager
   * Provide decorator removed
   * Consume decorator removed

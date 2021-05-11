@@ -1,11 +1,37 @@
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
+import { processComputed } from "@/dreamstate/core/storing/processComputed";
+import { TComputed } from "@/dreamstate/types";
 
 describe("Computed value class", () => {
   it("Should not be checked when comparing values before manager update", () => {
-    const firstComputedValue = { nested: Object.assign(new ComputedValue(), { a: 1 }) as ComputedValue };
-    const secondComputedValue = { nested: Object.assign(new ComputedValue(), { b: 2 }) as ComputedValue };
+    interface IContext {
+      a: number;
+      b: number;
+      c: TComputed<{ r: number }>;
+    }
 
-    expect(shouldObserversUpdate(firstComputedValue, secondComputedValue)).toBeFalsy();
+    const firstComputedValue: TComputed<{ r: number }> =
+      new ComputedValue(({ a, b }: IContext) => ({ r: a * b }))as any as TComputed<{ r: number }>;
+    const secondComputedValue: TComputed<{ r: number }> =
+      new ComputedValue(({ a, b }: IContext) => ({ r: a * b })) as any as TComputed<{ r: number }>;
+
+    const context: IContext = { a: 15, b: 100, c: firstComputedValue };
+    const sameButWithNewRef: IContext = { ...context, a: 15, b: 100 };
+    const updated: IContext = { ...context, a: 100, b: 1, c: secondComputedValue };
+
+    processComputed(context);
+    processComputed(sameButWithNewRef);
+    processComputed(updated);
+
+    expect(shouldObserversUpdate(context, sameButWithNewRef)).toBeFalsy();
+    expect(shouldObserversUpdate(context, updated)).toBeTruthy();
+    expect(shouldObserversUpdate(sameButWithNewRef, updated)).toBeTruthy();
+
+    expect(context.c.r).toBe(1500);
+
+    expect(sameButWithNewRef.c.r).toBe(1500);
+
+    expect(updated.c.r).toBe(100);
   });
 });

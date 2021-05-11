@@ -1,11 +1,8 @@
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 
 /**
- * Create computed value that will be populated after each update.
+ * Create actions store that is readonly action-links containing object.
  */
 export function createActions<T>(actions: T): Readonly<T> {
-  return Object.assign(
-    new ActionsStore(),
-    actions
-  );
+  return new ActionsStore<T>(actions) as Readonly<T>;
 }

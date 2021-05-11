@@ -9,8 +9,8 @@ export interface ILoadable<T, E = Error> {
   readonly value: T | null;
   asFailed(error: E, value?: T): ILoadable<T, E>;
   asLoading(value?: T): ILoadable<T, E>;
-  asReady(value: T): ILoadable<T, E>;
-  asUpdated(value: T): ILoadable<T, E>;
+  asReady(value?: T): ILoadable<T, E>;
+  asUpdated(value: T, isLoading?: boolean, error?: E | null): ILoadable<T, E>;
 }
 
 /**

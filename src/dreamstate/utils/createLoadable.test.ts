@@ -1,6 +1,6 @@
-import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
+import { LoadableStore } from "@/dreamstate/core/storing/LoadableStore";
 import { ILoadable } from "@/dreamstate/types";
-import { asFailed, asLoading, asReady, asUpdated, createLoadable } from "@/dreamstate/utils/createLoadable";
+import { createLoadable } from "@/dreamstate/utils/createLoadable";
 
 describe("Loadable util", () => {
   it("Should properly create loadable objects", () => {
@@ -8,7 +8,7 @@ describe("Loadable util", () => {
     const loadableError: Error = new Error("testError");
     const loadable: ILoadable<number> = createLoadable(loadableValue);
 
-    expect(Object.keys(loadable)).toHaveLength(7);
+    expect(Object.keys(loadable)).toHaveLength(3);
 
     expect(loadable.error).toBeNull();
     expect(loadable.isLoading).toBeFalsy();
@@ -21,7 +21,7 @@ describe("Loadable util", () => {
 
     const loadableWithOtherDefaults: ILoadable<number> = createLoadable(loadableValue, true);
 
-    expect(Object.keys(loadableWithOtherDefaults)).toHaveLength(7);
+    expect(Object.keys(loadableWithOtherDefaults)).toHaveLength(3);
 
     expect(loadableWithOtherDefaults.error).toBeNull();
     expect(loadableWithOtherDefaults.isLoading).toBeTruthy();
@@ -29,7 +29,7 @@ describe("Loadable util", () => {
 
     const loadableWithErrorDefaults: ILoadable<number> = createLoadable(loadableValue, true, loadableError);
 
-    expect(Object.keys(loadableWithErrorDefaults)).toHaveLength(7);
+    expect(Object.keys(loadableWithErrorDefaults)).toHaveLength(3);
 
     expect(loadableWithErrorDefaults.isLoading).toBeTruthy();
     expect(loadableWithErrorDefaults.value).toBe(loadableValue);
@@ -38,7 +38,7 @@ describe("Loadable util", () => {
 
     const emptyLoadable: ILoadable<number | null> = createLoadable();
 
-    expect(Object.keys(loadableWithErrorDefaults)).toHaveLength(7);
+    expect(Object.keys(loadableWithErrorDefaults)).toHaveLength(3);
 
     expect(emptyLoadable.error).toBeNull();
     expect(emptyLoadable.isLoading).toBeFalsy();
@@ -50,27 +50,26 @@ describe("Loadable util", () => {
       test: true
     });
 
-    expect(loadable instanceof NestedStore).toBeTruthy();
+    expect(loadable instanceof LoadableStore).toBeTruthy();
 
     const next: ILoadable<{ test: boolean }> = loadable.asUpdated({
       test: false
     });
 
-    expect(next instanceof NestedStore).toBeTruthy();
+    expect(next instanceof LoadableStore).toBeTruthy();
   });
 
   it("Should properly compute new loadable values", () => {
-    const originalObject = { value: 500 };
-    const mutateAsLoadable = asLoading.bind(originalObject as ILoadable<number>);
+    const originalObject = createLoadable(500);
 
-    const first = mutateAsLoadable();
+    const first = originalObject.asLoading();
 
     expect(first.isLoading).toBeTruthy();
     expect(first.value).toBe(500);
     expect(first.error).toBeNull();
     expect(Object.keys(first)).toHaveLength(3);
 
-    const second = mutateAsLoadable(100);
+    const second = originalObject.asLoading(100);
 
     expect(second.isLoading).toBeTruthy();
     expect(second.value).toBe(100);
@@ -79,17 +78,16 @@ describe("Loadable util", () => {
   });
 
   it("Should properly compute updated values", () => {
-    const originalObject = { value: 700 };
-    const mutateAsFailed = asFailed.bind(originalObject as ILoadable<number>);
+    const originalObject = createLoadable(700);
 
-    const first = mutateAsFailed(new Error("Test."));
+    const first = originalObject.asFailed(new Error("Test."));
 
     expect(first.isLoading).toBeFalsy();
     expect(first.value).toBe(700);
     expect(first.error).toEqual(new Error("Test."));
     expect(Object.keys(first)).toHaveLength(3);
 
-    const second = mutateAsFailed(new Error("Test 2."), 0);
+    const second = originalObject.asFailed(new Error("Test 2."), 0);
 
     expect(second.isLoading).toBeFalsy();
     expect(second.value).toBe(0);
@@ -98,17 +96,16 @@ describe("Loadable util", () => {
   });
 
   it("Should properly compute ready values", () => {
-    const originalObject = { value: 700, isLoading: true, error: new Error("Test.") };
-    const mutateAsReady = asReady.bind(originalObject as ILoadable<number>);
+    const originalObject = createLoadable(700, true, new Error("Test."));
 
-    const first = mutateAsReady();
+    const first = originalObject.asReady();
 
     expect(first.isLoading).toBeFalsy();
     expect(first.value).toBe(700);
     expect(first.error).toBeNull();
     expect(Object.keys(first)).toHaveLength(3);
 
-    const second = mutateAsReady(55);
+    const second = originalObject.asReady(55);
 
     expect(second.isLoading).toBeFalsy();
     expect(second.value).toBe(55);
@@ -117,27 +114,26 @@ describe("Loadable util", () => {
   });
 
   it("Should properly compute updated values", () => {
-    const valueObject = { value: 1 };
-    const mutateAsUpdated = asUpdated.bind(valueObject as ILoadable<number>);
+    const valueObject = createLoadable(1);
 
-    const first = mutateAsUpdated(5);
+    const first = valueObject.asUpdated(5);
 
     expect(first.value).toBe(5);
-    expect(first.isLoading).toBeUndefined();
-    expect(first.error).toBeUndefined();
+    expect(first.isLoading).toBeFalsy();
+    expect(first.error).toBeNull();
     expect(Object.keys(first)).toHaveLength(3);
 
-    const second = mutateAsUpdated(10, true);
+    const second = valueObject.asUpdated(10, true);
 
     expect(second.isLoading).toBeTruthy();
     expect(second.value).toBe(10);
-    expect(first.error).toBeUndefined();
+    expect(first.error).toBeNull();
     expect(Object.keys(second)).toHaveLength(3);
 
-    const third = mutateAsUpdated(25, true, new Error("Test"));
+    const third = valueObject.asUpdated(25, true, new Error("Test"));
 
     expect(third.isLoading).toBeTruthy();
-    expect(third.error).toBeDefined();
+    expect(third.error).toBeInstanceOf(Error);
     expect(third.value).toBe(25);
     expect(Object.keys(third)).toHaveLength(3);
   });

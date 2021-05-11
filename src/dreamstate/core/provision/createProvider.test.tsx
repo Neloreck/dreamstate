@@ -2,7 +2,9 @@ import { mount } from "enzyme";
 import React, { ReactElement } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
+import { createCombinedProvider } from "@/dreamstate/core/provision/combined/createCombinedProvider";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
+import { createScopedProvider } from "@/dreamstate/core/provision/scoped/createScopedProvider";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TestContextManager } from "@/fixtures";
 
@@ -83,5 +85,10 @@ describe("createProvider method", () => {
     expect(scopedTree.render()).toMatchSnapshot();
     expect(combinedTree).toMatchSnapshot();
     expect(scopedTree).toMatchSnapshot();
+  });
+
+  it("Should have default provider names for production environment", () => {
+    expect(createScopedProvider([ TestContextManager ]).displayName).toBeUndefined();
+    expect(createCombinedProvider([ TestContextManager ]).displayName).toBeUndefined();
   });
 });

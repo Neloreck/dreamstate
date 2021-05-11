@@ -53,7 +53,7 @@ describe("processComputed method", () => {
     processComputed(defaultContext);
 
     expect(first).not.toBe(defaultContext.e.odd);
-    expect(firstComputed).not.toBe(defaultContext.e);
+    expect(firstComputed).toBe(defaultContext.e);
 
     const nextFirst = defaultContext.e.odd;
     const nextComputed = defaultContext.e;
@@ -61,7 +61,7 @@ describe("processComputed method", () => {
     processComputed(defaultContext);
 
     expect(nextFirst).not.toBe(defaultContext.e.odd);
-    expect(nextComputed).not.toBe(defaultContext.e);
+    expect(nextComputed).toBe(defaultContext.e);
   });
 
   it("Should properly handle values with memo and ignore update of other fields", () => {
@@ -98,6 +98,6 @@ describe("processComputed method", () => {
     processComputed(memoContext);
 
     expect(first).not.toBe(memoContext.e.odd);
-    expect(firstComputed).not.toBe(memoContext.e);
+    expect(firstComputed).toBe(memoContext.e);
   });
 });

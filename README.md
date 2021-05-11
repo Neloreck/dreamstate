@@ -5,23 +5,19 @@
 <br/>
 [![start with wiki](https://img.shields.io/badge/docs-wiki-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/wiki)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/blob/master/LICENSE)
-<br/>
-[![npm downloads](https://img.shields.io/npm/dt/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
-
 <hr/>
 
-Simple data management for react. <br/>
+Simpler data management for react. <br/>
 <br/>
 Separation of application view and data without spaghetti-coded providers and boilerplate code. <br/>
-Library helps to create small stores with react-like lifecycle, lazy management of memory allocation and signaling. <br/>
+Library helps to create small stores with react-like lifecycle and scoped signaling. <br/>
 
- - [x] Tree shaking
  - [x] Strictly typed
  - [x] No boilerplate code
- - [x] Lazy memory management
  - [x] Fast 
  - [x] Simple 
  - [x] Testable
+ - [x] Tree shaking
 
 ## Install
 - `npm install --save dreamstate`
@@ -45,7 +41,7 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [useScope](https://github.com/Neloreck/dreamstate/wiki/useScope)
 
 #### [Signals](https://github.com/Neloreck/dreamstate/wiki/signals)
-- [emitSignal](https://github.com/Neloreck/dreamstate/wiki/emitSignal)
+- [@OnSignal](https://github.com/Neloreck/dreamstate/wiki/@OnSignal)
 
 #### [Queries](https://github.com/Neloreck/dreamstate/wiki/queries)
 - [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
@@ -57,7 +53,7 @@ Library helps to create small stores with react-like lifecycle, lazy management 
 - [createComputed](https://github.com/Neloreck/dreamstate/wiki/createComputed)
 - [createActions](https://github.com/Neloreck/dreamstate/wiki/createActions)
 
-#### [Testing](https://github.com/Neloreck/dreamstate/wiki/testing)
+#### [Test-utils](https://github.com/Neloreck/dreamstate/wiki/testing)
 - [mockManagerWithScope](https://github.com/Neloreck/dreamstate/wiki/mockManagerWithScope)
 - [mockScope](https://github.com/Neloreck/dreamstate/wiki/mockScope)
 - [mockScopeProvider](https://github.com/Neloreck/dreamstate/wiki/mockScopeProvider)

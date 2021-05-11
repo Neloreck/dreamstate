@@ -211,7 +211,51 @@
           "k": 1.0050212438698904
         }
       ]
+    },
+    "object_assign_vs_constructor": {
+      "name": "object_assign_vs_constructor",
+      "lastRun": 1620764811004,
+      "fastest": "mutate#class-method",
+      "nodeVersion": "v16.1.0",
+      "suites": [
+        {
+          "name": "create#functional",
+          "period": 3.7224369555128345e-8,
+          "frequency": 26864121862.93781,
+          "k": 40.933122180832314
+        },
+        {
+          "name": "mutate#functional",
+          "period": 4.4103106636648666e-8,
+          "frequency": 22674139675.43554,
+          "k": 48.49720422635085
+        },
+        {
+          "name": "create#class-method",
+          "period": 9.091208626526103e-10,
+          "frequency": 1099963757384.4966,
+          "k": 0.999698740175874
+        },
+        {
+          "name": "mutate#class-method",
+          "period": 9.093948267781865e-10,
+          "frequency": 1099632382496.4019,
+          "k": 1
+        },
+        {
+          "name": "create#class-semi-assign",
+          "period": 2.1399544296917596e-8,
+          "frequency": 46729967055.60878,
+          "k": 23.531631879556784
+        },
+        {
+          "name": "mutate#class-semi-assign",
+          "period": 3.352931832300449e-8,
+          "frequency": 29824644520.550816,
+          "k": 36.86992419100569
+        }
+      ]
     }
   },
-  "lastRun": 1620516108326
+  "lastRun": 1620764811004
 }
