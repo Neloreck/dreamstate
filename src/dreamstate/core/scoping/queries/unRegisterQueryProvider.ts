@@ -1,5 +1,6 @@
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TQueryListener, TQueryType } from "@/dreamstate/types";
+import { isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
  * Unsubscribe from all queries for specified listener and type.
@@ -7,15 +8,14 @@ import { TQueryListener, TQueryType } from "@/dreamstate/types";
  * @param {TQueryType} queryType - type of query for data provisioning.
  * @param {TQueryListener} listener - callback that will listen data queries and return requested data.
  * @param {IRegistry} registry - current scope registry.
- *
- * @return {TCallable} function that unsubscribes subscribed handler.
+ * @returns {TCallable} function that unsubscribes subscribed handler.
  */
 export function unRegisterQueryProvider<T extends TQueryType>(
   queryType: T,
   listener: TQueryListener<T, any>,
   { QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): void {
-  if (typeof listener !== "function") {
+  if (!isFunction(listener)) {
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
   }
 

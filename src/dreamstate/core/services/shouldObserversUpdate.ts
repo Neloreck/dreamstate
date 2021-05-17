@@ -1,11 +1,10 @@
 import { shallowEqualObjects } from "shallow-equal";
 
-import { log } from "@/macroses/log.macro";
-
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
 import { TAnyObject } from "@/dreamstate/types";
+import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
  * Compare context manager state diff with shallow check + nested objects check.
@@ -13,8 +12,7 @@ import { TAnyObject } from "@/dreamstate/types";
  *
  * @param previousContext - previous context to match.
  * @param nextContext - next context to match.
- *
- * @return {boolean} result of context objects comparison, whether observers should update or not.
+ * @returns {boolean} result of context objects comparison, whether observers should update or not.
  */
 export function shouldObserversUpdate<
   T extends TAnyObject
@@ -22,12 +20,7 @@ export function shouldObserversUpdate<
   previousContext: T,
   nextContext: T
 ): boolean {
-  // todo: Warn computed/nested switch between states when previous and next types are different?
-  // todo: Generate context map on creation and work with it.
-  // todo: Check context key count on every check?
-
-  if (!nextContext || typeof nextContext !== "object") {
-    log.warn("Next context value is null, but ContextManager context field is not nullable. Is it expected?");
+  if (!isObject(nextContext)) {
     throw new TypeError(`Context should be non-nullable object, supplied '${typeof nextContext}' type instead.`);
   }
 

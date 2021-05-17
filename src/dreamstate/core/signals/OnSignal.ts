@@ -1,10 +1,10 @@
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { createMethodDecorator } from "@/dreamstate/polyfills/createMethodDecorator";
 import {
   TAnyContextManagerConstructor,
   TSignalType
 } from "@/dreamstate/types";
+import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
 
 /**
  * Class method decorator.

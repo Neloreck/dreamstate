@@ -25,6 +25,7 @@ import {
   TSignalSubscriptionMetadata,
   TSignalType
 } from "@/dreamstate/types";
+import { isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
  * Abstract context manager class.
@@ -117,8 +118,7 @@ export abstract class ContextManager<
    * @param {Object} baseSignal - signal base that contains basic descriptor of emitting signal.
    * @param {TSignalType} baseSignal.type - signal type.
    * @param {*=} baseSignal.data - optional signal data.
-   *
-   * @return {Promise} promise that will be resolved after signal listeners call.
+   * @returns {Promise} promise that will be resolved after signal listeners call.
    *   Note: async handlers will not be awaited.
    */
   protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
@@ -186,7 +186,7 @@ export abstract class ContextManager<
       /**
        * Handle context transformer functions.
        */
-      typeof next === "function" ? next(previousContext) : next
+      isFunction(next) ? (next as TPartialTransformer<T>)(previousContext) : next
     );
 
     /**

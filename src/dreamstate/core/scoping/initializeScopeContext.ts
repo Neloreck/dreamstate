@@ -30,7 +30,7 @@ import {
  * Dreamstate core processing of scope and existing data registry.
  * Initialize scope that handles stores, signaling and queries in a VDOM tree.
  *
- * @return {IScopeContext} mutable scope with set of methods and registry stores for react VDOM tree
+ * @returns {IScopeContext} mutable scope with set of methods and registry stores for react VDOM tree
  */
 export function initializeScopeContext(): IScopeContext {
   const registry: IRegistry = createRegistry();

@@ -5,8 +5,7 @@ import { TCallable } from "@/dreamstate/types";
  * Promisified setTimeout(,time || 0).
  *
  * @param {number=0} ms - time in milliseconds that should be awaited, defaults to 0.
- *
- * @return {Promise} resolving promise after selected amount of time.
+ * @returns {Promise} resolving promise after selected amount of time.
  */
 export function nextAsyncQueue(ms: number = 0): Promise<void> {
   return new Promise((resolve: TCallable) => setTimeout(resolve, ms));

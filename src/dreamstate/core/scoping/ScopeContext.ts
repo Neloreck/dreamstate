@@ -81,8 +81,7 @@ export interface IScopeContextInternals {
    *
    * @param {IContextManagerConstructor} ManagerClass - manager class reference for subscription.
    * @param {TUpdateSubscriber} subscriber - callback that will be triggered on context updates.
-   *
-   * @return {TCallable} un-subscriber function.
+   * @returns {TCallable} un-subscriber function.
    */
   subscribeToManager<
     T extends TAnyObject,
@@ -123,8 +122,7 @@ export interface IScopeContext {
    * @param {TSignalType} base.type - signal type.
    * @param {*=} base.data - signal data that will be received by subscribers.
    * @param {(TAnyContextManagerConstructor | null)=} emitter - signal emitter reference.
-   *
-   * @return {Promise} promise that resolves after all handlers execution.
+   * @returns {Promise} promise that resolves after all handlers execution.
    */
   emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     base: IBaseSignal<T, D>,

@@ -49,7 +49,7 @@ Library helps to create small stores with react-like lifecycle and scoped signal
 #### [Utils](https://github.com/Neloreck/dreamstate/wiki/utils)
 - [@Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind)
 - [createLoadable](https://github.com/Neloreck/dreamstate/wiki/createLoadable)
-- [createNested](https://github.com/Neloreck/dreamstate/wiki/createMutable)
+- [createNested](https://github.com/Neloreck/dreamstate/wiki/createNested)
 - [createComputed](https://github.com/Neloreck/dreamstate/wiki/createComputed)
 - [createActions](https://github.com/Neloreck/dreamstate/wiki/createActions)
 

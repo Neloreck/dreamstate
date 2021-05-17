@@ -2,12 +2,6 @@ import { MethodDescriptor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Bind decorator wrappers factory for methods binding.
- *
- * It is not obvious for javascript users that changing prototype descriptor of base class
- * will affect only one instance and all instances after its change.
- * This util is not intended to be used for all user-cases, only for library.
- * I would rather tell people to use another approach with instance binding than running into issues
- * with incorrect ES inheritance after runtime modification of base class.
  */
 function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: PropertyKey): PropertyDescriptor {
   // Todo: Wait for autobind merge with fix of shared callbacks issue and other.
@@ -50,9 +44,12 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
 
 /**
  * Decorator factory.
- * Modifies method descriptor, so it will be bound to prototype instance once.
+ * Modifies method descriptor, so it will be bound to prototype instance.
+ *
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
  * Modified for proposal support.
+ *
+ * @returns class method decorator.
  */
 export function Bind(): MethodDecorator {
   return function <T>(

@@ -20,8 +20,7 @@ export interface IScopeProviderProps {
  * Ensures that signaling and context managers are isolated under this specific provider.
  *
  * @param {IScopeProviderProps} props - react component properties that contain provider children.
- *
- * @return {ReactElement} react tree element.
+ * @returns {ReactElement} react tree element.
  */
 export function ScopeProvider(props: IScopeProviderProps): ReactElement {
   const scopeState: [ ProviderProps<IScopeContext>, Dispatch<SetStateAction<ProviderProps<IScopeContext>>> ]

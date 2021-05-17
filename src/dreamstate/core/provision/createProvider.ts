@@ -20,7 +20,6 @@ export interface ICreateProviderProps {
  * @param {Object} config - store provider configuration.
  * @param {boolean} config.isCombined - boolean flag that switches observing between one big react node
  *   vs small scoped nodes.
- *
  * @returns {FunctionComponent} react provider component for source classes.
  *
  * @throws {TypeError} - wrong sources param type supplied, should be array.

@@ -108,4 +108,19 @@ describe("createComputed method functionality", () => {
     expect(computedManager.context.numbers).toHaveLength(3);
     expect(computedManager.context.computed.greaterThanFive).toHaveLength(1);
   });
+
+  it("Should validate provided params object", () => {
+    expect(() => createComputed("" as any)).toThrow(TypeError);
+    expect(() => createComputed(null as any)).toThrow(TypeError);
+    expect(() => createComputed(undefined as any)).toThrow(TypeError);
+    expect(() => createComputed(false as any)).toThrow(TypeError);
+    expect(() => createComputed(0 as any)).toThrow(TypeError);
+    expect(() => createComputed({} as any)).toThrow(TypeError);
+    expect(() => createComputed(() => ({}), "" as any)).toThrow(TypeError);
+    expect(() => createComputed(() => ({}), 0 as any)).toThrow(TypeError);
+    expect(() => createComputed(() => ({}), false as any)).toThrow(TypeError);
+    expect(() => createComputed(() => ({}), {} as any)).toThrow(TypeError);
+    expect(() => createComputed(() => ({}))).not.toThrow(TypeError);
+    expect(() => createComputed(() => ({}), () => [])).not.toThrow(TypeError);
+  });
 });

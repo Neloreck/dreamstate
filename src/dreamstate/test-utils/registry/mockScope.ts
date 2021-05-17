@@ -5,7 +5,7 @@ import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
  * Mock scope with clean initial state.
  * Can be used to mock whole scope context and run some advanced tests.
  *
- * @return {IScopeContext} mocked scope context.
+ * @returns {IScopeContext} mocked scope context.
  */
 export function mockScope(): IScopeContext {
   return initializeScopeContext();

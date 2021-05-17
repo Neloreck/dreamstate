@@ -23,4 +23,14 @@ describe("createActions method functionality", () => {
     expect(context.a.second()).toBeFalsy();
     expect(context.b.first("a")).toBe("a");
   });
+
+  it("Should validate provided params object", () => {
+    expect(() => createActions("" as any)).toThrow(TypeError);
+    expect(() => createActions(null as any)).toThrow(TypeError);
+    expect(() => createActions(undefined as any)).toThrow(TypeError);
+    expect(() => createActions(false as any)).toThrow(TypeError);
+    expect(() => createActions(0 as any)).toThrow(TypeError);
+    expect(() => createActions(() => 0)).toThrow(TypeError);
+    expect(() => createActions({})).not.toThrow(TypeError);
+  });
 });

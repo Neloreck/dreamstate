@@ -7,8 +7,7 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
  *
  * @param {TAnyContextManagerConstructor} ManagerClass - class reference of context manager.
  * @param {IScopeContext} scope - scope where manager should be found.
- *
- * @return manager class instance or null if it is not created in current scope.
+ * @returns manager class instance or null if it is not created in current scope.
  */
 export function getCurrent<T extends TAnyContextManagerConstructor>(
   ManagerClass: T,

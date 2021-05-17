@@ -7,8 +7,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  *
  * @param {IContextManagerConstructor} ManagerClass - class reference of context manager that should be created.
  * @param {TAnyObject} initialState - initial state that should be injected in class constructor.
- *
- * @return tuple with manager class instance and mocked scope context object.
+ * @returns tuple with manager class instance and mocked scope context object.
  */
 export function mockManagerWithScope<
   T extends TAnyObject,

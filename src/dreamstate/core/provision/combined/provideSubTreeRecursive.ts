@@ -10,8 +10,7 @@ import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * @param {Array} sources - array of source context managers that will provide data with context providers.
  * @param {Map} contextStateRegistry - object that contains current context states that will be provided.
  * @param {number} current - recursive provider creation iterator.
- *
- * @return {ReactNode} - tree node for react rendering.
+ * @returns {ReactNode} - tree node for react rendering.
  */
 export function provideSubTreeRecursive(
   bottom: ReactNode = null,

@@ -8,8 +8,7 @@ import { TCallable, TQueryListener, TQueryType } from "@/dreamstate/types";
  * @param {TQueryType} queryType - type of query for data provisioning.
  * @param {TQueryListener} listener - callback that will listen data queries and return requested data.
  * @param {IRegistry} registry - current scope registry.
- *
- * @return {TCallable} function that unsubscribes subscribed handler.
+ * @returns {TCallable} function that unsubscribes subscribed handler.
  */
 export function registerQueryProvider<T extends TQueryType>(
   queryType: T,

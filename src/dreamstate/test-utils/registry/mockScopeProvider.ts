@@ -8,7 +8,7 @@ import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeCont
  *
  * Should be used in pair with 'mockScope' method so 'value' property of ScopeContext.Provider will be correct.
  *
- * @return {Provider} ScopeContext.Provider component for react rendering.
+ * @returns {Provider} ScopeContext.Provider component for react rendering.
  */
 export function mockScopeProvider(): Provider<IScopeContext> {
   return ScopeContext.Provider;

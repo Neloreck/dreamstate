@@ -8,8 +8,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  *
  * @callback contextDependenciesSelector
  * @param {Object} context.
- *
- * @return {Array} dependencies.
+ * @returns {Array} dependencies.
  */
 
 /**
@@ -20,8 +19,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  *   returns selected dependencies array. It is used with same logic as hook dependencies do for update checks.
  *   Selector is called after every context update but actual component re-render will happen only
  *   if something in resulting array has changed. Component will update on every change if selector was not provided.
- *
- * @return context data of ManagerClass in current dreamstate scope.
+ * @returns context data of ManagerClass in current dreamstate scope.
  */
 export function useManager<
   T extends TAnyObject,

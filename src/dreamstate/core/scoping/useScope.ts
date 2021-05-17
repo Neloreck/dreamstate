@@ -6,7 +6,7 @@ import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeCont
  * Use current scope for current signaling/queries methods access.
  * Return bundle of functions that work with current scope and allow signals or queries processing.
  *
- * @return {IScopeContext} current scope in react tree.
+ * @returns {IScopeContext} current scope in react tree.
  */
 export function useScope(): IScopeContext {
   /**
