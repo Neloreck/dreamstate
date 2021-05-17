@@ -27,6 +27,5 @@ export const PORTABLE_ENTRY = path.resolve(PROJECT_ROOT, "./src/environment_swit
 export const TEST_UTILS_ENTRY = path.resolve(PROJECT_ROOT, "./src/dreamstate/test-utils.ts");
 
 export const SRC_PATH = path.resolve(PROJECT_ROOT, "./src");
-export const BENCHMARKS_PATH = path.resolve(SRC_PATH, "./benchmarks");
 
 export const SIZE_SNAPSHOT_PATH = path.resolve(__dirname, "size_snapshot.json");
