@@ -7,6 +7,10 @@ import { SampleContextManager } from "./stores/SampleContextManager";
  */
 const StoreProvider = createProvider([ SampleContextManager ]);
 
+/**
+ * Global application provider.
+ * Here we can provide theming contexts, routing and global data configuration.
+ */
 export function ApplicationProvider({ children }: PropsWithChildren<{}>): ReactElement {
   return (
     /**
