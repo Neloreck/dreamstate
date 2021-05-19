@@ -25,43 +25,10 @@ Library helps to create small stores with react-like lifecycle and scoped signal
 ## Requirements
 - `react >= 16.8.0`
 
-## [Documentation](https://github.com/Neloreck/dreamstate/wiki/Home)
-
-#### [Services](https://github.com/Neloreck/dreamstate/wiki/services)
-- [ContextManager](https://github.com/Neloreck/dreamstate/wiki/ContextManager)
-
-#### [Provision](https://github.com/Neloreck/dreamstate/wiki/provision)
-- [createProvider](https://github.com/Neloreck/dreamstate/wiki/createProvider)
-
-#### [Consumption](https://github.com/Neloreck/dreamstate/wiki/consumption)
-- [useManager](https://github.com/Neloreck/dreamstate/wiki/useManager)
-
-#### [Scope](https://github.com/Neloreck/dreamstate/wiki/scope)
-- [ScopeProvider](https://github.com/Neloreck/dreamstate/wiki/ScopeProvider)
-- [useScope](https://github.com/Neloreck/dreamstate/wiki/useScope)
-
-#### [Signals](https://github.com/Neloreck/dreamstate/wiki/signals)
-- [@OnSignal](https://github.com/Neloreck/dreamstate/wiki/@OnSignal)
-
-#### [Queries](https://github.com/Neloreck/dreamstate/wiki/queries)
-- [@OnQuery](https://github.com/Neloreck/dreamstate/wiki/@OnQuery)
-
-#### [Utils](https://github.com/Neloreck/dreamstate/wiki/utils)
-- [@Bind](https://github.com/Neloreck/dreamstate/wiki/@Bind)
-- [createLoadable](https://github.com/Neloreck/dreamstate/wiki/createLoadable)
-- [createNested](https://github.com/Neloreck/dreamstate/wiki/createNested)
-- [createComputed](https://github.com/Neloreck/dreamstate/wiki/createComputed)
-- [createActions](https://github.com/Neloreck/dreamstate/wiki/createActions)
-
-#### [Test-utils](https://github.com/Neloreck/dreamstate/wiki/testing)
-- [mockManagerWithScope](https://github.com/Neloreck/dreamstate/wiki/mockManagerWithScope)
-- [mockScope](https://github.com/Neloreck/dreamstate/wiki/mockScope)
-- [mockScopeProvider](https://github.com/Neloreck/dreamstate/wiki/mockScopeProvider)
-- [getCurrent](https://github.com/Neloreck/dreamstate/wiki/getCurrent)
-- [getReactConsumer](https://github.com/Neloreck/dreamstate/wiki/getReactConsumer)
-- [getReactProvider](https://github.com/Neloreck/dreamstate/wiki/getReactProvider)
-- [nextAsyncQueue](https://github.com/Neloreck/dreamstate/wiki/nextAsyncQueue)
-
+## Documentation
+ - [wiki](https://github.com/Neloreck/dreamstate/wiki/Home)
+ - [examples](https://github.com/Neloreck/dreamstate/tree/master/examples)
+  
 ## Proposals and contribution:
 Feel free to open PRs or issues. <br/>
 
