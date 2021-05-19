@@ -115,6 +115,7 @@
     "import/default": 0
   },
   "ignorePatterns": [
+    "examples/**/*",
     "target/**/*"
   ]
 }
