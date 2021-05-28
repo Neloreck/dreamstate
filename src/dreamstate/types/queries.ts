@@ -3,7 +3,7 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
 /**
  * Allowed query types.
  */
-export type TQueryType = symbol | string | number;
+export type TQueryType<T extends string = string> = symbol | string | number | T;
 
 /**
  * Base query request with optional query field.
