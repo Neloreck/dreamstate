@@ -123,7 +123,7 @@ export abstract class ContextManager<
    */
   protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
     baseSignal: IBaseSignal<T, D>
-  ): Promise<void> {
+  ): void {
     return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
   }
 

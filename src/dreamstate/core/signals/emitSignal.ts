@@ -3,7 +3,6 @@ import {
   IBaseSignal,
   ISignalEvent,
   TAnyContextManagerConstructor,
-  TCallable,
   TSignalListener,
   TSignalType
 } from "@/dreamstate/types";
@@ -25,12 +24,11 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
   base: IBaseSignal<T, D>,
   emitter: TAnyContextManagerConstructor | null = null,
   REGISTRY: IRegistry
-): Promise<void> {
+): void {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");
   }
 
-  const signalListenersCount: number = REGISTRY.SIGNAL_LISTENERS_REGISTRY.size;
   const signalEvent: ISignalEvent<T, D> = {
     type: base.type,
     data: base.data as D,
@@ -39,29 +37,13 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     cancel: cancelSignal
   };
 
-  /**
-   * Async processing of subscribed metadata to prevent exception blocking when one handler error stops propagation.
-   */
-  return new Promise<void>(function(resolve: TCallable): void {
-    let processedHandlers: number = 0;
-
-    /**
-     * Add signal event processing to the queue.
-     */
-    REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<T, D>) {
-      setTimeout(function(): void {
-        try {
-          processedHandlers ++;
-
-          if (!signalEvent.canceled) {
-            it(signalEvent);
-          }
-        } finally {
-          if (processedHandlers === signalListenersCount) {
-            resolve();
-          }
-        }
-      });
-    });
+  REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<T, D>) {
+    try {
+      if (!signalEvent.canceled) {
+        it(signalEvent);
+      }
+    } catch (error) {
+      // nothing to do currently, todo: print stack trace?
+    }
   });
 }

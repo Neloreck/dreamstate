@@ -127,7 +127,7 @@ export interface IScopeContext {
   emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     base: IBaseSignal<T, D>,
     emitter?: TAnyContextManagerConstructor | null
-  ): Promise<void>;
+  ): void;
   /**
    * todo;
    */

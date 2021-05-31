@@ -99,7 +99,7 @@ describe("emitSignal method", () => {
     });
 
     const tree = mount(<ScopeProvider>
-      <MountEmitter subscriber={subscriber} emitter={() => [{ type: "WITH_EMITTER" }, 0 as any]}/>
+      <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_EMITTER" }, 0 as any ]}/>
     </ScopeProvider>);
 
     tree.mount();
@@ -111,7 +111,7 @@ describe("emitSignal method", () => {
   });
 
   it("Signal subscribers should properly cancel events and be called in declared order", async () => {
-    let emitter: (base: IBaseSignal) => Promise<void> = null as any;
+    let emitter: (base: IBaseSignal) => void = null as any;
     const mock = jest.fn().mockImplementationOnce((signalEvent: ISignalEvent<any, any>) => {
       signalEvent.cancel();
     });

@@ -116,12 +116,16 @@ export function initializeScopeContext(): IScopeContext {
         const nextContext: T = manager.context;
 
         CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextManagerConstructor, nextContext);
+
+        /**
+         * Update observers of context manager (react context providers).
+         */
         CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
           .forEach(function(it: TUpdateObserver) {
             it();
           });
         /**
-         * Update subscribe
+         * Update subscribers of context manager.
          */
         CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
           .forEach(function(it: TUpdateSubscriber<T>) {
@@ -162,7 +166,7 @@ export function initializeScopeContext(): IScopeContext {
     emitSignal<D = undefined, T extends TSignalType = TSignalType>(
       base: IBaseSignal<T, D>,
       emitter: TAnyContextManagerConstructor | null = null
-    ): Promise<void> {
+    ): void {
       return emitSignal(base, emitter, registry);
     },
     subscribeToSignals<T extends TSignalType, D = undefined>(
