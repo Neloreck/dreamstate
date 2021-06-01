@@ -1,10 +1,9 @@
 import { mount } from "enzyme";
-import React, { ReactElement } from "react";
+import { default as React, ReactElement } from "react";
 import { act } from "react-dom/test-utils";
 
 import { ContextManager, createProvider, ScopeProvider, useManager, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("UseManager subscription and rendering", () => {
   const onStarted = jest.fn();
@@ -63,8 +62,6 @@ describe("UseManager subscription and rendering", () => {
 
     expect(tree.render()).toMatchSnapshot();
 
-    await nextAsyncQueue();
-
     expect(onStarted).toHaveBeenCalledTimes(1);
     expect(onEnded).toHaveBeenCalledTimes(0);
     expect(stateScope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(SampleContextManager)).toBeDefined();
@@ -89,7 +86,6 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(3);
 
     tree.unmount();
-    await nextAsyncQueue();
 
     expect(onStarted).toHaveBeenCalledTimes(1);
     expect(onEnded).toHaveBeenCalledTimes(1);
@@ -123,8 +119,6 @@ describe("UseManager subscription and rendering", () => {
 
     expect(tree.render()).toMatchSnapshot();
 
-    await nextAsyncQueue();
-
     act(() => {
       stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({ example: -1 });
     });
@@ -143,7 +137,6 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(2);
 
     tree.unmount();
-    await nextAsyncQueue();
 
     expect(rendersCount).toBe(2);
   });

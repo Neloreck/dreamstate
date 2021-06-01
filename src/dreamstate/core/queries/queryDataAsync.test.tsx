@@ -1,5 +1,5 @@
 import { mount, ReactWrapper } from "enzyme";
-import React, { ReactElement, useEffect } from "react";
+import { default as React, ReactElement, useEffect } from "react";
 
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";

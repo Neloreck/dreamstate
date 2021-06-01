@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "4.0.0-experimental.4",
+  "version": "4.0.0-experimental.5",
   "description": "Store management library based on context and observers.",
   "sideEffects": false,
   "author": "Syrotenko Igor",

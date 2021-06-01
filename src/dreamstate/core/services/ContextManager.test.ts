@@ -3,13 +3,12 @@ import {
   SCOPE_SYMBOL,
   SIGNALING_HANDLER_SYMBOL
 } from "@/dreamstate/core/internals";
-import { IScopeContext, IScopeContextInternals } from "@/dreamstate/core/scoping/ScopeContext";
+import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import {
   TAnyContextManagerConstructor,
   TDerivedSignalEvent
@@ -168,8 +167,6 @@ describe("ContextManager class", () => {
     scope.subscribeToSignals(spy);
 
     emittingContextManager["emitSignal"]({ type: "TEST" });
-
-    await nextAsyncQueue();
 
     expect(spy).toHaveBeenCalled();
   });

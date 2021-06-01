@@ -4,7 +4,7 @@ describe("createRegistry method", () => {
   it("Should correctly initialize empty registry", () => {
     const registry: IRegistry = createRegistry();
 
-    expect(Object.keys(registry)).toHaveLength(8);
+    expect(Object.keys(registry)).toHaveLength(7);
 
     expect(registry.CONTEXT_STATES_REGISTRY).toBeDefined();
     expect(registry.CONTEXT_STATES_REGISTRY).toBeInstanceOf(Map);
@@ -13,10 +13,6 @@ describe("createRegistry method", () => {
     expect(registry.CONTEXT_INSTANCES_REGISTRY).toBeDefined();
     expect(registry.CONTEXT_INSTANCES_REGISTRY).toBeInstanceOf(Map);
     expect(registry.CONTEXT_INSTANCES_REGISTRY.size).toBe(0);
-
-    expect(registry.CONTEXT_SERVICES_ACTIVATED).toBeDefined();
-    expect(registry.CONTEXT_SERVICES_ACTIVATED).toBeInstanceOf(Set);
-    expect(registry.CONTEXT_SERVICES_ACTIVATED.size).toBe(0);
 
     expect(registry.CONTEXT_SUBSCRIBERS_REGISTRY).toBeDefined();
     expect(registry.CONTEXT_SUBSCRIBERS_REGISTRY).toBeInstanceOf(Map);

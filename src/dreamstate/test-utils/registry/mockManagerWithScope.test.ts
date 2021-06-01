@@ -11,6 +11,5 @@ describe("mockManager test util", () => {
     expect(scope).toBeInstanceOf(Object);
     expect(scope.INTERNAL).toBeInstanceOf(Object);
     expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.size).toBe(1);
-    expect(scope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.size).toBe(1);
   });
 });

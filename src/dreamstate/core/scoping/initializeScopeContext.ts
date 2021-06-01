@@ -1,4 +1,11 @@
-import { SCOPE_SYMBOL, SIGNALING_HANDLER_SYMBOL } from "@/dreamstate/core/internals";
+import {
+  QUERY_METADATA_REGISTRY,
+  QUERY_METADATA_SYMBOL,
+  SCOPE_SYMBOL,
+  SIGNAL_METADATA_REGISTRY,
+  SIGNAL_METADATA_SYMBOL,
+  SIGNALING_HANDLER_SYMBOL
+} from "@/dreamstate/core/internals";
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { registerQueryProvider } from "@/dreamstate/core/scoping/queries/registerQueryProvider";
@@ -9,6 +16,7 @@ import { onMetadataSignalListenerCalled } from "@/dreamstate/core/scoping/signal
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
+import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";
 import { throwAfterDisposal } from "@/dreamstate/core/utils/throwAfterDisposal";
 import {
   IBaseSignal,
@@ -36,7 +44,7 @@ export function initializeScopeContext(): IScopeContext {
   const registry: IRegistry = createRegistry();
   const {
     SIGNAL_LISTENERS_REGISTRY, CONTEXT_STATES_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, QUERY_PROVIDERS_REGISTRY,
-    CONTEXT_SERVICES_REFERENCES, CONTEXT_INSTANCES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY, CONTEXT_SERVICES_ACTIVATED
+    CONTEXT_SERVICES_REFERENCES, CONTEXT_INSTANCES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY
   } = registry;
 
   const scope: IScopeContext = ({
@@ -51,9 +59,10 @@ export function initializeScopeContext(): IScopeContext {
           processComputed((instance as ContextManager<any>).context);
 
           instance[SCOPE_SYMBOL] = scope;
+          instance[SIGNAL_METADATA_SYMBOL] = collectProtoChainMetadata(ManagerClass, SIGNAL_METADATA_REGISTRY);
+          instance[QUERY_METADATA_SYMBOL] = collectProtoChainMetadata(ManagerClass, QUERY_METADATA_REGISTRY);
           instance[SIGNALING_HANDLER_SYMBOL] = onMetadataSignalListenerCalled.bind(instance);
 
-          CONTEXT_SERVICES_ACTIVATED.add(ManagerClass);
           CONTEXT_STATES_REGISTRY.set(ManagerClass, (instance as ContextManager).context);
           CONTEXT_SERVICES_REFERENCES.set(ManagerClass, 0);
 
@@ -79,7 +88,6 @@ export function initializeScopeContext(): IScopeContext {
           SIGNAL_LISTENERS_REGISTRY.delete(instance[SIGNALING_HANDLER_SYMBOL]);
         }
 
-        CONTEXT_SERVICES_ACTIVATED.delete(ManagerClass);
         CONTEXT_INSTANCES_REGISTRY.delete(ManagerClass);
         CONTEXT_STATES_REGISTRY.delete(ManagerClass);
 

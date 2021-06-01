@@ -1,4 +1,3 @@
-import { ContextManager } from "@/dreamstate";
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import {
@@ -74,7 +73,7 @@ export function queryDataAsync<
   Q extends IOptionalQueryRequest<D, T>
 >(
   query: Q,
-  { CONTEXT_SERVICES_ACTIVATED, CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
+  { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): Promise<TQueryResponse<R, T> | null> {
   if (!query || !(query as IQueryRequest<D, T>).type) {
     throw new TypeError("Query must be an object with declared type or array of objects with type.");
@@ -84,22 +83,16 @@ export function queryDataAsync<
    * Managers classes are in priority over custom handlers.
    * Registered in order of creation.
    */
-  for (const service of CONTEXT_SERVICES_ACTIVATED) {
-    /**
-     * Only if service has related metadata.
-     */
-    if (service[QUERY_METADATA_SYMBOL]) {
-      for (const entry of service[QUERY_METADATA_SYMBOL]) {
-        if (query.type === entry[1]) {
-          const method: string | symbol = entry[0];
-          const handlerService: ContextManager = CONTEXT_INSTANCES_REGISTRY.get(service)!;
+  for (const service of CONTEXT_INSTANCES_REGISTRY.values()) {
+    for (const entry of service[QUERY_METADATA_SYMBOL]) {
+      if (query.type === entry[1]) {
+        const method: string | symbol = entry[0];
 
-          return promisifyQuery(
-            (handlerService as any)[method].bind(handlerService),
-            query,
-            handlerService.constructor as TAnyContextManagerConstructor
-          );
-        }
+        return promisifyQuery(
+          (service as any)[method].bind(service),
+          query,
+          service.constructor as TAnyContextManagerConstructor
+        );
       }
     }
   }

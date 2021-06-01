@@ -1,9 +1,6 @@
-import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
+import { SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import {
-  TAnyContextManagerConstructor,
-  TSignalType
-} from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TSignalType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
 
 /**
@@ -32,10 +29,10 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
       throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
     }
 
-    if (!ManagerClass[SIGNAL_METADATA_SYMBOL]) {
-      ManagerClass[SIGNAL_METADATA_SYMBOL] = [];
+    if (SIGNAL_METADATA_REGISTRY.has(ManagerClass)) {
+      SIGNAL_METADATA_REGISTRY.get(ManagerClass)!.push([ method, signalType ]);
+    } else {
+      SIGNAL_METADATA_REGISTRY.set(ManagerClass, [ [ method, signalType ] ]);
     }
-
-    ManagerClass[SIGNAL_METADATA_SYMBOL].push([ method, signalType ]);
   });
 }

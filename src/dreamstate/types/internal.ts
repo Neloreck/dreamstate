@@ -1,6 +1,5 @@
 import type { Context } from "react";
 
-import type { QUERY_METADATA_SYMBOL, SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import type { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import type { TAnyObject } from "@/dreamstate/types/general";
 import type { TQuerySubscriptionMetadata } from "@/dreamstate/types/queries";
@@ -17,14 +16,17 @@ export interface IContextManagerConstructor<
   REACT_CONTEXT: Context<T>;
   prototype: C;
   new (initialState?: S): C;
-  [QUERY_METADATA_SYMBOL]: TQuerySubscriptionMetadata;
-  [SIGNAL_METADATA_SYMBOL]: TSignalSubscriptionMetadata;
 }
 
 /**
  * Any context manager class reference.
  */
 export type TAnyContextManagerConstructor = IContextManagerConstructor<any, any>;
+
+/**
+ * Typing for metadata containing in context manager.
+ */
+export type TContextManagerMetadata = TQuerySubscriptionMetadata | TSignalSubscriptionMetadata;
 
 /**
  * Partial context manager 'context' field transformer.

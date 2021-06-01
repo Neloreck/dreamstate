@@ -5,7 +5,6 @@ import { ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("Emitting signal on provision end", () => {
   const mock = jest.fn();
@@ -32,8 +31,6 @@ describe("Emitting signal on provision end", () => {
       const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 
       tree.unmount();
-
-      await nextAsyncQueue();
 
       expect(mock).toHaveBeenCalledTimes(times);
 

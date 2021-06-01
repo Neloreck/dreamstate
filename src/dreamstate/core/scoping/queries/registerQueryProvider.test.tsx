@@ -1,5 +1,5 @@
 import { mount, ReactWrapper } from "enzyme";
-import React, { ReactElement, useEffect, useLayoutEffect } from "react";
+import { default as React, ReactElement, useEffect, useLayoutEffect } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
@@ -53,7 +53,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should properly deal with duplicated providers", async () => {
+  it("Should properly deal with duplicated providers", () => {
     const tree = testQueryTree(({
       registerQueryProvider,
       unRegisterQueryProvider,
@@ -98,7 +98,6 @@ describe("registerQueryProvider method", () => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 
@@ -117,7 +116,6 @@ describe("registerQueryProvider method", () => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(2);
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 });

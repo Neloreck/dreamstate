@@ -45,15 +45,14 @@ exports[`createProvider method Should create correct component tree without chil
                   },
                   Symbol(SCOPE): [Circular],
                   Symbol(SIGNALING_HANDLER): [Function],
+                  Symbol(SIGNAL_METADATA): Array [],
+                  Symbol(QUERY_METADATA): Array [],
                 },
               },
               "CONTEXT_OBSERVERS_REGISTRY": Map {
                 [Function] => Set {
                   [Function],
                 },
-              },
-              "CONTEXT_SERVICES_ACTIVATED": Set {
-                [Function],
               },
               "CONTEXT_SERVICES_REFERENCES": Map {
                 [Function] => 1,
@@ -136,15 +135,14 @@ exports[`createProvider method Should render correct component tree 2`] = `
                   },
                   Symbol(SCOPE): [Circular],
                   Symbol(SIGNALING_HANDLER): [Function],
+                  Symbol(SIGNAL_METADATA): Array [],
+                  Symbol(QUERY_METADATA): Array [],
                 },
               },
               "CONTEXT_OBSERVERS_REGISTRY": Map {
                 [Function] => Set {
                   [Function],
                 },
-              },
-              "CONTEXT_SERVICES_ACTIVATED": Set {
-                [Function],
               },
               "CONTEXT_SERVICES_REFERENCES": Map {
                 [Function] => 1,

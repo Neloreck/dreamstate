@@ -1,5 +1,5 @@
 import { mount } from "enzyme";
-import React, { ReactElement } from "react";
+import { default as React, ReactElement } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
 import { createCombinedProvider } from "@/dreamstate/core/provision/combined/createCombinedProvider";
@@ -30,11 +30,8 @@ describe("createProvider method", () => {
     </ScopeProvider>);
 
     expect(combinedTree).toMatchSnapshot();
-    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
 
     combinedTree.unmount();
-
-    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
 
     const scopedTree = mount(<ScopeProvider>
       <ScopedProvider>
@@ -43,11 +40,8 @@ describe("createProvider method", () => {
     </ScopeProvider>);
 
     expect(scopedTree).toMatchSnapshot();
-    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeTruthy();
 
     scopedTree.unmount();
-
-    expect(currentScope.INTERNAL.REGISTRY.CONTEXT_SERVICES_ACTIVATED.has(TestContextManager)).toBeFalsy();
   });
 
   it("Should create observers with validation", () => {

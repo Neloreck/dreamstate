@@ -1,4 +1,4 @@
-import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
+import { QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
@@ -28,10 +28,10 @@ export function OnQuery(
       throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
     }
 
-    if (!ManagerClass[QUERY_METADATA_SYMBOL]) {
-      ManagerClass[QUERY_METADATA_SYMBOL] = [];
+    if (QUERY_METADATA_REGISTRY.has(ManagerClass)) {
+      QUERY_METADATA_REGISTRY.get(ManagerClass)!.push([ method, queryType ]);
+    } else {
+      QUERY_METADATA_REGISTRY.set(ManagerClass, [ [ method, queryType ] ]);
     }
-
-    ManagerClass[QUERY_METADATA_SYMBOL].push([ method, queryType ]);
   });
 }

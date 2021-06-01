@@ -1,9 +1,8 @@
 import { mount, ReactWrapper } from "enzyme";
-import React, { ReactElement, useEffect } from "react";
+import { default as React, ReactElement, useEffect } from "react";
 
 import { ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 describe("registerQueryProvider method", () => {
   type TQueryCb = (scope: IScopeContext) => void;
@@ -57,7 +56,6 @@ describe("registerQueryProvider method", () => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.get("ANY")).toBeUndefined();
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 
@@ -120,7 +118,6 @@ describe("registerQueryProvider method", () => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.get("3")).toBeUndefined();
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 
@@ -137,7 +134,6 @@ describe("registerQueryProvider method", () => {
       expect(() => unRegisterQueryProvider("ANY", () => {})).not.toThrow(Error);
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 });

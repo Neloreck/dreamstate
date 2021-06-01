@@ -4,7 +4,6 @@ import { createElement, FunctionComponent } from "react";
 import { ContextManager, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 
 /**
  * Construction occurs before initial provision start.
@@ -18,8 +17,8 @@ describe("Sending query on provision start", () => {
 
   class QueryingOnStart extends ContextManager {
 
-    protected async onProvisionStarted() {
-      count(await this.queryDataAsync({ type: "START" }));
+    protected onProvisionStarted(): void {
+      count(this.queryDataSync({ type: "START" }));
     }
 
   }
@@ -38,8 +37,6 @@ describe("Sending query on provision start", () => {
       const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 
       tree.unmount();
-
-      await nextAsyncQueue();
 
       expect(count).toHaveBeenCalledTimes(times);
 

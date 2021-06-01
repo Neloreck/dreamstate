@@ -5,7 +5,6 @@ import { ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TDerivedSignal, TDerivedSignalEvent } from "@/dreamstate/types";
 
 describe("Signal subscription of test classes", () => {
@@ -72,8 +71,6 @@ describe("Signal subscription of test classes", () => {
   it("Should properly catch signals from other managers", async () => {
     async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
       const firstTree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
-
-      await nextAsyncQueue();
 
       expect(count).toHaveBeenCalledTimes(times);
 

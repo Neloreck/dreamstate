@@ -1,12 +1,14 @@
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { TQuerySubscriptionMetadata } from "@/dreamstate/types";
 import { RespondingManager } from "@/fixtures/queries";
 
 describe("@OnQuery and queries processing", () => {
   it("Should properly save methods metadata for ContextManagers", () => {
-    const metadata: TQuerySubscriptionMetadata = RespondingManager[QUERY_METADATA_SYMBOL];
+    const [ manager ] = mockManagerWithScope(RespondingManager);
+    const metadata: TQuerySubscriptionMetadata = manager[QUERY_METADATA_SYMBOL];
 
     expect(metadata).toHaveLength(6);
 

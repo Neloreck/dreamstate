@@ -48,15 +48,6 @@ export abstract class ContextManager<
 > {
 
   /**
-   * Signal handling metadata that contains OnSignal descriptors information.
-   */
-  public static readonly [SIGNAL_METADATA_SYMBOL]: TSignalSubscriptionMetadata;
-  /**
-   * Query handling metadata that contains OnQuery descriptors information.
-   */
-  public static readonly [QUERY_METADATA_SYMBOL]: TQuerySubscriptionMetadata;
-
-  /**
    * Manager instance scope reference.
    * Used internally to emit signals/queries or subscribe to data.
    */
@@ -65,6 +56,17 @@ export abstract class ContextManager<
    * Signaling handler that operates scope signals and calls required method registered in metadata.
    */
   public [SIGNALING_HANDLER_SYMBOL]!: TSignalListener;
+
+  /**
+   * Manager instance signals metadata reference.
+   * Used internally to emit signals with instance based description.
+   */
+  public [SIGNAL_METADATA_SYMBOL]!: TSignalSubscriptionMetadata;
+  /**  /**
+   * Manager instance signals metadata reference.
+   * Used internally to emit signals with instance based description.
+   */
+  public [QUERY_METADATA_SYMBOL]!: TQuerySubscriptionMetadata;
 
   /**
    * Method allows to get related React.Context for manual renders or testing.

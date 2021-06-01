@@ -34,11 +34,6 @@ export interface IRegistry {
    */
   CONTEXT_SERVICES_REFERENCES: TServiceMap<number>;
   /**
-   * Set of class references that are provided in current context.
-   * Used mainly for metadata accessing.
-   */
-  CONTEXT_SERVICES_ACTIVATED: Set<TAnyContextManagerConstructor>;
-  /**
    * ContextManagers observers registry for Providers of related context.
    * Used by dreamstate observer components.
    */
@@ -64,7 +59,6 @@ export interface IRegistry {
  */
 export function createRegistry(): IRegistry {
   return ({
-    CONTEXT_SERVICES_ACTIVATED: new Set(),
     QUERY_PROVIDERS_REGISTRY: new Map(),
     SIGNAL_LISTENERS_REGISTRY: new Set(),
     CONTEXT_INSTANCES_REGISTRY: new Map(),

@@ -5,7 +5,6 @@ import { ScopeProvider, useScope } from "@/dreamstate";
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { IBaseSignal, ISignalEvent, ISignalWithData, TSignalType } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures";
 
@@ -50,7 +49,7 @@ describe("emitSignal method", () => {
     return <div> Sample </div>;
   }
 
-  it("Should properly dispatch signals", async () => {
+  it("Should properly emit signals", async () => {
     const subscriber = jest.fn((signal: ISignalEvent<string, undefined>) => {
       expect(signal.type).toBe("TEST");
       expect(signal.data).toBeUndefined();
@@ -65,9 +64,6 @@ describe("emitSignal method", () => {
     </ScopeProvider>);
 
     tree.mount();
-    expect(subscriber).not.toHaveBeenCalled();
-
-    await nextAsyncQueue();
     expect(subscriber).toHaveBeenCalled();
     tree.unmount();
   });
@@ -84,9 +80,6 @@ describe("emitSignal method", () => {
     </ScopeProvider>);
 
     tree.mount();
-    expect(subscriber).not.toHaveBeenCalled();
-
-    await nextAsyncQueue();
     expect(subscriber).toHaveBeenCalled();
     tree.unmount();
   });
@@ -103,9 +96,6 @@ describe("emitSignal method", () => {
     </ScopeProvider>);
 
     tree.mount();
-    expect(subscriber).not.toHaveBeenCalled();
-
-    await nextAsyncQueue();
     expect(subscriber).toHaveBeenCalled();
     tree.unmount();
   });

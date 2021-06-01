@@ -1,9 +1,8 @@
 import { mount, ReactWrapper } from "enzyme";
-import React, { ReactElement, useEffect } from "react";
+import { default as React, ReactElement, useEffect } from "react";
 
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TQueryResponse } from "@/dreamstate/types";
 import { EQuery, RespondingManager } from "@/fixtures/queries";
 
@@ -43,7 +42,6 @@ describe("queryDataSync and queries processing", () => {
       expect(() => queryDataSync({} as any)).toThrow(TypeError);
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 
@@ -76,7 +74,6 @@ describe("queryDataSync and queries processing", () => {
       expect(typeof asyncNumberResponse!.timestamp).toBe("number");
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 
@@ -86,7 +83,6 @@ describe("queryDataSync and queries processing", () => {
       expect(() => queryDataSync({ type: EQuery.SYNC_EXCEPTION_QUERY, data: null })).toThrow(Error);
     });
 
-    await nextAsyncQueue();
     tree.unmount();
   });
 });
