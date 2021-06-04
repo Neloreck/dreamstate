@@ -71,7 +71,13 @@ export function useContextWithMemo<
     /**
      * Returns un-subscriber callback.
      */
-    return scope.INTERNAL.subscribeToManager(ManagerClass, checkMemoState);
+    scope.INTERNAL.subscribeToManager(ManagerClass, checkMemoState);
+
+    return function(): void {
+      // Reset current observables state for following update if something has changed.
+      observed.current = null;
+      scope.INTERNAL.unsubscribeFromManager(ManagerClass, checkMemoState);
+    };
   }, [ ManagerClass, scope.INTERNAL ]);
 
   return state[0];

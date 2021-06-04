@@ -53,13 +53,11 @@ export function ScopedObserver<T>({
   useEffect(function(): TCallable {
     const onUpdateNeeded: TCallable = reducer[1];
 
-    scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
     scope.INTERNAL.registerService(ManagerClass, initialState);
-    scope.INTERNAL.incrementServiceObserving(ManagerClass);
+    scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
 
     return function(): void {
       scope.INTERNAL.removeServiceObserver(ManagerClass, onUpdateNeeded);
-      scope.INTERNAL.decrementServiceObserving(ManagerClass);
     };
   }, dependencies);
 

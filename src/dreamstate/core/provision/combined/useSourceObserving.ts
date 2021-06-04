@@ -51,15 +51,13 @@ export function useSourceObserving(
     const onUpdateNeeded: TCallable = reducer[1];
 
     for (let it = sources.length - 1; it >= 0; it --) {
-      scope.INTERNAL.addServiceObserver(sources[it], onUpdateNeeded);
       scope.INTERNAL.registerService(sources[it], initialState);
-      scope.INTERNAL.incrementServiceObserving(sources[it]);
+      scope.INTERNAL.addServiceObserver(sources[it], onUpdateNeeded);
     }
 
     return function(): void {
       for (let it = 0; it < sources.length; it ++) {
         scope.INTERNAL.removeServiceObserver(sources[it], onUpdateNeeded);
-        scope.INTERNAL.decrementServiceObserving(sources[it]);
       }
     };
   }, sources);

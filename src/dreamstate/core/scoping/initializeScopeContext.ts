@@ -67,10 +67,22 @@ export function initializeScopeContext(): IScopeContext {
           CONTEXT_SERVICES_REFERENCES.set(ManagerClass, 0);
 
           CONTEXT_OBSERVERS_REGISTRY.set(ManagerClass, new Set());
-          CONTEXT_SUBSCRIBERS_REGISTRY.set(ManagerClass, new Set());
 
           SIGNAL_LISTENERS_REGISTRY.add(instance[SIGNALING_HANDLER_SYMBOL]);
           CONTEXT_INSTANCES_REGISTRY.set(ManagerClass, instance);
+
+          /**
+           * Notify subscribers if they exist.
+           * Create new entry if it is needed.
+           * todo: Probably delete it on unregistering of subscribers at some point of time.
+           */
+          if (CONTEXT_SUBSCRIBERS_REGISTRY.has(ManagerClass)) {
+            CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.forEach(function(it) {
+              it(instance.context);
+            });
+          } else {
+            CONTEXT_SUBSCRIBERS_REGISTRY.set(ManagerClass, new Set());
+          }
         }
       },
       unRegisterService(ManagerClass: TAnyContextManagerConstructor): void {
@@ -96,25 +108,23 @@ export function initializeScopeContext(): IScopeContext {
          */
       },
       addServiceObserver(ManagerClass: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
-        CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.add(observer);
-      },
-      removeServiceObserver(ManagerClass: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
-        CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.delete(observer);
-      },
-      incrementServiceObserving(ManagerClass: TAnyContextManagerConstructor): void {
         const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(ManagerClass)! + 1;
 
+        CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.add(observer);
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
+        // todo: try-catch block for lifecycle?
         if (referencesCount === 1) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionStarted"]();
         }
       },
-      decrementServiceObserving(ManagerClass: TAnyContextManagerConstructor): void {
+      removeServiceObserver(ManagerClass: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
         const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(ManagerClass)! - 1;
 
+        CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.delete(observer);
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
+        // todo: try-catch block for lifecycle?
         if (referencesCount === 0) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionEnded"]();
           this.unRegisterService(ManagerClass);

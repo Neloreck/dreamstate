@@ -11,9 +11,6 @@ import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethod
  * @param {(TSignalType|Array.<TSignalType>>)} signalType - signal or array of signals that should be handled.
  */
 export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDecorator {
-  /**
-   * todo: Better validation with typechecking?
-   */
   if (!signalType) {
     throw new TypeError("Signal type should be provided for OnQuery decorator.");
   }

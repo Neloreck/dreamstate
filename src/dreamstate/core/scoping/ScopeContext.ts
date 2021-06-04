@@ -55,21 +55,6 @@ export interface IScopeContextInternals {
    */
   removeServiceObserver(ManagerClass: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
   /**
-   * Start observing of service and trigger related lifecycle methods.
-   * Count providers references so it will work with few different providers
-   * and force 'onProvisionStarted' to be used only once.
-   *
-   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for references increment.
-   */
-  incrementServiceObserving(ManagerClass: TAnyContextManagerConstructor): void;
-  /**
-   * Stop service observing.
-   * Decrement counted references and trigger lifecycle if observing was ended.
-   *
-   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for references decrement.
-   */
-  decrementServiceObserving(ManagerClass: TAnyContextManagerConstructor): void;
-  /**
    * Notify observers method that updates all providers state based on manager instance context.
    *
    * @param {ContextManager} manager - manager instance that should update subscribed providers.
@@ -129,19 +114,30 @@ export interface IScopeContext {
     emitter?: TAnyContextManagerConstructor | null
   ): void;
   /**
-   * todo;
+   * Subscribe to signals in current scope.
+   * Following callback will be triggered on each signal with signal event as first parameter.
+   *
+   * @param {TSignalListener} listener - signals listener callback.
+   * @returns {TCallable} unsubscribing function.
    */
   subscribeToSignals<T extends TSignalType, D = undefined>(
     listener: TSignalListener<T, D>
   ): TCallable;
   /**
-   * todo;
+   * Unsubscribe provided callback from signals in current scope.
+   * Following callback will not be triggered on scope signals anymore.
+   *
+   * @param {TSignalListener} listener - signals listener callback.
    */
   unsubscribeFromSignals<T extends TSignalType, D = undefined>(
     listener: TSignalListener<T, D>
   ): void;
   /**
-   * todo;
+   * Register callback as query provider and answer query data calls with it.
+   *
+   * @param {TQueryType} queryType - type of query for data provisioning.
+   * @param {TQueryListener} listener - callback that will listen data queries and return evaluation data.
+   * @returns {TCallable} function that unsubscribes provided callback.
    */
   registerQueryProvider<T extends TQueryType>(
     queryType: T,
