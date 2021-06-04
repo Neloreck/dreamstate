@@ -68,6 +68,6 @@ export interface IQueryResponse<D = undefined, T extends TQueryType = TQueryType
   readonly answerer: TAnyContextManagerConstructor | (() => any);
 }
 
-export type TQueryResponse<D = undefined, T extends TQueryType = TQueryType> = IQueryResponse<D, T>;
+export type TQueryResponse<D = undefined> = IQueryResponse<D>;
 
-export type TOptionalQueryResponse<D = undefined, T extends TQueryType = TQueryType> = null | IQueryResponse<D, T>;
+export type TOptionalQueryResponse<D = undefined> = null | IQueryResponse<D>;

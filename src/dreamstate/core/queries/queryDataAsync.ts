@@ -24,7 +24,7 @@ function promisifyQuery<
   callback: TQueryListener<T, D, R>,
   query: IOptionalQueryRequest<D, T>,
   answerer: TAnyContextManagerConstructor | null
-): Promise<TQueryResponse<R, T>> {
+): Promise<TQueryResponse<R>> {
   return new Promise(function(
     resolve: (response: IQueryResponse<R, T>) => void,
     reject: (error: Error) => void
@@ -74,7 +74,7 @@ export function queryDataAsync<
 >(
   query: Q,
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
-): Promise<TQueryResponse<R, T> | null> {
+): Promise<TQueryResponse<R> | null> {
   if (!query || !(query as IQueryRequest<D, T>).type) {
     throw new TypeError("Query must be an object with declared type or array of objects with type.");
   }

@@ -163,7 +163,7 @@ export interface IScopeContext {
     Q extends IOptionalQueryRequest<D, T>
     >(
     query: Q
-  ): TQueryResponse<any, T>;
+  ): TQueryResponse<any>;
   /**
    * todo;
    */
@@ -173,7 +173,7 @@ export interface IScopeContext {
     Q extends IOptionalQueryRequest<D, T>
     >(
     queryRequest: Q
-  ): Promise<TQueryResponse<any, T>>;
+  ): Promise<TQueryResponse<any>>;
 }
 
 /**

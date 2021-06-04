@@ -21,7 +21,7 @@ function executeQuerySync<
   callback: TQueryListener<T, D>,
   query: IOptionalQueryRequest<D, T>,
   answerer: TAnyContextManagerConstructor | null
-): TQueryResponse<R, T> {
+): TQueryResponse<R> {
   return ({
     answerer: answerer || callback as TAnyCallable,
     type: query.type,
@@ -43,7 +43,7 @@ export function queryDataSync<
 >(
   query: Q,
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
-): TQueryResponse<R, T> | null {
+): TQueryResponse<R> | null {
   if (!query || !(query as IQueryRequest<D, T>).type) {
     throw new TypeError("Query must be an object with declared type or array of objects with type.");
   }

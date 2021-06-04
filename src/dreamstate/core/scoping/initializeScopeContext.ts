@@ -213,7 +213,7 @@ export function initializeScopeContext(): IScopeContext {
       Q extends IOptionalQueryRequest<D, T>
       >(
       query: Q
-    ): TQueryResponse<any, T> {
+    ): TQueryResponse<any> {
       return queryDataSync<any, D, T, Q>(query, registry)!;
     },
     queryDataAsync<
@@ -222,8 +222,8 @@ export function initializeScopeContext(): IScopeContext {
       Q extends IOptionalQueryRequest<D, T>
     >(
       queryRequest: Q
-    ): Promise<TQueryResponse<any, T>> {
-      return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any, T>>;
+    ): Promise<TQueryResponse<any>> {
+      return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any>>;
     }
   }
   );
