@@ -97,65 +97,6 @@ export abstract class ContextManager<
   }
 
   /**
-   * Lifecycle method.
-   * First provider was injected into react tree.
-   * Same logic as 'componentWillMount' for class-based components.
-   *
-   * Useful for data initialization and subscriptions creation.
-   */
-  protected onProvisionStarted(): void {}
-
-  /**
-   * Lifecycle method.
-   * Last provider was removed from react tree.
-   * Same logic as 'componentWillUnmount' for class-based components.
-   *
-   * Useful for data disposal when context is being ejected/when HMR happens.
-   */
-  protected onProvisionEnded(): void {}
-
-  /**
-   * Emit signal for other managers and subscribers in  current scope.
-   *
-   * @param {Object} baseSignal - signal base that contains basic descriptor of emitting signal.
-   * @param {TSignalType} baseSignal.type - signal type.
-   * @param {*=} baseSignal.data - optional signal data.
-   * @returns {Promise} promise that will be resolved after signal listeners call.
-   *   Note: async handlers will not be awaited.
-   */
-  protected emitSignal<D = undefined>(
-    baseSignal: IBaseSignal<D>
-  ): void {
-    return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
-  }
-
-  /**
-   * Send context query to retrieve data from @OnQuery method with required types.
-   */
-  protected queryDataAsync<
-    D extends any,
-    T extends TQueryType,
-    Q extends IOptionalQueryRequest<D, T>
-    >(
-    queryRequest: Q
-  ): Promise<TQueryResponse<any>> {
-    return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
-  }
-
-  /**
-   * Send sync context query to retrieve data from @OnQuery method with required types.
-   */
-  protected queryDataSync<
-    D extends any,
-    T extends TQueryType,
-    Q extends IOptionalQueryRequest<D, T>
-    >(
-    queryRequest: Q
-  ): TQueryResponse<any> {
-    return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
-  }
-
-  /**
    * Forces update and render of subscribed components.
    * Just in case when you need forced update to keep everything in sync with your context.
    *
@@ -209,6 +150,65 @@ export abstract class ContextManager<
       this.afterUpdate(previousContext);
     }
   }
+
+  /**
+   * Emit signal for other managers and subscribers in  current scope.
+   *
+   * @param {Object} baseSignal - signal base that contains basic descriptor of emitting signal.
+   * @param {TSignalType} baseSignal.type - signal type.
+   * @param {*=} baseSignal.data - optional signal data.
+   * @returns {Promise} promise that will be resolved after signal listeners call.
+   *   Note: async handlers will not be awaited.
+   */
+  public emitSignal<D = undefined>(
+    baseSignal: IBaseSignal<D>
+  ): void {
+    return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
+  }
+
+  /**
+   * Send context query to retrieve data from @OnQuery method with required types.
+   */
+  public queryDataAsync<
+    D extends any,
+    T extends TQueryType,
+    Q extends IOptionalQueryRequest<D, T>
+    >(
+    queryRequest: Q
+  ): Promise<TQueryResponse<any>> {
+    return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
+  }
+
+  /**
+   * Send sync context query to retrieve data from @OnQuery method with required types.
+   */
+  public queryDataSync<
+    D extends any,
+    T extends TQueryType,
+    Q extends IOptionalQueryRequest<D, T>
+    >(
+    queryRequest: Q
+  ): TQueryResponse<any> {
+    return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
+  }
+
+  /**
+   * Lifecycle method.
+   * First provider was injected into react tree.
+   * Same logic as 'componentWillMount' for class-based components.
+   *
+   * Useful for data initialization and subscriptions creation.
+   */
+  protected onProvisionStarted(): void {}
+
+  /**
+   * Lifecycle method.
+   * Last provider was removed from react tree.
+   * Same logic as 'componentWillUnmount' for class-based components.
+   *
+   * Useful for data disposal when context is being ejected/when HMR happens.
+   */
+  protected onProvisionEnded(): void {}
 
   /**
    * Lifecycle method.

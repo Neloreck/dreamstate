@@ -25,7 +25,7 @@ export function OnQuery(
     ManagerClass: TAnyContextManagerConstructor
   ): void {
     if (!(ManagerClass.prototype instanceof ContextManager)) {
-      throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
+      throw new TypeError("Only ContextManager extending classes methods can be decorated as query handlers.");
     }
 
     if (QUERY_METADATA_REGISTRY.has(ManagerClass)) {
