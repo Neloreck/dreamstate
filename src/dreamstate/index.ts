@@ -7,7 +7,7 @@ export {
   ILoadable as Loadable,
   TNested as Nested,
   TComputed as Computed,
-  TDerivedSignalEvent as SignalEvent,
+  ISignalEvent as SignalEvent,
   TDerivedSignal as Signal,
   TSignalType as SignalType,
   TQueryResponse as QueryResponse,

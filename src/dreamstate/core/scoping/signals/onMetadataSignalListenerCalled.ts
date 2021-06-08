@@ -7,11 +7,10 @@ import { ISignalEvent, TSignalType } from "@/dreamstate/types";
  * Used as class instance bound filterer of signals.
  */
 export function onMetadataSignalListenerCalled<
-  T extends TSignalType = TSignalType,
   D = undefined
 >(
   this: ContextManager<any>,
-  signal: ISignalEvent<T, D>
+  signal: ISignalEvent<D>
 ): void {
   /**
    * For each metadata entry do a check/call for signal handler.

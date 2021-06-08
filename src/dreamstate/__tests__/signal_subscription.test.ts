@@ -5,21 +5,18 @@ import { ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
-import { TDerivedSignal, TDerivedSignalEvent } from "@/dreamstate/types";
+import { ISignalEvent, TDerivedSignal } from "@/dreamstate/types";
 
 describe("Signal subscription of test classes", () => {
   const count = jest.fn();
 
-  interface IDemoSignal extends TDerivedSignal<"DEMO", {
+  type TDemoSignal = TDerivedSignal<{
     strValue: string;
     numValue: number;
     boolValue: boolean;
-  }> {}
+  }>
 
-  interface IEmptySignal extends TDerivedSignal<"EMPTY"> {
-  }
-
-  const demoSignal: IDemoSignal = {
+  const demoSignal: TDemoSignal = {
     type: "DEMO",
     data: {
       strValue: "a",
@@ -28,7 +25,7 @@ describe("Signal subscription of test classes", () => {
     }
   };
 
-  const emptySignal: IEmptySignal = {
+  const emptySignal: TDerivedSignal = {
     type: "EMPTY"
   };
 
@@ -44,7 +41,7 @@ describe("Signal subscription of test classes", () => {
   class SubscribedToStartSignal extends ContextManager {
 
     @OnSignal(demoSignal.type)
-    private onDemo(signal: TDerivedSignalEvent<IDemoSignal>): void {
+    private onDemo(signal: TDemoSignal): void {
       count();
 
       const { type, data } = signal;
@@ -57,7 +54,7 @@ describe("Signal subscription of test classes", () => {
     }
 
     @OnSignal(emptySignal.type)
-    private onEmpty(signal: TDerivedSignalEvent<IEmptySignal>): void {
+    private onEmpty(signal: ISignalEvent): void {
       count();
 
       const { type, data } = signal;

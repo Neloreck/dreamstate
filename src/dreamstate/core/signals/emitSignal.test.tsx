@@ -5,7 +5,7 @@ import { ScopeProvider, useScope } from "@/dreamstate";
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
-import { IBaseSignal, ISignalEvent, ISignalWithData, TSignalType } from "@/dreamstate/types";
+import { IBaseSignal, ISignalEvent, ISignalWithData } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures";
 
 describe("emitSignal method", () => {
@@ -34,8 +34,8 @@ describe("emitSignal method", () => {
     subscriber,
     emitter
   }: {
-    subscriber: (signal: ISignalEvent<any, any>) => void;
-    emitter: () => [ IBaseSignal | ISignalWithData<TSignalType, any>, any ];
+    subscriber: (signal: ISignalEvent<any>) => void;
+    emitter: () => [ IBaseSignal | ISignalWithData<any>, any ];
   }): ReactElement {
     const scope: IScopeContext = useScope();
 
@@ -50,7 +50,7 @@ describe("emitSignal method", () => {
   }
 
   it("Should properly emit signals", async () => {
-    const subscriber = jest.fn((signal: ISignalEvent<string, undefined>) => {
+    const subscriber = jest.fn((signal: ISignalEvent) => {
       expect(signal.type).toBe("TEST");
       expect(signal.data).toBeUndefined();
       expect(signal.canceled).toBeFalsy();
@@ -69,7 +69,7 @@ describe("emitSignal method", () => {
   });
 
   it("Should properly inject data parameter", async () => {
-    const subscriber = jest.fn((signal: ISignalEvent<string, number>) => {
+    const subscriber = jest.fn((signal: ISignalEvent<number>) => {
       if (signal.type === "WITH_PARAM") {
         expect(signal.data).toBe(155);
       }
@@ -85,7 +85,7 @@ describe("emitSignal method", () => {
   });
 
   it("Should properly inject emitter parameter", async () => {
-    const subscriber = jest.fn((signal: ISignalEvent<string, number>) => {
+    const subscriber = jest.fn((signal: ISignalEvent<number>) => {
       if (signal.type === "WITH_EMITTER") {
         expect(signal.emitter).toBe(0);
       }
@@ -102,7 +102,7 @@ describe("emitSignal method", () => {
 
   it("Signal subscribers should properly cancel events and be called in declared order", async () => {
     let emitter: (base: IBaseSignal) => void = null as any;
-    const mock = jest.fn().mockImplementationOnce((signalEvent: ISignalEvent<any, any>) => {
+    const mock = jest.fn().mockImplementationOnce((signalEvent: ISignalEvent<any>) => {
       signalEvent.cancel();
     });
 

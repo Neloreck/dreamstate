@@ -46,7 +46,7 @@ export interface IRegistry {
   /**
    * Registry of signal handlers.
    */
-  SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any, any>>;
+  SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any>>;
   /**
    * Registry of custom query requests handlers.
    */

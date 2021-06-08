@@ -123,8 +123,8 @@ export abstract class ContextManager<
    * @returns {Promise} promise that will be resolved after signal listeners call.
    *   Note: async handlers will not be awaited.
    */
-  protected emitSignal<T extends TSignalType = TSignalType, D = undefined>(
-    baseSignal: IBaseSignal<T, D>
+  protected emitSignal<D = undefined>(
+    baseSignal: IBaseSignal<D>
   ): void {
     return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
   }

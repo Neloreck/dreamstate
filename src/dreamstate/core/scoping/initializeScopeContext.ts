@@ -181,14 +181,14 @@ export function initializeScopeContext(): IScopeContext {
         registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
       }
     },
-    emitSignal<D = undefined, T extends TSignalType = TSignalType>(
-      base: IBaseSignal<T, D>,
+    emitSignal<D = undefined>(
+      base: IBaseSignal<D>,
       emitter: TAnyContextManagerConstructor | null = null
     ): void {
       return emitSignal(base, emitter, registry);
     },
-    subscribeToSignals<T extends TSignalType, D = undefined>(
-      listener: TSignalListener<T, D>
+    subscribeToSignals<D = undefined>(
+      listener: TSignalListener<D>
     ): TCallable {
       if (typeof listener !== "function") {
         throw new Error(`Signal listener must be function, '${typeof listener}' provided.`);
@@ -200,8 +200,8 @@ export function initializeScopeContext(): IScopeContext {
         SIGNAL_LISTENERS_REGISTRY.delete(listener);
       };
     },
-    unsubscribeFromSignals<T extends TSignalType, D = undefined>(
-      listener: TSignalListener<T, D>
+    unsubscribeFromSignals<D = undefined>(
+      listener: TSignalListener<D>
     ): void {
       SIGNAL_LISTENERS_REGISTRY.delete(listener);
     },

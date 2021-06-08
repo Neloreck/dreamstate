@@ -9,10 +9,7 @@ import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
-import {
-  TAnyContextManagerConstructor,
-  TDerivedSignalEvent
-} from "@/dreamstate/types";
+import { ISignalEvent, TAnyContextManagerConstructor } from "@/dreamstate/types";
 import {
   EmittingContextManager,
   ExtendingTestContextManager,
@@ -159,7 +156,7 @@ describe("ContextManager class", () => {
 
   it("Should use emitSignal method when sending signals", async () => {
     const [ emittingContextManager, scope ] = mockManagerWithScope(EmittingContextManager);
-    const spy = jest.fn((signal: TDerivedSignalEvent) => {
+    const spy = jest.fn((signal: ISignalEvent) => {
       expect(signal.emitter).toBe(EmittingContextManager);
       expect(signal.type).toBe("TEST");
     });

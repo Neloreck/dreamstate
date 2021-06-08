@@ -109,8 +109,8 @@ export interface IScopeContext {
    * @param {(TAnyContextManagerConstructor | null)=} emitter - signal emitter reference.
    * @returns {Promise} promise that resolves after all handlers execution.
    */
-  emitSignal<D = undefined, T extends TSignalType = TSignalType>(
-    base: IBaseSignal<T, D>,
+  emitSignal<D = undefined>(
+    base: IBaseSignal<D>,
     emitter?: TAnyContextManagerConstructor | null
   ): void;
   /**
@@ -120,8 +120,8 @@ export interface IScopeContext {
    * @param {TSignalListener} listener - signals listener callback.
    * @returns {TCallable} unsubscribing function.
    */
-  subscribeToSignals<T extends TSignalType, D = undefined>(
-    listener: TSignalListener<T, D>
+  subscribeToSignals<D = undefined>(
+    listener: TSignalListener<D>
   ): TCallable;
   /**
    * Unsubscribe provided callback from signals in current scope.
@@ -129,8 +129,8 @@ export interface IScopeContext {
    *
    * @param {TSignalListener} listener - signals listener callback.
    */
-  unsubscribeFromSignals<T extends TSignalType, D = undefined>(
-    listener: TSignalListener<T, D>
+  unsubscribeFromSignals<D = undefined>(
+    listener: TSignalListener<D>
   ): void;
   /**
    * Register callback as query provider and answer query data calls with it.

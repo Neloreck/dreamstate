@@ -3,15 +3,14 @@ import {
   IBaseSignal,
   ISignalEvent,
   TAnyContextManagerConstructor,
-  TSignalListener,
-  TSignalType
+  TSignalListener
 } from "@/dreamstate/types";
 
 /**
  * Callback for signal canceling.
  * Used in signal events for propagation stopping.
  */
-function cancelSignal(this: ISignalEvent<TSignalType, unknown>): void {
+function cancelSignal(this: ISignalEvent<unknown>): void {
   this.canceled = true;
 }
 
@@ -20,8 +19,8 @@ function cancelSignal(this: ISignalEvent<TSignalType, unknown>): void {
  * Composes signal event from base data and notifies all listeners in current scope.
  * If event is canceled, stop its propagation to next handlers.
  */
-export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
-  base: IBaseSignal<T, D>,
+export function emitSignal<D = undefined>(
+  base: IBaseSignal<D>,
   emitter: TAnyContextManagerConstructor | null = null,
   REGISTRY: IRegistry
 ): void {
@@ -29,7 +28,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     throw new TypeError("Signal must be an object with declared type.");
   }
 
-  const signalEvent: ISignalEvent<T, D> = {
+  const signalEvent: ISignalEvent<D> = {
     type: base.type,
     data: base.data as D,
     emitter,
@@ -37,7 +36,7 @@ export function emitSignal<D = undefined, T extends TSignalType = TSignalType>(
     cancel: cancelSignal
   };
 
-  REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<T, D>) {
+  REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D>) {
     try {
       if (!signalEvent.canceled) {
         it(signalEvent);
