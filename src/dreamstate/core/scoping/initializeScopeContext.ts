@@ -29,7 +29,6 @@ import {
   TQueryResponse,
   TQueryType,
   TSignalListener,
-  TSignalType,
   TUpdateObserver,
   TUpdateSubscriber
 } from "@/dreamstate/types";

@@ -68,6 +68,4 @@ describe("@Bind decorator", () => {
 
     expect(base.method()).toBe(50);
   });
-
-  // todo: Test both proposal and legacy decoration.
 });

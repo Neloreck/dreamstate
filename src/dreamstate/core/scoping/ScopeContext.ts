@@ -20,6 +20,7 @@ import {
 
 /**
  * Scope internals that normally should remain private and should not be accessed externally.
+ * Used by dreamstate to manage data flow and signals/queries.
  */
 export interface IScopeContextInternals {
   /**
@@ -144,14 +145,25 @@ export interface IScopeContext {
     listener: TQueryListener<T, any>
   ): TCallable;
   /**
-   * todo;
+   * Unregister callback as query provider and answer query data calls with it.
+   *
+   * @param {TQueryType} queryType - type of query for data provisioning.
+   * @param {TQueryListener} listener - callback that will be unsubscribed from listening.
    */
   unRegisterQueryProvider<T extends TQueryType>(
     queryType: T,
     listener: TQueryListener<T, any>
   ): void;
   /**
-   * todo;
+   * Query data from current scope in a sync way.
+   * Handler that listen for provided query type will be executed and return value will be wrapped
+   * and returned as QueryResponse.
+   * Mainly used to get specific data in current context or receive current state of specific data without direct
+   * referencing to it.
+   *
+   * @param {IOptionalQueryRequest} query - optional query request base for data retrieval, includes query type and
+   *  optional data field.
+   * @returns {TQueryResponse} response for provided query or null value if no handlers were found.
    */
   queryDataSync<
     D extends any,
@@ -161,14 +173,22 @@ export interface IScopeContext {
     query: Q
   ): TQueryResponse<any>;
   /**
-   * todo;
+   * Query data from current scope in an sync way.
+   * Handler that listen for provided query type will be executed and return value will be wrapped
+   * and returned as QueryResponse.
+   * Mainly used to get specific data in current context or receive current state of specific data without direct
+   * referencing to it.
+   *
+   * @param {IOptionalQueryRequest} query - optional query request base for data retrieval, includes query type and
+   *  optional data field.
+   * @returns {Promise} response for provided query or null value if no handlers were found.
    */
   queryDataAsync<
     D extends any,
     T extends TQueryType,
     Q extends IOptionalQueryRequest<D, T>
     >(
-    queryRequest: Q
+    query: Q
   ): Promise<TQueryResponse<any>>;
 }
 

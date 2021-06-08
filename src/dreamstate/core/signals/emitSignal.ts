@@ -42,7 +42,7 @@ export function emitSignal<D = undefined>(
         it(signalEvent);
       }
     } catch (error) {
-      // nothing to do currently, todo: print stack trace?
+      // nothing to do currently, todo: print stack trace as dev warning?
     }
   });
 }
