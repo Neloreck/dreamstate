@@ -19,6 +19,7 @@ module.exports = {
   transform: {
     "^.+\\.[t|j]sx?$": [ "babel-jest", { configFile: path.resolve(__dirname, "babel.test.config.js") } ]
   },
+  testEnvironment: "jsdom",
   globals: {
     IS_DEV: false
   }
