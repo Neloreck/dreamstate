@@ -3,7 +3,7 @@ import {
   MutableRefObject,
   SetStateAction,
   useContext,
-  useEffect,
+  useLayoutEffect,
   useRef,
   useState
 } from "react";
@@ -26,14 +26,14 @@ export function useContextWithMemo<
   dependenciesSelector: (context: T) => Array<any>
 ): T {
   const scope: IScopeContext = useContext(ScopeContext);
-  const observed: MutableRefObject<Array<any> | null> = useRef(null);
+  const observed: MutableRefObject<Array<unknown> | null | undefined> = useRef(undefined);
   const state: [ T, Dispatch<SetStateAction<T>> ]
     = useState(function(): T {
       return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
     });
 
-  // Calculate changes like react core does and fire change only after update.
-  useEffect(function(): TCallable {
+  // Calculate changes like react does and fire change only if one of dependencies has updated.
+  useLayoutEffect(function(): TCallable {
     const setState: Dispatch<SetStateAction<T>> = state[1];
 
     /**
@@ -50,7 +50,13 @@ export function useContextWithMemo<
     function checkMemoState(nextContext: T): void {
       const nextObserved: Array<any> = dependenciesSelector(nextContext);
 
-      if (!observed.current) {
+      /**
+       * Do not trigger state update first time.
+       * On HMR reloads force state update.
+       */
+      if (observed.current === undefined) {
+        observed.current = nextObserved;
+      } else if (observed.current === null) {
         return updateMemoState(nextObserved, nextContext);
       }
 
