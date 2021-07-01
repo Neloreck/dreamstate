@@ -103,15 +103,8 @@ export abstract class ContextManager<
    * Note: creates new shallow copy of 'this.context' reference.
    */
   public forceUpdate(): void {
-    const previousContext: T = this.context;
-    const nextContext: T = Object.assign({}, this.context);
-
-    processComputed(nextContext);
-
-    this.beforeUpdate(nextContext);
-    this.context = nextContext;
+    this.context = processComputed(Object.assign({}, this.context));
     this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
-    this.afterUpdate(previousContext);
   }
 
   /**
@@ -122,14 +115,13 @@ export abstract class ContextManager<
    *   In case of functional callback, it will be executed immediately with 'currentContext' parameter.
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
-    const previousContext: T = this.context;
     const nextContext: T = Object.assign(
       {},
-      previousContext,
+      this.context,
       /**
        * Handle context transformer functions.
        */
-      isFunction(next) ? (next as TPartialTransformer<T>)(previousContext) : next
+      isFunction(next) ? (next as TPartialTransformer<T>)(this.context) : next
     );
 
     /**
@@ -144,10 +136,8 @@ export abstract class ContextManager<
     ) {
       processComputed(nextContext);
 
-      this.beforeUpdate(nextContext);
       this.context = nextContext;
       this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
-      this.afterUpdate(previousContext);
     }
   }
 
@@ -209,25 +199,5 @@ export abstract class ContextManager<
    * Useful for data disposal when context is being ejected/when HMR happens.
    */
   public onProvisionEnded(): void {}
-
-  /**
-   * Lifecycle method.
-   * Before update lifecycle event.
-   *
-   * Following method will be called if providers tree update is about to happen.
-   *
-   * @param nextContext - nextContext that will be set for data provisioning and assigned to this.context later.
-   */
-  protected beforeUpdate(nextContext: T): void {}
-
-  /**
-   * Lifecycle method.
-   * After update lifecycle event.
-   *
-   * Following method will be called if providers tree update is about to happen.
-   *
-   * @param previousContext - previousContext that was set for data provisioning and assigned to this.context before.
-   */
-  protected afterUpdate(previousContext: T): void {}
 
 }

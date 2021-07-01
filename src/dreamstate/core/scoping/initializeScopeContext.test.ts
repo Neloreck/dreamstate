@@ -64,34 +64,4 @@ describe("InitializeScopeContext method", () => {
 
     unRegisterService(ExampleManagerClass);
   });
-
-  it("Should correctly change computed values beforeUpdate", () => {
-    interface IExampleContext {
-      a: number;
-      b: number;
-    }
-
-    class ExampleManagerClass extends ContextManager<IExampleContext> {
-
-      public readonly context: IExampleContext = {
-        a: 5,
-        b: 10
-      };
-
-      protected beforeUpdate(nextContext: IExampleContext) {
-        nextContext.b = nextContext.a * 2;
-      }
-
-    }
-
-    const [ manager ] = mockManagerWithScope(ExampleManagerClass);
-
-    manager.setContext({ a: 200 });
-
-    expect(manager.context.b).toBe(400);
-
-    manager.setContext({ a: 400 });
-
-    expect(manager.context.b).toBe(800);
-  });
 });

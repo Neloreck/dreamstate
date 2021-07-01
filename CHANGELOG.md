@@ -1,27 +1,32 @@
 ## 4.0.0 (*/*/*)
-  * much faster loadable/nested values
+### Added:
+  * mockScope test-util added
+  * mockScopeProvider test-util added
+  * mockManagerWithScope test-util added
+### Removed:
+  * register/observing methods (test-utils) removed
+  * getCurrentContext (test-utils) removed
+  * IS_SINGLE removed in favor of scoped storages without global storing // related to HMR problems and best approach for data management
   * ContextService removed in favor of ContextManager
   * Provide decorator removed
   * Consume decorator removed
   * withProvision HoC removed
   * withConsumption HoC removed
-  * IS_SINGLE removed in favor of scoped storages without global storing // related to HMR problems
+  * before/after update lifecycle methods removed
+  * useSignals method removed
+  * queryDataAsync stopped supporting array of queries
+### Updates:
   * getCurrent moved to test-utils
-  * getCurrentContext removed from test utils
-  * register/observing methods removed from test utils
   * queryData renamed to queryDataAsync
-  * queryDataAsync stopped array of queries supporting
   * mount/unmount order now matches react components
   * signals/queries cannot be sent from disposed context manager class
-  * useSignals method removed
   * global methods/getters moved to scope context
-  * mockScope test-util added
-  * mockScopeProvider test-util added
-  * mockManagerWithScope test-util added
   * sync emitSignal calls
   * correct inheritance of signals/queries metadata
   * less verbose typing for queries and signals events
   * lifecycle events made public for easier testing
+  * more optimized loadable/nested values
+  * ContextManager supports default state without manual initialization (empty object)
 
 ## 3.3.2 (4/11/2021)
   * 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers

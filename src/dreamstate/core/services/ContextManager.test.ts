@@ -13,7 +13,6 @@ import { ISignalEvent, TAnyContextManagerConstructor } from "@/dreamstate/types"
 import {
   EmittingContextManager,
   ExtendingTestContextManager,
-  ITestContext,
   TestContextManager
 } from "@/fixtures";
 
@@ -21,71 +20,22 @@ describe("ContextManager class", () => {
   it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
     const [ manager ] = mockManagerWithScope(TestContextManager);
 
-    manager["beforeUpdate"] = jest.fn(
-      function(this: TestContextManager, nextContext: ITestContext) {
-        expect(nextContext.first).toBe("updated");
-        expect(nextContext.second).toBe(22);
-        expect(this.context.first).toBe("first");
-        expect(this.context.second).toBe(2);
-      }.bind(manager)
-    );
-    manager["afterUpdate"] = jest.fn(
-      function(this: TestContextManager, prevContext: ITestContext) {
-        expect(this.context.first).toBe("updated");
-        expect(this.context.second).toBe(22);
-        expect(prevContext.first).toBe("first");
-        expect(prevContext.second).toBe(2);
-      }.bind(manager)
-    );
-
     expect(manager.context.first).toBe("first");
     expect(manager.context.second).toBe(2);
 
     manager.setContext(() => ({ first: "updated", second: 22 }));
 
-    expect(manager["beforeUpdate"]).toHaveBeenCalled();
-    expect(manager["afterUpdate"]).toHaveBeenCalled();
-
     expect(manager.context.first).toBe("updated");
     expect(manager.context.second).toBe(22);
 
     /**
-     * Should not update if props are not changed.
-     */
-
-    manager["beforeUpdate"] = jest.fn();
-    manager["afterUpdate"] = jest.fn();
-
-    manager.setContext({ first: "updated", second: 22 });
-
-    expect(manager["beforeUpdate"]).not.toHaveBeenCalled();
-    expect(manager["afterUpdate"]).not.toHaveBeenCalled();
-
-    /**
      * Should force updates correctly.
      */
-
-    manager["beforeUpdate"] = jest.fn(
-      function(this: TestContextManager, nextContext: ITestContext) {
-        expect(nextContext.first).toBe("updated");
-        expect(nextContext.second).toBe(22);
-        expect(this.context.first).toBe("updated");
-        expect(this.context.second).toBe(22);
-      }.bind(manager)
-    );
-    manager["afterUpdate"] = jest.fn(
-      function(this: TestContextManager, prevContext: ITestContext) {
-        expect(this.context.first).toBe("updated");
-        expect(this.context.second).toBe(22);
-        expect(prevContext.first).toBe("updated");
-        expect(prevContext.second).toBe(22);
-      }.bind(manager)
-    );
+    const oldContext = manager.context;
 
     manager.forceUpdate();
 
-    expect(manager["beforeUpdate"]).toHaveBeenCalled();
-    expect(manager["afterUpdate"]).toHaveBeenCalled();
+    expect(oldContext).not.toBe(manager.context);
   });
 
   it("Should properly manage extended managers", () => {
@@ -137,8 +87,6 @@ describe("ContextManager class", () => {
 
       expect(typeof service.setContext).toBe("function");
       expect(typeof service.forceUpdate).toBe("function");
-      expect(typeof service["beforeUpdate"]).toBe("function");
-      expect(typeof service["afterUpdate"]).toBe("function");
 
       expect(typeof ManagerClass.REACT_CONTEXT).toBe("object");
       expect(typeof ManagerClass.REACT_CONTEXT.Provider).toBe("object");
