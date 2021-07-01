@@ -1,4 +1,4 @@
-## 4.0.0 (*/*/*)
+## 4.0.0 (7/2/2021)
 ### Added:
   * mockScope test-util added
   * mockScopeProvider test-util added

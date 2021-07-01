@@ -35,7 +35,7 @@ export function SampleContextEditor(): ReactElement {
 
   const onCommitChanges = useCallback(
     () => sampleActions.setSampleString(localSampleString),
-    [ localSampleString ]
+    [ localSampleString, sampleActions ]
   );
 
   return (
