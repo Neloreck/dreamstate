@@ -11,7 +11,7 @@ describe("Emitting signal on provision end", () => {
 
   class QueryingOnProvisionEnd extends ContextManager {
 
-    protected async onProvisionEnded() {
+    public async onProvisionEnded() {
       await this.queryDataAsync({ type: "END" });
     }
 

@@ -21,11 +21,11 @@ describe("UseManager subscription and rendering", () => {
       text: "value"
     }
 
-    protected onProvisionStarted(): void {
+    public onProvisionStarted(): void {
       onStarted();
     }
 
-    protected onProvisionEnded(): void {
+    public onProvisionEnded(): void {
       onEnded();
     }
 

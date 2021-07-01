@@ -8,11 +8,11 @@ describe("Mount order for providers", () => {
   const generateManagers = (mountList: Array<string>, unmountList: Array<string>) => {
     class BaseManager extends ContextManager {
 
-      protected onProvisionStarted(): void {
+      public onProvisionStarted(): void {
         mountList.push(this.constructor.name);
       }
 
-      protected onProvisionEnded(): void {
+      public onProvisionEnded(): void {
         unmountList.push(this.constructor.name);
       }
 

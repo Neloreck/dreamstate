@@ -199,7 +199,7 @@ export abstract class ContextManager<
    *
    * Useful for data initialization and subscriptions creation.
    */
-  protected onProvisionStarted(): void {}
+  public onProvisionStarted(): void {}
 
   /**
    * Lifecycle method.
@@ -208,7 +208,7 @@ export abstract class ContextManager<
    *
    * Useful for data disposal when context is being ejected/when HMR happens.
    */
-  protected onProvisionEnded(): void {}
+  public onProvisionEnded(): void {}
 
   /**
    * Lifecycle method.

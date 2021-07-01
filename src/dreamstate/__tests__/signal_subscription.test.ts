@@ -31,7 +31,7 @@ describe("Signal subscription of test classes", () => {
 
   class EmittingOnProvisionStart extends ContextManager {
 
-    protected onProvisionStarted(): void {
+    public onProvisionStarted(): void {
       this.emitSignal(demoSignal);
       this.emitSignal(emptySignal);
     }

@@ -17,7 +17,7 @@ describe("Sending query on provision start", () => {
 
   class QueryingOnStart extends ContextManager {
 
-    protected onProvisionStarted(): void {
+    public onProvisionStarted(): void {
       count(this.queryDataSync({ type: "START" }));
     }
 

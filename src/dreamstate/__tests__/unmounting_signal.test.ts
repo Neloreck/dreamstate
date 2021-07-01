@@ -10,7 +10,7 @@ describe("Emitting signal on provision end", () => {
 
   class EmittingOnProvisionEnd extends ContextManager {
 
-    protected onProvisionEnded() {
+    public onProvisionEnded() {
       this.emitSignal({ type: "END" });
     }
 

@@ -10,7 +10,7 @@ describe("Emitting signal on provision start", () => {
 
   class EmittingOnProvisionStart extends ContextManager {
 
-    protected onProvisionStarted() {
+    public onProvisionStarted() {
       this.emitSignal({ type: "START" });
     }
 
