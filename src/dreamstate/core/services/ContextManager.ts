@@ -12,7 +12,7 @@ import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserver
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
   IBaseSignal,
-  IOptionalQueryRequest,
+  IOptionalQueryRequest, ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
   TConstructorKey,
@@ -40,7 +40,9 @@ import { isFunction } from "@/dreamstate/utils/typechecking";
  * Every class instance can register method as scope signal listener.
  * Every class instance can register method as scope query data provider.
  * Every class instance is responsible only for specific data part like reducer in redux.
- *   Examples: AuthContextManager, GraphicsContextManager, ChatContextManager, LocalMediaContextManager etc.
+ *   Examples: AuthManager, GraphicsManager, ChatManager, LocalMediaManager etc.
+ *
+ * Async methods called after manager class unregistering will cause dev warnings and will not affect actual scope.
  */
 export abstract class ContextManager<
   T extends TAnyObject = TEmptyObject,
@@ -152,7 +154,7 @@ export abstract class ContextManager<
    */
   public emitSignal<D = undefined>(
     baseSignal: IBaseSignal<D>
-  ): void {
+  ): ISignalEvent<D> {
     return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
   }
 

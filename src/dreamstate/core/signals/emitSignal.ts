@@ -1,3 +1,5 @@
+import { log } from "@/macroses/log.macro";
+
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import {
   IBaseSignal,
@@ -10,8 +12,10 @@ import {
  * Callback for signal canceling.
  * Used in signal events for propagation stopping.
  */
-function cancelSignal(this: ISignalEvent<unknown>): void {
+function cancelSignal<D = undefined>(this: ISignalEvent<D>): ISignalEvent<D> {
   this.canceled = true;
+
+  return this;
 }
 
 /**
@@ -23,7 +27,7 @@ export function emitSignal<D = undefined>(
   base: IBaseSignal<D>,
   emitter: TAnyContextManagerConstructor | null = null,
   REGISTRY: IRegistry
-): void {
+): ISignalEvent<D> {
   if (!base || base.type === undefined) {
     throw new TypeError("Signal must be an object with declared type.");
   }
@@ -42,7 +46,9 @@ export function emitSignal<D = undefined>(
         it(signalEvent);
       }
     } catch (error) {
-      // nothing to do currently, todo: print stack trace as dev warning?
+      log.error(`Failed to proceed emitted signal (${String(base.type)}):`, error);
     }
   });
+
+  return signalEvent;
 }

@@ -6,7 +6,7 @@ export interface ITestContext {
   third: boolean;
 }
 
-export class TestContextManager extends ContextManager<ITestContext> {
+export class TestManager extends ContextManager<ITestContext> {
 
   public readonly context: ITestContext = {
     first: "first",

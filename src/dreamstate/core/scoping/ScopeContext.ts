@@ -5,7 +5,7 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IBaseSignal,
   IContextManagerConstructor,
-  IOptionalQueryRequest,
+  IOptionalQueryRequest, ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
   TCallable,
@@ -113,7 +113,7 @@ export interface IScopeContext {
   emitSignal<D = undefined>(
     base: IBaseSignal<D>,
     emitter?: TAnyContextManagerConstructor | null
-  ): void;
+  ): ISignalEvent<D>;
   /**
    * Subscribe to signals in current scope.
    * Following callback will be triggered on each signal with signal event as first parameter.

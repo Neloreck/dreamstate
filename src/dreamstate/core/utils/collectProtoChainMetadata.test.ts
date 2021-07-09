@@ -1,7 +1,7 @@
 import { ContextManager, OnQuery, OnSignal } from "@/dreamstate";
 import { QUERY_METADATA_REGISTRY, SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";
-import { TestContextManager } from "@/fixtures";
+import { TestManager } from "@/fixtures";
 
 describe("collectProtoChainMetadata util method", () => {
   class BaseSignalContextManager extends ContextManager {
@@ -99,6 +99,6 @@ describe("collectProtoChainMetadata util method", () => {
     expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
     expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
     expect(() => collectProtoChainMetadata(ContextManager as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
-    expect(() => collectProtoChainMetadata(TestContextManager, SIGNAL_METADATA_REGISTRY)).not.toThrow(TypeError);
+    expect(() => collectProtoChainMetadata(TestManager, SIGNAL_METADATA_REGISTRY)).not.toThrow(TypeError);
   });
 });

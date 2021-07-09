@@ -4,15 +4,15 @@ import { default as React } from "react";
 import { provideSubTreeRecursive } from "@/dreamstate/core/provision/combined/provideSubTreeRecursive";
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
-import { NestedContextManager, TestContextManager } from "@/fixtures";
+import { NestedManager, TestManager } from "@/fixtures";
 
 describe("provideSubTreeRecursive rendering", () => {
   it("Should match snapshot", () => {
     const registry: IRegistry = createRegistry();
     const providers: Array<TAnyContextManagerConstructor> = [
-      TestContextManager,
-      NestedContextManager,
-      TestContextManager
+      TestManager,
+      NestedManager,
+      TestManager
     ];
 
     const emptyRecursiveRender = shallow(
@@ -29,8 +29,8 @@ describe("provideSubTreeRecursive rendering", () => {
 
     expect(emptyRecursiveRender).toMatchSnapshot();
 
-    registry.CONTEXT_STATES_REGISTRY.set(TestContextManager, { first: "is" });
-    registry.CONTEXT_STATES_REGISTRY.set(NestedContextManager, { second: "is" });
+    registry.CONTEXT_STATES_REGISTRY.set(TestManager, { first: "is" });
+    registry.CONTEXT_STATES_REGISTRY.set(NestedManager, { second: "is" });
 
     const providedRecursiveRender = shallow(
       <div>

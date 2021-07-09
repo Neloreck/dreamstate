@@ -6,11 +6,11 @@ import { createCombinedProvider } from "@/dreamstate/core/provision/combined/cre
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { createScopedProvider } from "@/dreamstate/core/provision/scoped/createScopedProvider";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { TestContextManager } from "@/fixtures";
+import { TestManager } from "@/fixtures";
 
 describe("createProvider method", () => {
-  const CombinedProvider = createProvider([ TestContextManager ], { isCombined: true });
-  const ScopedProvider = createProvider([ TestContextManager ], { isCombined: false });
+  const CombinedProvider = createProvider([ TestManager ], { isCombined: true });
+  const ScopedProvider = createProvider([ TestManager ], { isCombined: false });
 
   it("Should render correct component tree", async () => {
     let currentScope: IScopeContext = null as any;
@@ -60,7 +60,7 @@ describe("createProvider method", () => {
     expect(() => createProvider([ class ExampleClass {} as any ])).toThrow(TypeError);
     expect(() => createProvider([])).toThrow();
 
-    expect(() => createProvider([ TestContextManager ])).not.toThrow();
+    expect(() => createProvider([ TestManager ])).not.toThrow();
   });
 
   it("Should create correct component tree without children", () => {
@@ -82,7 +82,7 @@ describe("createProvider method", () => {
   });
 
   it("Should have default provider names for production environment", () => {
-    expect(createScopedProvider([ TestContextManager ]).displayName).toBeUndefined();
-    expect(createCombinedProvider([ TestContextManager ]).displayName).toBeUndefined();
+    expect(createScopedProvider([ TestManager ]).displayName).toBeUndefined();
+    expect(createCombinedProvider([ TestManager ]).displayName).toBeUndefined();
   });
 });

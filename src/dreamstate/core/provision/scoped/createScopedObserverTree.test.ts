@@ -2,7 +2,7 @@ import { shallow } from "enzyme";
 import { createElement } from "react";
 
 import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/createScopedObserverTree";
-import { NestedContextManager, TestContextManager } from "@/fixtures";
+import { NestedManager, TestManager } from "@/fixtures";
 
 describe("createScopedObserverTree rendering", () => {
   it("Should match snapshot", () => {
@@ -12,9 +12,9 @@ describe("createScopedObserverTree rendering", () => {
         {},
         createScopedObserverTree(
           [
-            TestContextManager,
-            NestedContextManager,
-            TestContextManager
+            TestManager,
+            NestedManager,
+            TestManager
           ],
           { children: createElement("div", {}, "bottom") },
           null as any

@@ -4,13 +4,13 @@ import { default as React, ReactElement } from "react";
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { TestContextManager } from "@/fixtures";
+import { TestManager } from "@/fixtures";
 
 describe("getCurrent method functionality", () => {
   it("Should properly return current service instance", () => {
     let globalScope: IScopeContext = null as any;
 
-    const Provider = createProvider([ TestContextManager ]);
+    const Provider = createProvider([ TestManager ]);
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();
@@ -23,11 +23,11 @@ describe("getCurrent method functionality", () => {
     const emptyTree = mount(<ScopeProvider> <Consumer/> </ScopeProvider>);
 
     expect(globalScope).not.toBeUndefined();
-    expect(getCurrent(TestContextManager, globalScope)).toBeNull();
+    expect(getCurrent(TestManager, globalScope)).toBeNull();
 
     emptyTree.unmount();
 
-    expect(getCurrent(TestContextManager, globalScope)).toBeNull();
+    expect(getCurrent(TestManager, globalScope)).toBeNull();
 
     const providedTree = mount(<ScopeProvider>
       <Provider>
@@ -36,13 +36,13 @@ describe("getCurrent method functionality", () => {
     </ScopeProvider>);
 
     expect(globalScope).not.toBeUndefined();
-    expect(getCurrent(TestContextManager, globalScope)).not.toBeNull();
-    expect(getCurrent(TestContextManager, globalScope)).toBeInstanceOf(TestContextManager);
-    expect(getCurrent(TestContextManager, globalScope)?.context.first).toBe("first");
+    expect(getCurrent(TestManager, globalScope)).not.toBeNull();
+    expect(getCurrent(TestManager, globalScope)).toBeInstanceOf(TestManager);
+    expect(getCurrent(TestManager, globalScope)?.context.first).toBe("first");
 
     providedTree.unmount();
 
     expect(globalScope).not.toBeUndefined();
-    expect(getCurrent(TestContextManager, globalScope)).toBeNull();
+    expect(getCurrent(TestManager, globalScope)).toBeNull();
   });
 });

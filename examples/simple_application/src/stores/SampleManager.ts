@@ -15,7 +15,7 @@ export interface ISampleContext {
 /**
  * Declare manager class that handles declared data.
  */
-export class SampleContextManager extends ContextManager<ISampleContext> {
+export class SampleManager extends ContextManager<ISampleContext> {
 
   /**
    * Initial context data.

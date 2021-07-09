@@ -2,10 +2,10 @@ import { mount, render } from "enzyme";
 import { createElement } from "react";
 
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
-import { TestContextManager } from "@/fixtures";
+import { TestManager } from "@/fixtures";
 
 describe("Mount order for providers", () => {
-  const Provider = createProvider([ TestContextManager ]);
+  const Provider = createProvider([ TestManager ]);
 
   it("Should properly have ready state if it was mounted-unmounted many times", async () => {
     for (let it = 0; it < 1000; it ++) {
@@ -21,8 +21,8 @@ describe("Mount order for providers", () => {
         }
       } = useScope();
 
-      expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeUndefined();
-      expect(CONTEXT_INSTANCES_REGISTRY.get(TestContextManager)).toBeUndefined();
+      expect(CONTEXT_STATES_REGISTRY.get(TestManager)).toBeUndefined();
+      expect(CONTEXT_INSTANCES_REGISTRY.get(TestManager)).toBeUndefined();
 
       return null;
     }));
@@ -44,8 +44,8 @@ describe("Mount order for providers", () => {
         }
       } = useScope();
 
-      expect(CONTEXT_STATES_REGISTRY.get(TestContextManager)).toBeDefined();
-      expect(CONTEXT_INSTANCES_REGISTRY.get(TestContextManager)).toBeDefined();
+      expect(CONTEXT_STATES_REGISTRY.get(TestManager)).toBeDefined();
+      expect(CONTEXT_INSTANCES_REGISTRY.get(TestManager)).toBeDefined();
 
       return null;
     }));

@@ -1,3 +1,13 @@
+## 4.0.1 (*/*/2021)
+### Added:
+  * Mock manager test util for isolated scope mocking
+  * Mock managers test util for isolated scope mocking
+### Updated:
+  * Dev warning instead of throw for disposed scope calls to prevent global exception catching with sentry-like services
+  * Do not affect scope after disposing with setContext and forceUpdate methods
+  * Return signal event from 'emitSignal' manager method
+  * Warn in console when signal handler fails
+
 ## 4.0.0 (7/2/2021)
 ### Added:
   * mockScope test-util added
@@ -15,7 +25,7 @@
   * before/after update lifecycle methods removed
   * useSignals method removed
   * queryDataAsync stopped supporting array of queries
-### Updates:
+### Updated:
   * getCurrent moved to test-utils
   * queryData renamed to queryDataAsync
   * mount/unmount order now matches react components

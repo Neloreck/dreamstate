@@ -37,7 +37,7 @@ exports[`createProvider method Should create correct component tree without chil
           "INTERNAL": Object {
             "REGISTRY": Object {
               "CONTEXT_INSTANCES_REGISTRY": Map {
-                [Function] => TestContextManager {
+                [Function] => TestManager {
                   "context": Object {
                     "first": "first",
                     "second": 2,
@@ -125,7 +125,7 @@ exports[`createProvider method Should render correct component tree 2`] = `
           "INTERNAL": Object {
             "REGISTRY": Object {
               "CONTEXT_INSTANCES_REGISTRY": Map {
-                [Function] => TestContextManager {
+                [Function] => TestManager {
                   "context": Object {
                     "first": "first",
                     "second": 2,

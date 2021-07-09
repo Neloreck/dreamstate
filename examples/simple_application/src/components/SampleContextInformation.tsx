@@ -1,6 +1,6 @@
 import { CSSProperties, default as React, ReactElement } from "react";
 import { useManager } from "dreamstate";
-import { SampleContextManager } from "../stores/SampleContextManager";
+import { SampleManager } from "../stores/SampleManager";
 import { useRendersCount } from "../hooks/useRendersCount";
 
 const informationStyle: CSSProperties = {
@@ -13,7 +13,7 @@ export function SampleContextInformation(): ReactElement {
   /**
    * Update on every context update and keep current component up-to-date always.
    */
-  const { sampleNumber, sampleString } = useManager(SampleContextManager);
+  const { sampleNumber, sampleString } = useManager(SampleManager);
   const rendersCount: number = useRendersCount();
 
   return (

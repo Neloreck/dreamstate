@@ -11,7 +11,7 @@ export interface INestedContext {
   };
 }
 
-export class NestedContextManager extends ContextManager<INestedContext> {
+export class NestedManager extends ContextManager<INestedContext> {
 
   public readonly context: INestedContext = {
     first: {

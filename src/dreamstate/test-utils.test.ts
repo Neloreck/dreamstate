@@ -7,6 +7,7 @@ describe("Library test utils exports", () => {
     "getReactConsumer",
     "getCurrent",
     "mockManagerWithScope",
+    "mockManager",
     "mockScopeProvider",
     "mockScope",
     "nextAsyncQueue"

@@ -24,3 +24,5 @@ export type TAnyObject = Record<string, any>;
  * Any object that cannot be accessed because data is unknown.
  */
 export type TEmptyObject = Record<string, unknown>;
+
+export type TUninitializedValue = any;

@@ -6,11 +6,11 @@ import { ScopeProvider, useManager, useScope } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { ITestContext, TestContextManager } from "@/fixtures";
+import { ITestContext, TestManager } from "@/fixtures";
 
 describe("React tree for provided and consumed components", () => {
   it("Should correctly update subscribed to functional provider elements view", () => {
-    const ContextProvider = createProvider([ TestContextManager ]);
+    const ContextProvider = createProvider([ TestManager ]);
 
     function Root(): ReactElement {
       return (
@@ -22,13 +22,13 @@ describe("React tree for provided and consumed components", () => {
       );
     }
 
-    let testContextManager: TestContextManager | null = null;
+    let testContextManager: TestManager | null = null;
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();
-      const context: ITestContext = useManager(TestContextManager);
+      const context: ITestContext = useManager(TestManager);
 
-      testContextManager = getCurrent(TestContextManager, scope);
+      testContextManager = getCurrent(TestManager, scope);
 
       return <div> { JSON.stringify(context) }</div>;
     }

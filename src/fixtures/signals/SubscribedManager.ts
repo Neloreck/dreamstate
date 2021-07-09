@@ -3,7 +3,7 @@ import { TAnyObject } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures/signals/ESignal";
 import { TNumberSignalEvent, TStringSignalEvent } from "@/fixtures/signals/types";
 
-export class SubscribedContextManager extends ContextManager<TAnyObject> {
+export class SubscribedManager extends ContextManager<TAnyObject> {
 
   public context: TAnyObject = {};
 

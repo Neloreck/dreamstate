@@ -1,11 +1,11 @@
 import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
-import { TestContextManager } from "@/fixtures";
+import { TestManager } from "@/fixtures";
 
-describe("mockManager test util", () => {
+describe("mockManagerWithScope test util", () => {
   it("Should properly mock manager with context", () => {
-    const [ manager, scope ] = mockManagerWithScope(TestContextManager);
+    const [ manager, scope ] = mockManagerWithScope(TestManager);
 
-    expect(manager).toBeInstanceOf(TestContextManager);
+    expect(manager).toBeInstanceOf(TestManager);
     expect(manager.context.first).toBe("first");
 
     expect(scope).toBeInstanceOf(Object);

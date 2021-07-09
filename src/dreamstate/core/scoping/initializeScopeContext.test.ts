@@ -3,7 +3,7 @@ import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScop
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { TAnyObject } from "@/dreamstate/types";
-import { TestContextManager } from "@/fixtures";
+import { TestManager } from "@/fixtures";
 
 describe("InitializeScopeContext method", () => {
   it("Should properly add contextManagers subscribers", () => {
@@ -16,25 +16,25 @@ describe("InitializeScopeContext method", () => {
 
     const exampleSubscriber = () => {};
 
-    registerService(TestContextManager);
+    registerService(TestManager);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
 
-    subscribeToManager(TestContextManager, exampleSubscriber);
+    subscribeToManager(TestManager, exampleSubscriber);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(1);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(1);
 
-    unsubscribeFromManager(TestContextManager, exampleSubscriber);
+    unsubscribeFromManager(TestManager, exampleSubscriber);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
 
-    unRegisterService(TestContextManager);
+    unRegisterService(TestManager);
 
-    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)).toBe("object");
-    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestContextManager)!.size).toBe(0);
+    expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
+    expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
   });
 
   it("Should properly subscribe and unsubscribe only from contextManagers", () => {

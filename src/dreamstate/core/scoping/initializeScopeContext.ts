@@ -17,11 +17,13 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";
-import { throwAfterDisposal } from "@/dreamstate/core/utils/throwAfterDisposal";
+import { warnAsyncAfterDisposal } from "@/dreamstate/core/utils/warnAsyncAfterDisposal";
+import { warnSyncAfterDisposal } from "@/dreamstate/core/utils/warnSyncAfterDisposal";
 import {
   IBaseSignal,
   IContextManagerConstructor,
   IOptionalQueryRequest,
+  ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
   TCallable,
@@ -29,6 +31,7 @@ import {
   TQueryResponse,
   TQueryType,
   TSignalListener,
+  TUninitializedValue,
   TUpdateObserver,
   TUpdateSubscriber
 } from "@/dreamstate/types";
@@ -88,13 +91,17 @@ export function initializeScopeContext(): IScopeContext {
         if (CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as ContextManager<any>;
 
-          instance["emitSignal"] = throwAfterDisposal;
-          instance["queryDataSync"] = throwAfterDisposal;
-          instance["queryDataAsync"] = throwAfterDisposal;
-
           /**
-           * todo: setContext updating replacement with warnings later.
+           * Unset handlers and stop affecting scope after unregister.
+           * todo: Probably find better solution for store destruction and stopping scope.
            */
+          instance[SCOPE_SYMBOL] = null as TUninitializedValue;
+
+          instance["setContext"] = warnSyncAfterDisposal as TUninitializedValue;
+          instance["forceUpdate"] = warnSyncAfterDisposal as TUninitializedValue;
+          instance["queryDataSync"] = warnSyncAfterDisposal as TUninitializedValue;
+          instance["queryDataAsync"] = warnAsyncAfterDisposal as TUninitializedValue;
+          instance["queryDataAsync"] = warnSyncAfterDisposal as TUninitializedValue;
 
           SIGNAL_LISTENERS_REGISTRY.delete(instance[SIGNALING_HANDLER_SYMBOL]);
         }
@@ -113,6 +120,7 @@ export function initializeScopeContext(): IScopeContext {
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
         // todo: try-catch block for lifecycle?
+        // todo: Test cases with exception on provision.
         if (referencesCount === 1) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionStarted"]();
         }
@@ -124,6 +132,7 @@ export function initializeScopeContext(): IScopeContext {
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
         // todo: try-catch block for lifecycle?
+        // todo: Test cases with exception on provision.
         if (referencesCount === 0) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionEnded"]();
           this.unRegisterService(ManagerClass);
@@ -183,7 +192,7 @@ export function initializeScopeContext(): IScopeContext {
     emitSignal<D = undefined>(
       base: IBaseSignal<D>,
       emitter: TAnyContextManagerConstructor | null = null
-    ): void {
+    ): ISignalEvent<D> {
       return emitSignal(base, emitter, registry);
     },
     subscribeToSignals<D = undefined>(

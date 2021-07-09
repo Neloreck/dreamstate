@@ -1,11 +1,11 @@
 import { default as React, PropsWithChildren, ReactElement } from "react";
 import { createProvider, ScopeProvider } from "dreamstate";
-import { SampleContextManager } from "./stores/SampleContextManager";
+import { SampleManager } from "./stores/SampleManager";
 
 /**
  * Provider of sample context managers.
  */
-const StoreProvider = createProvider([ SampleContextManager ]);
+const StoreProvider = createProvider([ SampleManager ]);
 
 /**
  * Global application provider.

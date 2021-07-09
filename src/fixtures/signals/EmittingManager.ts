@@ -2,7 +2,7 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { TAnyObject } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures/signals/ESignal";
 
-export class EmittingContextManager extends ContextManager<TAnyObject> {
+export class EmittingManager extends ContextManager<TAnyObject> {
 
   public context: TAnyObject = {};
 
