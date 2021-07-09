@@ -99,6 +99,24 @@ export abstract class ContextManager<
   }
 
   /**
+   * Lifecycle method.
+   * First provider was injected into react tree.
+   * Same logic as 'componentWillMount' for class-based components.
+   *
+   * Useful for data initialization and subscriptions creation.
+   */
+  public onProvisionStarted(): void {}
+
+  /**
+   * Lifecycle method.
+   * Last provider was removed from react tree.
+   * Same logic as 'componentWillUnmount' for class-based components.
+   *
+   * Useful for data disposal when context is being ejected/when HMR happens.
+   */
+  public onProvisionEnded(): void {}
+
+  /**
    * Forces update and render of subscribed components.
    * Just in case when you need forced update to keep everything in sync with your context.
    *
@@ -183,23 +201,5 @@ export abstract class ContextManager<
   ): TQueryResponse<any> {
     return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
   }
-
-  /**
-   * Lifecycle method.
-   * First provider was injected into react tree.
-   * Same logic as 'componentWillMount' for class-based components.
-   *
-   * Useful for data initialization and subscriptions creation.
-   */
-  public onProvisionStarted(): void {}
-
-  /**
-   * Lifecycle method.
-   * Last provider was removed from react tree.
-   * Same logic as 'componentWillUnmount' for class-based components.
-   *
-   * Useful for data disposal when context is being ejected/when HMR happens.
-   */
-  public onProvisionEnded(): void {}
 
 }
