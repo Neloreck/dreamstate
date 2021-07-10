@@ -1,3 +1,4 @@
+import { default as clear } from "rollup-plugin-clear";
 import { default as dts } from "rollup-plugin-dts";
 
 import { default as tsconfig } from "../../tsconfig.json";
@@ -20,6 +21,9 @@ export const DTS_CONFIG = {
         paths: tsconfig.compilerOptions.paths,
         rootDir: tsconfig.compilerOptions.rootDir
       }
+    }),
+    clear({
+      targets: [ TYPES_ROOT ]
     })
   ]
 };

@@ -13,7 +13,7 @@
     "build:cjs": "npx rollup -c cli/build/rollup.cjs.config.js",
     "build:esm": "npx rollup -c cli/build/rollup.esm.config.js",
     "build:dts": "npx rollup -c cli/build/rollup.dts.config.js && mv ./target/dist/dts/lib ./target/dist/dts/lib.d.ts",
-    "build:ptb": "npm run clean && npx rollup -c cli/build/rollup.esm.portable.config.js",
+    "build:ptb": "npx rollup -c cli/build/rollup.esm.portable.config.js",
     "build": "npm run build:dts && npm run build:esm && npm run build:cjs",
     "lint": "npx eslint . --ext .ts,.js",
     "test": "jest --config cli/test/jest.config.js --detectOpenHandles",
