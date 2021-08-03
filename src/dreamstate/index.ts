@@ -18,14 +18,11 @@ export {
 } from "@/dreamstate/types";
 
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";
-
 export { createProvider } from "@/dreamstate/core/provision/createProvider";
+export { useManager } from "@/dreamstate/core/consumption/useManager";
 
 export { OnSignal } from "@/dreamstate/core/signals/OnSignal";
-
 export { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-
-export { useManager } from "@/dreamstate/core/consumption/useManager";
 
 export { IScopeContext as ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 export { ScopeProvider } from "@/dreamstate/core/scoping/ScopeProvider";
