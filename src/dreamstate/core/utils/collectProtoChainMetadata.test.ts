@@ -13,8 +13,7 @@ describe("collectProtoChainMetadata util method", () => {
 
   }
 
-  class FirstSignalExtendingContextManager extends BaseSignalContextManager {
-  }
+  class FirstSignalExtendingContextManager extends BaseSignalContextManager {}
 
   class SecondSignalExtendingContextManager extends FirstSignalExtendingContextManager {
 
@@ -34,8 +33,7 @@ describe("collectProtoChainMetadata util method", () => {
 
   }
 
-  class FirstQueryExtendingContextManager extends BaseQueryContextManager {
-  }
+  class FirstQueryExtendingContextManager extends BaseQueryContextManager {}
 
   class SecondQueryExtendingContextManager extends FirstQueryExtendingContextManager {
 
@@ -49,8 +47,8 @@ describe("collectProtoChainMetadata util method", () => {
   it("Should properly follow class chain until base class for signal metadata", () => {
     expect(() => collectProtoChainMetadata(BaseSignalContextManager, SIGNAL_METADATA_REGISTRY)).not.toThrow();
     expect(() => collectProtoChainMetadata(FirstSignalExtendingContextManager, SIGNAL_METADATA_REGISTRY)).not.toThrow();
-    expect(() => collectProtoChainMetadata(SecondSignalExtendingContextManager, SIGNAL_METADATA_REGISTRY))
-      .not.toThrow();
+    expect(() =>
+      collectProtoChainMetadata(SecondSignalExtendingContextManager, SIGNAL_METADATA_REGISTRY)).not.toThrow();
 
     expect(collectProtoChainMetadata(BaseSignalContextManager, SIGNAL_METADATA_REGISTRY)).toHaveLength(1);
     expect(collectProtoChainMetadata(FirstSignalExtendingContextManager, SIGNAL_METADATA_REGISTRY)).toHaveLength(1);
@@ -60,8 +58,7 @@ describe("collectProtoChainMetadata util method", () => {
   it("Should properly follow class chain until base class for query metadata", () => {
     expect(() => collectProtoChainMetadata(BaseQueryContextManager, QUERY_METADATA_REGISTRY)).not.toThrow();
     expect(() => collectProtoChainMetadata(FirstQueryExtendingContextManager, QUERY_METADATA_REGISTRY)).not.toThrow();
-    expect(() => collectProtoChainMetadata(SecondQueryExtendingContextManager, QUERY_METADATA_REGISTRY))
-      .not.toThrow();
+    expect(() => collectProtoChainMetadata(SecondQueryExtendingContextManager, QUERY_METADATA_REGISTRY)).not.toThrow();
 
     expect(collectProtoChainMetadata(BaseQueryContextManager, QUERY_METADATA_REGISTRY)).toHaveLength(1);
     expect(collectProtoChainMetadata(FirstQueryExtendingContextManager, QUERY_METADATA_REGISTRY)).toHaveLength(1);
@@ -72,7 +69,7 @@ describe("collectProtoChainMetadata util method", () => {
     class SomeBase extends ContextManager {
 
       @OnSignal("ON_SOME_SIGNAL")
-      protected onSomeSignal(): void{
+      protected onSomeSignal(): void {
         // example.
       }
 
@@ -81,7 +78,7 @@ describe("collectProtoChainMetadata util method", () => {
     class SomeExtending extends SomeBase {
 
       @OnSignal("ON_SOME_SIGNAL")
-      protected onSomeSignal(): void{
+      protected onSomeSignal(): void {
         // example.
       }
 
@@ -93,8 +90,7 @@ describe("collectProtoChainMetadata util method", () => {
   });
 
   it("Should throw exception on non ContextManager classes", () => {
-    class SomeClass {
-    }
+    class SomeClass {}
 
     expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
     expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);

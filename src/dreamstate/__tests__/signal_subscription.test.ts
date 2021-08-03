@@ -14,7 +14,7 @@ describe("Signal subscription of test classes", () => {
     strValue: string;
     numValue: number;
     boolValue: boolean;
-  }>
+  }>;
 
   const demoSignal: TDemoSignal = {
     type: "DEMO",
@@ -74,9 +74,29 @@ describe("Signal subscription of test classes", () => {
       firstTree.unmount();
     }
 
-    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: true }), 2);
-    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: true }), 4);
-    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: false }), 6);
-    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: false }), 8);
+    await testProvider(
+      createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], {
+        isCombined: true
+      }),
+      2
+    );
+    await testProvider(
+      createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], {
+        isCombined: true
+      }),
+      4
+    );
+    await testProvider(
+      createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], {
+        isCombined: false
+      }),
+      6
+    );
+    await testProvider(
+      createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], {
+        isCombined: false
+      }),
+      8
+    );
   });
 });

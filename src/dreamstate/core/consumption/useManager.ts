@@ -21,10 +21,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  *   if something in resulting array has changed. Component will update on every change if selector was not provided.
  * @returns context data of ManagerClass in current dreamstate scope.
  */
-export function useManager<
-  T extends TAnyObject,
-  D extends IContextManagerConstructor<T>
->(
+export function useManager<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
   ManagerClass: D,
   dependenciesSelector?: (context: D["prototype"]["context"]) => Array<any>
 ): D["prototype"]["context"] {

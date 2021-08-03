@@ -5,6 +5,7 @@
 <br/>
 [![start with wiki](https://img.shields.io/badge/docs-wiki-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/wiki)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/blob/master/LICENSE)
+
 <hr/>
 
 Simpler data management for react. <br/>
@@ -12,25 +13,30 @@ Simpler data management for react. <br/>
 Separation of application view and data without spaghetti-coded providers and boilerplate code. <br/>
 Library helps to create small stores with react-like lifecycle and scoped signaling. <br/>
 
- - [x] Strictly typed
- - [x] No boilerplate code
- - [x] Fast 
- - [x] Simple 
- - [x] Testable
- - [x] Tree shaking
+- [x] Strictly typed
+- [x] No boilerplate code
+- [x] Fast
+- [x] Simple
+- [x] Testable
+- [x] Tree shaking
 
 ## Install
+
 - `npm install --save dreamstate`
 
 ## Requirements
+
 - `react >= 16.8.0`
 
 ## Documentation
- - [wiki](https://github.com/Neloreck/dreamstate/wiki/Home)
- - [examples](https://github.com/Neloreck/dreamstate/tree/master/examples)
-  
+
+- [wiki](https://github.com/Neloreck/dreamstate/wiki/Home)
+- [examples](https://github.com/Neloreck/dreamstate/tree/master/examples)
+
 ## Proposals and contribution:
+
 Feel free to open PRs or issues. <br/>
 
 ## Licence
+
 MIT

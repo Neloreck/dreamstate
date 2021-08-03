@@ -13,13 +13,10 @@ function log({ references, babel }) {
       const args = expression.node.arguments;
 
       const logStatement = types.expressionStatement(
-        types.callExpression(
-          types.memberExpression(types.identifier("console"), types.identifier(method)),
-          [
-            types.stringLiteral("[DS]"),
-            ...args
-          ]
-        )
+        types.callExpression(types.memberExpression(types.identifier("console"), types.identifier(method)), [
+          types.stringLiteral("[DS]"),
+          ...args
+        ])
       );
 
       expression.replaceWith(logStatement);

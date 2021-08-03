@@ -11,11 +11,7 @@ describe("createScopedObserverTree rendering", () => {
         "div",
         {},
         createScopedObserverTree(
-          [
-            TestManager,
-            NestedManager,
-            TestManager
-          ],
+          [ TestManager, NestedManager, TestManager ],
           { children: createElement("div", {}, "bottom") },
           null as any
         )

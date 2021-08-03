@@ -13,21 +13,17 @@ import {
 /**
  * Execute query and return result in a sync way.
  */
-function executeQuerySync<
-  R,
-  D = undefined,
-  T extends TQueryType = TQueryType
-  >(
+function executeQuerySync<R, D = undefined, T extends TQueryType = TQueryType>(
   callback: TQueryListener<T, D>,
   query: IOptionalQueryRequest<D, T>,
   answerer: TAnyContextManagerConstructor | null
 ): TQueryResponse<R> {
-  return ({
-    answerer: answerer || callback as TAnyCallable,
+  return {
+    answerer: answerer || (callback as TAnyCallable),
     type: query.type,
     data: callback(query),
     timestamp: Date.now()
-  });
+  };
 }
 
 /**
@@ -35,12 +31,7 @@ function executeQuerySync<
  * Try to find matching type and call related method.
  * Returns everything as sync result, promises should be handled differently in this case.
  */
-export function queryDataSync<
-  R,
-  D extends any,
-  T extends TQueryType,
-  Q extends IOptionalQueryRequest<D, T>
->(
+export function queryDataSync<R, D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
   query: Q,
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): TQueryResponse<R> | null {

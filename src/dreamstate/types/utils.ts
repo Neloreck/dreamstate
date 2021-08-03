@@ -25,10 +25,7 @@ export type TNested<T> = T & INestedBase<T>;
 /**
  * Computed field base methods with selectors.
  */
-export interface IComputedBase<
-  T extends TAnyObject,
-  C extends TAnyObject
-> {
+export interface IComputedBase<T extends TAnyObject, C extends TAnyObject> {
   readonly __selector__: (context: C) => T;
   readonly __memo__?: (context: C) => Array<any>;
   readonly __diff__?: Array<any>;

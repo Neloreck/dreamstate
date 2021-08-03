@@ -7,7 +7,9 @@ import { TStringSignalEvent } from "@/fixtures/signals/types";
 
 export function SubscribedFunctionalComponent({
   onInternalSignal
-}: { onInternalSignal: (signal: TStringSignalEvent) => void }): ReactElement {
+}: {
+  onInternalSignal: (signal: TStringSignalEvent) => void;
+}): ReactElement {
   const { subscribeToSignals }: IScopeContext = useScope();
   const [ value, setValue ] = useState("initial");
 

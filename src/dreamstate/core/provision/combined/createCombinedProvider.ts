@@ -27,8 +27,7 @@ export function createCombinedProvider<T extends TAnyObject>(
   if (IS_DEV) {
     Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextManagerConstructor) {
       return it.name;
-    })
-    }]`;
+    })}]`;
   }
 
   return Observer as FunctionComponent<IProviderProps<T>>;

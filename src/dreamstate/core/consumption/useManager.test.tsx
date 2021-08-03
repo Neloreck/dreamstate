@@ -19,7 +19,7 @@ describe("UseManager subscription and rendering", () => {
     public context: ISampleContext = {
       example: 1000,
       text: "value"
-    }
+    };
 
     public onProvisionStarted(): void {
       onStarted();
@@ -76,9 +76,9 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(2);
 
     act(() => {
-      stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY
-        .get(SampleContextManager)!
-        .setContext({ text: "anything" });
+      stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({
+        text: "anything"
+      });
     });
     tree.update();
 
@@ -128,8 +128,9 @@ describe("UseManager subscription and rendering", () => {
     expect(rendersCount).toBe(1);
 
     act(() => {
-      stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY
-        .get(SampleContextManager)!.setContext({ text: "anything" });
+      stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({
+        text: "anything"
+      });
     });
     tree.update();
 

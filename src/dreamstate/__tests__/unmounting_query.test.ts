@@ -37,9 +37,29 @@ describe("Emitting signal on provision end", () => {
       mock.mockClear();
     }
 
-    await testProvider(createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], { isCombined: false }), 0);
-    await testProvider(createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], { isCombined: true }), 0);
-    await testProvider(createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], { isCombined: false }), 1);
-    await testProvider(createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], { isCombined: true }), 1);
+    await testProvider(
+      createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], {
+        isCombined: false
+      }),
+      0
+    );
+    await testProvider(
+      createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], {
+        isCombined: true
+      }),
+      0
+    );
+    await testProvider(
+      createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], {
+        isCombined: false
+      }),
+      1
+    );
+    await testProvider(
+      createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], {
+        isCombined: true
+      }),
+      1
+    );
   });
 });

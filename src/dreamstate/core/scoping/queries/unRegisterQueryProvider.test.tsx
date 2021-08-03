@@ -8,9 +8,11 @@ describe("registerQueryProvider method", () => {
   type TQueryCb = (scope: IScopeContext) => void;
 
   function testQueryTree(checker: TQueryCb): ReactWrapper {
-    return mount(<ScopeProvider>
-      <Consumer/>
-    </ScopeProvider>);
+    return mount(
+      <ScopeProvider>
+        <Consumer/>
+      </ScopeProvider>
+    );
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();
@@ -24,9 +26,7 @@ describe("registerQueryProvider method", () => {
   }
 
   it("Should properly unsubscribe from queries", async () => {
-    const tree = testQueryTree(({
-      INTERNAL: { REGISTRY }, registerQueryProvider, unRegisterQueryProvider
-    }) => {
+    const tree = testQueryTree(({ INTERNAL: { REGISTRY }, registerQueryProvider, unRegisterQueryProvider }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
 
       const provider = () => {
@@ -60,9 +60,7 @@ describe("registerQueryProvider method", () => {
   });
 
   it("Should properly deal with duplicated providers unsub", async () => {
-    const tree = testQueryTree(({
-      INTERNAL: { REGISTRY }, registerQueryProvider, unRegisterQueryProvider
-    }) => {
+    const tree = testQueryTree(({ INTERNAL: { REGISTRY }, registerQueryProvider, unRegisterQueryProvider }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
 
       const provider = () => {};

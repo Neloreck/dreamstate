@@ -1,38 +1,40 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "target": "es5",
-    "module": "commonjs",
     "allowJs": true,
-    "strict": true,
-    "sourceMap": true,
-    "declaration": true,
-    "noImplicitAny": true,
-    "moduleResolution": "node",
-    "rootDir": "./",
+    "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    "resolveJsonModule": true,
-    "emitDecoratorMetadata": false,
-    "experimentalDecorators": true,
+    "declaration": true,
     "downlevelIteration": true,
-    "types": [
-      "node",
-      "jest"
-    ],
+    "emitDecoratorMetadata": false,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
     "lib": [
       "es2017",
       "dom"
     ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": true,
     "paths": {
-      "@/*": [ "./src/*" ]
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "jsx": "react"
+    "resolveJsonModule": true,
+    "rootDir": "./",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es5",
+    "types": [
+      "node",
+      "jest"
+    ]
   },
-  "include": [
-    "src/"
-  ],
   "exclude": [
     "node_modules"
+  ],
+  "include": [
+    "src/"
   ]
 }

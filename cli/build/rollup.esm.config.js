@@ -9,23 +9,12 @@ import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 
-import {
-  CORE_ENTRY,
-  ESM_ROOT,
-  TS_BUILD_CONFIG,
-  EEnvironment,
-  DS_ROOT,
-  STATS_ROOT
-} from "../config/build.constants";
+import { CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG, EEnvironment, DS_ROOT, STATS_ROOT } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
 const createEsmConfig = (env) => ({
-  external: [
-    "react",
-    "shallow-equal",
-    "tslib"
-  ],
+  external: [ "react", "shallow-equal", "tslib" ],
   preserveModules: true,
   input: CORE_ENTRY,
   output: {

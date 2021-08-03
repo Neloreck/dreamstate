@@ -24,10 +24,7 @@ import {
 import { BABEL_CONFIG } from "./babel.modern.config";
 
 const createPortableConfig = (env) => ({
-  external: [
-    "react",
-    "shallow-equal"
-  ],
+  external: [ "react", "shallow-equal" ],
   input: PORTABLE_ENTRY,
   preserveModules: false,
   output: {
@@ -66,9 +63,7 @@ const createPortableConfig = (env) => ({
 });
 
 const createPortableDtsConfig = (env) => ({
-  input: [
-    PORTABLE_ENTRY
-  ],
+  input: [ PORTABLE_ENTRY ],
   output: {
     file: path.resolve(PORTABLE_ROOT, "dreamstate.d.ts"),
     format: "es"

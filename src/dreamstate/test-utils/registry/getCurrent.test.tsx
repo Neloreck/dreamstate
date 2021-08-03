@@ -20,7 +20,12 @@ describe("getCurrent method functionality", () => {
       return <div> sample </div>;
     }
 
-    const emptyTree = mount(<ScopeProvider> <Consumer/> </ScopeProvider>);
+    const emptyTree = mount(
+      <ScopeProvider>
+        { " " }
+        <Consumer/>{ " " }
+      </ScopeProvider>
+    );
 
     expect(globalScope).not.toBeUndefined();
     expect(getCurrent(TestManager, globalScope)).toBeNull();
@@ -29,11 +34,13 @@ describe("getCurrent method functionality", () => {
 
     expect(getCurrent(TestManager, globalScope)).toBeNull();
 
-    const providedTree = mount(<ScopeProvider>
-      <Provider>
-        <Consumer/>
-      </Provider>
-    </ScopeProvider>);
+    const providedTree = mount(
+      <ScopeProvider>
+        <Provider>
+          <Consumer/>
+        </Provider>
+      </ScopeProvider>
+    );
 
     expect(globalScope).not.toBeUndefined();
     expect(getCurrent(TestManager, globalScope)).not.toBeNull();

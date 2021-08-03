@@ -34,9 +34,29 @@ describe("Emitting signal on provision start", () => {
       expect(count).toHaveBeenCalledTimes(times);
     }
 
-    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: false }), 1);
-    await testProvider(createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], { isCombined: true }), 2);
-    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: false }), 3);
-    await testProvider(createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], { isCombined: true }), 4);
+    await testProvider(
+      createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], {
+        isCombined: false
+      }),
+      1
+    );
+    await testProvider(
+      createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], {
+        isCombined: true
+      }),
+      2
+    );
+    await testProvider(
+      createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], {
+        isCombined: false
+      }),
+      3
+    );
+    await testProvider(
+      createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], {
+        isCombined: true
+      }),
+      4
+    );
   });
 });

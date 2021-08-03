@@ -9,7 +9,10 @@ describe("createComputed method functionality", () => {
     const context = {
       first: createComputed(() => ({ nullValue: null })),
       second: createComputed(() => ({ test: 355 })),
-      third: createComputed(() => ({ another: false }), () => [])
+      third: createComputed(
+        () => ({ another: false }),
+        () => []
+      )
     };
 
     expect(context.first.nullValue).toBeUndefined();
@@ -62,7 +65,7 @@ describe("createComputed method functionality", () => {
           multipliedByTwo: context.testValue * 2
         })),
         testValue: 25
-      }
+      };
 
     }
 
@@ -94,7 +97,7 @@ describe("createComputed method functionality", () => {
           greaterThanFive: context.numbers.filter((it: number) => it > 5)
         })),
         numbers: [ 0, 2, 4, 6, 8, 12 ]
-      }
+      };
 
     }
 
@@ -121,6 +124,10 @@ describe("createComputed method functionality", () => {
     expect(() => createComputed(() => ({}), false as any)).toThrow(TypeError);
     expect(() => createComputed(() => ({}), {} as any)).toThrow(TypeError);
     expect(() => createComputed(() => ({}))).not.toThrow(TypeError);
-    expect(() => createComputed(() => ({}), () => [])).not.toThrow(TypeError);
+    expect(() =>
+      createComputed(
+        () => ({}),
+        () => []
+      )).not.toThrow(TypeError);
   });
 });

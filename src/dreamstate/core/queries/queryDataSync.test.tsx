@@ -12,11 +12,13 @@ describe("queryDataSync and queries processing", () => {
   const Provider = createProvider([ RespondingManager ]);
 
   function testQueryTree(checker: TQueryCb): ReactWrapper {
-    return mount(<ScopeProvider>
-      <Provider>
-        <Consumer/>
-      </Provider>
-    </ScopeProvider>);
+    return mount(
+      <ScopeProvider>
+        <Provider>
+          <Consumer/>
+        </Provider>
+      </ScopeProvider>
+    );
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();
@@ -57,7 +59,10 @@ describe("queryDataSync and queries processing", () => {
       expect(() => queryDataSync(null as any)).toThrow(TypeError);
       expect(() => queryDataSync({} as any)).toThrow(TypeError);
 
-      const stringResponse: TQueryResponse<string> = queryDataSync({ type: EQuery.SYNC_STRING_QUERY, data: "query" });
+      const stringResponse: TQueryResponse<string> = queryDataSync({
+        type: EQuery.SYNC_STRING_QUERY,
+        data: "query"
+      });
       const asyncNumberResponse: TQueryResponse<Promise<number>> = queryDataSync({
         type: EQuery.ASYNC_NUMBER_QUERY,
         data: undefined

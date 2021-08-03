@@ -1,7 +1,8 @@
 import { default as React, ReactElement } from "react";
+
 import { ApplicationProvider } from "./ApplicationProvider";
-import { SampleContextInformation } from "./components/SampleContextInformation";
 import { SampleContextEditor } from "./components/SampleContextEditor";
+import { SampleContextInformation } from "./components/SampleContextInformation";
 
 /**
  * React application root rendering component.

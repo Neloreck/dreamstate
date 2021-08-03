@@ -13,9 +13,7 @@ import { isObject } from "@/dreamstate/utils/typechecking";
  * @param {Object} initialValue - initial value of nested store object.
  * @returns {NestedStore} instance of nested store containing initial state and marked for deeper shallow checking.
  */
-export function createNested<T extends TAnyObject>(
-  initialValue: T
-): TNested<T> {
+export function createNested<T extends TAnyObject>(initialValue: T): TNested<T> {
   if (isObject(initialValue)) {
     return Object.assign(new NestedStore<T>(), initialValue);
   } else {

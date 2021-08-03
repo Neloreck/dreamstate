@@ -7,11 +7,7 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
  * Get react context reference for provided ManagerClass.
  * Lazy internal creation only after first access attempt.
  */
-export function getReactContext<
-  T extends TAnyContextManagerConstructor
->(
-  ManagerClass: T
-): Context<T> {
+export function getReactContext<T extends TAnyContextManagerConstructor>(ManagerClass: T): Context<T> {
   if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(ManagerClass)) {
     return CONTEXT_REACT_CONTEXTS_REGISTRY.get(ManagerClass) as Context<T>;
   } else {

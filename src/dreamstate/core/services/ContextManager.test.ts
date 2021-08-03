@@ -1,8 +1,4 @@
-import {
-  CONTEXT_REACT_CONTEXTS_REGISTRY,
-  SCOPE_SYMBOL,
-  SIGNALING_HANDLER_SYMBOL
-} from "@/dreamstate/core/internals";
+import { CONTEXT_REACT_CONTEXTS_REGISTRY, SCOPE_SYMBOL, SIGNALING_HANDLER_SYMBOL } from "@/dreamstate/core/internals";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
@@ -10,11 +6,7 @@ import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { ISignalEvent, TAnyContextManagerConstructor } from "@/dreamstate/types";
-import {
-  EmittingManager,
-  ExtendingManager,
-  TestManager
-} from "@/fixtures";
+import { EmittingManager, ExtendingManager, TestManager } from "@/fixtures";
 
 describe("ContextManager class", () => {
   it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {

@@ -38,11 +38,13 @@ describe("Initial state provision on service registration", () => {
       return <div> sample </div>;
     }
 
-    const tree = mount(<ScopeProvider>
-      <Provider initialState={{ str: "word", num: -1 }}>
-        <Consumer/>
-      </Provider>
-    </ScopeProvider>);
+    const tree = mount(
+      <ScopeProvider>
+        <Provider initialState={{ str: "word", num: -1 }}>
+          <Consumer/>
+        </Provider>
+      </ScopeProvider>
+    );
 
     expect(contextManager!.num).toBe(-1);
 

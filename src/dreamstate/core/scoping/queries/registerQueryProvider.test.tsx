@@ -18,10 +18,12 @@ describe("registerQueryProvider method", () => {
   type TQueryCb = (scope: IScopeContext) => void;
 
   function testQueryTree(checker: TQueryCb): ReactWrapper {
-    return mount(<ScopeProvider>
-      <QueryProvider/>
-      <Consumer/>
-    </ScopeProvider>);
+    return mount(
+      <ScopeProvider>
+        <QueryProvider/>
+        <Consumer/>
+      </ScopeProvider>
+    );
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();
@@ -36,8 +38,12 @@ describe("registerQueryProvider method", () => {
 
   it("Should properly subscribe to queries", async () => {
     const tree = testQueryTree(async ({ queryDataSync, queryDataAsync, INTERNAL: { REGISTRY } }) => {
-      const resultSync: TQueryResponse<number> = queryDataSync({ type: "ANY" });
-      const resultAsync: TQueryResponse<number> = await queryDataAsync({ type: "ANY" });
+      const resultSync: TQueryResponse<number> = queryDataSync({
+        type: "ANY"
+      });
+      const resultAsync: TQueryResponse<number> = await queryDataAsync({
+        type: "ANY"
+      });
 
       expect(resultSync.data).toBe(1);
       expect(resultSync.type).toBe("ANY");
@@ -54,11 +60,7 @@ describe("registerQueryProvider method", () => {
   });
 
   it("Should properly deal with duplicated providers", () => {
-    const tree = testQueryTree(({
-      registerQueryProvider,
-      unRegisterQueryProvider,
-      INTERNAL: { REGISTRY }
-    }) => {
+    const tree = testQueryTree(({ registerQueryProvider, unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
 
       const provider = () => {};

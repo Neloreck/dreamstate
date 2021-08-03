@@ -10,9 +10,7 @@ import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethod
  *
  * @param {(TQueryType|Array.<TQueryType>>)} queryType - signal or array of signals that should be handled.
  */
-export function OnQuery(
-  queryType: TQueryType
-): MethodDecorator {
+export function OnQuery(queryType: TQueryType): MethodDecorator {
   if (!queryType) {
     throw new TypeError("Query type should be provided for OnQuery decorator.");
   }

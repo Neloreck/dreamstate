@@ -13,11 +13,13 @@ describe("queryDataAsync and queries processing", () => {
   const Provider = createProvider([ RespondingManager ]);
 
   function testQueryTree(checker: TQueryCb): ReactWrapper {
-    return mount(<ScopeProvider>
-      <Provider>
-        <Consumer/>
-      </Provider>
-    </ScopeProvider>);
+    return mount(
+      <ScopeProvider>
+        <Provider>
+          <Consumer/>
+        </Provider>
+      </ScopeProvider>
+    );
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();
@@ -51,10 +53,14 @@ describe("queryDataAsync and queries processing", () => {
 
   it("Should properly handle sync and async queryDataAsync listeners", async () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
-      const stringResponse: TQueryResponse<string> =
-        await queryDataAsync({ type: EQuery.ASYNC_STRING_QUERY, data: "query" });
-      const booleanResponse: TQueryResponse<boolean> =
-        await queryDataAsync({ type: EQuery.SYNC_BOOLEAN_QUERY, data: null });
+      const stringResponse: TQueryResponse<string> = await queryDataAsync({
+        type: EQuery.ASYNC_STRING_QUERY,
+        data: "query"
+      });
+      const booleanResponse: TQueryResponse<boolean> = await queryDataAsync({
+        type: EQuery.SYNC_BOOLEAN_QUERY,
+        data: null
+      });
 
       expect(stringResponse).not.toBeNull();
       expect(stringResponse!.data).toBe("query");
@@ -84,10 +90,12 @@ describe("queryDataAsync and queries processing", () => {
   it("Should properly find async query responders or fallback to null for single queries", async () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
       const numberResponse: TOptionalQueryResponse<number> = await queryDataAsync({
-        type: EQuery.ASYNC_NUMBER_QUERY, data: undefined
+        type: EQuery.ASYNC_NUMBER_QUERY,
+        data: undefined
       });
       const undefinedResponse: TOptionalQueryResponse<215> = await queryDataAsync({
-        type: EQuery.UNDEFINED_QUERY, data: undefined
+        type: EQuery.UNDEFINED_QUERY,
+        data: undefined
       });
 
       expect(numberResponse).not.toBeNull();

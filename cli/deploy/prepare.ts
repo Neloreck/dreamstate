@@ -41,14 +41,14 @@ const ASSETS: IAssetsDescription = {
     destination: path.resolve(PKG_ROOT, "cjs")
   },
   // Types.
-  ...(fs.readdirSync(TYPES_ROOT).reduce((acc: IAssetsDescription, it: string) => {
+  ...fs.readdirSync(TYPES_ROOT).reduce((acc: IAssetsDescription, it: string) => {
     acc["TYPES#" + it] = {
       source: path.resolve(TYPES_ROOT, it),
       destination: path.resolve(PKG_ROOT, it)
     };
 
     return acc;
-  }, {}))
+  }, {})
 };
 
 const SWITCHERS: IAssetsDescription = {

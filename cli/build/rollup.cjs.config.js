@@ -22,15 +22,8 @@ import {
 import { BABEL_CONFIG } from "./babel.modern.config";
 
 const createCjsConfig = (env) => ({
-  external: [
-    "react",
-    "shallow-equal",
-    "tslib"
-  ],
-  input: [
-    CORE_ENTRY,
-    TEST_UTILS_ENTRY
-  ],
+  external: [ "react", "shallow-equal", "tslib" ],
+  input: [ CORE_ENTRY, TEST_UTILS_ENTRY ],
   output: {
     chunkFileNames: "lib.js",
     compact: env === EEnvironment.PRODUCTION,

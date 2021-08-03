@@ -16,19 +16,12 @@ import {
  * If it is async, add then and catch handlers.
  * If it is sync - return value or reject on catch.
  */
-function promisifyQuery<
-  R,
-  D = undefined,
-  T extends TQueryType = TQueryType
-  >(
+function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   callback: TQueryListener<T, D, R>,
   query: IOptionalQueryRequest<D, T>,
   answerer: TAnyContextManagerConstructor | null
 ): Promise<TQueryResponse<R>> {
-  return new Promise(function(
-    resolve: (response: IQueryResponse<R, T>) => void,
-    reject: (error: Error) => void
-  ) {
+  return new Promise(function(resolve: (response: IQueryResponse<R, T>) => void, reject: (error: Error) => void) {
     try {
       const timestamp: number = Date.now();
       const result: any = callback(query);
@@ -41,7 +34,7 @@ function promisifyQuery<
         return result
           .then(function(data: any): void {
             resolve({
-              answerer: answerer || callback as TAnyCallable,
+              answerer: answerer || (callback as TAnyCallable),
               type: query.type,
               data,
               timestamp
@@ -50,7 +43,7 @@ function promisifyQuery<
           .catch(reject);
       } else {
         return resolve({
-          answerer: answerer || callback as TAnyCallable,
+          answerer: answerer || (callback as TAnyCallable),
           type: query.type,
           data: result,
           timestamp
@@ -66,12 +59,7 @@ function promisifyQuery<
  * Find correct async listener or array of listeners and return Promise response or null.
  * Try to find matching type and call related method.
  */
-export function queryDataAsync<
-  R,
-  D extends any,
-  T extends TQueryType,
-  Q extends IOptionalQueryRequest<D, T>
->(
+export function queryDataAsync<R, D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
   query: Q,
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): Promise<TQueryResponse<R> | null> {

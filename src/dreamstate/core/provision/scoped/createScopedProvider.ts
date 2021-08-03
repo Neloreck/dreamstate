@@ -35,8 +35,7 @@ export function createScopedProvider<T extends IProviderProps<any>>(
   if (IS_DEV) {
     Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextManagerConstructor) {
       return it.name;
-    })
-    }]`;
+    })}]`;
   }
 
   return Observer as FunctionComponent<IProviderProps<T>>;

@@ -1,9 +1,6 @@
-import { default as React } from 'react';
-import { render } from 'react-dom';
+import { default as React } from "react";
+import { render } from "react-dom";
 
-import { Application } from './Application';
+import { Application } from "./Application";
 
-render(
-  <Application />,
-  document.getElementById('root')
-);
+render(<Application/>, document.getElementById("root"));

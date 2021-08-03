@@ -26,7 +26,12 @@ export function createScopedObserverTree<T extends TAnyObject>(
     ? props.children
     : createElement(
       ScopedObserver,
-      { ManagerClass: sources[current], initialState: props.initialState, dependencies: sources, scope },
-      createScopedObserverTree(sources, props, scope,current + 1)
+      {
+        ManagerClass: sources[current],
+        initialState: props.initialState,
+        dependencies: sources,
+        scope
+      },
+      createScopedObserverTree(sources, props, scope, current + 1)
     );
 }

@@ -9,7 +9,10 @@ describe("InitializeScopeContext method", () => {
   it("Should properly add contextManagers subscribers", () => {
     const {
       INTERNAL: {
-        registerService, subscribeToManager, unsubscribeFromManager, unRegisterService,
+        registerService,
+        subscribeToManager,
+        unsubscribeFromManager,
+        unRegisterService,
         REGISTRY: { CONTEXT_SUBSCRIBERS_REGISTRY }
       }
     }: IScopeContext = initializeScopeContext();
@@ -39,9 +42,7 @@ describe("InitializeScopeContext method", () => {
 
   it("Should properly subscribe and unsubscribe only from contextManagers", () => {
     const {
-      INTERNAL: {
-        registerService, subscribeToManager, unsubscribeFromManager, unRegisterService
-      }
+      INTERNAL: { registerService, subscribeToManager, unsubscribeFromManager, unRegisterService }
     }: IScopeContext = initializeScopeContext();
 
     class ExampleClass {}

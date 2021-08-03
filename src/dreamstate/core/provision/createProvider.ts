@@ -25,9 +25,7 @@ export interface ICreateProviderProps {
  * @throws {TypeError} - wrong sources param type supplied, should be array.
  * @throws {TypeError} - wrong source object in array supplied, should be class extending ContextManager.
  */
-export function createProvider<
-  T extends TAnyObject = TAnyObject
->(
+export function createProvider<T extends TAnyObject = TAnyObject>(
   sources: Array<IContextManagerConstructor>,
   config: ICreateProviderProps = {}
 ): FunctionComponent<IProviderProps<T>> {
@@ -36,9 +34,7 @@ export function createProvider<
    * Supplied 'sources' should contain array of context manager class references.
    */
   if (!Array.isArray(sources) || !sources.length) {
-    throw new TypeError(
-      "Wrong providers parameter supplied. Only non-empty array of context managers is acceptable."
-    );
+    throw new TypeError("Wrong providers parameter supplied. Only non-empty array of context managers is acceptable.");
   }
 
   /**

@@ -27,16 +27,17 @@ describe("Mount order for providers", () => {
     return { First, Second, Third };
   };
 
-  const mountProviderTree = (provider: FunctionComponent) => (
-    mount(createElement(ScopeProvider, {}, createElement(provider)))
-  );
+  const mountProviderTree = (provider: FunctionComponent) =>
+    mount(createElement(ScopeProvider, {}, createElement(provider)));
 
   const testProvider = (isCombined: boolean) => {
     const mountList: Array<string> = [];
     const unmountList: Array<string> = [];
 
     const { First, Second, Third } = generateManagers(mountList, unmountList);
-    const CombinedProvider = createProvider([ First, Second, Third ], { isCombined });
+    const CombinedProvider = createProvider([ First, Second, Third ], {
+      isCombined
+    });
 
     const tree = mountProviderTree(CombinedProvider);
 

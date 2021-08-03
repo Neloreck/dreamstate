@@ -12,7 +12,8 @@ import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserver
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
   IBaseSignal,
-  IOptionalQueryRequest, ISignalEvent,
+  IOptionalQueryRequest,
+  ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
   TConstructorKey,
@@ -44,10 +45,7 @@ import { isFunction } from "@/dreamstate/utils/typechecking";
  *
  * Async methods called after manager class unregistering will cause dev warnings and will not affect actual scope.
  */
-export abstract class ContextManager<
-  T extends TAnyObject = TEmptyObject,
-  S extends TAnyObject = TAnyObject
-> {
+export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S extends TAnyObject = TAnyObject> {
 
   /**
    * Manager instance scope reference.
@@ -149,8 +147,9 @@ export abstract class ContextManager<
      */
     if (
       shouldObserversUpdate(
-        this[SCOPE_SYMBOL].INTERNAL
-          .REGISTRY.CONTEXT_STATES_REGISTRY.get(this.constructor as TAnyContextManagerConstructor)!,
+        this[SCOPE_SYMBOL].INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(
+          this.constructor as TAnyContextManagerConstructor
+        )!,
         nextContext
       )
     ) {
@@ -170,20 +169,14 @@ export abstract class ContextManager<
    * @returns {Promise} promise that will be resolved after signal listeners call.
    *   Note: async handlers will not be awaited.
    */
-  public emitSignal<D = undefined>(
-    baseSignal: IBaseSignal<D>
-  ): ISignalEvent<D> {
+  public emitSignal<D = undefined>(baseSignal: IBaseSignal<D>): ISignalEvent<D> {
     return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
   }
 
   /**
    * Send context query to retrieve data from @OnQuery method with required types.
    */
-  public queryDataAsync<
-    D extends any,
-    T extends TQueryType,
-    Q extends IOptionalQueryRequest<D, T>
-    >(
+  public queryDataAsync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
   ): Promise<TQueryResponse<any>> {
     return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
@@ -192,11 +185,7 @@ export abstract class ContextManager<
   /**
    * Send sync context query to retrieve data from @OnQuery method with required types.
    */
-  public queryDataSync<
-    D extends any,
-    T extends TQueryType,
-    Q extends IOptionalQueryRequest<D, T>
-    >(
+  public queryDataSync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
   ): TQueryResponse<any> {
     return this[SCOPE_SYMBOL].queryDataSync(queryRequest);

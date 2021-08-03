@@ -5,10 +5,7 @@ import { isFunction, isUndefined } from "@/dreamstate/utils/typechecking";
 /**
  * Create computed value that will be populated after each update.
  */
-export function createComputed<
-  T extends TAnyObject,
-  C extends TAnyObject
->(
+export function createComputed<T extends TAnyObject, C extends TAnyObject>(
   selector: (context: C) => T,
   memo?: (context: C) => Array<any>
 ): TComputed<T, C> {
@@ -19,4 +16,3 @@ export function createComputed<
     throw new TypeError("Computed value should be initialized with functional selector and optional memo function.");
   }
 }
-

@@ -7,7 +7,7 @@ export interface ISampleContext {
   sampleActions: {
     setSampleString(value: string): void;
     incrementSampleNumber(): void;
-  }
+  };
   sampleString: string;
   sampleNumber: number;
 }
@@ -23,7 +23,7 @@ export class SampleManager extends ContextManager<ISampleContext> {
   public context: ISampleContext = {
     sampleActions: createActions({
       incrementSampleNumber: () => this.incrementSampleNumber(),
-      setSampleString: (value: string) => this.setSampleString(value),
+      setSampleString: (value: string) => this.setSampleString(value)
     }),
     sampleNumber: 0,
     sampleString: "default"

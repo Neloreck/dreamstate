@@ -45,11 +45,16 @@ import {
 export function initializeScopeContext(): IScopeContext {
   const registry: IRegistry = createRegistry();
   const {
-    SIGNAL_LISTENERS_REGISTRY, CONTEXT_STATES_REGISTRY, CONTEXT_OBSERVERS_REGISTRY, QUERY_PROVIDERS_REGISTRY,
-    CONTEXT_SERVICES_REFERENCES, CONTEXT_INSTANCES_REGISTRY, CONTEXT_SUBSCRIBERS_REGISTRY
+    SIGNAL_LISTENERS_REGISTRY,
+    CONTEXT_STATES_REGISTRY,
+    CONTEXT_OBSERVERS_REGISTRY,
+    QUERY_PROVIDERS_REGISTRY,
+    CONTEXT_SERVICES_REFERENCES,
+    CONTEXT_INSTANCES_REGISTRY,
+    CONTEXT_SUBSCRIBERS_REGISTRY
   } = registry;
 
-  const scope: IScopeContext = ({
+  const scope: IScopeContext = {
     INTERNAL: {
       REGISTRY: registry,
       registerService<T>(ManagerClass: TAnyContextManagerConstructor, initialState: T): void {
@@ -146,22 +151,21 @@ export function initializeScopeContext(): IScopeContext {
         /**
          * Update observers of context manager (react context providers).
          */
-        CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
-          .forEach(function(it: TUpdateObserver) {
-            it();
-          });
+        CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!.forEach(function(
+          it: TUpdateObserver
+        ) {
+          it();
+        });
         /**
          * Update subscribers of context manager.
          */
-        CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!
-          .forEach(function(it: TUpdateSubscriber<T>) {
-            it(nextContext);
-          });
+        CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!.forEach(function(
+          it: TUpdateSubscriber<T>
+        ) {
+          it(nextContext);
+        });
       },
-      subscribeToManager<
-        T extends TAnyObject,
-        D extends IContextManagerConstructor<any, T, any>
-        >(
+      subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T, any>>(
         ManagerClass: D,
         subscriber: TUpdateSubscriber<T>
       ): TCallable {
@@ -175,10 +179,7 @@ export function initializeScopeContext(): IScopeContext {
           CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
         };
       },
-      unsubscribeFromManager<
-        T extends TAnyObject,
-        D extends IContextManagerConstructor<any, T>
-        >(
+      unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T>>(
         ManagerClass: D,
         subscriber: TUpdateSubscriber<T>
       ): void {
@@ -195,9 +196,7 @@ export function initializeScopeContext(): IScopeContext {
     ): ISignalEvent<D> {
       return emitSignal(base, emitter, registry);
     },
-    subscribeToSignals<D = undefined>(
-      listener: TSignalListener<D>
-    ): TCallable {
+    subscribeToSignals<D = undefined>(listener: TSignalListener<D>): TCallable {
       if (typeof listener !== "function") {
         throw new Error(`Signal listener must be function, '${typeof listener}' provided.`);
       }
@@ -208,43 +207,26 @@ export function initializeScopeContext(): IScopeContext {
         SIGNAL_LISTENERS_REGISTRY.delete(listener);
       };
     },
-    unsubscribeFromSignals<D = undefined>(
-      listener: TSignalListener<D>
-    ): void {
+    unsubscribeFromSignals<D = undefined>(listener: TSignalListener<D>): void {
       SIGNAL_LISTENERS_REGISTRY.delete(listener);
     },
-    registerQueryProvider<T extends TQueryType>(
-      queryType: T,
-      listener: TQueryListener<T, any>
-    ): TCallable {
+    registerQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): TCallable {
       return registerQueryProvider(queryType, listener, registry);
     },
-    unRegisterQueryProvider<T extends TQueryType>(
-      queryType: T,
-      listener: TQueryListener<T, any>
-    ): void {
+    unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): void {
       return unRegisterQueryProvider(queryType, listener, registry);
     },
-    queryDataSync<
-      D extends any,
-      T extends TQueryType,
-      Q extends IOptionalQueryRequest<D, T>
-      >(
+    queryDataSync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
       query: Q
     ): TQueryResponse<any> {
       return queryDataSync<any, D, T, Q>(query, registry)!;
     },
-    queryDataAsync<
-      D extends any,
-      T extends TQueryType,
-      Q extends IOptionalQueryRequest<D, T>
-    >(
+    queryDataAsync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
       queryRequest: Q
     ): Promise<TQueryResponse<any>> {
       return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any>>;
     }
-  }
-  );
+  };
 
   return scope;
 }

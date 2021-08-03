@@ -14,12 +14,7 @@ import { isObject } from "@/dreamstate/utils/typechecking";
  * @param nextContext - next context to match.
  * @returns {boolean} result of context objects comparison, whether observers should update or not.
  */
-export function shouldObserversUpdate<
-  T extends TAnyObject
->(
-  previousContext: T,
-  nextContext: T
-): boolean {
+export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, nextContext: T): boolean {
   if (!isObject(nextContext)) {
     throw new TypeError(`Context should be non-nullable object, supplied '${typeof nextContext}' type instead.`);
   }
@@ -28,29 +23,24 @@ export function shouldObserversUpdate<
     return true;
   }
 
-  return (
-    Object.keys(nextContext).some(function(key: string): boolean {
-      /**
-       * Ignore computed values.
-       * Ignore action values.
-       * Since nested computed stores are not representing data itself, we should not verify anything there.
-       */
-      if (
-        nextContext[key] instanceof ComputedValue ||
-        nextContext[key] instanceof ActionsStore
-      ) {
-        return false;
-      }
+  return Object.keys(nextContext).some(function(key: string): boolean {
+    /**
+     * Ignore computed values.
+     * Ignore action values.
+     * Since nested computed stores are not representing data itself, we should not verify anything there.
+     */
+    if (nextContext[key] instanceof ComputedValue || nextContext[key] instanceof ActionsStore) {
+      return false;
+    }
 
-      /**
-       * Shallow check for mutable objects created by library.
-       * Optimization for sub-states to prevent pollution of context and improve performance.
-       * We cannot guess about each object because it is (1) not obvious, (2) can be unwanted and (3) will not work for
-       * some objects like native MediaStream/MediaStreamTrack.
-       */
-      return nextContext[key] instanceof NestedStore
-        ? !shallowEqualObjects(nextContext[key], previousContext[key])
-        : nextContext[key] !== previousContext[key];
-    })
-  );
+    /**
+     * Shallow check for mutable objects created by library.
+     * Optimization for sub-states to prevent pollution of context and improve performance.
+     * We cannot guess about each object because it is (1) not obvious, (2) can be unwanted and (3) will not work for
+     * some objects like native MediaStream/MediaStreamTrack.
+     */
+    return nextContext[key] instanceof NestedStore
+      ? !shallowEqualObjects(nextContext[key], previousContext[key])
+      : nextContext[key] !== previousContext[key];
+  });
 }

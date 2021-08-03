@@ -1,20 +1,14 @@
-import {
-  ChangeEvent,
-  CSSProperties,
-  default as React,
-  ReactElement,
-  useCallback,
-  useState
-} from "react";
 import { useManager } from "dreamstate";
-import { SampleManager } from "../stores/SampleManager";
+import { ChangeEvent, CSSProperties, default as React, ReactElement, useCallback, useState } from "react";
+
 import { useRendersCount } from "../hooks/useRendersCount";
+import { SampleManager } from "../stores/SampleManager";
 
 const editorStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
   border: "1px solid black"
-}
+};
 
 export function SampleContextEditor(): ReactElement {
   /**
@@ -40,9 +34,7 @@ export function SampleContextEditor(): ReactElement {
 
   return (
     <div style={editorStyle}>
-      <div>
-        Editor renders count: { rendersCount }
-      </div>
+      <div> Editor renders count: { rendersCount } </div>
 
       <div>
         <button onClick={sampleActions.incrementSampleNumber}> Increment sample number </button>
@@ -53,5 +45,5 @@ export function SampleContextEditor(): ReactElement {
         <input value={localSampleString} onChange={onLocalSampleChange}/>
       </div>
     </div>
-  )
+  );
 }

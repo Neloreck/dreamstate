@@ -1,13 +1,14 @@
-import { CSSProperties, default as React, ReactElement } from "react";
 import { useManager } from "dreamstate";
-import { SampleManager } from "../stores/SampleManager";
+import { CSSProperties, default as React, ReactElement } from "react";
+
 import { useRendersCount } from "../hooks/useRendersCount";
+import { SampleManager } from "../stores/SampleManager";
 
 const informationStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
   border: "1px solid black"
-}
+};
 
 export function SampleContextInformation(): ReactElement {
   /**
@@ -18,17 +19,11 @@ export function SampleContextInformation(): ReactElement {
 
   return (
     <div style={informationStyle}>
-      <div>
-        Information renders count: { rendersCount }
-      </div>
+      <div> Information renders count: { rendersCount } </div>
 
-      <div>
-        Sample number: { sampleNumber }
-      </div>
+      <div> Sample number: { sampleNumber } </div>
 
-      <div>
-        Sample string: { sampleString }
-      </div>
+      <div> Sample string: { sampleString } </div>
     </div>
-  )
+  );
 }

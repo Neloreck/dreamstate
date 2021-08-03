@@ -1,12 +1,7 @@
 import { log } from "@/macroses/log.macro";
 
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
-import {
-  IBaseSignal,
-  ISignalEvent,
-  TAnyContextManagerConstructor,
-  TSignalListener
-} from "@/dreamstate/types";
+import { IBaseSignal, ISignalEvent, TAnyContextManagerConstructor, TSignalListener } from "@/dreamstate/types";
 
 /**
  * Callback for signal canceling.

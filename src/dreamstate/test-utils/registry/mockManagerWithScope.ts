@@ -13,10 +13,7 @@ export function mockManagerWithScope<
   T extends TAnyObject,
   S extends TAnyObject,
   M extends IContextManagerConstructor<T, S>
->(
-  ManagerClass: M,
-  initialState?: S
-): [ InstanceType<M>, IScopeContext ] {
+>(ManagerClass: M, initialState?: S): [InstanceType<M>, IScopeContext] {
   const scope: IScopeContext = initializeScopeContext();
 
   scope.INTERNAL.registerService(ManagerClass, initialState);

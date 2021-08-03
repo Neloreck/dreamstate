@@ -15,8 +15,8 @@ export const BABEL_CONFIG = {
     [
       "module-resolver",
       {
-        "root": [ "./" ],
-        "alias": {
+        root: [ "./" ],
+        alias: {
           "@": "./src"
         }
       }

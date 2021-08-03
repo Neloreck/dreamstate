@@ -10,10 +10,7 @@ import { TAnyContextManagerConstructor, TContextManagerMetadata } from "@/dreams
  *
  * @returns collected metadata array.
  */
-export function collectProtoChainMetadata<
-  T extends TAnyContextManagerConstructor,
-  D extends TContextManagerMetadata
->(
+export function collectProtoChainMetadata<T extends TAnyContextManagerConstructor, D extends TContextManagerMetadata>(
   target: T,
   registry: WeakMap<T, D>
 ): D {
@@ -30,14 +27,13 @@ export function collectProtoChainMetadata<
      * todo: Remove duplicates from an array?
      * todo: If overriding signal handling methods and adding @OnSignal, it may cause issues with double call of method.
      */
-    return metadata
-      .reduce(function(pr: D, it: D) {
-        if (it) {
-          return (pr).concat(it as any) as D;
-        } else {
-          return pr;
-        }
-      }, [] as unknown as D);
+    return metadata.reduce(function(pr: D, it: D) {
+      if (it) {
+        return pr.concat(it as any) as D;
+      } else {
+        return pr;
+      }
+    }, [] as unknown as D);
   } else {
     throw new TypeError("Failed to collect metadata of class that is not extending ContextManager.");
   }

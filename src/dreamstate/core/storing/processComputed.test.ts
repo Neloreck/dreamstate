@@ -15,7 +15,9 @@ describe("processComputed method", () => {
   it("Should correctly process computed context and replace values", () => {
     const context = {
       value: "default",
-      computed: createComputed((context: { value: string }) => ({ concat: context.value + "!" }))
+      computed: createComputed((context: { value: string }) => ({
+        concat: context.value + "!"
+      }))
     };
 
     expect(context.value).toBe("default");
@@ -35,9 +37,9 @@ describe("processComputed method", () => {
       b: 123123,
       c: false,
       d: [ 1, 2, 3, 4, 5, 6, 7 ],
-      e: createComputed(
-        (context: ITestContext) => ({ odd: context.d.filter((it: number) => it % 2 === 0) })
-      )
+      e: createComputed((context: ITestContext) => ({
+        odd: context.d.filter((it: number) => it % 2 === 0)
+      }))
     };
 
     processComputed(defaultContext);
@@ -71,7 +73,9 @@ describe("processComputed method", () => {
       c: false,
       d: [ 1, 2, 3, 4, 5, 6, 7 ],
       e: createComputed(
-        (context: ITestContext) => ({ odd: context.d.filter((it: number) => it % 2 === 0) }),
+        (context: ITestContext) => ({
+          odd: context.d.filter((it: number) => it % 2 === 0)
+        }),
         (context: ITestContext) => [ context.d ]
       )
     };

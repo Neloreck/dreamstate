@@ -35,7 +35,7 @@ describe("emitSignal method", () => {
     emitter
   }: {
     subscriber: (signal: ISignalEvent<any>) => void;
-    emitter: () => [ IBaseSignal | ISignalWithData<any>, any ];
+    emitter: () => [IBaseSignal | ISignalWithData<any>, any];
   }): ReactElement {
     const scope: IScopeContext = useScope();
 
@@ -59,9 +59,11 @@ describe("emitSignal method", () => {
       expect(typeof signal.cancel).toBe("function");
     });
 
-    const tree = mount(<ScopeProvider>
-      <MountEmitter subscriber={subscriber} emitter={() => [ { type: "TEST" }, null ]}/>
-    </ScopeProvider>);
+    const tree = mount(
+      <ScopeProvider>
+        <MountEmitter subscriber={subscriber} emitter={() => [ { type: "TEST" }, null ]}/>
+      </ScopeProvider>
+    );
 
     tree.mount();
     expect(subscriber).toHaveBeenCalled();
@@ -75,9 +77,11 @@ describe("emitSignal method", () => {
       }
     });
 
-    const tree = mount(<ScopeProvider>
-      <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_PARAM", data: 155 }, null ]}/>
-    </ScopeProvider>);
+    const tree = mount(
+      <ScopeProvider>
+        <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_PARAM", data: 155 }, null ]}/>
+      </ScopeProvider>
+    );
 
     tree.mount();
     expect(subscriber).toHaveBeenCalled();
@@ -91,9 +95,11 @@ describe("emitSignal method", () => {
       }
     });
 
-    const tree = mount(<ScopeProvider>
-      <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_EMITTER" }, 0 as any ]}/>
-    </ScopeProvider>);
+    const tree = mount(
+      <ScopeProvider>
+        <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_EMITTER" }, 0 as any ]}/>
+      </ScopeProvider>
+    );
 
     tree.mount();
     expect(subscriber).toHaveBeenCalled();
@@ -118,11 +124,13 @@ describe("emitSignal method", () => {
       return <div> Sample </div>;
     }
 
-    const firstTree = mount(<ScopeProvider>
-      <Subscriber/>
-      <Subscriber/>
-      <Subscriber/>
-    </ScopeProvider>);
+    const firstTree = mount(
+      <ScopeProvider>
+        <Subscriber/>
+        <Subscriber/>
+        <Subscriber/>
+      </ScopeProvider>
+    );
 
     await emitter({ type: ESignal.STRING_SIGNAL });
 
@@ -132,11 +140,13 @@ describe("emitSignal method", () => {
 
     mock.mockClear();
 
-    const secondTree = mount(<ScopeProvider>
-      <Subscriber/>
-      <Subscriber/>
-      <Subscriber/>
-    </ScopeProvider>);
+    const secondTree = mount(
+      <ScopeProvider>
+        <Subscriber/>
+        <Subscriber/>
+        <Subscriber/>
+      </ScopeProvider>
+    );
 
     await emitter({ type: ESignal.STRING_SIGNAL });
     expect(mock).toHaveBeenCalledTimes(3);

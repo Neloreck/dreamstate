@@ -16,10 +16,7 @@ export function mockManagersInScope<
   S extends TAnyObject,
   M extends IContextManagerConstructor<T, S>,
   E extends Array<M>
->(
-  managerClasses: E,
-  initialState?: S
-): IScopeContext {
+>(managerClasses: E, initialState?: S): IScopeContext {
   const scope: IScopeContext = initializeScopeContext();
 
   for (let it = 0; it < managerClasses.length; it ++) {

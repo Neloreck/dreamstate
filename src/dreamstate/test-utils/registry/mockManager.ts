@@ -9,11 +9,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * @param {TAnyObject} initialState - initial state that should be injected in class constructor.
  * @returns InstanceType<IContextManagerConstructor> manager class instance.
  */
-export function mockManager<
-  T extends TAnyObject,
-  S extends TAnyObject,
-  M extends IContextManagerConstructor<T, S>
->(
+export function mockManager<T extends TAnyObject, S extends TAnyObject, M extends IContextManagerConstructor<T, S>>(
   ManagerClass: M,
   initialState?: S
 ): InstanceType<M> {

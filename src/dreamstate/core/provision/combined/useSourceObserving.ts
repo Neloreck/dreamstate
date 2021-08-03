@@ -16,7 +16,7 @@ export function useSourceObserving(
   initialState: TAnyObject | undefined
 ): Map<TAnyContextManagerConstructor, TAnyObject> {
   const scope: IScopeContext = useContext(ScopeContext);
-  const reducer: [ TAnyObject | null, DispatchWithoutAction ] = useReducer(forceUpdateReducer, null);
+  const reducer: [TAnyObject | null, DispatchWithoutAction] = useReducer(forceUpdateReducer, null);
 
   /**
    * Warn if current observer is mounted out of scope in dev mode.

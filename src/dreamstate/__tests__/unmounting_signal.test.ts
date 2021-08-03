@@ -36,9 +36,29 @@ describe("Emitting signal on provision end", () => {
       mock.mockClear();
     }
 
-    await testProvider(createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ], { isCombined: false }), 0);
-    await testProvider(createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ], { isCombined: true }), 0);
-    await testProvider(createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ], { isCombined: false }), 1);
-    await testProvider(createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ], { isCombined: true }), 1);
+    await testProvider(
+      createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ], {
+        isCombined: false
+      }),
+      0
+    );
+    await testProvider(
+      createProvider([ SubscribedToEndSignal, EmittingOnProvisionEnd ], {
+        isCombined: true
+      }),
+      0
+    );
+    await testProvider(
+      createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ], {
+        isCombined: false
+      }),
+      1
+    );
+    await testProvider(
+      createProvider([ EmittingOnProvisionEnd, SubscribedToEndSignal ], {
+        isCombined: true
+      }),
+      1
+    );
   });
 });

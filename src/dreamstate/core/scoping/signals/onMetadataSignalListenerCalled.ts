@@ -6,9 +6,7 @@ import { ISignalEvent, TSignalType } from "@/dreamstate/types";
  * Listen signal and call related metadata listeners of bound manager.
  * Used as class instance bound filterer of signals.
  */
-export function onMetadataSignalListenerCalled<
-  D = undefined
->(
+export function onMetadataSignalListenerCalled<D = undefined>(
   this: ContextManager<any>,
   signal: ISignalEvent<D>
 ): void {

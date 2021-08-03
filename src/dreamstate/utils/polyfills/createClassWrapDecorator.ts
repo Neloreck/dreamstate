@@ -9,7 +9,7 @@ export function createClassWrapDecorator<D>(resolver: (c: D) => D): ClassDecorat
     if (isFunction(classOrDescriptor)) {
       return resolver(classOrDescriptor as any);
     } else {
-      ((classOrDescriptor as any) as ClassDescriptor).finisher = function(wrappedComponent: T) {
+      (classOrDescriptor as any as ClassDescriptor).finisher = function(wrappedComponent: T) {
         return resolver(wrappedComponent as any);
       } as any;
 

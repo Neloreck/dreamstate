@@ -33,8 +33,12 @@ describe("Mount order for providers", () => {
 
     }
 
-    const CombinedProvider = createProvider([ First, Second, Third ], { isCombined: true });
-    const ScopedProvider = createProvider([ First, Second, Third ], { isCombined: false });
+    const CombinedProvider = createProvider([ First, Second, Third ], {
+      isCombined: true
+    });
+    const ScopedProvider = createProvider([ First, Second, Third ], {
+      isCombined: false
+    });
     let list: Array<string> = [];
 
     const combinedTree = mount(createElement(ScopeProvider, {}, createElement(CombinedProvider, {})));

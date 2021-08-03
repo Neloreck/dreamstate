@@ -43,9 +43,19 @@ describe("Sending query on provision start", () => {
       count.mockClear();
     }
 
-    await testProvider(createProvider([ AnsweringOnStart, QueryingOnStart ], { isCombined: true }),1);
-    await testProvider(createProvider([ QueryingOnStart, AnsweringOnStart ], { isCombined: true }),1);
-    await testProvider(createProvider([ AnsweringOnStart, QueryingOnStart ], { isCombined: false }),1);
-    await testProvider(createProvider([ QueryingOnStart, AnsweringOnStart ], { isCombined: false }),1);
+    await testProvider(createProvider([ AnsweringOnStart, QueryingOnStart ], { isCombined: true }), 1);
+    await testProvider(createProvider([ QueryingOnStart, AnsweringOnStart ], { isCombined: true }), 1);
+    await testProvider(
+      createProvider([ AnsweringOnStart, QueryingOnStart ], {
+        isCombined: false
+      }),
+      1
+    );
+    await testProvider(
+      createProvider([ QueryingOnStart, AnsweringOnStart ], {
+        isCombined: false
+      }),
+      1
+    );
   });
 });

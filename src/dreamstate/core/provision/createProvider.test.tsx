@@ -23,21 +23,25 @@ describe("createProvider method", () => {
       return <div> Content </div>;
     }
 
-    const combinedTree = mount(<ScopeProvider>
-      <CombinedProvider>
-        <ScopeConsumer/>
-      </CombinedProvider>
-    </ScopeProvider>);
+    const combinedTree = mount(
+      <ScopeProvider>
+        <CombinedProvider>
+          <ScopeConsumer/>
+        </CombinedProvider>
+      </ScopeProvider>
+    );
 
     expect(combinedTree).toMatchSnapshot();
 
     combinedTree.unmount();
 
-    const scopedTree = mount(<ScopeProvider>
-      <ScopedProvider>
-        <ScopeConsumer/>
-      </ScopedProvider>
-    </ScopeProvider>);
+    const scopedTree = mount(
+      <ScopeProvider>
+        <ScopedProvider>
+          <ScopeConsumer/>
+        </ScopedProvider>
+      </ScopeProvider>
+    );
 
     expect(scopedTree).toMatchSnapshot();
 
@@ -64,16 +68,20 @@ describe("createProvider method", () => {
   });
 
   it("Should create correct component tree without children", () => {
-    const combinedTree = mount(<ScopeProvider>
-      <CombinedProvider>
-        <div> testChild </div>
-      </CombinedProvider>
-    </ScopeProvider>);
-    const scopedTree = mount(<ScopeProvider>
-      <ScopedProvider>
-        <div> testChild </div>
-      </ScopedProvider>
-    </ScopeProvider>);
+    const combinedTree = mount(
+      <ScopeProvider>
+        <CombinedProvider>
+          <div> testChild </div>
+        </CombinedProvider>
+      </ScopeProvider>
+    );
+    const scopedTree = mount(
+      <ScopeProvider>
+        <ScopedProvider>
+          <div> testChild </div>
+        </ScopedProvider>
+      </ScopeProvider>
+    );
 
     expect(combinedTree.render()).toMatchSnapshot();
     expect(scopedTree.render()).toMatchSnapshot();

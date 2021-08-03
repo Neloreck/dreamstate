@@ -6,15 +6,12 @@ describe("onMetadataSignalListenerCalled method functionality", () => {
   it("Should ignore services without metadata and not throw any errors", () => {
     const [ manager, scope ] = mockManagerWithScope(TestManager);
 
-    onMetadataSignalListenerCalled.call(
-      manager,
-      {
-        type: "TEST",
-        timestamp: Date.now(),
-        emitter: null,
-        data: null,
-        cancel: jest.fn()
-      }
-    );
+    onMetadataSignalListenerCalled.call(manager, {
+      type: "TEST",
+      timestamp: Date.now(),
+      emitter: null,
+      data: null,
+      cancel: jest.fn()
+    });
   });
 });

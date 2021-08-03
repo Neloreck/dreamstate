@@ -38,7 +38,11 @@ describe("React tree for provided and consumed components", () => {
     expect(reactTree.render()).toMatchSnapshot();
 
     act(() => {
-      testContextManager!.setContext({ first: "updated", second: 101010, third: true });
+      testContextManager!.setContext({
+        first: "updated",
+        second: 101010,
+        third: true
+      });
     });
 
     expect(testContextManager!.context.first).toBe("updated");

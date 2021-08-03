@@ -20,8 +20,8 @@ module.exports = {
     [
       "module-resolver",
       {
-        "root": [ "./" ],
-        "alias": {
+        root: [ "./" ],
+        alias: {
           "@": "./src"
         }
       }

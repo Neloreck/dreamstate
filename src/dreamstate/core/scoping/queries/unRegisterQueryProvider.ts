@@ -20,11 +20,11 @@ export function unRegisterQueryProvider<T extends TQueryType>(
   }
 
   if (QUERY_PROVIDERS_REGISTRY.has(queryType)) {
-    const nextProviders: Array<TQueryListener<any, any>> = QUERY_PROVIDERS_REGISTRY
-      .get(queryType)!
-      .filter(function(it: TQueryListener<any, any>) {
-        return it !== listener;
-      });
+    const nextProviders: Array<TQueryListener<any, any>> = QUERY_PROVIDERS_REGISTRY.get(queryType)!.filter(function(
+      it: TQueryListener<any, any>
+    ) {
+      return it !== listener;
+    });
 
     if (nextProviders.length) {
       QUERY_PROVIDERS_REGISTRY.set(queryType, nextProviders);

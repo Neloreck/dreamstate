@@ -58,7 +58,7 @@ export interface IRegistry {
  * Used in current scope to store mutable data.
  */
 export function createRegistry(): IRegistry {
-  return ({
+  return {
     QUERY_PROVIDERS_REGISTRY: new Map(),
     SIGNAL_LISTENERS_REGISTRY: new Set(),
     CONTEXT_INSTANCES_REGISTRY: new Map(),
@@ -66,5 +66,5 @@ export function createRegistry(): IRegistry {
     CONTEXT_SERVICES_REFERENCES: new Map(),
     CONTEXT_OBSERVERS_REGISTRY: new Map(),
     CONTEXT_SUBSCRIBERS_REGISTRY: new Map()
-  });
+  };
 }

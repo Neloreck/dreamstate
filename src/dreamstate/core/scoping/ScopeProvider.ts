@@ -23,8 +23,8 @@ export interface IScopeProviderProps {
  * @returns {ReactElement} react tree element.
  */
 export function ScopeProvider(props: IScopeProviderProps): ReactElement {
-  const scopeState: [ ProviderProps<IScopeContext>, Dispatch<SetStateAction<ProviderProps<IScopeContext>>> ]
-    = useState(scopeStateInitializer);
+  const scopeState: [ProviderProps<IScopeContext>, Dispatch<SetStateAction<ProviderProps<IScopeContext>>>] =
+    useState(scopeStateInitializer);
 
   return createElement(ScopeContext.Provider, scopeState[0], props.children);
 }
