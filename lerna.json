@@ -2,7 +2,6 @@
   "packages": [
     ".",
     "./cli",
-    "./src/",
     "./src/dreamstate"
   ],
   "version": "0.0.0"
