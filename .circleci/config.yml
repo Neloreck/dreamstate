@@ -16,8 +16,8 @@ jobs:
       - restore_cache:
           key: dependency-cache-{{ checksum "package-lock.json" }}
       - run:
-          name: Install npm dependencies
-          command: npm install
+          name: Install lerna
+          command: npm install lerna
       - run:
           name: Setup project dependencies
           command: npm run setup
