@@ -2,8 +2,8 @@ import {
   TAnyObject,
   TQueryListener,
   TQueryType,
-  TServiceInstanceMap,
-  TServiceMap,
+  TManagerInstanceMap,
+  TManagerMap,
   TSignalListener,
   TUpdateObserver,
   TUpdateSubscriber
@@ -16,29 +16,29 @@ export interface IRegistry {
   /**
    * Registry of currently provided context managers instances.
    */
-  CONTEXT_INSTANCES_REGISTRY: TServiceInstanceMap;
+  CONTEXT_INSTANCES_REGISTRY: TManagerInstanceMap;
   /**
    * Registry of current scope manager states.
    * Used for data accessing and sync across providers.
    */
-  CONTEXT_STATES_REGISTRY: TServiceMap<TAnyObject>;
+  CONTEXT_STATES_REGISTRY: TManagerMap<TAnyObject>;
   /**
    * Provider references counting.
    * Used to determine whether specific manager should or should not exist.
    * If at least one provider exists, context manager should exist in current scope.
    * If reference count is 0, context manager instance should be disposed.
    */
-  CONTEXT_SERVICES_REFERENCES: TServiceMap<number>;
+  CONTEXT_SERVICES_REFERENCES: TManagerMap<number>;
   /**
    * ContextManagers observers registry for Providers of related context.
    * Used by dreamstate observer components.
    */
-  CONTEXT_OBSERVERS_REGISTRY: TServiceMap<Set<TUpdateObserver>>;
+  CONTEXT_OBSERVERS_REGISTRY: TManagerMap<Set<TUpdateObserver>>;
   /**
    * ContextManagers subscribers registry for data updates.
    * Used by pub-sub subscribers that consume data directly.
    */
-  CONTEXT_SUBSCRIBERS_REGISTRY: TServiceMap<Set<TUpdateSubscriber<any>>>;
+  CONTEXT_SUBSCRIBERS_REGISTRY: TManagerMap<Set<TUpdateSubscriber<any>>>;
   /**
    * Registry of signal handlers.
    */

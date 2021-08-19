@@ -15,6 +15,8 @@ describe("Library exported API", () => {
     "OptionalQueryResponse",
     "QueryType",
     "ContextManagerConstructor",
+    "ManagerMap",
+    "ManagerInstanceMap",
     // Management.
     "ContextManager",
     // Provision.

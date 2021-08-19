@@ -48,10 +48,10 @@ export type TConstructorKey = any;
 /**
  * Mutable map for manager class references.
  */
-export type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;
+export type TManagerMap<T> = Map<TAnyContextManagerConstructor, T>;
 
 /**
- * Mapping of service instances and service class references.
+ * Mapping of manager instances and service class references.
  */
-export type TServiceInstanceMap = TServiceMap<InstanceType<TAnyContextManagerConstructor>>;
+export type TManagerInstanceMap = TManagerMap<InstanceType<TAnyContextManagerConstructor>>;
 

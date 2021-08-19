@@ -10,7 +10,6 @@
 
 ### Updated:
 
-- Dev warning instead of throw for disposed scope calls, throw on data queries
 - Do not affect scope after disposing with setContext and forceUpdate methods
 - Return signal event from 'emitSignal' manager method
 - Warn in console when signal handler fails

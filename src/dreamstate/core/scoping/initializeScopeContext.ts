@@ -103,12 +103,12 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
 
           instance["setContext"] = warnSyncAfterDisposal as TUninitializedValue;
           instance["forceUpdate"] = warnSyncAfterDisposal as TUninitializedValue;
-          instance["emitSignal"] = warnSyncAfterDisposal as TUninitializedValue;
 
           /**
            * Most likely code will fail with null pointer in case of warning.
            * Or it will start work in an unexpected way with 'null' check.
            */
+          instance["emitSignal"] = throwAfterDisposal as TUninitializedValue;
           instance["queryDataSync"] = throwAfterDisposal as TUninitializedValue;
           instance["queryDataAsync"] = throwAfterDisposal as TUninitializedValue;
 

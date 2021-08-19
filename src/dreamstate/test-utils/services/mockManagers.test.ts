@@ -2,13 +2,13 @@ import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { mockManagers } from "@/dreamstate/test-utils/services/mockManagers";
-import { TServiceInstanceMap } from "@/dreamstate/types";
+import { TManagerInstanceMap } from "@/dreamstate/types";
 import { ExtendingManager, TestManager } from "@/fixtures";
 
 describe("mockManagers test util", () => {
   it("Should properly mock manager with context", () => {
     const scope: IScopeContext = mockScope();
-    const map: TServiceInstanceMap = mockManagers([ TestManager ], null, scope);
+    const map: TManagerInstanceMap = mockManagers([ TestManager ], null, scope);
 
     expect(map.get(TestManager)).toBeInstanceOf(TestManager);
     expect(map.get(ExtendingManager)).toBeUndefined();
