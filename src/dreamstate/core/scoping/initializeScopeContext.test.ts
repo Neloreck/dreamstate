@@ -1,7 +1,6 @@
 import { ContextManager } from "@/dreamstate";
 import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { TAnyObject } from "@/dreamstate/types";
 import { TestManager } from "@/fixtures";
 

@@ -48,6 +48,12 @@ import { isFunction } from "@/dreamstate/utils/typechecking";
 export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S extends TAnyObject = TAnyObject> {
 
   /**
+   * Flag indicating whether current manager is still working or disposed.
+   * Once manager is disposed, it cannot be reused or continue working.
+   */
+  public IS_DISPOSED: boolean = false;
+
+  /**
    * Manager instance scope reference.
    * Used internally to emit signals/queries or subscribe to data.
    */

@@ -38,6 +38,7 @@ exports[`createProvider method Should create correct component tree without chil
             "REGISTRY": Object {
               "CONTEXT_INSTANCES_REGISTRY": Map {
                 [Function] => TestManager {
+                  "IS_DISPOSED": false,
                   "context": Object {
                     "first": "first",
                     "second": 2,
@@ -126,6 +127,7 @@ exports[`createProvider method Should render correct component tree 2`] = `
             "REGISTRY": Object {
               "CONTEXT_INSTANCES_REGISTRY": Map {
                 [Function] => TestManager {
+                  "IS_DISPOSED": false,
                   "context": Object {
                     "first": "first",
                     "second": 2,

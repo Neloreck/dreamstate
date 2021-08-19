@@ -2,12 +2,13 @@
 
 ### Added:
 
+- IS_DISPOSED field for ContextManager instances to indicate current state
 - Mock manager test util for isolated scope mocking
 - Mock managers test util for isolated scope mocking
 
 ### Updated:
 
-- Dev warning instead of throw for disposed scope calls to prevent global exception catching with sentry-like services
+- Dev warning instead of throw for disposed scope calls, throw on data queries
 - Do not affect scope after disposing with setContext and forceUpdate methods
 - Return signal event from 'emitSignal' manager method
 - Warn in console when signal handler fails

@@ -73,7 +73,7 @@ describe("ContextManager class", () => {
       expect(service[SCOPE_SYMBOL]).toBeUndefined();
       expect(service[SIGNALING_HANDLER_SYMBOL]).toBeUndefined();
 
-      expect(Object.keys(service)).toHaveLength(1);
+      expect(Object.keys(service)).toHaveLength(2);
       expect(service).toBeInstanceOf(ContextManager);
       expect(service.context).toBeInstanceOf(Object);
 

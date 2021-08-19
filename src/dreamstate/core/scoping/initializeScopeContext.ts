@@ -17,7 +17,7 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";
-import { warnAsyncAfterDisposal } from "@/dreamstate/core/utils/warnAsyncAfterDisposal";
+import { throwAfterDisposal } from "@/dreamstate/core/utils/throwAfterDisposal";
 import { warnSyncAfterDisposal } from "@/dreamstate/core/utils/warnSyncAfterDisposal";
 import {
   IBaseSignal,
@@ -42,8 +42,7 @@ import {
  *
  * @returns {IScopeContext} mutable scope with set of methods and registry stores for react VDOM tree
  */
-export function initializeScopeContext(): IScopeContext {
-  const registry: IRegistry = createRegistry();
+export function initializeScopeContext(registry: IRegistry = createRegistry()): IScopeContext {
   const {
     SIGNAL_LISTENERS_REGISTRY,
     CONTEXT_STATES_REGISTRY,
@@ -98,15 +97,25 @@ export function initializeScopeContext(): IScopeContext {
 
           /**
            * Unset handlers and stop affecting scope after unregister.
-           * todo: Probably find better solution for store destruction and stopping scope.
+           * For external calls throw an exception (queries).
            */
           instance[SCOPE_SYMBOL] = null as TUninitializedValue;
 
           instance["setContext"] = warnSyncAfterDisposal as TUninitializedValue;
           instance["forceUpdate"] = warnSyncAfterDisposal as TUninitializedValue;
-          instance["queryDataSync"] = warnSyncAfterDisposal as TUninitializedValue;
-          instance["queryDataAsync"] = warnAsyncAfterDisposal as TUninitializedValue;
-          instance["queryDataAsync"] = warnSyncAfterDisposal as TUninitializedValue;
+          instance["emitSignal"] = warnSyncAfterDisposal as TUninitializedValue;
+
+          /**
+           * Most likely code will fail with null pointer in case of warning.
+           * Or it will start work in an unexpected way with 'null' check.
+           */
+          instance["queryDataSync"] = throwAfterDisposal as TUninitializedValue;
+          instance["queryDataAsync"] = throwAfterDisposal as TUninitializedValue;
+
+          /**
+           * Mark instance as disposed to enable internal logic related to lifecycle and async actions/timers.
+           */
+          instance.IS_DISPOSED = true;
 
           SIGNAL_LISTENERS_REGISTRY.delete(instance[SIGNALING_HANDLER_SYMBOL]);
         }

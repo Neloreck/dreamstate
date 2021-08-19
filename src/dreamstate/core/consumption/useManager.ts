@@ -7,7 +7,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * Callback for dependencies composing based on current context.
  *
  * @callback contextDependenciesSelector
- * @param {Object} context.
+ * @param {Object} - context.
  * @returns {Array} dependencies.
  */
 
