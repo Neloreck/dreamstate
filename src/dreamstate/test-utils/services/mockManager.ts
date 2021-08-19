@@ -13,7 +13,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  */
 export function mockManager<T extends TAnyObject, S extends TAnyObject, M extends IContextManagerConstructor<T, S>>(
   ManagerClass: M,
-  initialState?: S,
+  initialState?: S | null,
   scope: IScopeContext = initializeScopeContext()
 ): InstanceType<M> {
   scope.INTERNAL.registerService(ManagerClass, initialState);

@@ -127,9 +127,11 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
          * Observers and subscribers should not be affected by un-registering.
          */
       },
-      addServiceObserver(ManagerClass: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
-        const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(ManagerClass)! + 1;
-
+      addServiceObserver(
+        ManagerClass: TAnyContextManagerConstructor,
+        observer: TUpdateObserver,
+        referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(ManagerClass)! + 1
+      ): void {
         CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.add(observer);
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
@@ -139,9 +141,11 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionStarted"]();
         }
       },
-      removeServiceObserver(ManagerClass: TAnyContextManagerConstructor, observer: TUpdateObserver): void {
-        const referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(ManagerClass)! - 1;
-
+      removeServiceObserver(
+        ManagerClass: TAnyContextManagerConstructor,
+        observer: TUpdateObserver,
+        referencesCount: number = CONTEXT_SERVICES_REFERENCES.get(ManagerClass)! - 1
+      ): void {
         CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.delete(observer);
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 

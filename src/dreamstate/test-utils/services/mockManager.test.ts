@@ -1,6 +1,6 @@
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { mockManager } from "@/dreamstate/test-utils/registry/mockManager";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
+import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
 import { TestManager } from "@/fixtures";
 
 describe("mockManager test util", () => {

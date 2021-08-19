@@ -2,10 +2,13 @@
  * 'https://github.com/Neloreck/dreamstate'
  */
 
+export * from "@/dreamstate/test-utils/provision/mockContextProvider";
+export * from "@/dreamstate/test-utils/provision/mockScopeProvider";
+
+export * from "@/dreamstate/test-utils/services/mockManagers";
+export * from "@/dreamstate/test-utils/services/mockManager";
+
 export * from "@/dreamstate/test-utils/registry/getCurrent";
-export * from "@/dreamstate/test-utils/registry/mockManagerWithScope";
-export * from "@/dreamstate/test-utils/registry/mockManager";
-export * from "@/dreamstate/test-utils/registry/mockScopeProvider";
 export * from "@/dreamstate/test-utils/registry/mockScope";
 
 export * from "@/dreamstate/test-utils/utils/getReactConsumer";

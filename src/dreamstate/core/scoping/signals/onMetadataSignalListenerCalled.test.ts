@@ -1,10 +1,10 @@
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/scoping/signals/onMetadataSignalListenerCalled";
-import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
+import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
 import { TestManager } from "@/fixtures";
 
 describe("onMetadataSignalListenerCalled method functionality", () => {
   it("Should ignore services without metadata and not throw any errors", () => {
-    const [ manager, scope ] = mockManagerWithScope(TestManager);
+    const manager: TestManager = mockManager(TestManager);
 
     onMetadataSignalListenerCalled.call(manager, {
       type: "TEST",

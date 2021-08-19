@@ -1,13 +1,13 @@
 import { ContextManager } from "@/dreamstate";
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
-import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
+import { mockManager } from "@/dreamstate/test-utils";
 import { TSignalSubscriptionMetadata, TSignalType } from "@/dreamstate/types";
 import { ESignal, SubscribedManager } from "@/fixtures/signals";
 
 describe("@OnSignal metadata decorator", () => {
   it("Signal decorator should properly add metadata", () => {
-    const [ manager ] = mockManagerWithScope(SubscribedManager);
+    const manager: SubscribedManager = mockManager(SubscribedManager);
     const signalListenersList: TSignalSubscriptionMetadata = manager[SIGNAL_METADATA_SYMBOL];
 
     expect(signalListenersList).toBeInstanceOf(Array);

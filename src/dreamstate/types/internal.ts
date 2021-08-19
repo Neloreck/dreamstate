@@ -44,3 +44,14 @@ export type TUpdateObserver = () => void;
 export type TUpdateSubscriber<T extends TAnyObject> = (context: T) => void;
 
 export type TConstructorKey = any;
+
+/**
+ * Mutable map for manager class references.
+ */
+export type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;
+
+/**
+ * Mapping of service instances and service class references.
+ */
+export type TServiceInstanceMap = TServiceMap<InstanceType<TAnyContextManagerConstructor>>;
+

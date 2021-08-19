@@ -47,15 +47,25 @@ export interface IScopeContextInternals {
    *
    * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for observer addition.
    * @param {TUpdateObserver} serviceObserver - observer that should be notified on manager updates.
+   * @param {number} referencesCount - optional count of manager references for injection, by default checks registry.
    */
-  addServiceObserver(ManagerClass: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
+  addServiceObserver(
+    ManagerClass: TAnyContextManagerConstructor,
+    serviceObserver: TUpdateObserver,
+    referencesCount?: number
+  ): void;
   /**
    * Remove observer from specified service.
    *
    * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for observer removal.
    * @param {TUpdateObserver} serviceObserver - observer that should be removed from registry.
+   * @param {number} referencesCount - optional count of manager references for injection, by default checks registry.
    */
-  removeServiceObserver(ManagerClass: TAnyContextManagerConstructor, serviceObserver: TUpdateObserver): void;
+  removeServiceObserver(
+    ManagerClass: TAnyContextManagerConstructor,
+    serviceObserver: TUpdateObserver,
+    referencesCount?: number
+  ): void;
   /**
    * Notify observers method that updates all providers state based on manager instance context.
    *

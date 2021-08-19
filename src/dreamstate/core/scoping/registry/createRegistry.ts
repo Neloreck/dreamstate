@@ -1,17 +1,13 @@
 import {
-  TAnyContextManagerConstructor,
   TAnyObject,
   TQueryListener,
   TQueryType,
+  TServiceInstanceMap,
+  TServiceMap,
   TSignalListener,
   TUpdateObserver,
   TUpdateSubscriber
 } from "@/dreamstate/types";
-
-/**
- * Mutable map for manager class references.
- */
-type TServiceMap<T> = Map<TAnyContextManagerConstructor, T>;
 
 /**
  * Internal registry object that stores mutable references accounting all dreamstate scope data.
@@ -20,7 +16,7 @@ export interface IRegistry {
   /**
    * Registry of currently provided context managers instances.
    */
-  CONTEXT_INSTANCES_REGISTRY: TServiceMap<InstanceType<TAnyContextManagerConstructor>>;
+  CONTEXT_INSTANCES_REGISTRY: TServiceInstanceMap;
   /**
    * Registry of current scope manager states.
    * Used for data accessing and sync across providers.

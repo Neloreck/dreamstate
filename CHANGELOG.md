@@ -1,8 +1,10 @@
-## 4.0.1 (_/_/2021)
+## 4.1.0 (8/20/2021)
 
 ### Added:
 
 - IS_DISPOSED field for ContextManager instances to indicate current state
+- General testing utils flow was reviewed, revisited methods for testing and simplified it
+- Mock scope provider test util for scope testing
 - Mock manager test util for isolated scope mocking
 - Mock managers test util for isolated scope mocking
 
@@ -12,6 +14,7 @@
 - Do not affect scope after disposing with setContext and forceUpdate methods
 - Return signal event from 'emitSignal' manager method
 - Warn in console when signal handler fails
+- Mocked scope can toggle lifecycle now
 
 ## 4.0.0 (7/2/2021)
 

@@ -17,7 +17,7 @@ export interface ICreateProviderProps {
  *
  * @param {Array.<IContextManagerConstructor>>} sources - array of source classes references
  *   that should be provided in react tree when returned component renders.
- * @param {Object} config - store provider configuration.
+ * @param {ICreateProviderProps} config - store provider configuration.
  * @param {boolean} config.isCombined - boolean flag that switches observing between one big react node
  *   vs small scoped nodes.
  * @returns {FunctionComponent} react provider component for source classes.

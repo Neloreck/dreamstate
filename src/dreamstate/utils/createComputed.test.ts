@@ -1,6 +1,6 @@
 import { ContextManager } from "@/dreamstate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
-import { mockManagerWithScope } from "@/dreamstate/test-utils";
+import { mockManager } from "@/dreamstate/test-utils";
 import { TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 
@@ -69,17 +69,17 @@ describe("createComputed method functionality", () => {
 
     }
 
-    const [ computedManager ] = mockManagerWithScope(ComputedManager);
+    const manager: ComputedManager = mockManager(ComputedManager);
 
-    expect(computedManager.context.testValue).toBe(25);
-    expect(computedManager.context.example.multipliedByTwo).toBe(50);
-    expect(computedManager.context.example.multipliedByThree).toBe(75);
+    expect(manager.context.testValue).toBe(25);
+    expect(manager.context.example.multipliedByTwo).toBe(50);
+    expect(manager.context.example.multipliedByThree).toBe(75);
 
-    computedManager.setContext({ testValue: 1000 });
+    manager.setContext({ testValue: 1000 });
 
-    expect(computedManager.context.testValue).toBe(1000);
-    expect(computedManager.context.example.multipliedByTwo).toBe(2000);
-    expect(computedManager.context.example.multipliedByThree).toBe(3000);
+    expect(manager.context.testValue).toBe(1000);
+    expect(manager.context.example.multipliedByTwo).toBe(2000);
+    expect(manager.context.example.multipliedByThree).toBe(3000);
   });
 
   it("Should correctly compute non-primitive values", () => {
@@ -101,15 +101,15 @@ describe("createComputed method functionality", () => {
 
     }
 
-    const [ computedManager ] = mockManagerWithScope(ComputedManager);
+    const manager: ComputedManager = mockManager(ComputedManager);
 
-    expect(computedManager.context.numbers).toHaveLength(6);
-    expect(computedManager.context.computed.greaterThanFive).toHaveLength(3);
+    expect(manager.context.numbers).toHaveLength(6);
+    expect(manager.context.computed.greaterThanFive).toHaveLength(3);
 
-    computedManager.setContext({ numbers: [ 1, 2, 10 ] });
+    manager.setContext({ numbers: [ 1, 2, 10 ] });
 
-    expect(computedManager.context.numbers).toHaveLength(3);
-    expect(computedManager.context.computed.greaterThanFive).toHaveLength(1);
+    expect(manager.context.numbers).toHaveLength(3);
+    expect(manager.context.computed.greaterThanFive).toHaveLength(1);
   });
 
   it("Should validate provided params object", () => {

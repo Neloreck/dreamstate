@@ -3,14 +3,14 @@ import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
-import { mockManagerWithScope } from "@/dreamstate/test-utils/registry/mockManagerWithScope";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
+import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
 import { ISignalEvent, TAnyContextManagerConstructor } from "@/dreamstate/types";
 import { EmittingManager, ExtendingManager, TestManager } from "@/fixtures";
 
 describe("ContextManager class", () => {
   it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
-    const [ manager ] = mockManagerWithScope(TestManager);
+    const manager: TestManager = mockManager(TestManager);
 
     expect(manager.context.first).toBe("first");
     expect(manager.context.second).toBe(2);
@@ -95,7 +95,8 @@ describe("ContextManager class", () => {
   });
 
   it("Should use emitSignal method when sending signals", async () => {
-    const [ emittingContextManager, scope ] = mockManagerWithScope(EmittingManager);
+    const scope: IScopeContext = mockScope();
+    const emittingContextManager: EmittingManager = mockManager(EmittingManager, null, scope);
     const spy = jest.fn((signal: ISignalEvent) => {
       expect(signal.emitter).toBe(EmittingManager);
       expect(signal.type).toBe("TEST");

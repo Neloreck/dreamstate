@@ -2,6 +2,9 @@ import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/cr
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 
+/**
+ * todo: Add lifecycle toggling tests.
+ */
 describe("mockScope test util", () => {
   it("Should properly mock scope with clean state", () => {
     const scope: IScopeContext = mockScope();
@@ -20,7 +23,7 @@ describe("mockScope test util", () => {
 
   it("Should properly inject provided registry", () => {
     const registry: IRegistry = createRegistry();
-    const scope: IScopeContext = mockScope(registry);
+    const scope: IScopeContext = mockScope(true, registry);
 
     expect(scope.INTERNAL.REGISTRY).toBe(registry);
   });

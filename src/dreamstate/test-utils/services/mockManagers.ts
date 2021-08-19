@@ -1,6 +1,6 @@
-import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
+import { IContextManagerConstructor, TAnyObject, TServiceInstanceMap } from "@/dreamstate/types";
 
 /**
  * Mock managers and scope for isolated testing.
@@ -9,19 +9,18 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  *
  * @param {IContextManagerConstructor} managerClasses - class reference of context manager that should be created.
  * @param {TAnyObject} initialState - initial state that should be injected in class constructor.
+ * @param {IScopeContext} scope - scope where managers should be mocked, mocked by default.
  * @returns array with manager class instance and mocked scope context object.
  */
-export function mockManagersInScope<
+export function mockManagers<
   T extends TAnyObject,
   S extends TAnyObject,
   M extends IContextManagerConstructor<T, S>,
   E extends Array<M>
->(managerClasses: E, initialState?: S): IScopeContext {
-  const scope: IScopeContext = initializeScopeContext();
-
+>(managerClasses: E, initialState?: S | null, scope: IScopeContext = mockScope()): TServiceInstanceMap {
   for (let it = 0; it < managerClasses.length; it ++) {
     scope.INTERNAL.registerService(managerClasses[it], initialState);
   }
 
-  return scope;
+  return new Map(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY);
 }
