@@ -64,4 +64,43 @@ describe("InitializeScopeContext method", () => {
 
     unRegisterService(ExampleManagerClass);
   });
+
+  it("Should properly get current state of managers", () => {
+    const {
+      INTERNAL: { registerService, unRegisterService, REGISTRY },
+      getContextOf
+    }: IScopeContext = initializeScopeContext();
+
+    class ExampleManagerClass extends ContextManager<TAnyObject> {
+
+      public readonly context: TAnyObject = {
+        a: 1,
+        b: 2,
+        c: 3
+      };
+
+    }
+
+    registerService(ExampleManagerClass);
+
+    const context: TAnyObject = getContextOf(ExampleManagerClass);
+
+    expect(context).toBeDefined();
+    expect(context).not.toBeNull();
+    expect(context).not.toBe(REGISTRY.CONTEXT_STATES_REGISTRY.get(ExampleManagerClass));
+    expect(context).not.toBe(getContextOf(ExampleManagerClass));
+
+    expect(context.a).toBe(1);
+    expect(context.b).toBe(2);
+    expect(context.c).toBe(3);
+
+    unRegisterService(ExampleManagerClass);
+  });
+  it("Should properly get null for not registered managers", () => {
+    const { getContextOf }: IScopeContext = initializeScopeContext();
+
+    class ExampleManagerClass extends ContextManager<TAnyObject> {}
+
+    expect(getContextOf(ExampleManagerClass)).toBeNull();
+  });
 });

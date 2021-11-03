@@ -203,6 +203,20 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
       }
     },
+    getContextOf<T extends TAnyObject, D extends IContextManagerConstructor<T>>(manager: D): T {
+      const context: T | null = CONTEXT_STATES_REGISTRY.get(manager) as T;
+
+      /**
+       * Return new shallow copy of state to prevent modifications.
+       * In case of non-existing manager typecasting value as T because it is
+       *   rather not expected case to force check all the time.
+       */
+      if (context) {
+        return Object.assign({}, context);
+      } else {
+        return null as unknown as T;
+      }
+    },
     emitSignal<D = undefined>(
       base: IBaseSignal<D>,
       emitter: TAnyContextManagerConstructor | null = null

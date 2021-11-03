@@ -107,6 +107,12 @@ export interface IScopeContext {
    */
   INTERNAL: IScopeContextInternals;
   /**
+   * Get current context snapshot for provided manager class.
+   *
+   * @param {TAnyContextManagerConstructor} manager - manager which context will be returned
+   */
+  getContextOf<T extends TAnyObject, D extends IContextManagerConstructor<T>>(manager: D): T;
+  /**
    * Emit signal for all subscribers in current dreamstate scope.
    *
    * @param {Object} base - base signal that should trigger signal event for subscribers.

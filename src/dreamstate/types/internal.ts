@@ -54,4 +54,3 @@ export type TManagerMap<T> = Map<TAnyContextManagerConstructor, T>;
  * Mapping of manager instances and service class references.
  */
 export type TManagerInstanceMap = TManagerMap<InstanceType<TAnyContextManagerConstructor>>;
-
