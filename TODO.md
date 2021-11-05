@@ -20,3 +20,8 @@
 ### Docs
 
 - Docs update
+
+### Examples
+
+- Add example with queries
+- Add example tests (react-rendering-lib, enzyme)
