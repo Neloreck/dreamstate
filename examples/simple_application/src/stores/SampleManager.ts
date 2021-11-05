@@ -30,10 +30,12 @@ export class SampleManager extends ContextManager<ISampleContext> {
   };
 
   public setSampleString(value: string): void {
+    window.console.info(SampleManager.name, "set sample string called", value);
     this.setContext({ sampleString: value });
   }
 
   public incrementSampleNumber(): void {
+    window.console.info(SampleManager.name, "increment sample number called");
     this.setContext(({ sampleNumber }) => {
       return { sampleNumber: sampleNumber + 1 };
     });
@@ -43,14 +45,14 @@ export class SampleManager extends ContextManager<ISampleContext> {
    * Lifecycle event, triggered after provider mount.
    */
   public onProvisionStarted(): void {
-    console.info("Sample context provision started");
+    window.console.info("Sample context provision started");
   }
 
   /**
    * Lifecycle event, triggered after provider unmount.
    */
   public onProvisionEnded(): void {
-    console.info("Sample context provision ended");
+    window.console.info("Sample context provision ended");
   }
 
 }

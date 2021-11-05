@@ -10,11 +10,12 @@ const informationStyle: CSSProperties = {
   border: "1px solid black"
 };
 
-export function SampleContextInformation(): ReactElement {
-  /**
-   * Update on every context update and keep current component up-to-date always.
-   */
-  const { sampleNumber, sampleString } = useManager(SampleManager);
+/**
+ * Update on every context update and keep current component up-to-date always.
+ */
+export function SampleContextInformation({
+  sampleContext: { sampleNumber, sampleString } = useManager(SampleManager)
+}): ReactElement {
   const rendersCount: number = useRendersCount();
 
   return (

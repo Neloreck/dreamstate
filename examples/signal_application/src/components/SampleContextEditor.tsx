@@ -1,8 +1,9 @@
-import { useManager } from "dreamstate";
-import { ChangeEvent, CSSProperties, default as React, ReactElement, useCallback, useState } from "react";
+import { ScopeContext, useManager, useScope } from "dreamstate";
+import { ChangeEvent, CSSProperties, default as React, ReactElement, useCallback, useEffect, useState } from "react";
 
 import { useRendersCount } from "../hooks/useRendersCount";
-import { SampleManager } from "../stores/SampleManager";
+import { SecondManager } from "../stores/SecondManager";
+import { EGenericSignal } from "../stores/signals";
 
 const editorStyle: CSSProperties = {
   padding: "4px",
@@ -11,16 +12,9 @@ const editorStyle: CSSProperties = {
 };
 
 export function SampleContextEditor({
-  /**
-   * Second parameter here is 'selector' that is called on each SampleContext update.
-   * Returning dependencies comparison will tell whether current component should update.
-   *
-   * Current component receives only constant actions reference and it does not need to update on every
-   * sampleNumber or sampleString change. So in this case we should get actions reference
-   * and block next updates with '[]' return value.
-   */
-  sampleContext: { sampleString, sampleActions } = useManager(SampleManager, () => [])
+  firstContext: { sampleString, sampleActions } = useManager(SecondManager, () => [])
 }): ReactElement {
+  const scope: ScopeContext = useScope();
   const [ localSampleString, setLocalSampleString ] = useState(sampleString);
   const rendersCount: number = useRendersCount();
 
@@ -33,12 +27,20 @@ export function SampleContextEditor({
     [ localSampleString, sampleActions ]
   );
 
+  /**
+   * Here emit signal and all subscribers do context update at once.
+   * Check how many renders happened for 2 context updates per single signal.
+   */
+  const onRandomizeNumber = useCallback(() => {
+    scope.emitSignal({ type: EGenericSignal.SAMPLE_NUMBER_CHANGED, data: Math.random() });
+  }, [ scope ]);
+
   return (
     <div style={editorStyle}>
       <div> Editor renders count: { rendersCount } </div>
 
       <div>
-        <button onClick={sampleActions.incrementSampleNumber}> Increment sample number </button>
+        <button onClick={onRandomizeNumber}> Emit randomize number signal </button>
       </div>
 
       <div>
