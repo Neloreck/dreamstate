@@ -10,6 +10,7 @@ import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
+import { throwOutOfScope } from "@/dreamstate/core/utils/throwOutOfScope";
 import {
   IBaseSignal,
   IOptionalQueryRequest,
@@ -127,8 +128,14 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * Note: creates new shallow copy of 'this.context' reference.
    */
   public forceUpdate(): void {
+    /**
+     * Always do shallow copy to point new ref object in current context.
+     */
     this.context = processComputed(Object.assign({}, this.context));
-    this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
+
+    if (this[SCOPE_SYMBOL]) {
+      this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
+    }
   }
 
   /**
@@ -149,9 +156,16 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
     );
 
     /**
+     * Always update context, even if it was created out of scope.
+     * In case of existing scope just send additional notification.
+     */
+    this.context = processComputed(nextContext);
+
+    /**
      * Compare current context with saved for observing one.
      */
     if (
+      this[SCOPE_SYMBOL] &&
       shouldObserversUpdate(
         this[SCOPE_SYMBOL].INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(
           this.constructor as TAnyContextManagerConstructor
@@ -159,9 +173,6 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
         nextContext
       )
     ) {
-      processComputed(nextContext);
-
-      this.context = nextContext;
       this[SCOPE_SYMBOL].INTERNAL.notifyObservers(this);
     }
   }
@@ -176,7 +187,11 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    *   Note: async handlers will not be awaited.
    */
   public emitSignal<D = undefined>(baseSignal: IBaseSignal<D>): ISignalEvent<D> {
-    return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
+    if (this[SCOPE_SYMBOL]) {
+      return this[SCOPE_SYMBOL].emitSignal(baseSignal, this.constructor as TAnyContextManagerConstructor);
+    } else {
+      throwOutOfScope();
+    }
   }
 
   /**
@@ -185,7 +200,11 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   public queryDataAsync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
   ): Promise<TQueryResponse<any>> {
-    return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
+    if (this[SCOPE_SYMBOL]) {
+      return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
+    } else {
+      throwOutOfScope();
+    }
   }
 
   /**
@@ -194,7 +213,11 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   public queryDataSync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
   ): TQueryResponse<any> {
-    return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
+    if (this[SCOPE_SYMBOL]) {
+      return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
+    } else {
+      throwOutOfScope();
+    }
   }
 
 }

@@ -2,13 +2,81 @@ import { CONTEXT_REACT_CONTEXTS_REGISTRY, SCOPE_SYMBOL, SIGNALING_HANDLER_SYMBOL
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
+import { throwOutOfScope } from "@/dreamstate/core/utils/throwOutOfScope";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
-import { ISignalEvent, TAnyContextManagerConstructor } from "@/dreamstate/types";
+import { ISignalEvent, TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 import { EmittingManager, ExtendingManager, TestManager } from "@/fixtures";
 
 describe("ContextManager class", () => {
+  it("Should correctly handle setContext method out of scope", () => {
+    class SampleManager extends ContextManager<{ first: number }> {
+
+      public context = {
+        first: 1
+      };
+
+      public constructor() {
+        super();
+
+        expect(this[SCOPE_SYMBOL]).toBeUndefined();
+        this.setContext({ first: 1000 });
+      }
+
+    }
+
+    const manager: SampleManager = mockManager(SampleManager);
+
+    expect(manager.context.first).toBe(1000);
+
+    const outOfScopeManager: SampleManager = new SampleManager();
+
+    outOfScopeManager.setContext(({ first }) => ({ first: first / 0.5 }));
+
+    expect(outOfScopeManager.context.first).toBe(2000);
+    expect(outOfScopeManager[SCOPE_SYMBOL]).toBeUndefined();
+  });
+
+  it("Should correctly handle forceUpdate method out of scope", () => {
+    class SampleManager extends ContextManager<{ first: number }> {
+
+      public context = {
+        first: 1
+      };
+
+      public constructor() {
+        super();
+        this.forceUpdate();
+      }
+
+    }
+
+    const manager: SampleManager = mockManager(SampleManager);
+
+    expect(manager.context.first).toBe(1);
+
+    const outOfScopeManager: SampleManager = new SampleManager();
+    const previousContextLink: TAnyObject = outOfScopeManager.context;
+
+    outOfScopeManager.forceUpdate();
+
+    expect(outOfScopeManager.context).not.toBe(previousContextLink);
+    expect(outOfScopeManager[SCOPE_SYMBOL]).toBeUndefined();
+  });
+
+  it("Should throw exception on scope-related methods if out of scope", async () => {
+    /**
+     * One-liner to get thrown exception.
+     */
+    const expectedError: Error = await (async () => throwOutOfScope())().catch((error) => error);
+    const manager: TestManager = new TestManager();
+
+    expect(() => manager.emitSignal({ type: "test" })).toThrow(expectedError);
+    expect(() => manager.queryDataAsync({ type: "test" })).toThrow(expectedError);
+    expect(() => manager.queryDataSync({ type: "test" })).toThrow(expectedError);
+  });
+
   it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
     const manager: TestManager = mockManager(TestManager);
 

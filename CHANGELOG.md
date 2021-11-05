@@ -1,3 +1,9 @@
+## 4.2.0 (*/*/2021)
+
+### Updated:
+- Now signal/query methods correctly throw exception if called out of scope (created with new or when doing it from constructor)
+- Now setContext and forceUpdate methods can be called out of scope. In this case simply modify class and continue working
+
 ## 4.1.1 (11/3/2021)
 
 ### Added:
