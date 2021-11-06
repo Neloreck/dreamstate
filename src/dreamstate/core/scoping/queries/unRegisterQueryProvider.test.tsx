@@ -120,7 +120,8 @@ describe("registerQueryProvider method", () => {
   });
 
   it("Should throw if handler is not a function", async () => {
-    const tree = testQueryTree(({ unRegisterQueryProvider }) => {
+    const tree = testQueryTree(({ unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
+      expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
       expect(() => unRegisterQueryProvider("ANY", null as any)).toThrow(Error);
       expect(() => unRegisterQueryProvider("ANY", 1 as any)).toThrow(Error);
       expect(() => unRegisterQueryProvider("ANY", false as any)).toThrow(Error);
@@ -130,6 +131,27 @@ describe("registerQueryProvider method", () => {
       expect(() => unRegisterQueryProvider("ANY", new Set() as any)).toThrow(Error);
       expect(() => unRegisterQueryProvider("ANY", [] as any)).toThrow(Error);
       expect(() => unRegisterQueryProvider("ANY", () => {})).not.toThrow(Error);
+      expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
+    });
+
+    tree.unmount();
+  });
+
+  it("Should throw if type is not correct", async () => {
+    const tree = testQueryTree(({ unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
+      expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
+      expect(() => unRegisterQueryProvider("TYPE", () => {})).not.toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(0, () => {})).not.toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(1000, () => {})).not.toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(Symbol("TEST"), () => {})).not.toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(Symbol.for("TEST"), () => {})).not.toThrow(TypeError);
+      expect(() => unRegisterQueryProvider({} as any, () => {})).toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(null as any, () => {})).toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(undefined as any, () => {})).toThrow(TypeError);
+      expect(() => unRegisterQueryProvider([] as any, () => {})).toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(new Map() as any, () => {})).toThrow(TypeError);
+      expect(() => unRegisterQueryProvider(new Set() as any, () => {})).toThrow(TypeError);
+      expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
     });
 
     tree.unmount();

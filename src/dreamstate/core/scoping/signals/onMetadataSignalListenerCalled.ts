@@ -1,6 +1,6 @@
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { ISignalEvent, TSignalType } from "@/dreamstate/types";
+import { ISignalEvent } from "@/dreamstate/types";
 
 /**
  * Listen signal and call related metadata listeners of bound manager.

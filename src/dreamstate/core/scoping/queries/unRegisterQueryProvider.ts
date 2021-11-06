@@ -1,6 +1,6 @@
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TQueryListener, TQueryType } from "@/dreamstate/types";
-import { isFunction } from "@/dreamstate/utils/typechecking";
+import { isCorrectQueryType, isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
  * Unsubscribe from all queries for specified listener and type.
@@ -15,9 +15,10 @@ export function unRegisterQueryProvider<T extends TQueryType>(
   listener: TQueryListener<T, any>,
   { QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): void {
-  // todo: Validate type.
   if (!isFunction(listener)) {
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
+  } else if (!isCorrectQueryType(queryType)) {
+    throw new TypeError(`Unexpected query type provided, expected symbol, string or number. Got: ${typeof queryType}.`);
   }
 
   if (QUERY_PROVIDERS_REGISTRY.has(queryType)) {

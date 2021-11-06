@@ -61,7 +61,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         if (!CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: InstanceType<TAnyContextManagerConstructor> = new ManagerClass(initialState);
 
-          // todo: Add checkContext method call for deb bundle with warnings for initial state nesting.
+          // todo: Add checkContext method call for dev bundle with warnings for initial state nesting.
           processComputed((instance as ContextManager<any>).context);
 
           instance[SCOPE_SYMBOL] = scope;

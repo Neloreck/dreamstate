@@ -19,6 +19,21 @@ describe("@OnQuery and queries processing", () => {
   });
 
   it("Should not work with non-context service classes and bad queries", () => {
+    const createTestedClass = <T>(queryType: T) => {
+      class Manager extends ContextManager {
+
+        @OnQuery(queryType as any)
+        private willWork(): void {
+        }
+
+      }
+
+      return Manager;
+    };
+
+    /**
+     * Should extend base class.
+     */
     expect(() => {
       class Custom {
 
@@ -27,13 +42,13 @@ describe("@OnQuery and queries processing", () => {
 
       }
     }).toThrow(TypeError);
-    expect(() => {
-      class Service extends ContextManager {
 
-        @OnQuery(undefined as any)
-        private willWork(): void {}
-
-      }
-    }).toThrow(TypeError);
+    expect(() => createTestedClass(undefined)).toThrow(TypeError);
+    expect(() => createTestedClass(null)).toThrow(TypeError);
+    expect(() => createTestedClass([])).toThrow(TypeError);
+    expect(() => createTestedClass({})).toThrow(TypeError);
+    expect(() => createTestedClass(new Map())).toThrow(TypeError);
+    expect(() => createTestedClass(new Error())).toThrow(TypeError);
+    expect(() => createTestedClass(void 0)).toThrow(TypeError);
   });
 });

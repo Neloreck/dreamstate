@@ -1,6 +1,7 @@
 import { unRegisterQueryProvider } from "@/dreamstate/core/scoping/queries/unRegisterQueryProvider";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { TCallable, TQueryListener, TQueryType } from "@/dreamstate/types";
+import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
 
 /**
  * Register callback as query provider and answer calls.
@@ -17,6 +18,8 @@ export function registerQueryProvider<T extends TQueryType>(
 ): TCallable {
   if (typeof listener !== "function") {
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
+  } else if (!isCorrectQueryType(queryType)) {
+    throw new TypeError(`Unexpected query type provided, expected symbol, string or number. Got: ${typeof queryType}.`);
   }
 
   /**

@@ -2,6 +2,7 @@ import { QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
+import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
 
 /**
  * Class method decorator.
@@ -11,8 +12,8 @@ import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethod
  * @param {(TQueryType|Array.<TQueryType>>)} queryType - signal or array of signals that should be handled.
  */
 export function OnQuery(queryType: TQueryType): MethodDecorator {
-  if (!queryType) {
-    throw new TypeError("Query type should be provided for OnQuery decorator.");
+  if (!isCorrectQueryType(queryType)) {
+    throw new TypeError(`Unexpected query type provided, expected symbol, string or number. Got: ${typeof queryType}.`);
   }
 
   /**

@@ -120,4 +120,24 @@ describe("registerQueryProvider method", () => {
 
     tree.unmount();
   });
+
+  it("Should throw if type is not correct", async () => {
+    const tree = testQueryTree(({ registerQueryProvider, INTERNAL: { REGISTRY } }) => {
+      expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
+      expect(() => registerQueryProvider("TYPE", () => {})).not.toThrow(TypeError);
+      expect(() => registerQueryProvider(0, () => {})).not.toThrow(TypeError);
+      expect(() => registerQueryProvider(1000, () => {})).not.toThrow(TypeError);
+      expect(() => registerQueryProvider(Symbol("TEST"), () => {})).not.toThrow(TypeError);
+      expect(() => registerQueryProvider(Symbol.for("EXAMPLE"), () => {})).not.toThrow(TypeError);
+      expect(() => registerQueryProvider({} as any, () => {})).toThrow(TypeError);
+      expect(() => registerQueryProvider(null as any, () => {})).toThrow(TypeError);
+      expect(() => registerQueryProvider(undefined as any, () => {})).toThrow(TypeError);
+      expect(() => registerQueryProvider([] as any, () => {})).toThrow(TypeError);
+      expect(() => registerQueryProvider(new Map() as any, () => {})).toThrow(TypeError);
+      expect(() => registerQueryProvider(new Set() as any, () => {})).toThrow(TypeError);
+      expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(6);
+    });
+
+    tree.unmount();
+  });
 });
