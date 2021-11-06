@@ -96,11 +96,26 @@ describe("InitializeScopeContext method", () => {
 
     unRegisterService(ExampleManagerClass);
   });
+
   it("Should properly get null for not registered managers", () => {
     const { getContextOf }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
     expect(getContextOf(ExampleManagerClass)).toBeNull();
+  });
+
+  it("Should properly return register status", () => {
+    const { INTERNAL: { registerService, unRegisterService } }: IScopeContext = initializeScopeContext();
+
+    class ExampleManagerClass extends ContextManager<TAnyObject> {}
+
+    expect(registerService(ExampleManagerClass)).toBeTruthy();
+    expect(registerService(ExampleManagerClass)).toBeFalsy();
+    expect(registerService(ExampleManagerClass)).toBeFalsy();
+
+    expect(unRegisterService(ExampleManagerClass)).toBeTruthy();
+    expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
+    expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
   });
 });

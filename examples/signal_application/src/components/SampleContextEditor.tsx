@@ -12,7 +12,7 @@ const editorStyle: CSSProperties = {
 };
 
 export function SampleContextEditor({
-  firstContext: { sampleString, sampleActions } = useManager(SecondManager, () => [])
+  secondContext: { sampleString, sampleActions } = useManager(SecondManager, () => [])
 }): ReactElement {
   const scope: ScopeContext = useScope();
   const [ localSampleString, setLocalSampleString ] = useState(sampleString);

@@ -56,7 +56,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
   const scope: IScopeContext = {
     INTERNAL: {
       REGISTRY: registry,
-      registerService<T>(ManagerClass: TAnyContextManagerConstructor, initialState: T): void {
+      registerService<T>(ManagerClass: TAnyContextManagerConstructor, initialState: T): boolean {
         // Only if registry is empty -> create new instance, remember its context and save it to registry.
         if (!CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: InstanceType<TAnyContextManagerConstructor> = new ManagerClass(initialState);
@@ -89,9 +89,13 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           } else {
             CONTEXT_SUBSCRIBERS_REGISTRY.set(ManagerClass, new Set());
           }
+
+          return true;
+        } else {
+          return false;
         }
       },
-      unRegisterService(ManagerClass: TAnyContextManagerConstructor): void {
+      unRegisterService(ManagerClass: TAnyContextManagerConstructor): boolean {
         if (CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as ContextManager<any>;
 
@@ -118,10 +122,16 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           instance.IS_DISPOSED = true;
 
           SIGNAL_LISTENERS_REGISTRY.delete(instance[SIGNALING_HANDLER_SYMBOL]);
-        }
+          CONTEXT_INSTANCES_REGISTRY.delete(ManagerClass);
+          CONTEXT_STATES_REGISTRY.delete(ManagerClass);
 
-        CONTEXT_INSTANCES_REGISTRY.delete(ManagerClass);
-        CONTEXT_STATES_REGISTRY.delete(ManagerClass);
+          return true;
+        } else {
+          CONTEXT_INSTANCES_REGISTRY.delete(ManagerClass);
+          CONTEXT_STATES_REGISTRY.delete(ManagerClass);
+
+          return false;
+        }
 
         /**
          * Observers and subscribers should not be affected by un-registering.

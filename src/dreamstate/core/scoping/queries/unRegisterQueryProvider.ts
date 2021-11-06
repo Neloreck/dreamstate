@@ -15,6 +15,7 @@ export function unRegisterQueryProvider<T extends TQueryType>(
   listener: TQueryListener<T, any>,
   { QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): void {
+  // todo: Validate type.
   if (!isFunction(listener)) {
     throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
   }

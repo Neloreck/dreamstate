@@ -44,9 +44,18 @@ export function ScopedObserver<T>({
    */
   useEffect(function(): TCallable {
     const onUpdateNeeded: TCallable = reducer[1];
+    const isRegistered: boolean = scope.INTERNAL.registerService(ManagerClass, initialState);
 
-    scope.INTERNAL.registerService(ManagerClass, initialState);
     scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
+
+    /**
+     * Re-sync scope provider if it was registered.
+     * Normally happens with HMR chunks exchange and caused problems that use react context without subscription.
+     * Required to force render of subscribed components after HMR with newest fast-refresh plugins.
+     */
+    if (isRegistered) {
+      onUpdateNeeded();
+    }
 
     return function(): void {
       scope.INTERNAL.removeServiceObserver(ManagerClass, onUpdateNeeded);

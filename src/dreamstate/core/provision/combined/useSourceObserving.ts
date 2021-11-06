@@ -49,10 +49,29 @@ export function useSourceObserving(
    */
   useEffect(function(): TCallable {
     const onUpdateNeeded: TCallable = reducer[1];
+    let isSomethingRegistered: boolean = false;
 
     for (let it = sources.length - 1; it >= 0; it --) {
-      scope.INTERNAL.registerService(sources[it], initialState);
+      /**
+       * If something is registered, memoize it and force update to sync useEffect and actual provision tree.
+       */
+      const registered: boolean = scope.INTERNAL.registerService(sources[it], initialState);
+
       scope.INTERNAL.addServiceObserver(sources[it], onUpdateNeeded);
+
+      /**
+       * Should stick to 'false' until at least one result is 'true'.
+       */
+      isSomethingRegistered = registered || isSomethingRegistered;
+    }
+
+    /**
+     * Re-sync scope providers if something was registered.
+     * Normally happens with HMR chunks exchange and caused problems that use react context without subscription.
+     * Required to force render of subscribed components after HMR with newest fast-refresh plugins.
+     */
+    if (isSomethingRegistered) {
+      onUpdateNeeded();
     }
 
     return function(): void {

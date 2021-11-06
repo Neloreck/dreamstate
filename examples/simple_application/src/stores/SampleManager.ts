@@ -45,14 +45,14 @@ export class SampleManager extends ContextManager<ISampleContext> {
    * Lifecycle event, triggered after provider mount.
    */
   public onProvisionStarted(): void {
-    window.console.info("Sample context provision started");
+    window.console.info(SampleManager.name, "provision started");
   }
 
   /**
    * Lifecycle event, triggered after provider unmount.
    */
   public onProvisionEnded(): void {
-    window.console.info("Sample context provision ended");
+    window.console.info(SampleManager.name, "provision ended");
   }
 
 }

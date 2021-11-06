@@ -3,6 +3,7 @@
 ### Updated:
 - Now signal/query methods correctly throw exception if called out of scope (created with new or when doing it from constructor)
 - Now setContext and forceUpdate methods can be called out of scope. In this case simply modify class and continue working
+- HMR, case when tree was not synced with actual store data when subscribed with simple useContext managers (useManager without memo)
 
 ## 4.1.1 (11/3/2021)
 
