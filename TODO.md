@@ -12,6 +12,7 @@
 
 - Store schema registry/creating and validation when initializing context managers?
 - dev warning for additional cases when wrong parameters provided for DS methods
+- add set of methods/utils to handle exceptions when rendering fails at some point or when lifecycle/constructor of manager class throws
 
 ##### Utils
 
@@ -23,5 +24,5 @@
 
 ### Examples
 
-- Add example with queries
 - Add example tests (react-rendering-lib, enzyme)
+- Add specific cases examples (initial state, frequent updates handling)
