@@ -13,7 +13,7 @@ const editorStyle: CSSProperties = {
 };
 
 export function SampleContextEditor({
-  firstContext: { multipliedNumber, firstActions } = useManager(FirstManager),
+  firstContext: { firstActions } = useManager(FirstManager),
   secondContext: { sampleNumber, secondActions } = useManager(SecondManager)
 }): ReactElement {
   const scope: ScopeContext = useScope();
@@ -35,7 +35,6 @@ export function SampleContextEditor({
     [ localSampleNumber, secondActions ]
   );
 
-  console.error(FirstManager, SecondManager, sampleNumber, multipliedNumber);
   /**
    * Add provider that listens all STRING_FROM_COMPONENT queries and responds with local value.
    * Keep it sync always using effect dependencies.
