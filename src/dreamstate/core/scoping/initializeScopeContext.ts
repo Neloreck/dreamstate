@@ -35,6 +35,7 @@ import {
   TUpdateObserver,
   TUpdateSubscriber
 } from "@/dreamstate/types";
+import { isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
  * Dreamstate core processing of scope and existing data registry.
@@ -234,8 +235,8 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
       return emitSignal(base, emitter, registry);
     },
     subscribeToSignals<D = undefined>(listener: TSignalListener<D>): TCallable {
-      if (typeof listener !== "function") {
-        throw new Error(`Signal listener must be function, '${typeof listener}' provided.`);
+      if (!isFunction(listener)) {
+        throw new TypeError(`Signal listener must be function, '${typeof listener}' provided.`);
       }
 
       SIGNAL_LISTENERS_REGISTRY.add(listener);

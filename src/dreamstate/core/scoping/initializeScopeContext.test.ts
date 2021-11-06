@@ -105,6 +105,20 @@ describe("InitializeScopeContext method", () => {
     expect(getContextOf(ExampleManagerClass)).toBeNull();
   });
 
+  it("Should subscribe only with functional params for handling", () => {
+    const { subscribeToSignals }: IScopeContext = initializeScopeContext();
+
+    expect(() => subscribeToSignals(1 as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals(0 as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals("" as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals({} as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals([] as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals(new Map() as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals(Symbol("TEST") as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals(null as any)).toThrow(TypeError);
+    expect(() => subscribeToSignals(undefined as any)).toThrow(TypeError);
+  });
+
   it("Should properly return register status", () => {
     const { INTERNAL: { registerService, unRegisterService } }: IScopeContext = initializeScopeContext();
 

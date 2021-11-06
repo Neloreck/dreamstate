@@ -39,27 +39,43 @@ describe("@OnSignal metadata decorator", () => {
     expect((thirdSubscribed as Array<TSignalType>).includes(ESignal.NUMBER_SIGNAL)).toBeTruthy();
   });
 
-  it("Should work only with context services", () => {
-    expect(() => {
-      class Throwing extends ContextManager {
+  it("Should not work with non-context service classes and bad queries", () => {
+    const createTestedClass = <T>(signalType: T) => {
+      class Manager extends ContextManager {
 
-        @OnSignal(undefined as any)
-        public onSignal(): number {
-          return 0;
-        }
+        @OnSignal(signalType as any)
+        private willWork(): void {}
+
+      }
+
+      return Manager;
+    };
+
+    /**
+     * Should extend base class.
+     */
+    expect(() => {
+      class Custom {
+
+        @OnSignal("WILL_NOT_WORK")
+        private willNotWork(): void {}
 
       }
     }).toThrow(TypeError);
 
-    expect(() => {
-      class Throwing {
-
-        @OnSignal("TEST")
-        public onSignal(): number {
-          return 0;
-        }
-
-      }
-    }).toThrow(TypeError);
+    expect(() => createTestedClass(undefined)).toThrow(TypeError);
+    expect(() => createTestedClass(null)).toThrow(TypeError);
+    expect(() => createTestedClass({})).toThrow(TypeError);
+    expect(() => createTestedClass(new Map())).toThrow(TypeError);
+    expect(() => createTestedClass(new Error())).toThrow(TypeError);
+    expect(() => createTestedClass(void 0)).toThrow(TypeError);
+    expect(() => createTestedClass([])).toThrow(TypeError);
+    expect(() => createTestedClass([ undefined ])).toThrow(TypeError);
+    expect(() => createTestedClass([ null ])).toThrow(TypeError);
+    expect(() => createTestedClass([ {} ])).toThrow(TypeError);
+    expect(() => createTestedClass([ 123 ])).not.toThrow(TypeError);
+    expect(() => createTestedClass([ 123, "TEST" ])).not.toThrow(TypeError);
+    expect(() => createTestedClass([ 123, "TEST", Symbol("CHECK") ])).not.toThrow(TypeError);
+    expect(() => createTestedClass([ Symbol.for("TEST_EXAMPLE"), "TEST" ])).not.toThrow(TypeError);
   });
 });

@@ -2,6 +2,7 @@ import { SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { TAnyContextManagerConstructor, TSignalType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
+import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
 /**
  * Class method decorator.
@@ -11,8 +12,24 @@ import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethod
  * @param {(TSignalType|Array.<TSignalType>>)} signalType - signal or array of signals that should be handled.
  */
 export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDecorator {
-  if (!signalType) {
-    throw new TypeError("Signal type should be provided for OnQuery decorator.");
+  /**
+   * If array:
+   *  - Check not empty
+   *  - Validate all elements
+   * If single type:
+   *  - Check the only value
+   */
+  if (
+    Array.isArray(signalType)
+      ? signalType.length === 0 ||
+        signalType.some(function(it) {
+          return !isCorrectSignalType(it);
+        })
+      : !isCorrectSignalType(signalType)
+  ) {
+    throw new TypeError(
+      `Unexpected signal type provided, expected symbol, string, number or array of it. Got: ${typeof signalType}.`
+    );
   }
 
   /**

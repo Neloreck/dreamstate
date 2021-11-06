@@ -23,11 +23,16 @@ describe("emitSignal method", () => {
     expect(() => emitSignal([] as any, null, registry)).toThrow(TypeError);
     expect(() => emitSignal(new Set() as any, null, registry)).toThrow(TypeError);
     expect(() => emitSignal({} as any, null, registry)).toThrow(TypeError);
-    expect(() => emitSignal({ type: Symbol.for("TEST") }, null, registry)).not.toThrow(Error);
-    expect(() => emitSignal({ type: Symbol("TEST") }, null, registry)).not.toThrow(Error);
-    expect(() => emitSignal({ type: 0 }, null, registry)).not.toThrow(Error);
-    expect(() => emitSignal({ type: 98 }, null, registry)).not.toThrow(Error);
-    expect(() => emitSignal({ type: "VALIDATION" }, null, registry)).not.toThrow(Error);
+    expect(() => emitSignal({ type: Symbol.for("TEST") }, null, registry)).not.toThrow(TypeError);
+    expect(() => emitSignal({ type: Symbol("TEST") }, null, registry)).not.toThrow(TypeError);
+    expect(() => emitSignal({ type: 0 }, null, registry)).not.toThrow(TypeError);
+    expect(() => emitSignal({ type: 98 }, null, registry)).not.toThrow(TypeError);
+    expect(() => emitSignal({ type: "VALIDATION" }, null, registry)).not.toThrow(TypeError);
+    expect(() => emitSignal({ type: [] as any }, null, registry)).toThrow(TypeError);
+    expect(() => emitSignal({ type: undefined as any }, null, registry)).toThrow(TypeError);
+    expect(() => emitSignal({ type: null as any }, null, registry)).toThrow(TypeError);
+    expect(() => emitSignal({ type: {} as any }, null, registry)).toThrow(TypeError);
+    expect(() => emitSignal({ type: new Map() as any }, null, registry)).toThrow(TypeError);
   });
 
   function MountEmitter({

@@ -2,6 +2,7 @@ import { log } from "@/macroses/log.macro";
 
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IBaseSignal, ISignalEvent, TAnyContextManagerConstructor, TSignalListener } from "@/dreamstate/types";
+import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
 /**
  * Callback for signal canceling.
@@ -23,7 +24,7 @@ export function emitSignal<D = undefined>(
   emitter: TAnyContextManagerConstructor | null = null,
   REGISTRY: IRegistry
 ): ISignalEvent<D> {
-  if (!base || base.type === undefined) {
+  if (!base || !isCorrectSignalType(base.type)) {
     throw new TypeError("Signal must be an object with declared type.");
   }
 
