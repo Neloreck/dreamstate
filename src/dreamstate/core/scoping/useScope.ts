@@ -9,8 +9,5 @@ import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeCont
  * @returns {IScopeContext} current scope in react tree.
  */
 export function useScope(): IScopeContext {
-  /**
-   * Wrapper that encapsulates useContext + ScopeContext logic.
-   */
   return useContext(ScopeContext);
 }

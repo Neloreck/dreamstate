@@ -17,7 +17,7 @@ export interface IScopeProviderProps {
 
 /**
  * Dreamstate scope provider.
- * Ensures that signaling and context managers are isolated under this specific provider.
+ * Makes sure signaling and context managers are isolated under this specific provider.
  *
  * @param {IScopeProviderProps} props - react component properties that contain provider children.
  * @returns {ReactElement} react tree element.
