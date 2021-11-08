@@ -17,6 +17,6 @@ export function createNested<T extends TAnyObject>(initialValue: T): TNested<T> 
   if (isObject(initialValue)) {
     return Object.assign(new NestedStore<T>(), initialValue);
   } else {
-    throw new TypeError(`Nested stores should be initialized with actions object, got ${typeof initialValue} instead.`);
+    throw new TypeError(`Nested stores should be initialized with an object, got ${typeof initialValue} instead.`);
   }
 }

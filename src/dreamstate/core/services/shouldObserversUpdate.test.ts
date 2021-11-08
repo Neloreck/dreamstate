@@ -1,3 +1,4 @@
+import { createNested } from "@/dreamstate";
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { TAnyObject } from "@/dreamstate/types";
 
@@ -63,5 +64,28 @@ describe("shouldObserversUpdate method functionality", () => {
     next.nested.b = 5;
 
     expect(shouldObserversUpdate(base, next)).toBeFalsy();
+  });
+
+  it("Should check nested values by objects content", () => {
+    expect(
+      shouldObserversUpdate({ a: createNested({ a: 10, b: "2" }) }, { a: createNested({ a: 10, b: "2" }) })
+    ).toBeFalsy();
+    expect(
+      shouldObserversUpdate({ a: createNested({ a: 10, b: "2" }) }, { b: createNested({ a: 10, b: "2" }) })
+    ).toBeTruthy();
+  });
+
+  it("Should properly update when add new context values", () => {
+    const base = { a: 10 };
+    const next = { a: 10, b: 15 };
+
+    expect(shouldObserversUpdate(base, next)).toBeTruthy();
+  });
+
+  it("Should properly update when add new context values for nested", () => {
+    const base = { a: createNested({ a: 10 }) };
+    const next = { a: createNested({ a: 10, b: 20 }) };
+
+    expect(shouldObserversUpdate(base, next)).toBeTruthy();
   });
 });

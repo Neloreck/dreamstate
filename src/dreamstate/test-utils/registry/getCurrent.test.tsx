@@ -22,8 +22,7 @@ describe("getCurrent method functionality", () => {
 
     const emptyTree = mount(
       <ScopeProvider>
-        { " " }
-        <Consumer/>{ " " }
+        <Consumer/>
       </ScopeProvider>
     );
 

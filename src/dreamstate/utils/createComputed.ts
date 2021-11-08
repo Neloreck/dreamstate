@@ -3,7 +3,12 @@ import { TAnyObject, TComputed } from "@/dreamstate/types";
 import { isFunction, isUndefined } from "@/dreamstate/utils/typechecking";
 
 /**
- * Create computed value that will be populated after each update.
+ * Create computed value that will be re-calculated after each context update.
+ *
+ * @param {Function} selector - generic selector that will return computed values on update.
+ * @param {Function} memo - memo checker that will return array of dependencies
+ *   indicating whether computed should be updated.
+ * @returns {TComputed<T, C>} computed value object.
  */
 export function createComputed<T extends TAnyObject, C extends TAnyObject>(
   selector: (context: C) => T,

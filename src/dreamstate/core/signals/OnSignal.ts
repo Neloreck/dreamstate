@@ -9,6 +9,8 @@ import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
  * Marks decorated method as handler of provided type(s) signals.
  * All signals in current scope with specified type will be handled by callback.
  *
+ * Correct query types: string, number, symbol.
+ *
  * @param {(TSignalType|Array.<TSignalType>>)} signalType - signal or array of signals that should be handled.
  */
 export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDecorator {

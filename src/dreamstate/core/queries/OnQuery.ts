@@ -9,6 +9,8 @@ import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
  * Marks decorated method as handler of provided type(s) queries.
  * All queries in current scope with specified type will be handled by callback.
  *
+ * Correct query types: string, number, symbol.
+ *
  * @param {(TQueryType|Array.<TQueryType>>)} queryType - signal or array of signals that should be handled.
  */
 export function OnQuery(queryType: TQueryType): MethodDecorator {

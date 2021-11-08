@@ -40,6 +40,7 @@ export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, 
      * some objects like native MediaStream/MediaStreamTrack.
      */
     return nextContext[key] instanceof NestedStore
+      // todo: Should use recursive check here for nested stores of nested stores? Looks like rare case.
       ? !shallowEqualObjects(nextContext[key], previousContext[key])
       : nextContext[key] !== previousContext[key];
   });
