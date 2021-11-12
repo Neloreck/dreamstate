@@ -1,11 +1,18 @@
 ## 4.2.0 (*/*/2021)
 
+### Added:
+
+- mockRegistry test-util added
+- mockManagerInitialContext test-util added
+
 ### Updated:
 - HMR, case when tree was not synced with actual store data when subscribed with simple useContext managers (useManager without memo)
-- Now setContext and forceUpdate methods can be called out of scope. In this case simply modify class and continue working
-- Now signal/query methods correctly throw exception if called out of scope (created with new or when doing it from constructor)
+- setContext and forceUpdate methods can be called out of scope. In this case simply modify class and continue working
+- Signal/query methods correctly throw exception if called out of scope (created with new or when doing it from constructor)
 - Validate signals types for signals decorators and methods
 - Validate queries types for query decorators and methods
+- Register method now allows overriding default initial context for mocking/testing
+- mockScope method now uses config object as first param instead of boolean variable
 
 ## 4.1.1 (11/3/2021)
 

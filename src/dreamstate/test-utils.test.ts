@@ -10,6 +10,8 @@ describe("Library test utils exports", () => {
     "mockManagers",
     "mockContextProvider",
     "mockScopeProvider",
+    "mockRegistry",
+    "mockManagerInitialContext",
     "mockScope",
     "nextAsyncQueue"
   ];

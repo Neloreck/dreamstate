@@ -57,10 +57,21 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
   const scope: IScopeContext = {
     INTERNAL: {
       REGISTRY: registry,
-      registerService<T>(ManagerClass: TAnyContextManagerConstructor, initialState: T): boolean {
+      registerService<T, C extends TAnyObject>(
+        ManagerClass: TAnyContextManagerConstructor,
+        initialState: T,
+        initialContext?: C
+      ): boolean {
         // Only if registry is empty -> create new instance, remember its context and save it to registry.
         if (!CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: InstanceType<TAnyContextManagerConstructor> = new ManagerClass(initialState);
+
+          /**
+           * Inject initial context fields if provided for overriding on manager construction.
+           */
+          if (initialContext) {
+            Object.assign(instance.context, initialContext);
+          }
 
           // todo: Add checkContext method call for dev bundle with warnings for initial state nesting.
           processComputed((instance as ContextManager<any>).context);

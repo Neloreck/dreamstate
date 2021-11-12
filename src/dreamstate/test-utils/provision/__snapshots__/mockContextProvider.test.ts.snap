@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`mockContextProvider util Should correctly provide mocked state for nested components 1`] = `
+<div>
+  <span>
+    this test
+  </span>
+  <span>
+    1000
+  </span>
+  <span>
+    false
+  </span>
+</div>
+`;

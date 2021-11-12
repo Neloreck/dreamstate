@@ -31,10 +31,15 @@ export interface IScopeContextInternals {
   /**
    * Register ManagerClass in current scope and create instance for context provision.
    *
-   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference that should be registered in scope.
+   * @param {IContextManagerConstructor} ManagerClass - manager reference that should be registered in scope.
    * @param {*=} initialState - initial state param that will be injected in manager constructor on creation.
+   * @param {*=} initialContext - initial context param that will be injected on creation and mixed with context.
    */
-  registerService<T>(ManagerClass: TAnyContextManagerConstructor, initialState?: T): boolean;
+  registerService<T, C extends TAnyObject>(
+    ManagerClass: TAnyContextManagerConstructor,
+    initialState?: T,
+    initialContext?: Partial<C>
+  ): boolean;
   /**
    * Dispose ManagerClass from current scope.
    * Cleanup memory and delete all internal references.

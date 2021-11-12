@@ -2,18 +2,38 @@ import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScop
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { IS_MOCKED } from "@/dreamstate/test-utils/internals";
-import { TAnyContextManagerConstructor, TUpdateObserver } from "@/dreamstate/types";
+import {
+  IContextManagerConstructor,
+  TAnyContextManagerConstructor,
+  TAnyObject,
+  TUpdateObserver
+} from "@/dreamstate/types";
+
+export interface IMockScopeConfig {
+  isLifecycleDisabled?: boolean;
+  applyInitialContexts?: Array<[TAnyContextManagerConstructor, TAnyObject]>;
+}
 
 /**
  * Mock scope with clean initial state.
  * Can be used to mock whole scope context and run some advanced tests.
  *
- * @param {boolean} isLifecycleDisabled - boolean flag telling whether should disable provision events, true by default.
+ * @param {IMockScopeConfig} mockConfig - configuration object for scope mocking.
  * @param {IRegistry} registry - optional custom registry that will be used as scope storage.
  * @returns {IScopeContext} mocked scope context.
  */
-export function mockScope(isLifecycleDisabled: boolean = true, registry: IRegistry = createRegistry()): IScopeContext {
+export function mockScope(
+  mockConfig: IMockScopeConfig = {},
+  registry: IRegistry = createRegistry()
+): IScopeContext {
+  const { isLifecycleDisabled = true, applyInitialContexts = [] } = mockConfig;
+  const appliedContexts: Map<TAnyContextManagerConstructor, TAnyObject> = new Map(applyInitialContexts);
   const scope: IScopeContext = initializeScopeContext(registry);
+
+  /**
+   * Mark scope as mocked.
+   */
+  Object.defineProperty(scope, IS_MOCKED, { value: true });
 
   /**
    * Mock service observer methods to exclude provision events from lifecycle.
@@ -35,11 +55,28 @@ export function mockScope(isLifecycleDisabled: boolean = true, registry: IRegist
     ): void {
       return removeServiceObserver(ManagerClass, serviceObserver, -1);
     };
+  }
+
+  /**
+   * Mock post-register contexts.
+   */
+  if (appliedContexts.size) {
+    const registerService = scope.INTERNAL.registerService;
 
     /**
-     * Mark scope as mocked and exclude lifecycle methods.
+     * On register apply provided context from map parameter.
      */
-    Object.defineProperty(scope, IS_MOCKED, { value: true });
+    scope.INTERNAL.registerService = function <T, C extends TAnyObject, M extends IContextManagerConstructor<C, T>>(
+      ManagerClass: M,
+      initialState?: T,
+      initialContext?: C
+    ) {
+      return registerService(
+        ManagerClass,
+        initialState,
+        appliedContexts.get(ManagerClass) as M["prototype"]["context"]
+      );
+    };
   }
 
   return scope;

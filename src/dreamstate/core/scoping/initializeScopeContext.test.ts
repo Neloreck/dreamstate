@@ -120,7 +120,9 @@ describe("InitializeScopeContext method", () => {
   });
 
   it("Should properly return register status", () => {
-    const { INTERNAL: { registerService, unRegisterService } }: IScopeContext = initializeScopeContext();
+    const {
+      INTERNAL: { registerService, unRegisterService }
+    }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
@@ -131,5 +133,26 @@ describe("InitializeScopeContext method", () => {
     expect(unRegisterService(ExampleManagerClass)).toBeTruthy();
     expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
     expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
+  });
+
+  it("Should override context on register if required", () => {
+    const {
+      INTERNAL: { registerService },
+      getContextOf
+    }: IScopeContext = initializeScopeContext();
+
+    class ExampleManagerClass extends ContextManager<TAnyObject> {}
+
+    registerService(ExampleManagerClass, {}, { one: 1, two: 2 });
+    expect(getContextOf(ExampleManagerClass)).toStrictEqual({ one: 1, two: 2 });
+
+    registerService(TestManager, {}, { fourth: 4, fifth: "fifth" });
+    expect(getContextOf(TestManager)).toStrictEqual({
+      first: "first",
+      second: 2,
+      third: false,
+      fourth: 4,
+      fifth: "fifth"
+    });
   });
 });
