@@ -1,9 +1,10 @@
 import { FunctionComponent } from "react";
 
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { createCombinedProvider } from "@/dreamstate/core/provision/combined/createCombinedProvider";
 import { createScopedProvider } from "@/dreamstate/core/provision/scoped/createScopedProvider";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { EDreamstateErrorCode, IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
 
 export interface ICreateProviderProps {
@@ -34,7 +35,10 @@ export function createProvider<T extends TAnyObject = TAnyObject>(
    * Supplied 'sources' should contain array of context manager class references.
    */
   if (!Array.isArray(sources) || !sources.length) {
-    throw new TypeError("Wrong providers parameter supplied. Only non-empty array of context managers is acceptable.");
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
+      "Only array of context managers is acceptable."
+    );
   }
 
   /**
@@ -43,7 +47,10 @@ export function createProvider<T extends TAnyObject = TAnyObject>(
    */
   for (let it = 0; it < sources.length; it ++) {
     if (!sources[it] || !(sources[it].prototype instanceof ContextManager)) {
-      throw new TypeError("Only classes extending ContextManager can be supplied for provision.");
+      throw new DreamstateError(
+        EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED,
+        `'${String(sources[it])}' is in sources array.`
+      );
     }
   }
 

@@ -1,8 +1,9 @@
-import { ContextManager } from "@/dreamstate";
+import { ContextManager, DreamstateError } from "@/dreamstate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { mockManager } from "@/dreamstate/test-utils";
-import { TComputed } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
+import { getCallableError } from "@/fixtures";
 
 describe("createComputed method functionality", () => {
   it("Should create value with correct initial param", () => {
@@ -113,21 +114,24 @@ describe("createComputed method functionality", () => {
   });
 
   it("Should validate provided params object", () => {
-    expect(() => createComputed("" as any)).toThrow(TypeError);
-    expect(() => createComputed(null as any)).toThrow(TypeError);
-    expect(() => createComputed(undefined as any)).toThrow(TypeError);
-    expect(() => createComputed(false as any)).toThrow(TypeError);
-    expect(() => createComputed(0 as any)).toThrow(TypeError);
-    expect(() => createComputed({} as any)).toThrow(TypeError);
-    expect(() => createComputed(() => ({}), "" as any)).toThrow(TypeError);
-    expect(() => createComputed(() => ({}), 0 as any)).toThrow(TypeError);
-    expect(() => createComputed(() => ({}), false as any)).toThrow(TypeError);
-    expect(() => createComputed(() => ({}), {} as any)).toThrow(TypeError);
-    expect(() => createComputed(() => ({}))).not.toThrow(TypeError);
+    expect(() => createComputed("" as any)).toThrow(DreamstateError);
+    expect(() => createComputed(null as any)).toThrow(DreamstateError);
+    expect(() => createComputed(undefined as any)).toThrow(DreamstateError);
+    expect(() => createComputed(false as any)).toThrow(DreamstateError);
+    expect(() => createComputed(0 as any)).toThrow(DreamstateError);
+    expect(() => createComputed({} as any)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), "" as any)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), 0 as any)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), false as any)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), {} as any)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}))).not.toThrow();
     expect(() =>
       createComputed(
         () => ({}),
         () => []
-      )).not.toThrow(TypeError);
+      )).not.toThrow();
+    expect(getCallableError<DreamstateError>(() => createComputed(false as any)).code).toBe(
+      EDreamstateErrorCode.INCORRECT_PARAMETER
+    );
   });
 });

@@ -1,4 +1,5 @@
-import { MethodDescriptor, TAnyObject } from "@/dreamstate/types";
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
+import { EDreamstateErrorCode, MethodDescriptor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Bind decorator wrappers factory for methods binding.
@@ -37,7 +38,10 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
       return bound;
     },
     set() {
-      throw new Error("Direct runtime modification of decorated in a declarative way method is not allowed.");
+      throw new DreamstateError(
+        EDreamstateErrorCode.RESTRICTED_OPERATION,
+        "Direct runtime modification of bound method is not allowed."
+      );
     }
   };
 }

@@ -17,6 +17,9 @@ describe("Library exported API", () => {
     "ContextManagerConstructor",
     "ManagerMap",
     "ManagerInstanceMap",
+    "DreamstateErrorCode",
+    // Error.
+    "DreamstateError",
     // Management.
     "ContextManager",
     // Provision.

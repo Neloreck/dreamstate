@@ -1,5 +1,7 @@
 import { Context } from "react";
 
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
+import { throwOutOfScope } from "@/dreamstate/core/error/throw";
 import {
   QUERY_METADATA_SYMBOL,
   SCOPE_SYMBOL,
@@ -10,8 +12,8 @@ import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
-import { throwOutOfScope } from "@/dreamstate/core/utils/throwOutOfScope";
 import {
+  EDreamstateErrorCode,
   IBaseSignal,
   IOptionalQueryRequest,
   ISignalEvent,
@@ -56,7 +58,10 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    */
   public static get REACT_CONTEXT(): Context<any> {
     if (this === ContextManager) {
-      throw new Error("Cannot reference to ContextManager statics directly. Only inherited classes allowed.");
+      throw new DreamstateError(
+        EDreamstateErrorCode.RESTRICTED_OPERATION,
+        "Direct references to ContextManager statics forbidden."
+      );
     }
 
     return getReactContext(this as TConstructorKey);

@@ -16,8 +16,11 @@ export {
   TQueryType as QueryType,
   IContextManagerConstructor as ContextManagerConstructor,
   TManagerMap as ManagerMap,
-  TManagerInstanceMap as ManagerInstanceMap
+  TManagerInstanceMap as ManagerInstanceMap,
+  EDreamstateErrorCode as DreamstateErrorCode
 } from "@/dreamstate/types";
+
+export { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 
 export { ContextManager } from "@/dreamstate/core/services/ContextManager";
 export { createProvider } from "@/dreamstate/core/provision/createProvider";

@@ -1,3 +1,6 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
+import { throwAfterDisposal } from "@/dreamstate/core/error/throw";
+import { warnSyncAfterDisposal } from "@/dreamstate/core/error/warn";
 import {
   QUERY_METADATA_REGISTRY,
   QUERY_METADATA_SYMBOL,
@@ -17,9 +20,8 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";
-import { throwAfterDisposal } from "@/dreamstate/core/utils/throwAfterDisposal";
-import { warnSyncAfterDisposal } from "@/dreamstate/core/utils/warnSyncAfterDisposal";
 import {
+  EDreamstateErrorCode,
   IBaseSignal,
   IContextManagerConstructor,
   IOptionalQueryRequest,
@@ -205,7 +207,10 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         subscriber: TUpdateSubscriber<T>
       ): TCallable {
         if (!(ManagerClass.prototype instanceof ContextManager)) {
-          throw new TypeError("Cannot subscribe to class that does not extend ContextManager.");
+          throw new DreamstateError(
+            EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED,
+            `Cannot subscribe to '${ManagerClass?.name}'.`
+          );
         }
 
         CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.add(subscriber);
@@ -219,7 +224,10 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         subscriber: TUpdateSubscriber<T>
       ): void {
         if (!(ManagerClass.prototype instanceof ContextManager)) {
-          throw new TypeError("Cannot unsubscribe from class that does not extend ContextManager.");
+          throw new DreamstateError(
+            EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED,
+            `Cannot unsubscribe from '${ManagerClass?.name}'.`
+          );
         }
 
         registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
@@ -247,7 +255,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
     },
     subscribeToSignals<D = undefined>(listener: TSignalListener<D>): TCallable {
       if (!isFunction(listener)) {
-        throw new TypeError(`Signal listener must be function, '${typeof listener}' provided.`);
+        throw new DreamstateError(EDreamstateErrorCode.INCORRECT_SIGNAL_LISTENER, typeof listener);
       }
 
       SIGNAL_LISTENERS_REGISTRY.add(listener);

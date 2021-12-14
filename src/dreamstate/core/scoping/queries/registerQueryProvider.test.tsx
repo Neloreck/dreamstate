@@ -1,10 +1,11 @@
 import { mount, ReactWrapper } from "enzyme";
 import { default as React, ReactElement, useEffect, useLayoutEffect } from "react";
 
-import { ScopeProvider, useScope } from "@/dreamstate";
+import { DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { TQueryResponse } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TQueryResponse } from "@/dreamstate/types";
+import { getCallableError } from "@/fixtures";
 
 describe("registerQueryProvider method", () => {
   function QueryProvider(): ReactElement {
@@ -115,6 +116,9 @@ describe("registerQueryProvider method", () => {
       expect(() => registerQueryProvider("TYPE", new Set() as any)).toThrow(Error);
       expect(() => registerQueryProvider("TYPE", [] as any)).toThrow(Error);
       expect(() => registerQueryProvider("TYPE", () => {})).not.toThrow(Error);
+      expect(getCallableError<DreamstateError>(() => registerQueryProvider("TEST", "D" as any)).code).toBe(
+        EDreamstateErrorCode.INCORRECT_QUERY_PROVIDER
+      );
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(2);
     });
 
@@ -124,17 +128,20 @@ describe("registerQueryProvider method", () => {
   it("Should throw if type is not correct", async () => {
     const tree = testQueryTree(({ registerQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
-      expect(() => registerQueryProvider("TYPE", () => {})).not.toThrow(TypeError);
-      expect(() => registerQueryProvider(0, () => {})).not.toThrow(TypeError);
-      expect(() => registerQueryProvider(1000, () => {})).not.toThrow(TypeError);
-      expect(() => registerQueryProvider(Symbol("TEST"), () => {})).not.toThrow(TypeError);
-      expect(() => registerQueryProvider(Symbol.for("EXAMPLE"), () => {})).not.toThrow(TypeError);
-      expect(() => registerQueryProvider({} as any, () => {})).toThrow(TypeError);
-      expect(() => registerQueryProvider(null as any, () => {})).toThrow(TypeError);
-      expect(() => registerQueryProvider(undefined as any, () => {})).toThrow(TypeError);
-      expect(() => registerQueryProvider([] as any, () => {})).toThrow(TypeError);
-      expect(() => registerQueryProvider(new Map() as any, () => {})).toThrow(TypeError);
-      expect(() => registerQueryProvider(new Set() as any, () => {})).toThrow(TypeError);
+      expect(() => registerQueryProvider("TYPE", () => {})).not.toThrow();
+      expect(() => registerQueryProvider(0, () => {})).not.toThrow();
+      expect(() => registerQueryProvider(1000, () => {})).not.toThrow();
+      expect(() => registerQueryProvider(Symbol("TEST"), () => {})).not.toThrow();
+      expect(() => registerQueryProvider(Symbol.for("EXAMPLE"), () => {})).not.toThrow();
+      expect(() => registerQueryProvider({} as any, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(null as any, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(undefined as any, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider([] as any, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(new Map() as any, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(new Set() as any, () => {})).toThrow(DreamstateError);
+      expect(getCallableError<DreamstateError>(() => registerQueryProvider(new Set() as any, () => {})).code).toBe(
+        EDreamstateErrorCode.INCORRECT_QUERY_TYPE
+      );
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(6);
     });
 

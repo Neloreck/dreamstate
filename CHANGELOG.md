@@ -1,3 +1,14 @@
+## 4.3.0 (*/*/2021)
+
+### Added:
+
+- DreamstateError class for internal errors handling
+- DreamstateErrorCode enum added containing all internal error codes from library
+
+### Changed:
+
+- Errors from all methods are wrapped now and contain message and code information
+
 ## 4.2.0 (12/9/2021)
 
 ### Added:
@@ -6,6 +17,7 @@
 - mockManagerInitialContext test-util added
 
 ### Updated:
+
 - HMR, case when tree was not synced with actual store data when subscribed with simple useContext managers (useManager without memo)
 - setContext and forceUpdate methods can be called out of scope. In this case simply modify class and continue working
 - Signal/query methods correctly throw exception if called out of scope (created with new or when doing it from constructor)

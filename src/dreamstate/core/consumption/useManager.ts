@@ -29,7 +29,7 @@ export function useManager<T extends TAnyObject, D extends IContextManagerConstr
    * Fallback to pub-sub + checking approach only if dependency selector was provided.
    * If component should update on every change there is no point of doing anything additional to default context.
    *
-   * todo: Dev warning with ManagerClass check?
+   * todo: Dev only warning with ManagerClass check?
    */
   if (dependenciesSelector) {
     return useContextWithMemo<T, D>(ManagerClass, dependenciesSelector);

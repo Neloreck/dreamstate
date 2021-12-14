@@ -1,12 +1,13 @@
 import { mount } from "enzyme";
 import { default as React, ReactElement } from "react";
 
-import { ScopeProvider, useScope } from "@/dreamstate";
+import { DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { createCombinedProvider } from "@/dreamstate/core/provision/combined/createCombinedProvider";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { createScopedProvider } from "@/dreamstate/core/provision/scoped/createScopedProvider";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { TestManager } from "@/fixtures";
+import { EDreamstateErrorCode } from "@/dreamstate/types";
+import { getCallableError, TestManager } from "@/fixtures";
 
 describe("createProvider method", () => {
   const CombinedProvider = createProvider([ TestManager ], { isCombined: true });
@@ -49,22 +50,29 @@ describe("createProvider method", () => {
   });
 
   it("Should create observers with validation", () => {
-    expect(() => createProvider(0 as any)).toThrow(TypeError);
-    expect(() => createProvider("0" as any)).toThrow(TypeError);
-    expect(() => createProvider(false as any)).toThrow(TypeError);
-    expect(() => createProvider(null as any)).toThrow(TypeError);
-    expect(() => createProvider(null as any)).toThrow(TypeError);
-    expect(() => createProvider([ null as any ])).toThrow(TypeError);
-    expect(() => createProvider([ 0 as any ])).toThrow(TypeError);
-    expect(() => createProvider([ "0" as any ])).toThrow(TypeError);
-    expect(() => createProvider([ false as any ])).toThrow(TypeError);
-    expect(() => createProvider([ {} as any ])).toThrow(TypeError);
-    expect(() => createProvider([ new Function() as any ])).toThrow(TypeError);
-    expect(() => createProvider([ [] as any ])).toThrow(TypeError);
-    expect(() => createProvider([ class ExampleClass {} as any ])).toThrow(TypeError);
+    expect(() => createProvider(0 as any)).toThrow(DreamstateError);
+    expect(() => createProvider("0" as any)).toThrow(DreamstateError);
+    expect(() => createProvider(false as any)).toThrow(DreamstateError);
+    expect(() => createProvider(null as any)).toThrow(DreamstateError);
+    expect(() => createProvider(null as any)).toThrow(DreamstateError);
+    expect(() => createProvider([ null as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ 0 as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ "0" as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ false as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ {} as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ new Function() as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ [] as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([ class ExampleClass {} as any ])).toThrow(DreamstateError);
     expect(() => createProvider([])).toThrow();
 
     expect(() => createProvider([ TestManager ])).not.toThrow();
+
+    expect(getCallableError<DreamstateError>(() => createProvider(null as any)).code).toBe(
+      EDreamstateErrorCode.INCORRECT_PARAMETER
+    );
+    expect(getCallableError<DreamstateError>(() => createProvider([ null ] as any)).code).toBe(
+      EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED
+    );
   });
 
   it("Should create correct component tree without children", () => {

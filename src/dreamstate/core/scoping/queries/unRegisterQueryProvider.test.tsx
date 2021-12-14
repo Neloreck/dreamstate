@@ -1,8 +1,10 @@
 import { mount, ReactWrapper } from "enzyme";
 import { default as React, ReactElement, useEffect } from "react";
 
-import { ScopeProvider, useScope } from "@/dreamstate";
+import { DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { EDreamstateErrorCode } from "@/dreamstate/types";
+import { getCallableError } from "@/fixtures";
 
 describe("registerQueryProvider method", () => {
   type TQueryCb = (scope: IScopeContext) => void;
@@ -122,15 +124,18 @@ describe("registerQueryProvider method", () => {
   it("Should throw if handler is not a function", async () => {
     const tree = testQueryTree(({ unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
-      expect(() => unRegisterQueryProvider("ANY", null as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", 1 as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", false as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", {} as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", Symbol(123) as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", new Map() as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", new Set() as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", [] as any)).toThrow(Error);
-      expect(() => unRegisterQueryProvider("ANY", () => {})).not.toThrow(Error);
+      expect(() => unRegisterQueryProvider("ANY", null as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", 1 as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", false as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", {} as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", Symbol(123) as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", new Map() as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", new Set() as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", [] as any)).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider("ANY", () => {})).not.toThrow(DreamstateError);
+      expect(getCallableError<DreamstateError>(() => unRegisterQueryProvider("ANY", [] as any)).code).toBe(
+        EDreamstateErrorCode.INCORRECT_QUERY_PROVIDER
+      );
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
     });
 
@@ -140,17 +145,20 @@ describe("registerQueryProvider method", () => {
   it("Should throw if type is not correct", async () => {
     const tree = testQueryTree(({ unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
-      expect(() => unRegisterQueryProvider("TYPE", () => {})).not.toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(0, () => {})).not.toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(1000, () => {})).not.toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(Symbol("TEST"), () => {})).not.toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(Symbol.for("TEST"), () => {})).not.toThrow(TypeError);
-      expect(() => unRegisterQueryProvider({} as any, () => {})).toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(null as any, () => {})).toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(undefined as any, () => {})).toThrow(TypeError);
-      expect(() => unRegisterQueryProvider([] as any, () => {})).toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(new Map() as any, () => {})).toThrow(TypeError);
-      expect(() => unRegisterQueryProvider(new Set() as any, () => {})).toThrow(TypeError);
+      expect(() => unRegisterQueryProvider("TYPE", () => {})).not.toThrow();
+      expect(() => unRegisterQueryProvider(0, () => {})).not.toThrow();
+      expect(() => unRegisterQueryProvider(1000, () => {})).not.toThrow();
+      expect(() => unRegisterQueryProvider(Symbol("TEST"), () => {})).not.toThrow();
+      expect(() => unRegisterQueryProvider(Symbol.for("TEST"), () => {})).not.toThrow();
+      expect(() => unRegisterQueryProvider({} as any, () => {})).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider(null as any, () => {})).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider(undefined as any, () => {})).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider([] as any, () => {})).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider(new Map() as any, () => {})).toThrow(DreamstateError);
+      expect(() => unRegisterQueryProvider(new Set() as any, () => {})).toThrow(DreamstateError);
+      expect(getCallableError<DreamstateError>(() => unRegisterQueryProvider([] as any, () => {})).code).toBe(
+        EDreamstateErrorCode.INCORRECT_QUERY_TYPE
+      );
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
     });
 

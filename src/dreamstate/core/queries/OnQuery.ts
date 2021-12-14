@@ -1,6 +1,7 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
 import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
 
@@ -15,7 +16,7 @@ import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
  */
 export function OnQuery(queryType: TQueryType): MethodDecorator {
   if (!isCorrectQueryType(queryType)) {
-    throw new TypeError(`Unexpected query type provided, expected symbol, string or number. Got: ${typeof queryType}.`);
+    throw new DreamstateError(EDreamstateErrorCode.INCORRECT_QUERY_TYPE, typeof queryType);
   }
 
   /**
@@ -26,7 +27,10 @@ export function OnQuery(queryType: TQueryType): MethodDecorator {
     ManagerClass: TAnyContextManagerConstructor
   ): void {
     if (!(ManagerClass.prototype instanceof ContextManager)) {
-      throw new TypeError("Only ContextManager extending classes methods can be decorated as query handlers.");
+      throw new DreamstateError(
+        EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED,
+        "Only ContextManager extending classes methods can be decorated as query handlers."
+      );
     }
 
     if (QUERY_METADATA_REGISTRY.has(ManagerClass)) {

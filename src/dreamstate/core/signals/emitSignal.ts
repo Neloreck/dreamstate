@@ -1,7 +1,14 @@
 import { log } from "@/macroses/log.macro";
 
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
-import { IBaseSignal, ISignalEvent, TAnyContextManagerConstructor, TSignalListener } from "@/dreamstate/types";
+import {
+  EDreamstateErrorCode,
+  IBaseSignal,
+  ISignalEvent,
+  TAnyContextManagerConstructor,
+  TSignalListener
+} from "@/dreamstate/types";
 import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -25,7 +32,7 @@ export function emitSignal<D = undefined>(
   REGISTRY: IRegistry
 ): ISignalEvent<D> {
   if (!base || !isCorrectSignalType(base.type)) {
-    throw new TypeError("Signal must be an object with declared type.");
+    throw new DreamstateError(EDreamstateErrorCode.INCORRECT_SIGNAL_TYPE);
   }
 
   const signalEvent: ISignalEvent<D> = {

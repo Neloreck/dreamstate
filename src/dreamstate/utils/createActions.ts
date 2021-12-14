@@ -1,5 +1,6 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
-import { TAnyObject } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyObject } from "@/dreamstate/types";
 import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -18,6 +19,9 @@ export function createActions<T extends TAnyObject>(actions: T): Readonly<T> {
   if (isObject(actions)) {
     return new ActionsStore<T>(actions) as Readonly<T>;
   } else {
-    throw new TypeError(`Actions store should be initialized with actions object, got ${typeof actions} instead.`);
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
+      `Actions store should be initialized with an object, got ${typeof actions} instead.`
+    );
   }
 }

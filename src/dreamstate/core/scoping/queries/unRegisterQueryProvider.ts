@@ -1,5 +1,6 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
-import { TQueryListener, TQueryType } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TQueryListener, TQueryType } from "@/dreamstate/types";
 import { isCorrectQueryType, isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -16,9 +17,9 @@ export function unRegisterQueryProvider<T extends TQueryType>(
   { QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): void {
   if (!isFunction(listener)) {
-    throw new Error(`Query provider must be factory function, '${typeof listener}' provided.`);
+    throw new DreamstateError(EDreamstateErrorCode.INCORRECT_QUERY_PROVIDER, typeof listener);
   } else if (!isCorrectQueryType(queryType)) {
-    throw new TypeError(`Unexpected query type provided, expected symbol, string or number. Got: ${typeof queryType}.`);
+    throw new DreamstateError(EDreamstateErrorCode.INCORRECT_QUERY_TYPE, typeof queryType);
   }
 
   if (QUERY_PROVIDERS_REGISTRY.has(queryType)) {

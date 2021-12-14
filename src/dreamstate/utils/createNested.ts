@@ -1,5 +1,6 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
-import { TAnyObject, TNested } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyObject, TNested } from "@/dreamstate/types";
 import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -17,6 +18,9 @@ export function createNested<T extends TAnyObject>(initialValue: T): TNested<T> 
   if (isObject(initialValue)) {
     return Object.assign(new NestedStore<T>(), initialValue);
   } else {
-    throw new TypeError(`Nested stores should be initialized with an object, got ${typeof initialValue} instead.`);
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
+      `Nested stores should be initialized with an object, got ${typeof initialValue} instead.`
+    );
   }
 }
