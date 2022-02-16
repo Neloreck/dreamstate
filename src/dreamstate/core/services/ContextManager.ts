@@ -143,6 +143,20 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   public onProvisionEnded(): void {}
 
   /**
+   * Get current manager scope.
+   * Used to access current execution scope and some methods that allow getting manager instances in it.
+   *
+   * @returns {IScopeContext} returns manager scope.
+   */
+  public getScope(): IScopeContext {
+    if (this[SCOPE_SYMBOL]) {
+      return this[SCOPE_SYMBOL];
+    } else {
+      throwOutOfScope();
+    }
+  }
+
+  /**
    * Forces update and render of subscribed components.
    * Just in case when you need forced update to keep everything in sync with your context.
    *

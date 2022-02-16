@@ -75,6 +75,7 @@ describe("ContextManager class", () => {
     expect(() => manager.emitSignal({ type: "test" })).toThrow(expectedError);
     expect(() => manager.queryDataAsync({ type: "test" })).toThrow(expectedError);
     expect(() => manager.queryDataSync({ type: "test" })).toThrow(expectedError);
+    expect(() => manager.getScope()).toThrow(expectedError);
   });
 
   it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
@@ -107,6 +108,7 @@ describe("ContextManager class", () => {
     expect(getCurrent(TestManager, scope)).not.toBeNull();
     expect(getCurrent(ExtendingManager, scope)).not.toBeNull();
     expect(getCurrent(TestManager, scope)).not.toBe(getCurrent(ExtendingManager, scope));
+    expect(getCurrent(TestManager, scope)?.getScope()).toBe(scope);
 
     expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(TestManager)).toBeTruthy();
     expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(ExtendingManager)).toBeTruthy();
@@ -135,6 +137,7 @@ describe("ContextManager class", () => {
       expect(typeof service["emitSignal"]).toBe("function");
       expect(typeof service["queryDataAsync"]).toBe("function");
       expect(typeof service["queryDataSync"]).toBe("function");
+      expect(typeof service["getScope"]).toBe("function");
 
       expect(Object.keys(ManagerClass.prototype)).toHaveLength(0);
 
