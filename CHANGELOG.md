@@ -4,6 +4,7 @@
 
 - DreamstateError class for internal errors handling
 - DreamstateErrorCode enum added containing all internal error codes from library
+- 'getScope' method for context manager instances
 
 ### Changed:
 
