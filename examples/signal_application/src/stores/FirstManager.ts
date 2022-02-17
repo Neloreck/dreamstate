@@ -6,8 +6,7 @@ import { EGenericSignal, TSampleNumberChangedSignalEvent, TSampleStringChangedSi
  * Declare context data typing.
  */
 export interface IFirstContext {
-  sampleActions: {
-  };
+  sampleActions: Record<string, never>;
   sampleNumber: number;
   reflectedString: string;
 }

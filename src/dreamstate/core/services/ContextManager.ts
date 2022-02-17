@@ -253,7 +253,7 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * @param {*=} queryRequest.data - optional query data, some kind of getter params.
    * @return {Promise<null | TQueryResponse<*>>} result of query search or null, if no providers in current scope.
    */
-  public queryDataAsync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+  public queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
   ): Promise<TQueryResponse<any>> {
     if (this[SCOPE_SYMBOL]) {
@@ -274,7 +274,7 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * @param {*=} queryRequest.data - optional query data, some kind of getter params.
    * @return {null | TQueryResponse<*>} result of query search or null, if no providers in current scope.
    */
-  public queryDataSync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+  public queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
   ): TQueryResponse<any> {
     if (this[SCOPE_SYMBOL]) {

@@ -168,7 +168,7 @@ export interface IScopeContext {
    *  optional data field.
    * @returns {TQueryResponse} response for provided query or null value if no handlers were found.
    */
-  queryDataSync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+  queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     query: Q
   ): TQueryResponse<any>;
   /**
@@ -182,7 +182,7 @@ export interface IScopeContext {
    *  optional data field.
    * @returns {Promise} response for provided query or null value if no handlers were found.
    */
-  queryDataAsync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+  queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     query: Q
   ): Promise<TQueryResponse<any>>;
 }

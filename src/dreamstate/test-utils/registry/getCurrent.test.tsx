@@ -26,7 +26,7 @@ describe("getCurrent method functionality", () => {
       </ScopeProvider>
     );
 
-    expect(globalScope).not.toBeUndefined();
+    expect(globalScope).toBeDefined();
     expect(getCurrent(TestManager, globalScope)).toBeNull();
 
     emptyTree.unmount();
@@ -41,14 +41,14 @@ describe("getCurrent method functionality", () => {
       </ScopeProvider>
     );
 
-    expect(globalScope).not.toBeUndefined();
+    expect(globalScope).toBeDefined();
     expect(getCurrent(TestManager, globalScope)).not.toBeNull();
     expect(getCurrent(TestManager, globalScope)).toBeInstanceOf(TestManager);
     expect(getCurrent(TestManager, globalScope)?.context.first).toBe("first");
 
     providedTree.unmount();
 
-    expect(globalScope).not.toBeUndefined();
+    expect(globalScope).toBeDefined();
     expect(getCurrent(TestManager, globalScope)).toBeNull();
   });
 });

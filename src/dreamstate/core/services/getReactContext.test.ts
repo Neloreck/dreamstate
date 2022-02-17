@@ -12,9 +12,9 @@ describe("getReactContext method", () => {
 
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestManager)).toBeDefined();
 
-    expect(contextType).not.toBeUndefined();
-    expect(contextType.Consumer).not.toBeUndefined();
-    expect(contextType.Provider).not.toBeUndefined();
+    expect(contextType).toBeDefined();
+    expect(contextType.Consumer).toBeDefined();
+    expect(contextType.Provider).toBeDefined();
     expect(contextType.displayName).toBe("DS." + TestManager.name);
 
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestManager);

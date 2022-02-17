@@ -273,12 +273,12 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
     unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): void {
       return unRegisterQueryProvider(queryType, listener, registry);
     },
-    queryDataSync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+    queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
       query: Q
     ): TQueryResponse<any> {
       return queryDataSync<any, D, T, Q>(query, registry)!;
     },
-    queryDataAsync<D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+    queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
       queryRequest: Q
     ): Promise<TQueryResponse<any>> {
       return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any>>;

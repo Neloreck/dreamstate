@@ -21,7 +21,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   query: IOptionalQueryRequest<D, T>,
   answerer: TAnyContextManagerConstructor | null
 ): Promise<TQueryResponse<R>> {
-  return new Promise(function(resolve: (response: IQueryResponse<R, T>) => void, reject: (error: Error) => void) {
+  return new Promise(function(resolve: (response: IQueryResponse<R, T>) => void, reject: (error: unknown) => void) {
     try {
       const timestamp: number = Date.now();
       const result: any = callback(query);
@@ -49,7 +49,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
           timestamp
         });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       reject(error);
     }
   });
@@ -59,7 +59,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
  * Find correct async listener or array of listeners and return Promise response or null.
  * Try to find matching type and call related method.
  */
-export function queryDataAsync<R, D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+export function queryDataAsync<R, D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
   query: Q,
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): Promise<TQueryResponse<R> | null> {

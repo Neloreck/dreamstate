@@ -31,7 +31,7 @@ function executeQuerySync<R, D = undefined, T extends TQueryType = TQueryType>(
  * Try to find matching type and call related method.
  * Returns everything as sync result, promises should be handled differently in this case.
  */
-export function queryDataSync<R, D extends any, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
+export function queryDataSync<R, D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
   query: Q,
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): TQueryResponse<R> | null {

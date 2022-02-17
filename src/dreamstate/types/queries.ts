@@ -8,7 +8,7 @@ export type TQueryType<T extends string = string> = symbol | string | number | T
 /**
  * Base query request with optional query field.
  */
-export interface IOptionalQueryRequest<D extends any = any, T extends TQueryType = TQueryType> {
+export interface IOptionalQueryRequest<D = any, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
    */
@@ -22,7 +22,7 @@ export interface IOptionalQueryRequest<D extends any = any, T extends TQueryType
 /**
  * Base query request with optional supplied field.
  */
-export interface IQueryRequest<D extends any = undefined, T extends TQueryType = TQueryType> {
+export interface IQueryRequest<D = undefined, T extends TQueryType = TQueryType> {
   /**
    * Query key type for search matching.
    */
