@@ -1,4 +1,12 @@
-import { Dispatch, MutableRefObject, SetStateAction, useContext, useLayoutEffect, useRef, useState } from "react";
+import {
+  Dispatch,
+  MutableRefObject,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { IContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
@@ -21,7 +29,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
   });
 
   // Calculate changes like react does and fire change only if one of dependencies has updated.
-  useLayoutEffect(
+  useEffect(
     function(): TCallable {
       const setState: Dispatch<SetStateAction<T>> = state[1];
 

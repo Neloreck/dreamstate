@@ -1,3 +1,9 @@
+## 4.3.1 (2/*/2022)
+
+### Changed:
+
+- In memoized 'useManager' calls replaced useLayoutEffect with useEffect to prevent error #185 in some rare cases
+
 ## 4.3.0 (2/17/2022)
 
 ### Added:
