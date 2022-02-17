@@ -7,14 +7,12 @@ import { default as babel } from "rollup-plugin-babel";
 import { default as clear } from "rollup-plugin-clear";
 import { default as commonjs } from "rollup-plugin-commonjs";
 import { default as dts } from "rollup-plugin-dts";
-import { sizeSnapshot } from "rollup-plugin-size-snapshot";
 import { visualizer } from "rollup-plugin-visualizer";
 
 import { default as tsconfig } from "../../tsconfig.json";
 import {
   PORTABLE_ENTRY,
   TS_PORTABLE_CONFIG,
-  SIZE_SNAPSHOT_PATH,
   PORTABLE_ROOT,
   EEnvironment,
   DS_ROOT,
@@ -52,9 +50,6 @@ const createPortableConfig = (env) => ({
       filename: path.resolve(STATS_ROOT, "ptb-stats.html"),
       gzipSize: true,
       projectRoot: DS_ROOT
-    }),
-    sizeSnapshot({
-      snapshotPath: SIZE_SNAPSHOT_PATH
     }),
     clear({
       targets: [ PORTABLE_ROOT ]
