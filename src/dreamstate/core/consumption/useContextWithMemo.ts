@@ -3,7 +3,7 @@ import {
   MutableRefObject,
   SetStateAction,
   useContext,
-  useEffect,
+  useEffect, useLayoutEffect,
   useRef,
   useState
 } from "react";
@@ -29,7 +29,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
   });
 
   // Calculate changes like react does and fire change only if one of dependencies has updated.
-  useEffect(
+  useLayoutEffect(
     function(): TCallable {
       const setState: Dispatch<SetStateAction<T>> = state[1];
 
