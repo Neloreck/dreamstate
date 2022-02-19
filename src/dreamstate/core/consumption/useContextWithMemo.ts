@@ -3,7 +3,7 @@ import {
   MutableRefObject,
   SetStateAction,
   useContext,
-  useEffect, useLayoutEffect,
+  useLayoutEffect,
   useRef,
   useState
 } from "react";
@@ -28,7 +28,10 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
     return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
   });
 
-  // Calculate changes like react does and fire change only if one of dependencies has updated.
+  /**
+   * Calculate changes like react does and fire change only if one of dependencies has updated.
+   * Use layout effect for correct data picking when HMR happens and old context object remains in local state.
+   */
   useLayoutEffect(
     function(): TCallable {
       const setState: Dispatch<SetStateAction<T>> = state[1];
