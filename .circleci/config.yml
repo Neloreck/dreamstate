@@ -14,38 +14,40 @@ jobs:
           name: Update npm
           command: 'sudo npm install -g npm@latest'
       - restore_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "pnpm-lock.yaml" }}
       - run:
-          name: Install lerna
-          command: npm install lerna
+          name: Install pnpm
+          command: npm install pnpm
       - run:
           name: Setup project dependencies
-          command: npm run setup
+          command: pnpm install --frozen-lockfile
       - save_cache:
-          key: dependency-cache-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "pnpm-lock.yaml" }}
           paths:
             - node_modules
+            - cli/node_modules
+            - src/dreamstate/node_modules
       - run:
           name: Lint
-          command: npm run lint
+          command: pnpm lint
       - run:
           name: Typecheck
-          command: npm run typecheck
+          command: pnpm typecheck
       - run:
           name: Test
-          command: npm run test
+          command: pnpm test
       - run:
           name: Build DTS
-          command: npm run build:dts
+          command: pnpm build:dts
       - run:
           name: Build CJS
-          command: npm run build:cjs
+          command: pnpm build:cjs
       - run:
           name: Build ESM
-          command: npm run build:esm
+          command: pnpm build:esm
       - run:
           name: Build PTB
-          command: npm run build:ptb
+          command: pnpm build:ptb
 
 workflows:
   build-and-test:
