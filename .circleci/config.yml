@@ -20,7 +20,7 @@ jobs:
           command: npm install pnpm
       - run:
           name: Setup project dependencies
-          command: pnpm install --frozen-lockfile
+          command: npx pnpm install --frozen-lockfile
       - save_cache:
           key: dependency-cache-{{ checksum "pnpm-lock.yaml" }}
           paths:
