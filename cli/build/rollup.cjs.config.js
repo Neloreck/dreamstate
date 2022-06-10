@@ -1,11 +1,11 @@
 import * as path from "path";
 
+import { babel } from "@rollup/plugin-babel";
+import { default as commonjs } from "@rollup/plugin-commonjs";
 import { default as replace } from "@rollup/plugin-replace";
 import { default as typescript } from "@rollup/plugin-typescript";
 import * as react from "react";
-import { default as babel } from "rollup-plugin-babel";
 import { default as clear } from "rollup-plugin-clear";
-import { default as commonjs } from "rollup-plugin-commonjs";
 import { terser } from "rollup-plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 
@@ -32,10 +32,8 @@ const createCjsConfig = (env) => ({
     format: "cjs"
   },
   plugins: [
-    babel(BABEL_CONFIG),
-    commonjs({
-      namedExports: { react: Object.keys(react) }
-    }),
+    commonjs(),
+    babel({ ...BABEL_CONFIG, babelHelpers: "bundled" }),
     replace({
       preventAssignment: true,
       IS_DEV: (env !== EEnvironment.PRODUCTION).toString()
