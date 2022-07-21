@@ -1,10 +1,20 @@
-import { Context } from "react";
+import { mount } from "enzyme";
+import { Context, createElement, ReactElement } from "react";
 
+import { useManager } from "@/dreamstate";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@/dreamstate/core/internals";
+import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { TAnyObject } from "@/dreamstate/types";
-import { TestManager } from "@/fixtures";
+import { ITestContext, TestManager } from "@/fixtures";
 
-describe("getReactContext method", () => {
+describe("getReactContext method functionality", () => {
+  /**
+   * Clear possible existing entry of manager for testing.
+   */
+  beforeEach(() => {
+    CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestManager);
+  });
+
   it("Related react context should be lazily initialized correctly with changed displayName", () => {
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestManager)).toBeUndefined();
 
@@ -18,5 +28,27 @@ describe("getReactContext method", () => {
     expect(contextType.displayName).toBe("DS." + TestManager.name);
 
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestManager);
+  });
+
+  it("Should supply null value if manager is not provided", () => {
+    function Consumer(): ReactElement {
+      const context: ITestContext = useManager(TestManager);
+
+      return createElement("div", {}, JSON.stringify(context));
+    }
+
+    expect(mount(createElement(Consumer)).render()).toMatchSnapshot();
+  });
+
+  it("Should supply default value if manager is not provided", () => {
+    getReactContext(TestManager, { first: "default-state-test", second: -1000 });
+
+    function Consumer(): ReactElement {
+      const context: ITestContext = useManager(TestManager);
+
+      return createElement("div", {}, JSON.stringify(context));
+    }
+
+    expect(mount(createElement(Consumer)).render()).toMatchSnapshot();
   });
 });

@@ -1,5 +1,9 @@
 ## 4.3.1 (*/*/2022)
 
+### Added:
+
+- getDefaultContext static method to provide default context when manager is not provided
+
 ### Changed:
 
 ## 4.3.0 (2/17/2022)

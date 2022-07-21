@@ -14,7 +14,7 @@ import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserver
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
   EDreamstateErrorCode,
-  IBaseSignal,
+  IBaseSignal, IContextManagerConstructor,
   IOptionalQueryRequest,
   ISignalEvent,
   TAnyContextManagerConstructor,
@@ -52,6 +52,16 @@ import { isFunction } from "@/dreamstate/utils/typechecking";
 export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S extends TAnyObject = TAnyObject> {
 
   /**
+   * React context default value getter.
+   * Used to provide placeholder values when manager is not provided.
+   *
+   * @returns {TAnyObject|null} returns default value for context consumers when manager is not provided.
+   */
+  public static getDefaultContext(): TAnyObject | null {
+    return null;
+  }
+
+  /**
    * React context getter.
    * Method allows to get related React.Context for manual renders or testing.
    * Lazy initialization, even for static resolving before anything from ContextManager is used.
@@ -64,7 +74,7 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
       );
     }
 
-    return getReactContext(this as TConstructorKey);
+    return getReactContext(this as TConstructorKey, this.getDefaultContext());
   }
 
   /**
