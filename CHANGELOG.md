@@ -6,6 +6,8 @@
 
 ### Changed:
 
+- dreamstate error code mapping to error message
+
 ## 4.3.0 (2/17/2022)
 
 ### Added:
