@@ -4,9 +4,6 @@ import { mockManagerInitialContext } from "@/dreamstate/test-utils/registry/mock
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { TestManager } from "@/fixtures";
 
-/**
- * todo: Add lifecycle toggling tests.
- */
 describe("mockScope test util", () => {
   it("Should properly mock scope with clean state", () => {
     const scope: IScopeContext = mockScope();

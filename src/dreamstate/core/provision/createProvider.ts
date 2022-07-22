@@ -58,8 +58,6 @@ export function createProvider<T extends TAnyObject = TAnyObject>(
    * Supply two different versions of provision creation.
    * Combined - pre v4 variant with single observer.
    * Scoped - new v4 variant with separated react nodes.
-   *
-   * todo: Later do proper performance checks and benchmarks to tell which one is better.
    */
   if (config.isCombined === false) {
     return createScopedProvider(sources);

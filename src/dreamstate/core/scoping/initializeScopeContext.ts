@@ -94,7 +94,6 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           /**
            * Notify subscribers if they exist.
            * Create new entry if it is needed.
-           * todo: Probably delete it on unregistering of subscribers at some point of time.
            */
           if (CONTEXT_SUBSCRIBERS_REGISTRY.has(ManagerClass)) {
             CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.forEach(function(it) {
@@ -159,8 +158,6 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.add(observer);
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
-        // todo: try-catch block for lifecycle?
-        // todo: Test cases with exception on provision.
         if (referencesCount === 1) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionStarted"]();
         }
@@ -173,8 +170,6 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         CONTEXT_OBSERVERS_REGISTRY.get(ManagerClass)!.delete(observer);
         CONTEXT_SERVICES_REFERENCES.set(ManagerClass, referencesCount);
 
-        // todo: try-catch block for lifecycle?
-        // todo: Test cases with exception on provision.
         if (referencesCount === 0) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionEnded"]();
           this.unRegisterService(ManagerClass);

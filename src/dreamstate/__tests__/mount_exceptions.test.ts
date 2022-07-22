@@ -4,10 +4,6 @@ import { Component, createElement, ErrorInfo, FunctionComponent, ReactNode } fro
 import { ContextManager, DreamstateError, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 
-/**
- * todo: Add some lifecycle methods and events for error handling, make some generic solution for the problem.
- * todo: Probably some shared wrapper that will be used with scope or managers providers.
- */
 describe("Mount expections for providers", () => {
   const generateManagers = (mountList: Array<string>, unmountList: Array<string>) => {
     class BaseManager extends ContextManager {
