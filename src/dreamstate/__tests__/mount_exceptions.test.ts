@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Component, createElement, ErrorInfo, FunctionComponent, ReactNode } from "react";
 
-import { ContextManager, ScopeProvider } from "@/dreamstate";
+import { ContextManager, DreamstateError, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 
 /**
@@ -28,7 +28,7 @@ describe("Mount expections for providers", () => {
 
       public onProvisionStarted(): void {
         super.onProvisionStarted();
-        throw new Error("Forced exception;");
+        throw new DreamstateError();
       }
 
     }

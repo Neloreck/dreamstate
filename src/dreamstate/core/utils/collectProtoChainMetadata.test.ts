@@ -1,4 +1,4 @@
-import { ContextManager, OnQuery, OnSignal } from "@/dreamstate";
+import { ContextManager, DreamstateError, OnQuery, OnSignal } from "@/dreamstate";
 import { QUERY_METADATA_REGISTRY, SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";
 import { TestManager } from "@/fixtures";
@@ -92,9 +92,9 @@ describe("collectProtoChainMetadata util method", () => {
   it("Should throw exception on non ContextManager classes", () => {
     class SomeClass {}
 
-    expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
-    expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
-    expect(() => collectProtoChainMetadata(ContextManager as any, SIGNAL_METADATA_REGISTRY)).toThrow(TypeError);
-    expect(() => collectProtoChainMetadata(TestManager, SIGNAL_METADATA_REGISTRY)).not.toThrow(TypeError);
+    expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(DreamstateError);
+    expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(DreamstateError);
+    expect(() => collectProtoChainMetadata(ContextManager as any, SIGNAL_METADATA_REGISTRY)).toThrow(DreamstateError);
+    expect(() => collectProtoChainMetadata(TestManager, SIGNAL_METADATA_REGISTRY)).not.toThrow(DreamstateError);
   });
 });

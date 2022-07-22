@@ -1,6 +1,7 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { TAnyContextManagerConstructor, TSignalType } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyContextManagerConstructor, TSignalType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
 import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
@@ -29,7 +30,8 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
         })
       : !isCorrectSignalType(signalType)
   ) {
-    throw new TypeError(
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
       `Unexpected signal type provided, expected symbol, string, number or array of it. Got: ${typeof signalType}.`
     );
   }
@@ -42,7 +44,10 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
     ManagerClass: TAnyContextManagerConstructor
   ): void {
     if (!(ManagerClass.prototype instanceof ContextManager)) {
-      throw new TypeError("Only ContextManager extending classes methods can be decorated as handlers.");
+      throw new DreamstateError(
+        EDreamstateErrorCode.INCORRECT_PARAMETER,
+        "Only ContextManager extending classes methods can be decorated as handlers."
+      );
     }
 
     if (SIGNAL_METADATA_REGISTRY.has(ManagerClass)) {

@@ -1,7 +1,7 @@
 import { mount, ReactWrapper } from "enzyme";
 import { default as React, ReactElement, useEffect } from "react";
 
-import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
+import { createProvider, DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
 import { TOptionalQueryResponse, TQueryResponse } from "@/dreamstate/types";
@@ -34,17 +34,17 @@ describe("queryDataAsync and queries processing", () => {
 
   it("Should validate queryDataAsync params", async () => {
     const tree = testQueryTree(({ queryDataAsync }) => {
-      expect(() => queryDataAsync([] as any)).toThrow(TypeError);
-      expect(() => queryDataAsync([ "asd" as any ] as any)).toThrow(TypeError);
-      expect(() => queryDataAsync([ {} as any ] as any)).toThrow(TypeError);
-      expect(() => queryDataAsync(undefined as any)).toThrow(TypeError);
-      expect(() => queryDataAsync(false as any)).toThrow(TypeError);
-      expect(() => queryDataAsync(true as any)).toThrow(TypeError);
-      expect(() => queryDataAsync(NaN as any)).toThrow(TypeError);
-      expect(() => queryDataAsync("123" as any)).toThrow(TypeError);
-      expect(() => queryDataAsync(1 as any)).toThrow(TypeError);
-      expect(() => queryDataAsync(null as any)).toThrow(TypeError);
-      expect(() => queryDataAsync({} as any)).toThrow(TypeError);
+      expect(() => queryDataAsync([] as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync([ "asd" as any ] as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync([ {} as any ] as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(undefined as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(false as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(true as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(NaN as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync("123" as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(1 as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(null as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync({} as any)).toThrow(DreamstateError);
     });
 
     await nextAsyncQueue();

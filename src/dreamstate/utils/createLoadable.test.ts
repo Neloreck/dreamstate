@@ -1,3 +1,4 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { LoadableStore } from "@/dreamstate/core/storing/LoadableStore";
 import { ILoadable } from "@/dreamstate/types";
 import { createLoadable } from "@/dreamstate/utils/createLoadable";
@@ -130,10 +131,10 @@ describe("Loadable util", () => {
     expect(first.error).toBeNull();
     expect(Object.keys(second)).toHaveLength(3);
 
-    const third = valueObject.asUpdated(25, true, new Error("Test"));
+    const third = valueObject.asUpdated(25, true, new DreamstateError());
 
     expect(third.isLoading).toBeTruthy();
-    expect(third.error).toBeInstanceOf(Error);
+    expect(third.error).toBeInstanceOf(DreamstateError);
     expect(third.value).toBe(25);
     expect(Object.keys(third)).toHaveLength(3);
   });

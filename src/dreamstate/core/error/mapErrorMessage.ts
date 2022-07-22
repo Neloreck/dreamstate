@@ -24,6 +24,6 @@ export function mapDreamstateErrorMessage(code: EDreamstateErrorCode, detail?: s
       return `Operation is restricted.${detail ? ` ${detail}` : ""}`;
     case EDreamstateErrorCode.UNEXPECTED_ERROR:
     default:
-      return "Unexpected dreamstate error.";
+      return `Unexpected dreamstate error.${detail ? ` ${detail}` : ""}`;
   }
 }

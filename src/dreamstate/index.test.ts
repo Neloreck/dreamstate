@@ -1,3 +1,5 @@
+import { DreamstateError, DreamstateErrorCode } from "@/dreamstate";
+
 describe("Library exported API", () => {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const libRoot = require("./index");
@@ -46,12 +48,12 @@ describe("Library exported API", () => {
   const assertListIntersection = (first: Array<string>, second: Array<string>) => {
     first.forEach((it: string) => {
       if (!second.includes(it)) {
-        throw new Error("Item missing: " + it);
+        throw new DreamstateError(DreamstateErrorCode.UNEXPECTED_ERROR, "Item missing: " + it);
       }
     });
     second.forEach((it: string) => {
       if (!second.includes(it)) {
-        throw new Error("Item missing: " + it);
+        throw new DreamstateError(DreamstateErrorCode.UNEXPECTED_ERROR, "Item missing: " + it);
       }
     });
   };

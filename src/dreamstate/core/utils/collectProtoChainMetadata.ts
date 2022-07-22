@@ -1,5 +1,6 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { TAnyContextManagerConstructor, TContextManagerMetadata } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyContextManagerConstructor, TContextManagerMetadata } from "@/dreamstate/types";
 
 /**
  * Collect metadata of prototype chain for provided context manager.
@@ -18,7 +19,7 @@ export function collectProtoChainMetadata<T extends TAnyContextManagerConstructo
     const metadata: Array<D> = [];
     let current: T = target;
 
-    while (current !== ContextManager) {
+    while (current !== (ContextManager as unknown)) {
       metadata.push(registry.get(current) as D);
       current = Object.getPrototypeOf(current);
     }
@@ -35,6 +36,9 @@ export function collectProtoChainMetadata<T extends TAnyContextManagerConstructo
       }
     }, [] as unknown as D);
   } else {
-    throw new TypeError("Failed to collect metadata of class that is not extending ContextManager.");
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
+      "Failed to collect metadata of class that is not extending ContextManager."
+    );
   }
 }

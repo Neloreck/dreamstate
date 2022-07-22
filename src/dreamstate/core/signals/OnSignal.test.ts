@@ -1,4 +1,4 @@
-import { ContextManager } from "@/dreamstate";
+import { ContextManager, DreamstateError } from "@/dreamstate";
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { mockManager } from "@/dreamstate/test-utils";
@@ -61,21 +61,21 @@ describe("@OnSignal metadata decorator", () => {
         private willNotWork(): void {}
 
       }
-    }).toThrow(TypeError);
+    }).toThrow(DreamstateError);
 
-    expect(() => createTestedClass(undefined)).toThrow(TypeError);
-    expect(() => createTestedClass(null)).toThrow(TypeError);
-    expect(() => createTestedClass({})).toThrow(TypeError);
-    expect(() => createTestedClass(new Map())).toThrow(TypeError);
-    expect(() => createTestedClass(new Error())).toThrow(TypeError);
-    expect(() => createTestedClass(void 0)).toThrow(TypeError);
-    expect(() => createTestedClass([])).toThrow(TypeError);
-    expect(() => createTestedClass([ undefined ])).toThrow(TypeError);
-    expect(() => createTestedClass([ null ])).toThrow(TypeError);
-    expect(() => createTestedClass([ {} ])).toThrow(TypeError);
-    expect(() => createTestedClass([ 123 ])).not.toThrow(TypeError);
-    expect(() => createTestedClass([ 123, "TEST" ])).not.toThrow(TypeError);
-    expect(() => createTestedClass([ 123, "TEST", Symbol("CHECK") ])).not.toThrow(TypeError);
-    expect(() => createTestedClass([ Symbol.for("TEST_EXAMPLE"), "TEST" ])).not.toThrow(TypeError);
+    expect(() => createTestedClass(undefined)).toThrow(DreamstateError);
+    expect(() => createTestedClass(null)).toThrow(DreamstateError);
+    expect(() => createTestedClass({})).toThrow(DreamstateError);
+    expect(() => createTestedClass(new Map())).toThrow(DreamstateError);
+    expect(() => createTestedClass(new Error())).toThrow(DreamstateError);
+    expect(() => createTestedClass(void 0)).toThrow(DreamstateError);
+    expect(() => createTestedClass([])).toThrow(DreamstateError);
+    expect(() => createTestedClass([ undefined ])).toThrow(DreamstateError);
+    expect(() => createTestedClass([ null ])).toThrow(DreamstateError);
+    expect(() => createTestedClass([ {} ])).toThrow(DreamstateError);
+    expect(() => createTestedClass([ 123 ])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([ 123, "TEST" ])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([ 123, "TEST", Symbol("CHECK") ])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([ Symbol.for("TEST_EXAMPLE"), "TEST" ])).not.toThrow(DreamstateError);
   });
 });

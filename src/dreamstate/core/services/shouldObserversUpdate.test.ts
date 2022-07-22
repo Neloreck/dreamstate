@@ -1,6 +1,7 @@
-import { createNested } from "@/dreamstate";
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { TAnyObject } from "@/dreamstate/types";
+import { createNested } from "@/dreamstate/utils/createNested";
 
 describe("shouldObserversUpdate method functionality", () => {
   it("Should return true of previous context does not exist", () => {
@@ -13,11 +14,11 @@ describe("shouldObserversUpdate method functionality", () => {
   it("Should fail if next context is invalid", () => {
     const previous: TAnyObject = { a: 50 };
 
-    expect(() => shouldObserversUpdate(previous, null as any)).toThrow(TypeError);
-    expect(() => shouldObserversUpdate(previous, 1 as any)).toThrow(TypeError);
-    expect(() => shouldObserversUpdate(previous, false as any)).toThrow(TypeError);
-    expect(() => shouldObserversUpdate(previous, NaN as any)).toThrow(TypeError);
-    expect(() => shouldObserversUpdate(previous, undefined as any)).toThrow(TypeError);
+    expect(() => shouldObserversUpdate(previous, null as any)).toThrow(DreamstateError);
+    expect(() => shouldObserversUpdate(previous, 1 as any)).toThrow(DreamstateError);
+    expect(() => shouldObserversUpdate(previous, false as any)).toThrow(DreamstateError);
+    expect(() => shouldObserversUpdate(previous, NaN as any)).toThrow(DreamstateError);
+    expect(() => shouldObserversUpdate(previous, undefined as any)).toThrow(DreamstateError);
   });
 
   it("Should check properly same nested primitives and objects", () => {

@@ -1,9 +1,10 @@
 import { shallowEqualObjects } from "shallow-equal";
 
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { ActionsStore } from "@/dreamstate/core/storing/ActionsStore";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
-import { TAnyObject } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyObject } from "@/dreamstate/types";
 import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -16,7 +17,10 @@ import { isObject } from "@/dreamstate/utils/typechecking";
  */
 export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, nextContext: T): boolean {
   if (!isObject(nextContext)) {
-    throw new TypeError(`Context should be non-nullable object, supplied '${typeof nextContext}' type instead.`);
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
+      `Context should be non-nullable object, supplied '${typeof nextContext}' type instead.`
+    );
   }
 
   if (!previousContext) {
@@ -40,7 +44,6 @@ export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, 
      * some objects like native MediaStream/MediaStreamTrack.
      */
     return nextContext[key] instanceof NestedStore
-      // todo: Should use recursive check here for nested stores of nested stores? Looks like rare case.
       ? !shallowEqualObjects(nextContext[key], previousContext[key])
       : nextContext[key] !== previousContext[key];
   });

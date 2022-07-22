@@ -1,3 +1,4 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { TCallable } from "@/dreamstate/types";
 
 /**
@@ -7,7 +8,7 @@ import { TCallable } from "@/dreamstate/types";
 export function getCallableError<T extends Error>(callable: TCallable): T {
   try {
     callable();
-    throw new Error("Unexpected.");
+    throw new DreamstateError();
   } catch (error: unknown) {
     return error as T;
   }

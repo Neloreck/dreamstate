@@ -1,6 +1,8 @@
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import {
+  EDreamstateErrorCode,
   IOptionalQueryRequest,
   IQueryRequest,
   TAnyCallable,
@@ -36,7 +38,10 @@ export function queryDataSync<R, D, T extends TQueryType, Q extends IOptionalQue
   { CONTEXT_INSTANCES_REGISTRY, QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): TQueryResponse<R> | null {
   if (!query || !(query as IQueryRequest<D, T>).type) {
-    throw new TypeError("Query must be an object with declared type or array of objects with type.");
+    throw new DreamstateError(
+      EDreamstateErrorCode.INCORRECT_PARAMETER,
+      "Query must be an object with declared type or array of objects with type."
+    );
   }
 
   /**

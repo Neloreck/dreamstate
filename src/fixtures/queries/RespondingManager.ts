@@ -1,4 +1,4 @@
-import { ContextManager, OnQuery } from "@/dreamstate";
+import { ContextManager, DreamstateError, OnQuery } from "@/dreamstate";
 import { EQuery } from "@/fixtures/queries/EQuery";
 import {
   TAsyncExceptionQuery,
@@ -13,12 +13,12 @@ export class RespondingManager extends ContextManager {
 
   @OnQuery(EQuery.ASYNC_EXCEPTION_QUERY)
   public async onAsyncExceptionQuery(queryRequest: TAsyncExceptionQuery): Promise<never> {
-    throw new Error();
+    throw new DreamstateError();
   }
 
   @OnQuery(EQuery.SYNC_EXCEPTION_QUERY)
   public onSyncExceptionQuery(queryRequest: TSyncExceptionQuery): never {
-    throw new Error();
+    throw new DreamstateError();
   }
 
   @OnQuery(EQuery.SYNC_BOOLEAN_QUERY)
