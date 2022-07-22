@@ -2,7 +2,6 @@
 
 ### Testing
 
-- more exotic test cases
 - add tests for cases when react rendering fails with exception
 - exception on provision start/end testing
 - add test case when same provider supplied multiple times

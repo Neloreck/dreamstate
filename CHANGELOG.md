@@ -7,6 +7,7 @@
 ### Changed:
 
 - dreamstate error code mapping to error message
+- dreamstate errors throwing instead of default TypeError
 
 ## 4.3.0 (2/17/2022)
 
