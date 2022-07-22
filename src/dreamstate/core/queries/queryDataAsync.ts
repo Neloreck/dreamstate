@@ -1,4 +1,4 @@
-import { DreamstateError } from "@/dreamstate";
+import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import {
