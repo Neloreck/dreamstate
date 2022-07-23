@@ -3,17 +3,16 @@
 Following folder contains simple create-react-app examples with dreamstate.
 
 ### Examples:
-  - simple_application - simple context management and provision
-  - signal_application - signals emit from components/managers, subscription from components/managers
-  - query_application - example queries provision and usage
+
+- simple_application - simple context management and provision
+- signal_application - signals emit from components/managers, subscription from components/managers
+- query_application - example queries provision and usage
 
 ### Short example:
 
 ```typescript jsx
 import React, { render } from "react";
-import { ContextManager, createProvider, createActions, ScopeProvider } from "dreamstate";
-import { useManager } from "./useManager";
-import { TestManager } from "./TestManager";
+import { ContextManager, ScopeProvider, createProvider, createActions, useManager } from "dreamstate";
 
 /**
  * Declare store context.
@@ -21,7 +20,7 @@ import { TestManager } from "./TestManager";
 interface IExampleContext {
   exampleActions: {
     setStringValue(value: string): void;
-  },
+  };
   stringValue: string;
 }
 
@@ -35,7 +34,7 @@ class ExampleManager extends ContextManager<IExampleContext> {
       setStringValue: (value: string) => this.setStringValue(value)
     }),
     stringValue: "default"
-  }
+  };
 
   public setStringValue(value: string): void {
     this.setContext({ stringValue: value });
@@ -46,7 +45,7 @@ class ExampleManager extends ContextManager<IExampleContext> {
 /**
  * Create stores provider.
  */
-const ContextProvider = createProvider([ ExampleManager ]);
+const ContextProvider = createProvider([ExampleManager]);
 
 /**
  * Root component of react application with providers.
@@ -55,7 +54,7 @@ function Application() {
   return (
     <ScopeProvider>
       <ContextProvider>
-        <SubscribedComponent/>
+        <SubscribedComponent />
       </ContextProvider>
     </ScopeProvider>
   );
@@ -64,17 +63,11 @@ function Application() {
 /**
  * Some custom component subscribed to the store.
  */
-function SubscribedComponent({
-  testContext: { stringValue, exampleActions } = useManager(TestManager)
-}) {
-
+function SubscribedComponent({ testContext: { stringValue, exampleActions } = useManager(ExampleManager) }) {
   return (
     <div>
       <label> Current value: </label>
-      <input
-        value={stringValue}
-        onChange={(e) => exampleActions.setStringValue(e.target.value)}
-      />
+      <input value={stringValue} onChange={(e) => exampleActions.setStringValue(e.target.value)} />
     </div>
   );
 }
@@ -82,6 +75,5 @@ function SubscribedComponent({
 /**
  * Render react into DOM.
  */
-render(<ApplicationProvider/>, document.getElementById('application'));
-
+render(<ApplicationProvider />, document.getElementById("application"));
 ```
