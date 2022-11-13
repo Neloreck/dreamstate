@@ -1,12 +1,4 @@
-import {
-  Dispatch,
-  MutableRefObject,
-  SetStateAction,
-  useContext,
-  useLayoutEffect,
-  useRef,
-  useState
-} from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { IContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
@@ -20,70 +12,44 @@ import { IContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/
  */
 export function useContextWithMemo<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
   ManagerClass: D,
-  dependenciesSelector: (context: T) => Array<any>
+  dependenciesSelector: (context: T) => Array<unknown>
 ): T {
   const scope: IScopeContext = useContext(ScopeContext);
-  const observed: MutableRefObject<Array<unknown> | null | undefined> = useRef(undefined);
   const state: [T, Dispatch<SetStateAction<T>>] = useState(function(): T {
     return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
   });
 
   /**
-   * Calculate changes like react does and fire change only if one of dependencies has updated.
-   * Use layout effect for correct data picking when HMR happens and old context object remains in local state.
+   * Fire state change only if any of dependencies is updated.
    */
-  useLayoutEffect(
+  useEffect(
     function(): TCallable {
+      const initialState: T = state[0];
+      const subscriptionState: T = scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
+
+      let observed: Array<unknown> = dependenciesSelector(subscriptionState);
+
       const setState: Dispatch<SetStateAction<T>> = state[1];
 
       /**
-       * Callback to update current ref state + actual provided state.
+       * Expected to be skipped first time, when state is picked with selector from registry.
+       * Expected to be fired every time ManagerClass is changed - when HMR is called.
        */
-      function updateMemoState(nextObserved: Array<any>, nextContext: T): void {
-        observed.current = nextObserved;
-        setState(nextContext);
+      if (initialState !== subscriptionState) {
+        setState(subscriptionState);
       }
 
-      /**
-       * Memo state checker and updater based on current dependency selector callback.
-       */
-      function checkMemoState(nextContext: T): void {
-        const nextObserved: Array<any> = dependenciesSelector(nextContext);
-
-        /**
-         * Do not trigger state update first time.
-         * On HMR reloads force state update.
-         */
-        if (observed.current === undefined) {
-          observed.current = nextObserved;
-        } else if (observed.current === null) {
-          return updateMemoState(nextObserved, nextContext);
-        }
+      return scope.INTERNAL.subscribeToManager(ManagerClass, function(nextContext: T): void {
+        const nextObserved: Array<unknown> = dependenciesSelector(nextContext);
 
         for (let it = 0; it < nextObserved.length; it ++) {
-          if (observed.current[it] !== nextObserved[it]) {
-            return updateMemoState(nextObserved, nextContext);
+          if (observed[it] !== nextObserved[it]) {
+            observed = nextObserved;
+
+            return setState(nextContext);
           }
         }
-      }
-
-      /**
-       * Set ref after mount, update state if Manager dependency changes on hot reload/something changes in between.
-       *
-       * ! Will be triggered after HMR for data initialization and checking.
-       */
-      checkMemoState(scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T);
-
-      /**
-       * Returns un-subscriber callback.
-       */
-      scope.INTERNAL.subscribeToManager(ManagerClass, checkMemoState);
-
-      return function(): void {
-        // Reset current observables state for following update if something has changed.
-        observed.current = null;
-        scope.INTERNAL.unsubscribeFromManager(ManagerClass, checkMemoState);
-      };
+      });
     },
     [ ManagerClass, scope.INTERNAL ]
   );

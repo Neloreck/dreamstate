@@ -1,3 +1,9 @@
+## 4.3.2 (*/*/2022)
+
+### Changed
+
+- useContextWithMemo simplified
+
 ## 4.3.1 (8/2/2022)
 
 ### Added:
