@@ -28,12 +28,10 @@ describe("mockScope test util", () => {
   });
 
   it("Should use registering with initial context", () => {
-    const scope: IScopeContext = mockScope(
-      {
-        isLifecycleDisabled: true,
-        applyInitialContexts: [ mockManagerInitialContext(TestManager, { first: "some-secret-param" }) ]
-      }
-    );
+    const scope: IScopeContext = mockScope({
+      isLifecycleDisabled: true,
+      applyInitialContexts: [ mockManagerInitialContext(TestManager, { first: "some-secret-param" }) ]
+    });
 
     scope.INTERNAL.registerService(TestManager, {});
 

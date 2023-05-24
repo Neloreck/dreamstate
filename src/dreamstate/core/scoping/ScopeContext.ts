@@ -35,9 +35,9 @@ export interface IScopeContextInternals {
    * @param {*=} initialState - initial state param that will be injected in manager constructor on creation.
    * @param {*=} initialContext - initial context param that will be injected on creation and mixed with context.
    */
-  registerService<T, C extends TAnyObject>(
+  registerService<T extends TAnyObject, C extends TAnyObject>(
     ManagerClass: TAnyContextManagerConstructor,
-    initialState?: T,
+    initialState?: T | null,
     initialContext?: Partial<C>
   ): boolean;
   /**
@@ -76,7 +76,7 @@ export interface IScopeContextInternals {
    *
    * @param {ContextManager} manager - manager instance that should update subscribed providers.
    */
-  notifyObservers<T>(manager: ContextManager<T>): void;
+  notifyObservers<T extends TAnyObject>(manager: ContextManager<T>): void;
   /**
    * Subscribe to manager context updates.
    * Provided callback will be fired on every manager instance context update.
@@ -168,9 +168,7 @@ export interface IScopeContext {
    *  optional data field.
    * @returns {TQueryResponse} response for provided query or null value if no handlers were found.
    */
-  queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
-    query: Q
-  ): TQueryResponse<any>;
+  queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<any>;
   /**
    * Query data from current scope in an sync way.
    * Handler that listen for provided query type will be executed and return value will be wrapped

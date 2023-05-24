@@ -1,10 +1,10 @@
-import { ILoadable, TAnyObject } from "@/dreamstate/types";
+import { ILoadable } from "@/dreamstate/types";
 
 /**
  * Class for nested stores extension and proper shallow checking.
  * Used by context diff checker on updates by ContextManager class.
  */
-export class LoadableStore<T extends TAnyObject, E extends Error = Error> implements ILoadable<T> {
+export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
 
   public value: T | null;
   public isLoading: boolean;

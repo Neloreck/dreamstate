@@ -175,7 +175,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           this.unRegisterService(ManagerClass);
         }
       },
-      notifyObservers<T>(manager: ContextManager<T>): void {
+      notifyObservers<T extends TAnyObject>(manager: ContextManager<T>): void {
         const nextContext: T = manager.context;
 
         CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextManagerConstructor, nextContext);
@@ -268,9 +268,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
     unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): void {
       return unRegisterQueryProvider(queryType, listener, registry);
     },
-    queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
-      query: Q
-    ): TQueryResponse<any> {
+    queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<any> {
       return queryDataSync<any, D, T, Q>(query, registry)!;
     },
     queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(

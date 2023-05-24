@@ -38,7 +38,11 @@ export class FirstManager extends ContextManager<IFirstContext> {
   public updateMultipliedNumberValue(): void {
     window.console.info(FirstManager.name, "update multiplied number called");
 
-    const { type, data: sampleNumber, ...rest }: TSampleNumberQueryResponse = this.queryDataSync({
+    const {
+      type,
+      data: sampleNumber,
+      ...rest
+    }: TSampleNumberQueryResponse = this.queryDataSync({
       type: EGenericQuery.SAMPLE_NUMBER
     });
 

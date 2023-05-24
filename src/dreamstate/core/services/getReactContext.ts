@@ -1,7 +1,7 @@
 import { Context, createContext } from "react";
 
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@/dreamstate/core/internals";
-import { IContextManagerConstructor } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
  * Get react context reference for provided ManagerClass.
@@ -11,7 +11,7 @@ import { IContextManagerConstructor } from "@/dreamstate/types";
  * @param defaultContext - default context value to be applied if manager is not provided.
  * @returns {Context} react context instance with pre-defined default value.
  */
-export function getReactContext<S, M extends IContextManagerConstructor<S>>(
+export function getReactContext<S extends TAnyObject, M extends IContextManagerConstructor<S>>(
   ManagerClass: M,
   defaultContext: Partial<S> | null = null
 ): Context<S> {

@@ -20,8 +20,7 @@ export class FirstManager extends ContextManager<IFirstContext> {
    * Initial context data.
    */
   public context: IFirstContext = {
-    sampleActions: createActions({
-    }),
+    sampleActions: createActions({}),
     sampleNumber: 0,
     reflectedString: ""
   };

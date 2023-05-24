@@ -24,10 +24,10 @@ import { BABEL_CONFIG } from "./babel.modern.config";
 const createPortableConfig = (env) => ({
   external: [ "react", "shallow-equal" ],
   input: PORTABLE_ENTRY,
-  preserveModules: false,
   output: {
     compact: env === EEnvironment.PRODUCTION,
     file: path.resolve(PORTABLE_ROOT, "dreamstate.js"),
+    preserveModules: false,
     sourcemap: true,
     format: "es"
   },

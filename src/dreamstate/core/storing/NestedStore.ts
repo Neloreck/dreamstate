@@ -9,8 +9,8 @@ export class NestedStore<T extends TAnyObject = TAnyObject> {
   /**
    * Util for nested stores immutable merging.
    */
-  public asMerged(state: Partial<T> = {}): TNested<T> {
-    return Object.assign(new NestedStore<T>(), this as T, state);
+  public asMerged(state: Partial<T> = {} as T): TNested<T> {
+    return Object.assign(new NestedStore<T>(), this as unknown as T, state);
   }
 
 }

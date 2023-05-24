@@ -22,10 +22,7 @@ export interface IMockScopeConfig {
  * @param {IRegistry} registry - optional custom registry that will be used as scope storage.
  * @returns {IScopeContext} mocked scope context.
  */
-export function mockScope(
-  mockConfig: IMockScopeConfig = {},
-  registry: IRegistry = createRegistry()
-): IScopeContext {
+export function mockScope(mockConfig: IMockScopeConfig = {}, registry: IRegistry = createRegistry()): IScopeContext {
   const { isLifecycleDisabled = true, applyInitialContexts = [] } = mockConfig;
   const appliedContexts: Map<TAnyContextManagerConstructor, TAnyObject> = new Map(applyInitialContexts);
   const scope: IScopeContext = initializeScopeContext(registry);
@@ -66,11 +63,11 @@ export function mockScope(
     /**
      * On register apply provided context from map parameter.
      */
-    scope.INTERNAL.registerService = function <T, C extends TAnyObject, M extends IContextManagerConstructor<C, T>>(
-      ManagerClass: M,
-      initialState?: T,
-      initialContext?: C
-    ) {
+    scope.INTERNAL.registerService = function <
+      T extends TAnyObject,
+      C extends TAnyObject,
+      M extends IContextManagerConstructor<C, T>
+    >(ManagerClass: M, initialState?: T | null, initialContext?: C) {
       return registerService(
         ManagerClass,
         initialState,

@@ -16,7 +16,7 @@ export interface IScopedObserverProps<T> {
  * ScopedObserver component that does data provision for specific source in an isolated react node.
  * Receives current scope information and specific manager reference for provision.
  */
-export function ScopedObserver<T>({
+export function ScopedObserver<T extends TAnyObject>({
   children,
   initialState,
   dependencies,

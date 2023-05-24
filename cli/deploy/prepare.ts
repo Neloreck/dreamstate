@@ -1,12 +1,10 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { CJS_ROOT, DIST_ROOT, ESM_ROOT, PKG_ROOT, PROJECT_ROOT, SRC_PATH, TYPES_ROOT } from "../config/build.constants";
+import ncp from "ncp";
+import * as rimraf from "rimraf";
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const ncp = require("ncp");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const rimraf = require("rimraf");
+import { CJS_ROOT, DIST_ROOT, ESM_ROOT, PKG_ROOT, PROJECT_ROOT, SRC_PATH, TYPES_ROOT } from "../config/build.constants";
 
 interface IAssetsDescription {
   [index: string]: {
@@ -74,5 +72,5 @@ rimraf.sync(PKG_ROOT);
 
 fs.mkdirSync(PKG_ROOT);
 
-Object.values(ASSETS).forEach((it) => ncp(it.source, it.destination));
-Object.values(SWITCHERS).forEach((it) => ncp(it.source, it.destination));
+Object.values(ASSETS).forEach((it) => ncp(it.source, it.destination, () => {}));
+Object.values(SWITCHERS).forEach((it) => ncp(it.source, it.destination, () => {}));

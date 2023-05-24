@@ -14,7 +14,7 @@ import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserver
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
   EDreamstateErrorCode,
-  IBaseSignal, IContextManagerConstructor,
+  IBaseSignal,
   IOptionalQueryRequest,
   ISignalEvent,
   TAnyContextManagerConstructor,

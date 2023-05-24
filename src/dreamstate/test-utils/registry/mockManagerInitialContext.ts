@@ -13,4 +13,3 @@ export function mockManagerInitialContext<D extends TAnyContextManagerConstructo
 ): [D, Partial<D["prototype"]["context"]>] {
   return [ ManagerClass, context ];
 }
-
