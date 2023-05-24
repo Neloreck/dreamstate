@@ -60,7 +60,7 @@ const createPortableDtsConfig = (env) => ({
     format: "es"
   },
   plugins: [
-    dts({
+    dts.default({
       compilerOptions: {
         baseUrl: tsconfig.compilerOptions.baseUrl,
         paths: tsconfig.compilerOptions.paths,

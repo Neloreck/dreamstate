@@ -12,7 +12,7 @@
     "build:cjs": "rollup -c cli/build/rollup.cjs.config.ts --configPlugin typescript --bundleConfigAsCjs",
     "build:esm": "rollup -c cli/build/rollup.esm.config.ts --configPlugin typescript --bundleConfigAsCjs",
     "build:dts": "rollup -c cli/build/rollup.dts.config.ts --configPlugin typescript --bundleConfigAsCjs && mv ./target/dist/dts/lib ./target/dist/dts/lib.d.ts",
-    "build:ptb": "rollup -c cli/build/rollup.esm.portable.config.ts",
+    "build:ptb": "rollup -c cli/build/rollup.esm.portable.config.ts --configPlugin typescript --bundleConfigAsCjs ",
     "build": "pnpm build:dts && pnpm build:esm && pnpm build:cjs",
     "format": "prettier --write \"**/*.(js|ts|tsx)\" && eslint . --ext .ts,.tsx,.js --fix",
     "lint": "eslint . --ext .ts,.tsx,.js",
