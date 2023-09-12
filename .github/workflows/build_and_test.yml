@@ -57,13 +57,20 @@ jobs:
       - run: pnpm build:esm
       - run: pnpm build:ptb
 
+      - name: Install zip
+        uses: montudor/action-zip@v1
+
+      - name: Archive build artifacts
+        working-directory: target/
+        run: zip -qq -r packages.zip dist/
+
       - name: Upload build packages
         uses: actions/upload-artifact@v3
         with:
           if-no-files-found: error
           name: packages
-          path: target/dist
-          retention-days: 7
+          path: target/packages.zip
+          retention-days: 1
 
   upload-nightly:
     if: ${{ github.ref_name == 'main' && github.event_name != 'pull_request' }}
