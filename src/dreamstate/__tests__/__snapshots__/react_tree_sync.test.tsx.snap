@@ -1,12 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`React tree for provided and consumed components Should correctly update subscribed to functional provider elements view 1`] = `
+exports[`React tree for provided and consumed components should correctly update subscribed to functional provider elements view 1`] = `
 <div>
    {"first":"first","second":2,"third":false}
 </div>
 `;
 
-exports[`React tree for provided and consumed components Should correctly update subscribed to functional provider elements view 2`] = `
+exports[`React tree for provided and consumed components should correctly update subscribed to functional provider elements view 2`] = `
 <div>
    {"first":"updated","second":101010,"third":true}
 </div>

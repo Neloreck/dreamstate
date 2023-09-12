@@ -5,7 +5,7 @@ import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { TestManager } from "@/fixtures";
 
 describe("mockScope test util", () => {
-  it("Should properly mock scope with clean state", () => {
+  it("should properly mock scope with clean state", () => {
     const scope: IScopeContext = mockScope();
 
     expect(scope).toBeInstanceOf(Object);
@@ -20,14 +20,14 @@ describe("mockScope test util", () => {
     expect(scope.queryDataAsync).toBeDefined();
   });
 
-  it("Should properly inject provided registry", () => {
+  it("should properly inject provided registry", () => {
     const registry: IRegistry = createRegistry();
     const scope: IScopeContext = mockScope({ isLifecycleDisabled: true }, registry);
 
     expect(scope.INTERNAL.REGISTRY).toBe(registry);
   });
 
-  it("Should use registering with initial context", () => {
+  it("should use registering with initial context", () => {
     const scope: IScopeContext = mockScope({
       isLifecycleDisabled: true,
       applyInitialContexts: [ mockManagerInitialContext(TestManager, { first: "some-secret-param" }) ]

@@ -44,7 +44,7 @@ describe("collectProtoChainMetadata util method", () => {
 
   }
 
-  it("Should properly follow class chain until base class for signal metadata", () => {
+  it("should properly follow class chain until base class for signal metadata", () => {
     expect(() => collectProtoChainMetadata(BaseSignalContextManager, SIGNAL_METADATA_REGISTRY)).not.toThrow();
     expect(() => collectProtoChainMetadata(FirstSignalExtendingContextManager, SIGNAL_METADATA_REGISTRY)).not.toThrow();
     expect(() =>
@@ -55,7 +55,7 @@ describe("collectProtoChainMetadata util method", () => {
     expect(collectProtoChainMetadata(SecondSignalExtendingContextManager, SIGNAL_METADATA_REGISTRY)).toHaveLength(2);
   });
 
-  it("Should properly follow class chain until base class for query metadata", () => {
+  it("should properly follow class chain until base class for query metadata", () => {
     expect(() => collectProtoChainMetadata(BaseQueryContextManager, QUERY_METADATA_REGISTRY)).not.toThrow();
     expect(() => collectProtoChainMetadata(FirstQueryExtendingContextManager, QUERY_METADATA_REGISTRY)).not.toThrow();
     expect(() => collectProtoChainMetadata(SecondQueryExtendingContextManager, QUERY_METADATA_REGISTRY)).not.toThrow();
@@ -65,7 +65,7 @@ describe("collectProtoChainMetadata util method", () => {
     expect(collectProtoChainMetadata(SecondQueryExtendingContextManager, QUERY_METADATA_REGISTRY)).toHaveLength(2);
   });
 
-  it("Should properly handle duplicated metadata", () => {
+  it("should properly handle duplicated metadata", () => {
     class SomeBase extends ContextManager {
 
       @OnSignal("ON_SOME_SIGNAL")
@@ -89,7 +89,7 @@ describe("collectProtoChainMetadata util method", () => {
     expect(collectProtoChainMetadata(SomeExtending, SIGNAL_METADATA_REGISTRY)).toHaveLength(2);
   });
 
-  it("Should throw exception on non ContextManager classes", () => {
+  it("should throw exception on non ContextManager classes", () => {
     class SomeClass {}
 
     expect(() => collectProtoChainMetadata(SomeClass as any, SIGNAL_METADATA_REGISTRY)).toThrow(DreamstateError);

@@ -2,7 +2,7 @@ import { createRegistry } from "@/dreamstate/core/scoping/registry/createRegistr
 import { mockRegistry } from "@/dreamstate/test-utils/registry/mockRegistry";
 
 describe("mockRegistry method", () => {
-  it("Should be same as registry creation method", () => {
+  it("should be same as registry creation method", () => {
     expect(mockRegistry()).toStrictEqual(createRegistry());
   });
 });

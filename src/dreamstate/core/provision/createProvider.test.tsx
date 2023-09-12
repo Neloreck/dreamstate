@@ -13,7 +13,7 @@ describe("createProvider method", () => {
   const CombinedProvider = createProvider([ TestManager ], { isCombined: true });
   const ScopedProvider = createProvider([ TestManager ], { isCombined: false });
 
-  it("Should render correct component tree", async () => {
+  it("should render correct component tree", async () => {
     let currentScope: IScopeContext = null as any;
 
     function ScopeConsumer(): ReactElement {
@@ -49,7 +49,7 @@ describe("createProvider method", () => {
     scopedTree.unmount();
   });
 
-  it("Should create observers with validation", () => {
+  it("should create observers with validation", () => {
     expect(() => createProvider(0 as any)).toThrow(DreamstateError);
     expect(() => createProvider("0" as any)).toThrow(DreamstateError);
     expect(() => createProvider(false as any)).toThrow(DreamstateError);
@@ -75,7 +75,7 @@ describe("createProvider method", () => {
     );
   });
 
-  it("Should create correct component tree without children", () => {
+  it("should create correct component tree without children", () => {
     const combinedTree = mount(
       <ScopeProvider>
         <CombinedProvider>
@@ -97,7 +97,7 @@ describe("createProvider method", () => {
     expect(scopedTree).toMatchSnapshot();
   });
 
-  it("Should have default provider names for production environment", () => {
+  it("should have default provider names for production environment", () => {
     expect(createScopedProvider([ TestManager ]).displayName).toBeUndefined();
     expect(createCombinedProvider([ TestManager ]).displayName).toBeUndefined();
   });

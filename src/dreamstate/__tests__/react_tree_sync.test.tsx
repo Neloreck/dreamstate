@@ -9,7 +9,7 @@ import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { ITestContext, TestManager } from "@/fixtures";
 
 describe("React tree for provided and consumed components", () => {
-  it("Should correctly update subscribed to functional provider elements view", () => {
+  it("should correctly update subscribed to functional provider elements view", () => {
     const ContextProvider = createProvider([ TestManager ]);
 
     function Root(): ReactElement {

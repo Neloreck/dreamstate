@@ -7,7 +7,7 @@ import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { TestManager } from "@/fixtures";
 
 describe("getCurrent method functionality", () => {
-  it("Should properly return current service instance", () => {
+  it("should properly return current service instance", () => {
     let globalScope: IScopeContext = null as any;
 
     const Provider = createProvider([ TestManager ]);

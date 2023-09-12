@@ -6,7 +6,7 @@ import { TSignalSubscriptionMetadata, TSignalType } from "@/dreamstate/types";
 import { ESignal, SubscribedManager } from "@/fixtures/signals";
 
 describe("@OnSignal metadata decorator", () => {
-  it("Signal decorator should properly add metadata", () => {
+  it("signal decorator should properly add metadata", () => {
     const manager: SubscribedManager = mockManager(SubscribedManager);
     const signalListenersList: TSignalSubscriptionMetadata = manager[SIGNAL_METADATA_SYMBOL];
 
@@ -39,7 +39,7 @@ describe("@OnSignal metadata decorator", () => {
     expect((thirdSubscribed as Array<TSignalType>).includes(ESignal.NUMBER_SIGNAL)).toBeTruthy();
   });
 
-  it("Should not work with non-context service classes and bad queries", () => {
+  it("should not work with non-context service classes and bad queries", () => {
     const createTestedClass = <T>(signalType: T) => {
       class Manager extends ContextManager {
 

@@ -1,7 +1,7 @@
 describe("useContextWithMemo method", () => {
   // todo;
 
-  it("Should properly get context value", () => {
+  it("should properly get context value", () => {
     expect(true).toBeTruthy();
   });
 });

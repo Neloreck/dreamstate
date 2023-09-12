@@ -4,14 +4,14 @@ import { TAnyObject } from "@/dreamstate/types";
 import { createNested } from "@/dreamstate/utils/createNested";
 
 describe("shouldObserversUpdate method functionality", () => {
-  it("Should return true of previous context does not exist", () => {
+  it("should return true of previous context does not exist", () => {
     const previous: TAnyObject = null as any;
     const next: TAnyObject = { a: 15, b: 50 };
 
     expect(shouldObserversUpdate(previous, next)).toBeTruthy();
   });
 
-  it("Should fail if next context is invalid", () => {
+  it("should fail if next context is invalid", () => {
     const previous: TAnyObject = { a: 50 };
 
     expect(() => shouldObserversUpdate(previous, null as any)).toThrow(DreamstateError);
@@ -21,7 +21,7 @@ describe("shouldObserversUpdate method functionality", () => {
     expect(() => shouldObserversUpdate(previous, undefined as any)).toThrow(DreamstateError);
   });
 
-  it("Should check properly same nested primitives and objects", () => {
+  it("should check properly same nested primitives and objects", () => {
     const first: TAnyObject = { first: 1 };
     const firstDifferent: TAnyObject = { first: 1 };
     const second: TAnyObject = { second: 2 };
@@ -46,7 +46,7 @@ describe("shouldObserversUpdate method functionality", () => {
     expect(shouldObserversUpdate(firstStringDifferent, secondString)).toBeTruthy();
   });
 
-  it("Should properly check only refs for plain objects and primitives", () => {
+  it("should properly check only refs for plain objects and primitives", () => {
     let base = {
       nested: {
         a: 1,
@@ -67,7 +67,7 @@ describe("shouldObserversUpdate method functionality", () => {
     expect(shouldObserversUpdate(base, next)).toBeFalsy();
   });
 
-  it("Should check nested values by objects content", () => {
+  it("should check nested values by objects content", () => {
     expect(
       shouldObserversUpdate({ a: createNested({ a: 10, b: "2" }) }, { a: createNested({ a: 10, b: "2" }) })
     ).toBeFalsy();
@@ -76,14 +76,14 @@ describe("shouldObserversUpdate method functionality", () => {
     ).toBeTruthy();
   });
 
-  it("Should properly update when add new context values", () => {
+  it("should properly update when add new context values", () => {
     const base = { a: 10 };
     const next = { a: 10, b: 15 };
 
     expect(shouldObserversUpdate(base, next)).toBeTruthy();
   });
 
-  it("Should properly update when add new context values for nested", () => {
+  it("should properly update when add new context values for nested", () => {
     const base = { a: createNested({ a: 10 }) };
     const next = { a: createNested({ a: 10, b: 20 }) };
 

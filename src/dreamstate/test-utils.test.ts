@@ -31,7 +31,7 @@ describe("Library test utils exports", () => {
     });
   };
 
-  it("Should export correct test-utils API methods", () => {
+  it("should export correct test-utils API methods", () => {
     assertListIntersection(Object.keys(testUtilsRoot), expectedTestUtilsExports);
     expect(Object.keys(testUtilsRoot)).toHaveLength(expectedTestUtilsExports.length);
   });

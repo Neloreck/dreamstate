@@ -4,7 +4,7 @@ import { createActions } from "@/dreamstate/utils/createActions";
 import { getCallableError } from "@/fixtures";
 
 describe("createActions method functionality", () => {
-  it("Should create value with correct initial param", () => {
+  it("should create value with correct initial param", () => {
     const context = {
       a: createActions({
         first: (num: number) => num,
@@ -27,7 +27,7 @@ describe("createActions method functionality", () => {
     expect(context.b.first("a")).toBe("a");
   });
 
-  it("Should validate provided params object", () => {
+  it("should validate provided params object", () => {
     expect(() => createActions("" as any)).toThrow(DreamstateError);
     expect(() => createActions(null as any)).toThrow(DreamstateError);
     expect(() => createActions(undefined as any)).toThrow(DreamstateError);

@@ -4,7 +4,7 @@ import { ILoadable } from "@/dreamstate/types";
 import { createLoadable } from "@/dreamstate/utils/createLoadable";
 
 describe("Loadable util", () => {
-  it("Should properly create loadable objects", () => {
+  it("should properly create loadable objects", () => {
     const loadableValue: number = 10;
     const loadableError: Error = new Error("testError");
     const loadable: ILoadable<number> = createLoadable(loadableValue);
@@ -46,7 +46,7 @@ describe("Loadable util", () => {
     expect(emptyLoadable.value).toBeNull();
   });
 
-  it("Should properly declare loadable objects flags", () => {
+  it("should properly declare loadable objects flags", () => {
     const loadable: ILoadable<{ test: boolean }> = createLoadable({
       test: true
     });
@@ -60,7 +60,7 @@ describe("Loadable util", () => {
     expect(next instanceof LoadableStore).toBeTruthy();
   });
 
-  it("Should properly compute new loadable values", () => {
+  it("should properly compute new loadable values", () => {
     const originalObject = createLoadable(500);
 
     const first = originalObject.asLoading();
@@ -78,7 +78,7 @@ describe("Loadable util", () => {
     expect(Object.keys(second)).toHaveLength(3);
   });
 
-  it("Should properly compute updated values", () => {
+  it("should properly compute updated values", () => {
     const originalObject = createLoadable(700);
 
     const first = originalObject.asFailed(new Error("Test."));
@@ -96,7 +96,7 @@ describe("Loadable util", () => {
     expect(Object.keys(second)).toHaveLength(3);
   });
 
-  it("Should properly compute ready values", () => {
+  it("should properly compute ready values", () => {
     const originalObject = createLoadable(700, true, new Error("Test."));
 
     const first = originalObject.asReady();
@@ -114,7 +114,7 @@ describe("Loadable util", () => {
     expect(Object.keys(second)).toHaveLength(3);
   });
 
-  it("Should properly compute updated values", () => {
+  it("should properly compute updated values", () => {
     const valueObject = createLoadable(1);
 
     const first = valueObject.asUpdated(5);

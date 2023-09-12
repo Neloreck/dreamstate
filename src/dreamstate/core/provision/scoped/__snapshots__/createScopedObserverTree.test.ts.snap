@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createScopedObserverTree rendering Should match snapshot 1`] = `
+exports[`createScopedObserverTree rendering should match snapshot 1`] = `
 <div>
   <ScopedObserver
     ManagerClass={[Function]}

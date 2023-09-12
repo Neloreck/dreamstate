@@ -5,7 +5,7 @@ import { createNested } from "@/dreamstate/utils/createNested";
 import { getCallableError } from "@/fixtures";
 
 describe("Nested util", () => {
-  it("Should properly create nested objects", () => {
+  it("should properly create nested objects", () => {
     const nested: TNested<{ test: boolean }> = createNested({ test: true });
 
     expect(Object.keys(nested)).toHaveLength(1);
@@ -13,7 +13,7 @@ describe("Nested util", () => {
     expect(nested.asMerged).toBeDefined();
   });
 
-  it("Should properly mutate nested objects", () => {
+  it("should properly mutate nested objects", () => {
     const nested: TNested<{ test: boolean }> = createNested({ test: true });
     const next: TNested<{ test: boolean }> = nested.asMerged({ test: false });
 
@@ -22,7 +22,7 @@ describe("Nested util", () => {
     expect(next.test).toBeFalsy();
   });
 
-  it("Should properly declare nested objects flags", () => {
+  it("should properly declare nested objects flags", () => {
     const nested: TNested<{ test: boolean }> = createNested({ test: true });
 
     expect(nested instanceof NestedStore).toBeTruthy();
@@ -32,7 +32,7 @@ describe("Nested util", () => {
     expect(next instanceof NestedStore).toBeTruthy();
   });
 
-  it("Should properly throw error for non-objects initial values", () => {
+  it("should properly throw error for non-objects initial values", () => {
     expect(() => createNested(5 as any)).toThrow(DreamstateError);
     expect(getCallableError<DreamstateError>(() => createNested(false as any)).code).toBe(
       EDreamstateErrorCode.INCORRECT_PARAMETER

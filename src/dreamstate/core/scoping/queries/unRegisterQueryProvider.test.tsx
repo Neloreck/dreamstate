@@ -27,7 +27,7 @@ describe("registerQueryProvider method", () => {
     }
   }
 
-  it("Should properly unsubscribe from queries", async () => {
+  it("should properly unsubscribe from queries", async () => {
     const tree = testQueryTree(({ INTERNAL: { REGISTRY }, registerQueryProvider, unRegisterQueryProvider }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
 
@@ -61,7 +61,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should properly deal with duplicated providers unsub", async () => {
+  it("should properly deal with duplicated providers unsub", async () => {
     const tree = testQueryTree(({ INTERNAL: { REGISTRY }, registerQueryProvider, unRegisterQueryProvider }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
 
@@ -121,7 +121,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should throw if handler is not a function", async () => {
+  it("should throw if handler is not a function", async () => {
     const tree = testQueryTree(({ unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
       expect(() => unRegisterQueryProvider("ANY", null as any)).toThrow(DreamstateError);
@@ -142,7 +142,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should throw if type is not correct", async () => {
+  it("should throw if type is not correct", async () => {
     const tree = testQueryTree(({ unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(0);
       expect(() => unRegisterQueryProvider("TYPE", () => {})).not.toThrow();

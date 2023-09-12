@@ -25,7 +25,7 @@ describe("Emitting signal on provision end", () => {
 
   }
 
-  it("Should properly notify current managers when sending signal on unmount with combined provision", async () => {
+  it("should properly notify current managers when sending signal on unmount with combined provision", async () => {
     async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
       const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 

@@ -1,7 +1,7 @@
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 
 describe("createRegistry method", () => {
-  it("Should correctly initialize empty registry", () => {
+  it("should correctly initialize empty registry", () => {
     const registry: IRegistry = createRegistry();
 
     expect(Object.keys(registry)).toHaveLength(7);

@@ -7,7 +7,7 @@ import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 import { NestedManager, TestManager } from "@/fixtures";
 
 describe("provideSubTreeRecursive rendering", () => {
-  it("Should match snapshot", () => {
+  it("should match snapshot", () => {
     const registry: IRegistry = createRegistry();
     const providers: Array<TAnyContextManagerConstructor> = [ TestManager, NestedManager, TestManager ];
 

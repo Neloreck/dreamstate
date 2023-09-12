@@ -9,7 +9,7 @@ import { EDreamstateErrorCode, IBaseSignal, ISignalEvent, ISignalWithData } from
 import { ESignal, getCallableError } from "@/fixtures";
 
 describe("emitSignal method", () => {
-  it("Should properly reject bad emit parameters", () => {
+  it("should properly reject bad emit parameters", () => {
     const registry: IRegistry = createRegistry();
 
     expect(() => emitSignal(null as any, null, registry)).toThrow(DreamstateError);
@@ -57,7 +57,7 @@ describe("emitSignal method", () => {
     return <div> Sample </div>;
   }
 
-  it("Should properly emit signals", async () => {
+  it("should properly emit signals", async () => {
     const subscriber = jest.fn((signal: ISignalEvent) => {
       expect(signal.type).toBe("TEST");
       expect(signal.data).toBeUndefined();
@@ -78,7 +78,7 @@ describe("emitSignal method", () => {
     tree.unmount();
   });
 
-  it("Should properly inject data parameter", async () => {
+  it("should properly inject data parameter", async () => {
     const subscriber = jest.fn((signal: ISignalEvent<number>) => {
       if (signal.type === "WITH_PARAM") {
         expect(signal.data).toBe(155);
@@ -96,7 +96,7 @@ describe("emitSignal method", () => {
     tree.unmount();
   });
 
-  it("Should properly inject emitter parameter", async () => {
+  it("should properly inject emitter parameter", async () => {
     const subscriber = jest.fn((signal: ISignalEvent<number>) => {
       if (signal.type === "WITH_EMITTER") {
         expect(signal.emitter).toBe(0);
@@ -114,7 +114,7 @@ describe("emitSignal method", () => {
     tree.unmount();
   });
 
-  it("Signal subscribers should properly cancel events and be called in declared order", async () => {
+  it("signal subscribers should properly cancel events and be called in declared order", async () => {
     let emitter: (base: IBaseSignal) => void = null as any;
     const mock = jest.fn().mockImplementationOnce((signalEvent: ISignalEvent<any>) => {
       signalEvent.cancel();

@@ -38,7 +38,7 @@ describe("UseManager subscription and rendering", () => {
     onStarted.mockClear();
   });
 
-  it("Should properly fire provision events for functional subscribers and clean-up memory", async () => {
+  it("should properly fire provision events for functional subscribers and clean-up memory", async () => {
     let rendersCount: number = 0;
     let stateScope: IScopeContext = null as any;
 
@@ -95,7 +95,7 @@ describe("UseManager subscription and rendering", () => {
     expect(stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)).toBeUndefined();
   });
 
-  it("Should properly handle memoized subscriptions", async () => {
+  it("should properly handle memoized subscriptions", async () => {
     let rendersCount: number = 0;
     let stateScope: IScopeContext = null as any;
 

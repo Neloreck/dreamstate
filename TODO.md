@@ -20,4 +20,4 @@
 
 ### Examples
 
-- Add example tests (react-rendering-lib, enzyme)
+- Add example tests

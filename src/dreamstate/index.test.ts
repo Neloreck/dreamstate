@@ -58,7 +58,7 @@ describe("Library exported API", () => {
     });
   };
 
-  it("Should export correct core API methods", () => {
+  it("should export correct core API methods", () => {
     assertListIntersection(Object.keys(libRoot), expectedLibExports);
     expect(Object.keys(libRoot)).toHaveLength(expectedLibExports.length);
   });

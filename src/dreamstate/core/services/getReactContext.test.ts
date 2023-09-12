@@ -30,7 +30,7 @@ describe("getReactContext method functionality", () => {
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestManager);
   });
 
-  it("Should supply null value if manager is not provided", () => {
+  it("should supply null value if manager is not provided", () => {
     function Consumer(): ReactElement {
       const context: ITestContext = useManager(TestManager);
 
@@ -40,7 +40,7 @@ describe("getReactContext method functionality", () => {
     expect(mount(createElement(Consumer)).render()).toMatchSnapshot();
   });
 
-  it("Should supply default value if manager is not provided", () => {
+  it("should supply default value if manager is not provided", () => {
     getReactContext(TestManager, { first: "default-state-test", second: -1000 });
 
     function Consumer(): ReactElement {

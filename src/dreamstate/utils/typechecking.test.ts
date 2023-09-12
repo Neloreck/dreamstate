@@ -9,7 +9,7 @@ import {
 } from "@/dreamstate/utils/typechecking";
 
 describe("typecheing utils functionality", () => {
-  it("Should check object values correctly", () => {
+  it("should check object values correctly", () => {
     expect(isObject({})).toBeTruthy();
     expect(isObject({ a: 1 })).toBeTruthy();
     expect(isObject({ b: 6 })).toBeTruthy();
@@ -25,7 +25,7 @@ describe("typecheing utils functionality", () => {
     expect(isObject(Symbol("test"))).toBeFalsy();
   });
 
-  it("Should check string values correctly", () => {
+  it("should check string values correctly", () => {
     expect(isString({})).toBeFalsy();
     expect(isString({ a: 1 })).toBeFalsy();
     expect(isString({ b: 6 })).toBeFalsy();
@@ -41,7 +41,7 @@ describe("typecheing utils functionality", () => {
     expect(isString(Symbol("test"))).toBeFalsy();
   });
 
-  it("Should check number primitive values correctly", () => {
+  it("should check number primitive values correctly", () => {
     expect(isNumber({})).toBeFalsy();
     expect(isNumber({ a: 1 })).toBeFalsy();
     expect(isNumber({ b: 6 })).toBeFalsy();
@@ -60,7 +60,7 @@ describe("typecheing utils functionality", () => {
     expect(isNumber(Symbol("test"))).toBeFalsy();
   });
 
-  it("Should check function values correctly", () => {
+  it("should check function values correctly", () => {
     expect(isFunction({})).toBeFalsy();
     expect(isFunction({ a: 1 })).toBeFalsy();
     expect(isFunction({ b: 6 })).toBeFalsy();
@@ -75,7 +75,7 @@ describe("typecheing utils functionality", () => {
     expect(isFunction(Symbol("test"))).toBeFalsy();
   });
 
-  it("Should check undefined values correctly", () => {
+  it("should check undefined values correctly", () => {
     expect(isUndefined({})).toBeFalsy();
     expect(isUndefined({ a: 1 })).toBeFalsy();
     expect(isUndefined({ b: 6 })).toBeFalsy();
@@ -90,7 +90,7 @@ describe("typecheing utils functionality", () => {
     expect(isUndefined(Symbol)).toBeFalsy();
   });
 
-  it("Should correctly verify signal types", () => {
+  it("should correctly verify signal types", () => {
     expect(isCorrectQueryType({})).toBeFalsy();
     expect(isCorrectQueryType({ a: 1 })).toBeFalsy();
     expect(isCorrectQueryType({ b: 6 })).toBeFalsy();
@@ -106,7 +106,7 @@ describe("typecheing utils functionality", () => {
     expect(isCorrectQueryType(Symbol("test"))).toBeTruthy();
   });
 
-  it("Should correctly verify signal types", () => {
+  it("should correctly verify signal types", () => {
     expect(isCorrectSignalType({})).toBeFalsy();
     expect(isCorrectSignalType({ a: 1 })).toBeFalsy();
     expect(isCorrectSignalType({ b: 6 })).toBeFalsy();

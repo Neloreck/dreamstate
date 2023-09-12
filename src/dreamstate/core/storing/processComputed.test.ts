@@ -12,7 +12,7 @@ describe("processComputed method", () => {
     e: TComputed<{ odd: Array<number> }>;
   }
 
-  it("Should correctly process computed context and replace values", () => {
+  it("should correctly process computed context and replace values", () => {
     const context = {
       value: "default",
       computed: createComputed((context: { value: string }) => ({
@@ -31,7 +31,7 @@ describe("processComputed method", () => {
     expect(context.computed).toBeInstanceOf(ComputedValue);
   });
 
-  it("Should properly handle default computed and always update it", () => {
+  it("should properly handle default computed and always update it", () => {
     const defaultContext: ITestContext = {
       a: "1233",
       b: 123123,
@@ -66,7 +66,7 @@ describe("processComputed method", () => {
     expect(nextComputed).toBe(defaultContext.e);
   });
 
-  it("Should properly handle values with memo and ignore update of other fields", () => {
+  it("should properly handle values with memo and ignore update of other fields", () => {
     const memoContext: ITestContext = {
       a: "1233",
       b: 123123,

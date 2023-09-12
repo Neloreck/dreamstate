@@ -6,7 +6,7 @@ import { createComputed } from "@/dreamstate/utils/createComputed";
 import { getCallableError } from "@/fixtures";
 
 describe("createComputed method functionality", () => {
-  it("Should create value with correct initial param", () => {
+  it("should create value with correct initial param", () => {
     const context = {
       first: createComputed(() => ({ nullValue: null })),
       second: createComputed(() => ({ test: 355 })),
@@ -49,7 +49,7 @@ describe("createComputed method functionality", () => {
     expect(context.third.__selector__).toBeDefined();
   });
 
-  it("Should correctly work with context managers", () => {
+  it("should correctly work with context managers", () => {
     interface IComputedContext {
       example: TComputed<{
         multipliedByTwo: number;
@@ -83,7 +83,7 @@ describe("createComputed method functionality", () => {
     expect(manager.context.example.multipliedByThree).toBe(3000);
   });
 
-  it("Should correctly compute non-primitive values", () => {
+  it("should correctly compute non-primitive values", () => {
     interface IComputedContext {
       computed: TComputed<{
         greaterThanFive: Array<number>;
@@ -113,7 +113,7 @@ describe("createComputed method functionality", () => {
     expect(manager.context.computed.greaterThanFive).toHaveLength(1);
   });
 
-  it("Should validate provided params object", () => {
+  it("should validate provided params object", () => {
     expect(() => createComputed("" as any)).toThrow(DreamstateError);
     expect(() => createComputed(null as any)).toThrow(DreamstateError);
     expect(() => createComputed(undefined as any)).toThrow(DreamstateError);

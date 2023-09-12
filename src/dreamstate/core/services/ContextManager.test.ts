@@ -10,7 +10,7 @@ import { ISignalEvent, TAnyContextManagerConstructor, TAnyObject } from "@/dream
 import { EmittingManager, ExtendingManager, TestManager } from "@/fixtures";
 
 describe("ContextManager class", () => {
-  it("Should correctly handle setContext method out of scope", () => {
+  it("should correctly handle setContext method out of scope", () => {
     class SampleManager extends ContextManager<{ first: number }> {
 
       public context = {
@@ -38,7 +38,7 @@ describe("ContextManager class", () => {
     expect(outOfScopeManager[SCOPE_SYMBOL]).toBeUndefined();
   });
 
-  it("Should correctly handle forceUpdate method out of scope", () => {
+  it("should correctly handle forceUpdate method out of scope", () => {
     class SampleManager extends ContextManager<{ first: number }> {
 
       public context = {
@@ -65,7 +65,7 @@ describe("ContextManager class", () => {
     expect(outOfScopeManager[SCOPE_SYMBOL]).toBeUndefined();
   });
 
-  it("Should throw exception on scope-related methods if out of scope", async () => {
+  it("should throw exception on scope-related methods if out of scope", async () => {
     /**
      * One-liner to get thrown exception.
      */
@@ -78,7 +78,7 @@ describe("ContextManager class", () => {
     expect(() => manager.getScope()).toThrow(expectedError);
   });
 
-  it("Should properly handle setContext and forceUpdate method update with prev/next props", () => {
+  it("should properly handle setContext and forceUpdate method update with prev/next props", () => {
     const manager: TestManager = mockManager(TestManager);
 
     expect(manager.context.first).toBe("first");
@@ -99,7 +99,7 @@ describe("ContextManager class", () => {
     expect(oldContext).not.toBe(manager.context);
   });
 
-  it("Should properly manage extended managers", () => {
+  it("should properly manage extended managers", () => {
     const scope: IScopeContext = mockScope();
 
     scope.INTERNAL.registerService(TestManager);
@@ -120,12 +120,12 @@ describe("ContextManager class", () => {
     expect(getCurrent(ExtendingManager, scope)).toBeNull();
   });
 
-  it("Should use getReactContext for REACT_CONTEXT and return same result", () => {
+  it("should use getReactContext for REACT_CONTEXT and return same result", () => {
     expect(getReactContext(TestManager)).toBe(TestManager.REACT_CONTEXT);
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestManager);
   });
 
-  it("Should initialize service classes without any exceptions", () => {
+  it("should initialize service classes without any exceptions", () => {
     const testContextManagerInit = (ManagerClass: TAnyContextManagerConstructor) => {
       const service = new ManagerClass();
 
@@ -165,7 +165,7 @@ describe("ContextManager class", () => {
     testContextManagerInit(EmittingManager);
   });
 
-  it("Should use emitSignal method when sending signals", async () => {
+  it("should use emitSignal method when sending signals", async () => {
     const scope: IScopeContext = mockScope();
     const emittingContextManager: EmittingManager = mockManager(EmittingManager, null, scope);
     const spy = jest.fn((signal: ISignalEvent) => {

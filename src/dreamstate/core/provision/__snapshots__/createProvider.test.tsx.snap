@@ -1,18 +1,18 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`createProvider method Should create correct component tree without children 1`] = `
+exports[`createProvider method should create correct component tree without children 1`] = `
 <div>
    testChild 
 </div>
 `;
 
-exports[`createProvider method Should create correct component tree without children 2`] = `
+exports[`createProvider method should create correct component tree without children 2`] = `
 <div>
    testChild 
 </div>
 `;
 
-exports[`createProvider method Should create correct component tree without children 3`] = `
+exports[`createProvider method should create correct component tree without children 3`] = `
 <ScopeProvider>
   <Observer>
     <div>
@@ -22,7 +22,7 @@ exports[`createProvider method Should create correct component tree without chil
 </ScopeProvider>
 `;
 
-exports[`createProvider method Should create correct component tree without children 4`] = `
+exports[`createProvider method should create correct component tree without children 4`] = `
 <ScopeProvider>
   <Observer>
     <ScopedObserver
@@ -100,7 +100,7 @@ exports[`createProvider method Should create correct component tree without chil
 </ScopeProvider>
 `;
 
-exports[`createProvider method Should render correct component tree 1`] = `
+exports[`createProvider method should render correct component tree 1`] = `
 <ScopeProvider>
   <Observer>
     <ScopeConsumer>
@@ -112,7 +112,7 @@ exports[`createProvider method Should render correct component tree 1`] = `
 </ScopeProvider>
 `;
 
-exports[`createProvider method Should render correct component tree 2`] = `
+exports[`createProvider method should render correct component tree 2`] = `
 <ScopeProvider>
   <Observer>
     <ScopedObserver

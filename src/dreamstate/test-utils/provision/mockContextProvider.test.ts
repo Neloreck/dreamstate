@@ -8,7 +8,7 @@ import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { TestManager } from "@/fixtures";
 
 describe("mockContextProvider util", () => {
-  it("Should correctly provide mocked state for nested components", () => {
+  it("should correctly provide mocked state for nested components", () => {
     const Provider = mockContextProvider(
       [ TestManager ],
       {},

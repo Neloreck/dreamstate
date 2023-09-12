@@ -25,7 +25,7 @@ describe("Emitting signal on provision start", () => {
 
   }
 
-  it("Should properly notify current managers when sending signal on mount", async () => {
+  it("should properly notify current managers when sending signal on mount", async () => {
     async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
       const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 

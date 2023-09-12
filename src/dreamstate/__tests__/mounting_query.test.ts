@@ -32,7 +32,7 @@ describe("Sending query on provision start", () => {
 
   }
 
-  it("Should properly query data while mounting", async () => {
+  it("should properly query data while mounting", async () => {
     async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
       const tree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 

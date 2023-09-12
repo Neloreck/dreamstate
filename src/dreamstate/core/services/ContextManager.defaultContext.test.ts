@@ -23,7 +23,7 @@ function testManagers(first: TAnyContextManagerConstructor, second: TAnyContextM
 }
 
 describe("ContextManager class default states", () => {
-  it("Should supply null values by default", () => {
+  it("should supply null values by default", () => {
     class First extends ContextManager {}
 
     class Second extends First {}
@@ -31,7 +31,7 @@ describe("ContextManager class default states", () => {
     testManagers(First, Second);
   });
 
-  it("Should supply default value if manager is not provided from static method, but handled in child", () => {
+  it("should supply default value if manager is not provided from static method, but handled in child", () => {
     class First extends ContextManager {}
 
     class Second extends First {
@@ -45,7 +45,7 @@ describe("ContextManager class default states", () => {
     testManagers(First, Second);
   });
 
-  it("Should supply default value if manager is not provided from static method", () => {
+  it("should supply default value if manager is not provided from static method", () => {
     class First extends ContextManager {
 
       public static getDefaultContext() {
@@ -59,7 +59,7 @@ describe("ContextManager class default states", () => {
     testManagers(First, Second);
   });
 
-  it("Should supply default value from extended class method", () => {
+  it("should supply default value from extended class method", () => {
     class First extends ContextManager<{ a: number }> {
 
       public static getDefaultContext() {

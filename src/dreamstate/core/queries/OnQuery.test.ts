@@ -8,7 +8,7 @@ import { getCallableError } from "@/fixtures";
 import { RespondingManager } from "@/fixtures/queries";
 
 describe("@OnQuery and queries processing", () => {
-  it("Should properly save methods metadata for ContextManagers", () => {
+  it("should properly save methods metadata for ContextManagers", () => {
     const manager: RespondingManager = mockManager(RespondingManager);
     const metadata: TQuerySubscriptionMetadata = manager[QUERY_METADATA_SYMBOL];
 
@@ -20,7 +20,7 @@ describe("@OnQuery and queries processing", () => {
     });
   });
 
-  it("Should not work with non-context service classes and bad queries", () => {
+  it("should not work with non-context service classes and bad queries", () => {
     const createTestedClass = <T>(queryType: T) => {
       class Manager extends ContextManager {
 

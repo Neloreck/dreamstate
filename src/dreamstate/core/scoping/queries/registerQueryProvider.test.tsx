@@ -37,7 +37,7 @@ describe("registerQueryProvider method", () => {
     }
   }
 
-  it("Should properly subscribe to queries", async () => {
+  it("should properly subscribe to queries", async () => {
     const tree = testQueryTree(async ({ queryDataSync, queryDataAsync, INTERNAL: { REGISTRY } }) => {
       const resultSync: TQueryResponse<number> = queryDataSync({
         type: "ANY"
@@ -60,7 +60,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should properly deal with duplicated providers", () => {
+  it("should properly deal with duplicated providers", () => {
     const tree = testQueryTree(({ registerQueryProvider, unRegisterQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
 
@@ -104,7 +104,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should throw if handler is not a function", async () => {
+  it("should throw if handler is not a function", async () => {
     const tree = testQueryTree(({ registerQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
       expect(() => registerQueryProvider("TYPE", null as any)).toThrow(Error);
@@ -125,7 +125,7 @@ describe("registerQueryProvider method", () => {
     tree.unmount();
   });
 
-  it("Should throw if type is not correct", async () => {
+  it("should throw if type is not correct", async () => {
     const tree = testQueryTree(({ registerQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
       expect(() => registerQueryProvider("TYPE", () => {})).not.toThrow();

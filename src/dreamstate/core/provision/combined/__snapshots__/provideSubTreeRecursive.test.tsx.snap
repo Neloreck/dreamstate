@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`provideSubTreeRecursive rendering Should match snapshot 1`] = `
+exports[`provideSubTreeRecursive rendering should match snapshot 1`] = `
 <div>
   <ContextProvider>
     <ContextProvider>
@@ -14,7 +14,7 @@ exports[`provideSubTreeRecursive rendering Should match snapshot 1`] = `
 </div>
 `;
 
-exports[`provideSubTreeRecursive rendering Should match snapshot 2`] = `
+exports[`provideSubTreeRecursive rendering should match snapshot 2`] = `
 <div>
   <ContextProvider
     value={

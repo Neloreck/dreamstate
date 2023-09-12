@@ -2,7 +2,7 @@ import { mockManagerInitialContext } from "@/dreamstate/test-utils/registry/mock
 import { TestManager } from "@/fixtures";
 
 describe("mockManagerInitialContext test util", () => {
-  it("Should create tuple for map initialization", () => {
+  it("should create tuple for map initialization", () => {
     const [ manager, overrodeContext ] = mockManagerInitialContext(TestManager, { third: true });
 
     expect(mockManagerInitialContext(TestManager, {})).toHaveLength(2);

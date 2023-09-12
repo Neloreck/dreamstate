@@ -1,48 +1,48 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ContextManager class default states Should supply default value from extended class method 1`] = `
+exports[`ContextManager class default states should supply default value from extended class method 1`] = `
 <div>
   {"a":1}
 </div>
 `;
 
-exports[`ContextManager class default states Should supply default value from extended class method 2`] = `
+exports[`ContextManager class default states should supply default value from extended class method 2`] = `
 <div>
   {"a":523}
 </div>
 `;
 
-exports[`ContextManager class default states Should supply default value if manager is not provided from static method 1`] = `
+exports[`ContextManager class default states should supply default value if manager is not provided from static method 1`] = `
 <div>
   {"a":1}
 </div>
 `;
 
-exports[`ContextManager class default states Should supply default value if manager is not provided from static method 2`] = `
+exports[`ContextManager class default states should supply default value if manager is not provided from static method 2`] = `
 <div>
   {"a":1}
 </div>
 `;
 
-exports[`ContextManager class default states Should supply default value if manager is not provided from static method, but handled in child 1`] = `
+exports[`ContextManager class default states should supply default value if manager is not provided from static method, but handled in child 1`] = `
 <div>
   null
 </div>
 `;
 
-exports[`ContextManager class default states Should supply default value if manager is not provided from static method, but handled in child 2`] = `
+exports[`ContextManager class default states should supply default value if manager is not provided from static method, but handled in child 2`] = `
 <div>
   {"a":1}
 </div>
 `;
 
-exports[`ContextManager class default states Should supply null values by default 1`] = `
+exports[`ContextManager class default states should supply null values by default 1`] = `
 <div>
   null
 </div>
 `;
 
-exports[`ContextManager class default states Should supply null values by default 2`] = `
+exports[`ContextManager class default states should supply null values by default 2`] = `
 <div>
   null
 </div>

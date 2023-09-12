@@ -27,7 +27,7 @@ describe("Initial state provision on service registration", () => {
 
   const Provider = createProvider([ ContextManagerWithInitialState ]);
 
-  it("Should properly query data while mounting", async () => {
+  it("should properly query data while mounting", async () => {
     let contextManager: ContextManagerWithInitialState | null = null;
 
     function Consumer(): ReactElement {

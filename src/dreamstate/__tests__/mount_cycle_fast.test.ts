@@ -7,7 +7,7 @@ import { TestManager } from "@/fixtures";
 describe("Mount order for providers", () => {
   const Provider = createProvider([ TestManager ]);
 
-  it("Should properly have ready state if it was mounted-unmounted many times", async () => {
+  it("should properly have ready state if it was mounted-unmounted many times", async () => {
     for (let it = 0; it < 1000; it ++) {
       const tree = mount(createElement(ScopeProvider, {}, createElement(Provider, {})));
 
@@ -30,7 +30,7 @@ describe("Mount order for providers", () => {
     );
   });
 
-  it("Should properly have ready state if it was mounted-unmounted many times and left mounted", async () => {
+  it("should properly have ready state if it was mounted-unmounted many times and left mounted", async () => {
     let tree = mount(createElement(ScopeProvider, {}, createElement(Provider, {})));
 
     for (let it = 0; it < 1000; it ++) {

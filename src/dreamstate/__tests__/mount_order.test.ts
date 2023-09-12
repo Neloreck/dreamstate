@@ -56,11 +56,11 @@ describe("Mount order for providers", () => {
     expect(unmountList[0]).toBe(First.name);
   };
 
-  it("Should properly mount combined provider components", async () => {
+  it("should properly mount combined provider components", async () => {
     testProvider(true);
   });
 
-  it("Should properly mount scoped provider components", async () => {
+  it("should properly mount scoped provider components", async () => {
     testProvider(false);
   });
 });

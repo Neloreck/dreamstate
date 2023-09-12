@@ -3,7 +3,7 @@ import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
 import { TestManager } from "@/fixtures";
 
 describe("onMetadataSignalListenerCalled method functionality", () => {
-  it("Should ignore services without metadata and not throw any errors", () => {
+  it("should ignore services without metadata and not throw any errors", () => {
     const manager: TestManager = mockManager(TestManager);
 
     onMetadataSignalListenerCalled.call(manager, {

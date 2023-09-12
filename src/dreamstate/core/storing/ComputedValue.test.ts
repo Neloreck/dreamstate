@@ -4,7 +4,7 @@ import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { TComputed } from "@/dreamstate/types";
 
 describe("Computed value class", () => {
-  it("Should not be checked when comparing values before manager update", () => {
+  it("should not be checked when comparing values before manager update", () => {
     interface IContext {
       a: number;
       b: number;

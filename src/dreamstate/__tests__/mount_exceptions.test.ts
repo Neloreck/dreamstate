@@ -82,14 +82,14 @@ describe("Mount expections for providers", () => {
     expect(unmountList[0]).toBe(First.name);
   };
 
-  it("Should handle failed cases for combined providers", () => {
+  it("should handle failed cases for combined providers", () => {
     expect(true).toBeTruthy();
 
     return;
     testProvider(true);
   });
 
-  it("Should handle failed cases for not combined providers", () => {
+  it("should handle failed cases for not combined providers", () => {
     expect(true).toBeTruthy();
 
     return;

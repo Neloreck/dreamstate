@@ -6,7 +6,7 @@ import { TManagerInstanceMap } from "@/dreamstate/types";
 import { ExtendingManager, TestManager } from "@/fixtures";
 
 describe("mockManagers test util", () => {
-  it("Should properly mock manager with context", () => {
+  it("should properly mock manager with context", () => {
     const scope: IScopeContext = mockScope();
     const map: TManagerInstanceMap = mockManagers([ TestManager ], null, scope);
 

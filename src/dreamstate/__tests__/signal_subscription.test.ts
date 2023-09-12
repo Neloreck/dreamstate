@@ -65,7 +65,7 @@ describe("Signal subscription of test classes", () => {
 
   }
 
-  it("Should properly catch signals from other managers", async () => {
+  it("should properly catch signals from other managers", async () => {
     async function testProvider(provider: FunctionComponent, times: number): Promise<void> {
       const firstTree = mount(createElement(ScopeProvider, {}, createElement(provider, {})));
 

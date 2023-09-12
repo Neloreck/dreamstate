@@ -18,7 +18,7 @@ describe("@Bind decorator", () => {
 
   class Extending extends Base {}
 
-  it("Should correctly bind methods to instances", () => {
+  it("should correctly bind methods to instances", () => {
     const first: Base = new Base();
     const second: Base = new Base();
 
@@ -27,7 +27,7 @@ describe("@Bind decorator", () => {
     expect(second.method()).not.toBe(first.method());
   });
 
-  it("Should correctly work for inherited classes", () => {
+  it("should correctly work for inherited classes", () => {
     const base: Base = new Base();
     const extending: Extending = new Base();
 
@@ -36,7 +36,7 @@ describe("@Bind decorator", () => {
     expect(extending.method()).not.toBe(base.method());
   });
 
-  it("Should not allow re-assigning of bound methods after bind", () => {
+  it("should not allow re-assigning of bound methods after bind", () => {
     const base: Base = new Base();
 
     expect(base.method()).toBe(base);
@@ -52,7 +52,7 @@ describe("@Bind decorator", () => {
     expect(newInstance.method.call(null)).toBe(newInstance);
   });
 
-  it("Should allow to re-assign method before first usage. Special case - testing of classes", () => {
+  it("should allow to re-assign method before first usage. Special case - testing of classes", () => {
     const base: Base = new Base();
 
     expect(() => (base.method = () => 1 as any)).toThrow();

@@ -5,7 +5,7 @@ import { ContextManager, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 
 describe("Mount order for providers", () => {
-  it("Should create elements in an expected order", async () => {
+  it("should create elements in an expected order", async () => {
     class First extends ContextManager {
 
       public constructor() {

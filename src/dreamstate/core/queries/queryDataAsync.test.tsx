@@ -32,7 +32,7 @@ describe("queryDataAsync and queries processing", () => {
     }
   }
 
-  it("Should validate queryDataAsync params", async () => {
+  it("should validate queryDataAsync params", async () => {
     const tree = testQueryTree(({ queryDataAsync }) => {
       expect(() => queryDataAsync([] as any)).toThrow(DreamstateError);
       expect(() => queryDataAsync([ "asd" as any ] as any)).toThrow(DreamstateError);
@@ -51,7 +51,7 @@ describe("queryDataAsync and queries processing", () => {
     tree.unmount();
   });
 
-  it("Should properly handle sync and async queryDataAsync listeners", async () => {
+  it("should properly handle sync and async queryDataAsync listeners", async () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
       const stringResponse: TQueryResponse<string> = await queryDataAsync({
         type: EQuery.ASYNC_STRING_QUERY,
@@ -77,7 +77,7 @@ describe("queryDataAsync and queries processing", () => {
     tree.unmount();
   });
 
-  it("Should properly handle errors in queries", async () => {
+  it("should properly handle errors in queries", async () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
       expect(queryDataAsync({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
       expect(queryDataAsync({ type: EQuery.SYNC_EXCEPTION_QUERY, data: null })).rejects.toBeInstanceOf(Error);
@@ -87,7 +87,7 @@ describe("queryDataAsync and queries processing", () => {
     tree.unmount();
   });
 
-  it("Should properly find async query responders or fallback to null for single queries", async () => {
+  it("should properly find async query responders or fallback to null for single queries", async () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
       const numberResponse: TOptionalQueryResponse<number> = await queryDataAsync({
         type: EQuery.ASYNC_NUMBER_QUERY,

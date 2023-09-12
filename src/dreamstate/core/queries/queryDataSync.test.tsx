@@ -31,7 +31,7 @@ describe("queryDataSync and queries processing", () => {
     }
   }
 
-  it("Should validate queryDataAsync params", async () => {
+  it("should validate queryDataAsync params", async () => {
     const tree = testQueryTree(({ queryDataSync }) => {
       expect(() => queryDataSync({ type: "TEST", data: undefined })).not.toThrow(DreamstateError);
       expect(() => queryDataSync(undefined as any)).toThrow(DreamstateError);
@@ -47,7 +47,7 @@ describe("queryDataSync and queries processing", () => {
     tree.unmount();
   });
 
-  it("Should properly handle sync and async queryDataAsync listeners", async () => {
+  it("should properly handle sync and async queryDataAsync listeners", async () => {
     const tree = testQueryTree(({ queryDataSync }) => {
       expect(() => queryDataSync({ type: "TEST", data: undefined })).not.toThrow(DreamstateError);
       expect(() => queryDataSync(undefined as any)).toThrow(DreamstateError);
@@ -82,7 +82,7 @@ describe("queryDataSync and queries processing", () => {
     tree.unmount();
   });
 
-  it("Should properly handle errors in queries", async () => {
+  it("should properly handle errors in queries", async () => {
     const tree = testQueryTree(({ queryDataSync }) => {
       expect(queryDataSync({ type: EQuery.ASYNC_EXCEPTION_QUERY, data: null })!.data).rejects.toBeInstanceOf(Error);
       expect(() => queryDataSync({ type: EQuery.SYNC_EXCEPTION_QUERY, data: null })).toThrow(Error);

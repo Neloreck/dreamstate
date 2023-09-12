@@ -5,7 +5,7 @@ import { TAnyObject } from "@/dreamstate/types";
 import { TestManager } from "@/fixtures";
 
 describe("InitializeScopeContext method", () => {
-  it("Should properly add contextManagers subscribers", () => {
+  it("should properly add contextManagers subscribers", () => {
     const {
       INTERNAL: {
         registerService,
@@ -39,7 +39,7 @@ describe("InitializeScopeContext method", () => {
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
   });
 
-  it("Should properly subscribe and unsubscribe only from contextManagers", () => {
+  it("should properly subscribe and unsubscribe only from contextManagers", () => {
     const {
       INTERNAL: { registerService, subscribeToManager, unsubscribeFromManager, unRegisterService }
     }: IScopeContext = initializeScopeContext();
@@ -65,7 +65,7 @@ describe("InitializeScopeContext method", () => {
     unRegisterService(ExampleManagerClass);
   });
 
-  it("Should properly get current state of managers", () => {
+  it("should properly get current state of managers", () => {
     const {
       INTERNAL: { registerService, unRegisterService, REGISTRY },
       getContextOf
@@ -97,7 +97,7 @@ describe("InitializeScopeContext method", () => {
     unRegisterService(ExampleManagerClass);
   });
 
-  it("Should properly get null for not registered managers", () => {
+  it("should properly get null for not registered managers", () => {
     const { getContextOf }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
@@ -105,7 +105,7 @@ describe("InitializeScopeContext method", () => {
     expect(getContextOf(ExampleManagerClass)).toBeNull();
   });
 
-  it("Should subscribe only with functional params for handling", () => {
+  it("should subscribe only with functional params for handling", () => {
     const { subscribeToSignals }: IScopeContext = initializeScopeContext();
 
     expect(() => subscribeToSignals(1 as any)).toThrow(DreamstateError);
@@ -119,7 +119,7 @@ describe("InitializeScopeContext method", () => {
     expect(() => subscribeToSignals(undefined as any)).toThrow(DreamstateError);
   });
 
-  it("Should properly return register status", () => {
+  it("should properly return register status", () => {
     const {
       INTERNAL: { registerService, unRegisterService }
     }: IScopeContext = initializeScopeContext();
@@ -135,7 +135,7 @@ describe("InitializeScopeContext method", () => {
     expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
   });
 
-  it("Should override context on register if required", () => {
+  it("should override context on register if required", () => {
     const {
       INTERNAL: { registerService },
       getContextOf

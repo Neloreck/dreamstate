@@ -5,7 +5,7 @@ import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/cre
 import { NestedManager, TestManager } from "@/fixtures";
 
 describe("createScopedObserverTree rendering", () => {
-  it("Should match snapshot", () => {
+  it("should match snapshot", () => {
     const recursive = shallow(
       createElement(
         "div",
