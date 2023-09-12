@@ -1,9 +1,5 @@
-import { ScopeContext, SignalEvent, useManager, useScope } from "dreamstate";
-import { ChangeEvent, CSSProperties, default as React, ReactElement, useCallback, useEffect, useState } from "react";
-
-import { useRendersCount } from "../hooks/useRendersCount";
-import { SecondManager } from "../stores/SecondManager";
-import { EGenericSignal } from "../stores/signals";
+import { ScopeContext, SignalEvent, useScope } from "dreamstate";
+import { CSSProperties, default as React, ReactElement, useEffect, useState } from "react";
 
 const editorStyle: CSSProperties = {
   padding: "4px",

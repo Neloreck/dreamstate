@@ -1,6 +1,14 @@
-import { default as React } from "react";
-import { render } from "react-dom";
+import React, { StrictMode } from 'react';
+import { Root, createRoot } from 'react-dom/client';
+import { Application } from './Application';
 
-import { Application } from "./Application";
+const root: Root = createRoot(
+  document.getElementById('root') as HTMLElement
+);
 
-render(<Application/>, document.getElementById("root"));
+root.render(
+  <StrictMode>
+    <Application />
+  </StrictMode>
+);
+

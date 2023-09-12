@@ -1,5 +1,5 @@
 import { ScopeContext, useManager, useScope } from "dreamstate";
-import { ChangeEvent, CSSProperties, default as React, ReactElement, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, CSSProperties, default as React, ReactElement, useCallback, useState } from "react";
 
 import { useRendersCount } from "../hooks/useRendersCount";
 import { SecondManager } from "../stores/SecondManager";
