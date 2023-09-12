@@ -88,4 +88,4 @@ jobs:
         if: ${{ steps.update-nightly-tag.outcome == 'success' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload --clobber nightly packages
+        run: gh release upload --clobber nightly packages.zip
