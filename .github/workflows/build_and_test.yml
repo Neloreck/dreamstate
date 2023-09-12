@@ -64,3 +64,28 @@ jobs:
           name: packages
           path: target/dist
           retention-days: 7
+
+  upload-nightly:
+    if: ${{ github.ref_name == 'main' && github.event_name != 'pull_request' }}
+    needs: [build-and-test]
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@master
+        with:
+          name: gamedata-release
+
+      - name: Update nightly tag
+        uses: EndBug/latest-tag@latest
+        id: update-nightly-tag
+        if: github.ref_name == 'main'
+        with:
+          ref: nightly
+
+      - name: Publish nightly packages release
+        if: ${{ steps.update-nightly-tag.outcome == 'success' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload --clobber nightly packages
