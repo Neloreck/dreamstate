@@ -56,3 +56,11 @@ jobs:
       - run: pnpm build:cjs
       - run: pnpm build:esm
       - run: pnpm build:ptb
+
+      - name: Upload build packages
+        uses: actions/upload-artifact@v3
+        with:
+          if-no-files-found: error
+          name: packages
+          path: target/dist
+          retention-days: 7
