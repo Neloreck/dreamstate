@@ -1,3 +1,4 @@
+import type { TAnyObject } from "@/dreamstate/types/general";
 import type { TAnyContextManagerConstructor } from "@/dreamstate/types/internal";
 
 /**
@@ -8,7 +9,7 @@ export type TSignalType = symbol | string | number;
 /**
  * Base signal that contains type and optional data fields.
  */
-export interface IBaseSignal<D = undefined> extends Object {
+export interface IBaseSignal<D = undefined> extends TAnyObject {
   /**
    * Type of current signal.
    */
@@ -22,7 +23,7 @@ export interface IBaseSignal<D = undefined> extends Object {
 /**
  * Signal that contains type field.
  */
-export interface ISignalWithoutData extends Object {
+export interface ISignalWithoutData extends TAnyObject {
   /**
    * Type of current signal.
    */
@@ -32,7 +33,7 @@ export interface ISignalWithoutData extends Object {
 /**
  * Signal that contains type and data fields.
  */
-export interface ISignalWithData<D = undefined> extends Object {
+export interface ISignalWithData<D = undefined> extends TAnyObject {
   /**
    * Type of current signal.
    */

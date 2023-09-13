@@ -24,30 +24,24 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
    */
   useEffect(
     function(): TCallable {
-      // Flag whether HMR/StrictMode reset happens.
-      let isReset: boolean = false;
-
       const initialState: T = state[0];
+      const setState: Dispatch<SetStateAction<T>> = state[1];
       const subscriptionState: T = scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T || null;
 
-      let observed: Array<unknown> = dependenciesSelector(subscriptionState);
-
-      const setState: Dispatch<SetStateAction<T>> = state[1];
+      // Flag `null` if HMR/StrictMode reset happen, usually just means HMR manager replacing or react 18 strict mode.
+      let observed: Array<unknown> | null = subscriptionState ? null : dependenciesSelector(subscriptionState);
 
       /**
        * Expected to be skipped first time, when state is picked with selector from registry.
-       * Expected to be fired every time ManagerClass is changed - when HMR is called.
+       * Expected to be fired every time ManagerClass is changed - when HMR is called (state is same, effect triggered).
        */
       if (initialState !== subscriptionState) {
-        // Whether reset or `something_wrong` happens in tree above.
-        // Usually just means manager replacing or react 18 strict mode.
-        isReset = !subscriptionState;
         setState(subscriptionState);
       }
 
       return scope.INTERNAL.subscribeToManager(ManagerClass, function(nextContext: T): void {
-        if (isReset) {
-          isReset = false;
+        if (!observed) {
+          observed = dependenciesSelector(nextContext);
 
           return setState(nextContext);
         }

@@ -2,8 +2,10 @@ import { EDreamstateErrorCode } from "@/dreamstate/types";
 
 export function mapDreamstateErrorMessage(code: EDreamstateErrorCode, detail?: string): string {
   switch (code) {
-    case EDreamstateErrorCode.INSTANCE_DISPOSED:
-      return "Disposed instances are not supposed to access scope.";
+    case EDreamstateErrorCode.INSTANCE_DISPOSED_LIFECYCLE:
+      return "Disposed manager instances are not supposed to access lifecycle.";
+    case EDreamstateErrorCode.INSTANCE_DISPOSED_SCOPE:
+      return "Disposed manager instances are not supposed to access scope.";
     case EDreamstateErrorCode.OUT_OF_SCOPE:
       return "Instance is out of scope, make sure it is created or mocked correctly.";
     case EDreamstateErrorCode.INCORRECT_PARAMETER:

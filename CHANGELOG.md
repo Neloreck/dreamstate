@@ -4,6 +4,8 @@
 
 - useContextWithMemo simplified
 - useContextWithMemo support of React 18 strict mode
+- method calls print warning about disposal only in dev env
+- method calls print warning about disposal with trace
 
 ## 4.3.1 (8/2/2022)
 

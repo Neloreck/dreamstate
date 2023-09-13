@@ -6,7 +6,7 @@ import { EDreamstateErrorCode } from "@/dreamstate/types";
  * Intended to be placeholder when react scope is being disposed.
  */
 export function throwAfterDisposal(): never {
-  throw new DreamstateError(EDreamstateErrorCode.INSTANCE_DISPOSED);
+  throw new DreamstateError(EDreamstateErrorCode.INSTANCE_DISPOSED_SCOPE);
 }
 
 /**
