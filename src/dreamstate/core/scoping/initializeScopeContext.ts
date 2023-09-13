@@ -1,6 +1,6 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
+import { doNothing } from "@/dreamstate/core/error/nothing";
 import { throwAfterDisposal } from "@/dreamstate/core/error/throw";
-import { warnSyncAfterDisposal } from "@/dreamstate/core/error/warn";
 import {
   QUERY_METADATA_REGISTRY,
   QUERY_METADATA_SYMBOL,
@@ -118,8 +118,8 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
            */
           instance[SCOPE_SYMBOL] = null as TUninitializedValue;
 
-          instance["setContext"] = warnSyncAfterDisposal as TUninitializedValue;
-          instance["forceUpdate"] = warnSyncAfterDisposal as TUninitializedValue;
+          instance["setContext"] = doNothing as TUninitializedValue;
+          instance["forceUpdate"] = doNothing as TUninitializedValue;
 
           /**
            * Most likely code will fail with null pointer in case of warning.
