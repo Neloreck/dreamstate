@@ -29,7 +29,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
       const subscriptionState: T = scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T || null;
 
       // Flag `null` if HMR/StrictMode reset happen, usually just means HMR manager replacing or react 18 strict mode.
-      let observed: Array<unknown> | null = subscriptionState ? null : dependenciesSelector(subscriptionState);
+      let observed: Array<unknown> | null = subscriptionState ? dependenciesSelector(subscriptionState) : null;
 
       /**
        * Expected to be skipped first time, when state is picked with selector from registry.
