@@ -1,8 +1,9 @@
-## 4.3.2 (*/*/2022)
+## 4.4.0 (*/*/2023)
 
 ### Changed
 
 - useContextWithMemo simplified
+- useContextWithMemo support of React 18 strict mode
 
 ## 4.3.1 (8/2/2022)
 
