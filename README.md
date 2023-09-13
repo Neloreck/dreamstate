@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/dreamstate.svg?style=flat-square)](https://www.npmjs.com/package/dreamstate)
 [![language-ts](https://img.shields.io/badge/language-typescript-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/search?l=typescript)
 <br/>
-[![start with wiki](https://img.shields.io/badge/docs-wiki-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/wiki)
+[![start with book](https://img.shields.io/badge/docs-book-blue.svg?style=flat)](https://neloreck.github.io/dreamstate-book/)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Neloreck/dreamstate/blob/master/LICENSE)
 
 <hr/>
@@ -20,6 +20,11 @@ Library helps to create small stores with react-like lifecycle and scoped signal
 - [x] Testable
 - [x] Tree shaking
 
+## Documentation
+
+- [book](https://neloreck.github.io/dreamstate-book/)
+- [code examples](https://github.com/Neloreck/dreamstate/tree/master/examples)
+
 ## Install
 
 - `npm install --save dreamstate`
@@ -27,11 +32,6 @@ Library helps to create small stores with react-like lifecycle and scoped signal
 ## Requirements
 
 - `react >= 16.8.0`
-
-## Documentation
-
-- [wiki](https://github.com/Neloreck/dreamstate/wiki/Home)
-- [examples](https://github.com/Neloreck/dreamstate/tree/master/examples)
 
 ## Proposals and contribution:
 
