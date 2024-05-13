@@ -1,3 +1,9 @@
+## 4.4.1 (5/13/2024)
+
+### Changed
+
+- re-export PartialTransformer type
+
 ## 4.4.0 (9/13/2023)
 
 ### Changed

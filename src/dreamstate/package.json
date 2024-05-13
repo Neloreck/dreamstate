@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "4.4.0",
+  "version": "4.4.1",
   "description": "Store management library based on react context and observers.",
   "sideEffects": false,
   "author": "Syrotenko Igor",

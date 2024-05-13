@@ -4,20 +4,21 @@
 
 export { IProviderProps as ProviderProps } from "@/dreamstate/types/provision";
 export {
-  ILoadable as Loadable,
-  TNested as Nested,
-  TComputed as Computed,
-  ISignalEvent as SignalEvent,
-  TDerivedSignal as Signal,
-  TSignalType as SignalType,
-  TQueryResponse as QueryResponse,
-  TOptionalQueryResponse as OptionalQueryResponse,
-  TQueryRequest as QueryRequest,
-  TQueryType as QueryType,
+  EDreamstateErrorCode as DreamstateErrorCode,
   IContextManagerConstructor as ContextManagerConstructor,
-  TManagerMap as ManagerMap,
+  ILoadable as Loadable,
+  ISignalEvent as SignalEvent,
+  TComputed as Computed,
+  TDerivedSignal as Signal,
   TManagerInstanceMap as ManagerInstanceMap,
-  EDreamstateErrorCode as DreamstateErrorCode
+  TManagerMap as ManagerMap,
+  TNested as Nested,
+  TOptionalQueryResponse as OptionalQueryResponse,
+  TPartialTransformer as PartialTransformer,
+  TQueryRequest as QueryRequest,
+  TQueryResponse as QueryResponse,
+  TQueryType as QueryType,
+  TSignalType as SignalType,
 } from "@/dreamstate/types";
 
 export { DreamstateError } from "@/dreamstate/core/error/DreamstateError";

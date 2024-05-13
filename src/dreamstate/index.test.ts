@@ -6,20 +6,21 @@ describe("Library exported API", () => {
 
   const expectedLibExports: Array<string> = [
     // Types.
-    "Loadable",
-    "Nested",
     "Computed",
-    "SignalEvent",
-    "Signal",
-    "SignalType",
+    "ContextManagerConstructor",
+    "DreamstateErrorCode",
+    "Loadable",
+    "ManagerInstanceMap",
+    "ManagerMap",
+    "Nested",
+    "OptionalQueryResponse",
+    "PartialTransformer",
     "QueryRequest",
     "QueryResponse",
-    "OptionalQueryResponse",
     "QueryType",
-    "ContextManagerConstructor",
-    "ManagerMap",
-    "ManagerInstanceMap",
-    "DreamstateErrorCode",
+    "Signal",
+    "SignalEvent",
+    "SignalType",
     // Error.
     "DreamstateError",
     // Management.
