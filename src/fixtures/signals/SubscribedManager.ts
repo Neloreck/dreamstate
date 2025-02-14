@@ -4,7 +4,6 @@ import { ESignal } from "@/fixtures/signals/ESignal";
 import { TNumberSignalEvent, TStringSignalEvent } from "@/fixtures/signals/types";
 
 export class SubscribedManager extends ContextManager<TAnyObject> {
-
   public context: TAnyObject = {};
 
   @OnSignal(ESignal.NUMBER_SIGNAL)
@@ -21,5 +20,4 @@ export class SubscribedManager extends ContextManager<TAnyObject> {
   public onStringOrNumberSignal(signal: TStringSignalEvent | TNumberSignalEvent): void {
     return;
   }
-
 }

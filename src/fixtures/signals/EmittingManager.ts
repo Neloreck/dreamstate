@@ -3,7 +3,6 @@ import { TAnyObject } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures/signals/ESignal";
 
 export class EmittingManager extends ContextManager<TAnyObject> {
-
   public context: TAnyObject = {};
 
   public sendNumberSignal(): void {
@@ -17,5 +16,4 @@ export class EmittingManager extends ContextManager<TAnyObject> {
   public sendEmptySignal(): void {
     this.emitSignal({ type: ESignal.EMPTY_SIGNAL });
   }
-
 }

@@ -16,7 +16,6 @@ export interface IContextWithUtils {
 }
 
 export class ManagerWithUtils extends ContextManager<IContextWithUtils> {
-
   public readonly context: IContextWithUtils = {
     nested: createNested({
       loadable: createLoadable(10),
@@ -27,5 +26,4 @@ export class ManagerWithUtils extends ContextManager<IContextWithUtils> {
       concatenated: context.nested.simpleString + context.nested.simpleString + "!"
     }))
   };
-
 }

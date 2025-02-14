@@ -4,7 +4,6 @@ import { babel } from "@rollup/plugin-babel";
 import { default as commonjs } from "@rollup/plugin-commonjs";
 import { default as replace } from "@rollup/plugin-replace";
 import { default as typescript } from "@rollup/plugin-typescript";
-import * as react from "react";
 import { default as clear } from "rollup-plugin-clear";
 import { default as dts } from "rollup-plugin-dts";
 import { visualizer } from "rollup-plugin-visualizer";

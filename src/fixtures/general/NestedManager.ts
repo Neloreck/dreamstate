@@ -12,7 +12,6 @@ export interface INestedContext {
 }
 
 export class NestedManager extends ContextManager<INestedContext> {
-
   public readonly context: INestedContext = {
     first: {
       a: 1,
@@ -23,5 +22,4 @@ export class NestedManager extends ContextManager<INestedContext> {
       d: 4
     }
   };
-
 }

@@ -3,7 +3,6 @@ import { TQueryResponse } from "@/dreamstate/types";
 import { EQuery } from "@/fixtures/queries/EQuery";
 
 export class RequestingManager extends ContextManager {
-
   public async queryUndefinedData(): Promise<TQueryResponse<any>> {
     return this.queryDataAsync({ type: EQuery.UNDEFINED_QUERY });
   }
@@ -27,5 +26,4 @@ export class RequestingManager extends ContextManager {
   public async queryAsyncStringData(data: string): Promise<TQueryResponse<string>> {
     return this.queryDataAsync({ type: EQuery.ASYNC_STRING_QUERY, data });
   }
-
 }

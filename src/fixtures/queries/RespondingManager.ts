@@ -10,7 +10,6 @@ import {
 } from "@/fixtures/queries/types";
 
 export class RespondingManager extends ContextManager {
-
   @OnQuery(EQuery.ASYNC_EXCEPTION_QUERY)
   public async onAsyncExceptionQuery(queryRequest: TAsyncExceptionQuery): Promise<never> {
     throw new DreamstateError();
@@ -40,5 +39,4 @@ export class RespondingManager extends ContextManager {
   public async onAsyncStringQuery(queryRequest: TAsyncStringQuery): Promise<string> {
     return queryRequest.data;
   }
-
 }
