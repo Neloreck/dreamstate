@@ -1,7 +1,7 @@
 {
   "name": "dreamstate-project",
   "version": "1.0.0",
-  "description": "Store management library based on context and observers.",
+  "description": "Store management library based on context and observers",
   "private": true,
   "author": "Syrotenko Igor",
   "license": "MIT",
@@ -41,7 +41,7 @@
     "@types/enzyme": "^3.10.13",
     "@types/jest": "^29.5.1",
     "@types/ncp": "^2.0.5",
-    "@types/node": "^20.2.3",
+    "@types/node": "^22.13.4",
     "@types/react": "^16.14.41",
     "@types/react-dom": "16.9.19",
     "@typescript-eslint/eslint-plugin": "^5.59.7",
@@ -68,8 +68,8 @@
     "rollup-plugin-dts": "^5.3.0",
     "rollup-plugin-import-alias": "^1.0.10",
     "rollup-plugin-visualizer": "^5.9.0",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.2",
-    "typescript": "^5.0.4"
+    "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
+    "typescript": "5.7.3"
   }
 }

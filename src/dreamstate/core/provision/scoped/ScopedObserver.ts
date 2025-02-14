@@ -1,11 +1,19 @@
-import { createElement, DispatchWithoutAction, ReactChild, ReactElement, useEffect, useMemo, useReducer } from "react";
+import {
+  createElement,
+  DispatchWithoutAction,
+  ReactElement,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useReducer
+} from "react";
 
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
 import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 export interface IScopedObserverProps<T> {
-  children?: ReactChild;
+  children?: ReactNode;
   ManagerClass: TAnyContextManagerConstructor;
   scope: IScopeContext;
   initialState?: T;
