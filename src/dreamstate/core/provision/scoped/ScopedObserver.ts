@@ -1,7 +1,7 @@
-import { createElement, DispatchWithoutAction, ReactElement, ReactNode, useEffect, useMemo, useReducer } from "react";
+import { createElement, ReactElement, ReactNode, useEffect, useMemo } from "react";
 
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
+import { useForceUpdate } from "@/dreamstate/core/utils/useForceUpdate";
 import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 export interface IScopedObserverProps<T> {
@@ -40,7 +40,7 @@ export function ScopedObserver<T extends TAnyObject>({
   ManagerClass,
   scope,
 }: IScopedObserverProps<T>): ReactElement {
-  const reducer: [TAnyObject | null, DispatchWithoutAction] = useReducer(forceUpdateReducer, null);
+  const forceUpdate: TCallable = useForceUpdate();
 
   /*
    * Use memo for first and single init of required components.
@@ -60,10 +60,9 @@ export function ScopedObserver<T extends TAnyObject>({
    * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useEffect(function(): TCallable {
-    const onUpdateNeeded: TCallable = reducer[1];
     const isRegistered: boolean = scope.INTERNAL.registerService(ManagerClass, initialState);
 
-    scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
+    scope.INTERNAL.addServiceObserver(ManagerClass, forceUpdate);
 
     /*
      * Re-sync scope provider if it was registered.
@@ -71,11 +70,11 @@ export function ScopedObserver<T extends TAnyObject>({
      * Required to force render of subscribed components after HMR with newest fast-refresh plugins.
      */
     if (isRegistered) {
-      onUpdateNeeded();
+      forceUpdate();
     }
 
     return function(): void {
-      scope.INTERNAL.removeServiceObserver(ManagerClass, onUpdateNeeded);
+      scope.INTERNAL.removeServiceObserver(ManagerClass, forceUpdate);
     };
   }, dependencies);
 

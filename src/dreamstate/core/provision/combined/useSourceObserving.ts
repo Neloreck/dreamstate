@@ -1,9 +1,9 @@
-import { DispatchWithoutAction, useContext, useEffect, useMemo, useReducer } from "react";
+import { useContext, useEffect, useMemo } from "react";
 
 import { log } from "@/macroses/log.macro";
 
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
+import { useForceUpdate } from "@/dreamstate/core/utils/useForceUpdate";
 import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 /**
@@ -25,7 +25,7 @@ export function useSourceObserving(
   initialState: TAnyObject | undefined
 ): Map<TAnyContextManagerConstructor, TAnyObject> {
   const scope: IScopeContext = useContext(ScopeContext);
-  const reducer: [TAnyObject | null, DispatchWithoutAction] = useReducer(forceUpdateReducer, null);
+  const forceUpdate: TCallable = useForceUpdate();
 
   /*
    * Warn if current observer is mounted out of scope in dev mode.
@@ -57,7 +57,6 @@ export function useSourceObserving(
    * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useEffect(function(): TCallable {
-    const onUpdateNeeded: TCallable = reducer[1];
     let isSomethingRegistered: boolean = false;
 
     for (let it = sources.length - 1; it >= 0; it --) {
@@ -66,7 +65,7 @@ export function useSourceObserving(
        */
       const registered: boolean = scope.INTERNAL.registerService(sources[it], initialState);
 
-      scope.INTERNAL.addServiceObserver(sources[it], onUpdateNeeded);
+      scope.INTERNAL.addServiceObserver(sources[it], forceUpdate);
 
       /*
        * Should stick to 'false' until at least one result is 'true'.
@@ -80,12 +79,12 @@ export function useSourceObserving(
      * Required to force render of subscribed components after HMR with newest fast-refresh plugins.
      */
     if (isSomethingRegistered) {
-      onUpdateNeeded();
+      forceUpdate();
     }
 
     return function(): void {
       for (let it = 0; it < sources.length; it ++) {
-        scope.INTERNAL.removeServiceObserver(sources[it], onUpdateNeeded);
+        scope.INTERNAL.removeServiceObserver(sources[it], forceUpdate);
       }
     };
   }, sources);
