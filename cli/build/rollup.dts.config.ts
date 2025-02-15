@@ -7,7 +7,7 @@ import { CORE_ENTRY, TEST_UTILS_ENTRY, TYPES_ROOT } from "../config/build.consta
 export const DTS_CONFIG = {
   input: [CORE_ENTRY, TEST_UTILS_ENTRY],
   output: {
-    chunkFileNames: "lib",
+    chunkFileNames: "lib.d.ts",
     dir: TYPES_ROOT,
     format: "es",
   },
