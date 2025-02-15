@@ -19,7 +19,7 @@ import { IProviderProps } from "@/dreamstate/types/provision";
  * @param {IProviderProps<T>} props - The properties of the current parent observer, which include
  *   context data, dependencies, and other necessary configurations.
  * @param {IScopeContext} scope - The current scope context used for observation and data provisioning.
- * @param {number} [current=0] - The current iteration index for the recursive rendering process.
+ * @param {number} current - The current iteration index for the recursive rendering process.
  * @returns {ReactNode} A React node representing the recursively created observer tree for the given
  *   context managers within the specified scope.
  */

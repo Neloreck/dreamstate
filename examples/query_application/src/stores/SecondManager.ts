@@ -2,7 +2,7 @@ import { ContextManager, createActions, OnQuery } from "dreamstate";
 
 import { EGenericQuery } from "./queries";
 
-/**
+/*
  * Declare context data typing.
  */
 export interface ISecondContext {
@@ -12,11 +12,11 @@ export interface ISecondContext {
   sampleNumber: number;
 }
 
-/**
+/*
  * Declare manager class that handles declared data.
  */
 export class SecondManager extends ContextManager<ISecondContext> {
-  /**
+  /*
    * Initial context data.
    */
   public context: ISecondContext = {
@@ -34,7 +34,7 @@ export class SecondManager extends ContextManager<ISecondContext> {
     window.console.info(SecondManager.name, "provision ended");
   }
 
-  /**
+  /*
    * Simple setter for example number.
    */
   public setSampleNumber(value: number): void {
@@ -42,7 +42,7 @@ export class SecondManager extends ContextManager<ISecondContext> {
     this.setContext({ sampleNumber: value });
   }
 
-  /**
+  /*
    * Getter that responds all queries with 'SAMPLE_NUMBER' type.
    * Returning value as it is without wrapping and additional steps.
    */

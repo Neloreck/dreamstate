@@ -11,7 +11,6 @@ import { ISignalEvent } from "@/dreamstate/types";
  * manager instance.
  *
  * @template D - The type of the data contained in the signal event.
- * @this {ContextManager<any>} The ContextManager instance handling the signal.
  * @param {ISignalEvent<D>} signal - The signal event containing the signal type and optional data.
  * @returns {void}
  */

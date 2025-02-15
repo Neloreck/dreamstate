@@ -21,8 +21,8 @@ export interface IScopedObserverProps<T> {
  * re-renders of unrelated components.
  *
  * @template T - The type of the context data to be provided by the `ManagerClass`.
- * @param {ReactNode} children - The child components that will receive the provided context data.
- * @param {TAnyObject} props - The React component props provided on render.
+ * @param {object} props - The props for the component.
+ * @param {ReactNode} props.children - The child components that will receive the provided context data.
  * @param {TAnyObject | undefined} props.initialState - The initial state to be provided for the context manager.
  * @param {Array<unknown>} props.dependencies - The dependencies used to determine when the component should
  *   re-render, typically when specific context data changes.

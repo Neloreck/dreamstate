@@ -59,7 +59,7 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
  * All credits: 'https://www.npmjs.com/package/autobind-decorator'.
  * Modified to support proposal syntax.
  *
- * @returns A method decorator that binds the method to the instance prototype.
+ * @returns {MethodDecorator} A method decorator that binds the method to the instance prototype.
  */
 export function Bind(): MethodDecorator {
   return function <T>(

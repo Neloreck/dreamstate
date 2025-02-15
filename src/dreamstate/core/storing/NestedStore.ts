@@ -8,8 +8,11 @@ import { TAnyObject, TNested } from "@/dreamstate/types";
  */
 export class NestedStore<T extends TAnyObject = TAnyObject> {
   /**
-   * @param state - next state partial to merge with existing state and commit update
-   * @return merged shallow copy based on partial parameter
+   * Merges the provided partial state with the existing state and returns a shallow copy.
+   *
+   * @template T - The type of the state.
+   * @param {Partial<T>} state The next state partial to merge with the existing state and commit update.
+   * @returns {TNested<T>} A merged shallow copy based on the partial state parameter.
    */
   public asMerged(state: Partial<T> = {} as T): TNested<T> {
     return Object.assign(new NestedStore<T>(), this as unknown as T, state);

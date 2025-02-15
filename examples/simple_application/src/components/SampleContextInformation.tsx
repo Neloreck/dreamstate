@@ -10,7 +10,7 @@ const informationStyle: CSSProperties = {
   border: "1px solid black",
 };
 
-/**
+/*
  * Update on every context update and keep current component up-to-date always.
  */
 export function SampleContextInformation({

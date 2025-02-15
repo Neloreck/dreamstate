@@ -13,11 +13,11 @@ export interface ISecondContext {
   sampleString: string;
 }
 
-/**
+/*
  * Declare manager class that handles declared data.
  */
 export class SecondManager extends ContextManager<ISecondContext> {
-  /**
+  /*
    * Initial context data.
    */
   public context: ISecondContext = {
@@ -32,13 +32,13 @@ export class SecondManager extends ContextManager<ISecondContext> {
     window.console.info(SecondManager.name, "set sample string called", value);
     this.setContext({ sampleString: value });
 
-    /**
+    /*
      * Emit signal that string was changed to notify all listeners who subscribe to this signal.
      */
     this.emitSignal({ type: EGenericSignal.SAMPLE_STRING_CHANGED, data: value });
   }
 
-  /**
+  /*
    * Subscribe on signal to change current number.
    */
   @OnSignal(EGenericSignal.SAMPLE_NUMBER_CHANGED)

@@ -145,7 +145,8 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * Treating the initial state as an optional value allows for more generic and reusable code,
    * as the manager can be provided in different places with different initial states.
    *
-   * @param initialState - Optional initial state received from the Dreamstate Provider component properties.
+   * @template S - The type of initial state object.
+   * @param {S} initialState - Optional initial state received from the Dreamstate Provider component properties.
    */
   public constructor(initialState?: S) {
     /*
@@ -228,7 +229,7 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * Note: If the manager is out of scope, it will simply rewrite the `this.context` object without
    * any side effects.
    *
-   * @param {Object | Function} next - A part of the context to be updated or a context transformer function.
+   * @param {object | Function} next - A part of the context to be updated or a context transformer function.
    *   If a function is provided, it will be executed immediately with the `currentContext` as its parameter.
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
@@ -270,8 +271,7 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * @template D - The type of the data associated with the signal.
    * @param {IBaseSignal<D>} baseSignal - The base signal object containing a signal type and
    *   optional data.
-   * @param {TSignalType} baseSignal.type - The type of the signal.
-   * @param {*} [baseSignal.data] - Optional data associated with the signal.
+   * @param {*} baseSignal.data - Optional data associated with the signal.
    * @returns {ISignalEvent<D>} The signal event object that encapsulates the emitted signal.
    *
    * @throws {Error} Throws an error if the manager is out of scope.

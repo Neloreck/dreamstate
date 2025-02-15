@@ -139,8 +139,7 @@ export interface IScopeContextInternals {
 export interface IScopeContext {
   /**
    * Library internals.
-   *
-   * @remarks Not intended for normal use, except during unit testing.
+   * Not intended for normal use, except during unit testing.
    */
   INTERNAL: IScopeContextInternals;
 

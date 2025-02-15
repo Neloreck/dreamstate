@@ -12,7 +12,7 @@ import { IContextManagerConstructor, TAnyObject, TManagerInstanceMap } from "@/d
  * @template M - The type of a single context manager constructor.
  * @param {M[]} managerClasses - An array of context manager constructor references to be created.
  * @param {S | null} initialState - An optional initial state to inject into each manager's constructor.
- * @param {IScopeContext} [scope=mockScope()] - The scope where managers should be mocked. A mocked scope is
+ * @param {IScopeContext} [scope] - The scope where managers should be mocked. A mocked scope is
  *   used by default.
  * @returns {TManagerInstanceMap} A mapping of manager instances along with the mocked scope context.
  */

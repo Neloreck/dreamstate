@@ -53,6 +53,7 @@ export interface ILoadable<T, E = Error> {
 export interface INestedBase<T> {
   /**
    * Merges a partial state into the current nested state.
+   *
    * @param state The partial state to be merged.
    * @returns The merged state.
    */
@@ -71,12 +72,14 @@ export type TNested<T> = T & INestedBase<T>;
 export interface IComputedBase<T extends TAnyObject, C extends TAnyObject> {
   /**
    * A selector function that extracts the computed value from the context.
+   *
    * @param context The context from which the value is computed.
    */
   readonly __selector__: (context: C) => T;
 
   /**
    * An optional memoization function to optimize the computed value calculation.
+   *
    * @param context The context used to compute the memoized value.
    */
   readonly __memo__?: (context: C) => Array<any>;

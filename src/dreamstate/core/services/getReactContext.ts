@@ -14,7 +14,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * @template S - The type of the context state.
  * @template M - The type of the context manager constructor.
  * @param {M} ManagerClass - The context manager constructor reference used to identify the context.
- * @param {Partial<S> | null} [defaultContext=null] - The default context value to apply if no manager
+ * @param {Partial<S> | null} [defaultContext] - The default context value to apply if no manager
  *   context is provided.
  * @returns {Context<S>} - A React context instance with a pre-defined default value.
  */

@@ -1,7 +1,7 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { TCallable } from "@/dreamstate/types";
 
-/**
+/*
  * Testing util.
  * Use for getting error and checking it in expect clause.
  */

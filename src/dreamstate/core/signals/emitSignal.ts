@@ -18,7 +18,6 @@ import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
  * no additional subscribers receive the event after cancellation.
  *
  * @template D - The type of the signal event data, defaults to `undefined`.
- * @this {ISignalEvent<D>} The signal event instance that is being canceled.
  * @returns {ISignalEvent<D>} The canceled signal event instance.
  */
 function cancelSignal<D = undefined>(this: ISignalEvent<D>): ISignalEvent<D> {
@@ -36,7 +35,7 @@ function cancelSignal<D = undefined>(this: ISignalEvent<D>): ISignalEvent<D> {
  *
  * @template D - The type of the signal event data, defaults to `undefined`.
  * @param {IBaseSignal<D>} base - The base signal data used to create the event.
- * @param {TAnyContextManagerConstructor | null} [emitter=null] - The optional emitter of the signal,
+ * @param {TAnyContextManagerConstructor | null} [emitter] - The optional emitter of the signal,
  *   typically a context manager class.
  * @param {IRegistry} REGISTRY - The registry containing all signal event listeners.
  * @returns {ISignalEvent<D>} The dispatched signal event instance.

@@ -1,6 +1,6 @@
 import { MutableRefObject, useRef } from "react";
 
-/**
+/*
  * Count renders of current component in hook.
  */
 export function useRendersCount(): number {

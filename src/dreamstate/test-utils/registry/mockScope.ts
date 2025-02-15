@@ -20,8 +20,8 @@ export interface IMockScopeConfig {
  *
  * The `mockManagerInitialContext` function can be used to provision mocked contexts within this scope.
  *
- * @param {IMockScopeConfig} [mockConfig={}] - Configuration object for scope mocking.
- * @param {IRegistry} [registry=createRegistry()] - An optional custom registry to be used as the scope storage.
+ * @param {IMockScopeConfig} [mockConfig] - Configuration object for scope mocking.
+ * @param {IRegistry} [registry] - An optional custom registry to be used as the scope storage.
  * @returns {IScopeContext} A mocked scope context.
  */
 export function mockScope(mockConfig: IMockScopeConfig = {}, registry: IRegistry = createRegistry()): IScopeContext {

@@ -8,6 +8,7 @@ import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
 import _import from "eslint-plugin-import";
 import jest from "eslint-plugin-jest";
+import jsdoc from "eslint-plugin-jsdoc";
 import react from "eslint-plugin-react";
 import globals from "globals";
 
@@ -20,6 +21,7 @@ const compat = new FlatCompat({
 });
 
 export default [
+  jsdoc.configs["flat/recommended"],
   {
     ignores: ["target/**/*", "node_modules/**/*"],
   },
@@ -40,6 +42,7 @@ export default [
       jest: fixupPluginRules(jest),
       import: fixupPluginRules(_import),
       react: fixupPluginRules(react),
+      jsdoc,
     },
     languageOptions: {
       globals: {
@@ -117,6 +120,16 @@ export default [
           SwitchCase: 1,
         },
       ],
+      "jsdoc/tag-lines": [
+        "error",
+        "any",
+        {
+          startLines: 1,
+          endLines: 0,
+        },
+      ],
+      "jsdoc/require-returns-check": "off",
+      "jsdoc/require-jsdoc": "off",
       "key-spacing": [
         "error",
         {

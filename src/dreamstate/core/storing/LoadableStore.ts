@@ -69,8 +69,8 @@ export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
    * @template T - The type of the loading state value.
    * @template E - The type of the error state.
    * @param {T} value - The new value to associate with the updated state.
-   * @param {boolean} [isLoading=false] - Optional flag to set the loading state. Defaults to `false` if not provided.
-   * @param {E | null} [error=null] - Optional error to associate with the update. Defaults to `null` if not provided.
+   * @param {boolean} [isLoading] - Optional flag to set the loading state. Defaults to `false` if not provided.
+   * @param {E | null} [error] - Optional error to associate with the update. Defaults to `null` if not provided.
    * @returns {ILoadable<T, E>} The updated loadable instance with the new value, loading state, and error.
    */
   public asUpdated(this: ILoadable<T, E>, value: T, isLoading?: boolean, error?: E | null): ILoadable<T, E> {

@@ -10,7 +10,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * @template M - The type of the context manager constructor.
  * @param {M} ManagerClass - The constructor reference of the context manager to be created.
  * @param {S | null} initialState - An optional initial state to inject into the manager's constructor.
- * @param {IScopeContext} [scope=initializeScopeContext()] - An optional scope context where the manager
+ * @param {IScopeContext} [scope] - An optional scope context where the manager
  *   should be mocked. If not provided, a new scope is created.
  * @returns {InstanceType<M>} The instance of the mocked manager.
  */

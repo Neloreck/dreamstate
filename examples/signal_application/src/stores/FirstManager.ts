@@ -11,11 +11,11 @@ export interface IFirstContext {
   reflectedString: string;
 }
 
-/**
+/*
  * Declare manager class that handles declared data.
  */
 export class FirstManager extends ContextManager<IFirstContext> {
-  /**
+  /*
    * Initial context data.
    */
   public context: IFirstContext = {
@@ -24,7 +24,7 @@ export class FirstManager extends ContextManager<IFirstContext> {
     reflectedString: "",
   };
 
-  /**
+  /*
    * Subscribe on signal to change current number.
    */
   @OnSignal(EGenericSignal.SAMPLE_NUMBER_CHANGED)
@@ -33,7 +33,7 @@ export class FirstManager extends ContextManager<IFirstContext> {
     this.setContext({ sampleNumber: data });
   }
 
-  /**
+  /*
    * Subscribe on signal to change current string and reflect external changes in current context.
    */
   @OnSignal(EGenericSignal.SAMPLE_STRING_CHANGED)

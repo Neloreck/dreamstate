@@ -40,10 +40,12 @@ import {
 import { isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
- * Dreamstate core processing of scope and existing data registry.
- * Initialize scope that handles stores, signaling and queries in a VDOM tree.
+ * Initializes the core scope context for managing stores, signals, and queries in the VDOM tree.
+ * This function sets up the scope that is responsible for handling state and interactions within
+ *   the context of React's virtual DOM.
  *
- * @returns {IScopeContext} mutable scope with set of methods and registry stores for react VDOM tree
+ * @param {IRegistry} [registry] - Optional registry object to initialize.
+ * @returns {IScopeContext} Mutable scope with a set of methods and registry stores for the React VDOM tree.
  */
 export function initializeScopeContext(registry: IRegistry = createRegistry()): IScopeContext {
   const {
