@@ -1,6 +1,6 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { SIGNAL_METADATA_REGISTRY } from "@/dreamstate/core/internals";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { EDreamstateErrorCode, TAnyContextManagerConstructor, TSignalType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
 import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
@@ -28,7 +28,7 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
   if (
     Array.isArray(signalType)
       ? signalType.length === 0 ||
-        signalType.some(function(it) {
+        signalType.some(function(it: TSignalType): it is never {
           return !isCorrectSignalType(it);
         })
       : !isCorrectSignalType(signalType)

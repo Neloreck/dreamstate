@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 import { createElement, ReactElement } from "react";
 
 import { useManager } from "@/dreamstate/core/consumption/useManager";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 function testManagers(first: TAnyContextManagerConstructor, second: TAnyContextManagerConstructor): void {

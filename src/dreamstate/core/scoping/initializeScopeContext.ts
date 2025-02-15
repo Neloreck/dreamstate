@@ -9,6 +9,7 @@ import {
   SIGNAL_METADATA_SYMBOL,
   SIGNALING_HANDLER_SYMBOL,
 } from "@/dreamstate/core/internals";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
 import { registerQueryProvider } from "@/dreamstate/core/scoping/queries/registerQueryProvider";
@@ -16,7 +17,6 @@ import { unRegisterQueryProvider } from "@/dreamstate/core/scoping/queries/unReg
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { onMetadataSignalListenerCalled } from "@/dreamstate/core/scoping/signals/onMetadataSignalListenerCalled";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { collectProtoChainMetadata } from "@/dreamstate/core/utils/collectProtoChainMetadata";

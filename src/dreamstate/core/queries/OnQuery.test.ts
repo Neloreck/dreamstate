@@ -1,7 +1,7 @@
 import { DreamstateError } from "@/dreamstate";
 import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
 import { EDreamstateErrorCode, TAnyValue, TQuerySubscriptionMetadata } from "@/dreamstate/types";
 import { getCallableError } from "@/fixtures";

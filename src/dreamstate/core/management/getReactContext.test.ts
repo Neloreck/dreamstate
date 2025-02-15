@@ -3,7 +3,7 @@ import { Context, createElement, ReactElement } from "react";
 
 import { useManager } from "@/dreamstate";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@/dreamstate/core/internals";
-import { getReactContext } from "@/dreamstate/core/services/getReactContext";
+import { getReactContext } from "@/dreamstate/core/management/getReactContext";
 import { TAnyObject } from "@/dreamstate/types";
 import { ITestContext, TestManager } from "@/fixtures";
 

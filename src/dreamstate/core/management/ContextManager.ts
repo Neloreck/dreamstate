@@ -8,9 +8,9 @@ import {
   SIGNAL_METADATA_SYMBOL,
   SIGNALING_HANDLER_SYMBOL,
 } from "@/dreamstate/core/internals";
+import { getReactContext } from "@/dreamstate/core/management/getReactContext";
+import { shouldObserversUpdate } from "@/dreamstate/core/management/shouldObserversUpdate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { getReactContext } from "@/dreamstate/core/services/getReactContext";
-import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import {
   EDreamstateErrorCode,

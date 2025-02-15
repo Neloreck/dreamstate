@@ -58,7 +58,7 @@ export function emitSignal<D = undefined>(
   };
 
   // todo: Use for-in and break loop on cancel.
-  REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D>) {
+  REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D>): void {
     try {
       if (!signalEvent.canceled) {
         it(signalEvent);

@@ -1,5 +1,5 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
-import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
+import { shouldObserversUpdate } from "@/dreamstate/core/management/shouldObserversUpdate";
 import { TAnyObject, TAnyValue, TUninitializedValue } from "@/dreamstate/types";
 import { createNested } from "@/dreamstate/utils/createNested";
 

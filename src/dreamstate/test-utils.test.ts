@@ -4,16 +4,16 @@ describe("Library test utils exports", () => {
   const testUtilsRoot = require("./test-utils");
 
   const expectedTestUtilsExports: Array<string> = [
-    "getReactProvider",
-    "getReactConsumer",
     "getCurrent",
-    "mockManager",
-    "mockManagers",
+    "getReactConsumer",
+    "getReactProvider",
     "mockContextProvider",
-    "mockScopeProvider",
-    "mockRegistry",
+    "mockManager",
     "mockManagerInitialContext",
+    "mockManagers",
+    "mockRegistry",
     "mockScope",
+    "mockScopeProvider",
     "nextAsyncQueue",
   ];
 

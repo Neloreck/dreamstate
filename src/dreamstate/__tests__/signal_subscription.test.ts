@@ -2,8 +2,8 @@ import { mount } from "enzyme";
 import { createElement, FunctionComponent } from "react";
 
 import { ScopeProvider } from "@/dreamstate";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { ISignalEvent, TDerivedSignal } from "@/dreamstate/types";
 

@@ -1,5 +1,5 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import {
   EDreamstateErrorCode,
   TAnyContextManagerConstructor,

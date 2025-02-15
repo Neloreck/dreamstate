@@ -1,4 +1,4 @@
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { TAnyObject } from "@/dreamstate/types";
 import { ESignal } from "@/fixtures/signals/ESignal";
 

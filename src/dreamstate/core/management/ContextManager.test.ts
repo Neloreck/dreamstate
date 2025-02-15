@@ -1,8 +1,8 @@
 import { throwOutOfScope } from "@/dreamstate/core/error/throw";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY, SCOPE_SYMBOL, SIGNALING_HANDLER_SYMBOL } from "@/dreamstate/core/internals";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
+import { getReactContext } from "@/dreamstate/core/management/getReactContext";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { getReactContext } from "@/dreamstate/core/services/getReactContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
 import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { mockManager } from "@/dreamstate/test-utils/services/mockManager";

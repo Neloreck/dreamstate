@@ -1,4 +1,4 @@
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 
 export interface INestedContext {
   first: {

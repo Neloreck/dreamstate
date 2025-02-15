@@ -1,9 +1,9 @@
 import { FunctionComponent } from "react";
 
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { createCombinedProvider } from "@/dreamstate/core/provision/combined/createCombinedProvider";
 import { createScopedProvider } from "@/dreamstate/core/provision/scoped/createScopedProvider";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { EDreamstateErrorCode, IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
 

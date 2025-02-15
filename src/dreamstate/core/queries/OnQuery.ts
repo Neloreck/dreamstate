@@ -1,6 +1,6 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { QUERY_METADATA_REGISTRY } from "@/dreamstate/core/internals";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { EDreamstateErrorCode, TAnyContextManagerConstructor, TQueryType } from "@/dreamstate/types";
 import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethodDecorator";
 import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";

@@ -1,5 +1,5 @@
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { ISignalEvent, TAnyValue } from "@/dreamstate/types";
 
 /**

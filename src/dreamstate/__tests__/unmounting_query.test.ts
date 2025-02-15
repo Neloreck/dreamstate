@@ -2,9 +2,9 @@ import { mount } from "enzyme";
 import { createElement, FunctionComponent } from "react";
 
 import { ScopeProvider } from "@/dreamstate";
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 
 describe("Emitting signal on provision end", () => {
   const mock = jest.fn();

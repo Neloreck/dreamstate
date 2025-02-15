@@ -1,4 +1,4 @@
-import { shouldObserversUpdate } from "@/dreamstate/core/services/shouldObserversUpdate";
+import { shouldObserversUpdate } from "@/dreamstate/core/management/shouldObserversUpdate";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { TComputed } from "@/dreamstate/types";

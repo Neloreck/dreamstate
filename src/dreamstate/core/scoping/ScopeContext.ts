@@ -1,7 +1,7 @@
 import { Context, createContext } from "react";
 
+import { ContextManager } from "@/dreamstate/core/management/ContextManager";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
-import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import {
   IBaseSignal,
   IContextManagerConstructor,
