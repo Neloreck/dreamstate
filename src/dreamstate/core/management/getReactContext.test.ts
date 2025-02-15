@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Context, createElement, ReactElement } from "react";
 
-import { useManager } from "@/dreamstate";
+import { ContextManager, useManager } from "@/dreamstate";
 import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@/dreamstate/core/internals";
 import { getReactContext } from "@/dreamstate/core/management/getReactContext";
 import { TAnyObject } from "@/dreamstate/types";
@@ -15,7 +15,7 @@ describe("getReactContext method functionality", () => {
     CONTEXT_REACT_CONTEXTS_REGISTRY.delete(TestManager);
   });
 
-  it("Related react context should be lazily initialized correctly with changed displayName", () => {
+  it("related react context should be lazily initialized correctly with changed displayName", () => {
     expect(CONTEXT_REACT_CONTEXTS_REGISTRY.get(TestManager)).toBeUndefined();
 
     const contextType: Context<TAnyObject> = TestManager.REACT_CONTEXT;
@@ -41,10 +41,25 @@ describe("getReactContext method functionality", () => {
   });
 
   it("should supply default value if manager is not provided", () => {
-    getReactContext(TestManager, { first: "default-state-test", second: -1000 });
+    class WithDefaultsManager extends ContextManager<TAnyObject> {
+      public static getDefaultContext(): Partial<TAnyObject> {
+        return {
+          first: "unknown",
+          second: -1,
+        };
+      }
+
+      public readonly context: TAnyObject = {
+        first: "first",
+        second: 2,
+        third: false,
+      };
+    }
+
+    getReactContext(WithDefaultsManager);
 
     function Consumer(): ReactElement {
-      const context: ITestContext = useManager(TestManager);
+      const context: TAnyObject = useManager(WithDefaultsManager);
 
       return createElement("div", {}, JSON.stringify(context));
     }

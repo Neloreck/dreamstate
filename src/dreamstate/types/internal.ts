@@ -14,6 +14,8 @@ export interface IContextManagerConstructor<
   S extends TAnyObject = TAnyValue,
   C extends ContextManager<T> = ContextManager<T>,
 > {
+  getDefaultContext(): T | null;
+
   REACT_CONTEXT: Context<T>;
   prototype: C;
 

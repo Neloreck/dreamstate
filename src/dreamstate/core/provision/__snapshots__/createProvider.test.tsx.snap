@@ -2,13 +2,13 @@
 
 exports[`createProvider method should create correct component tree without children 1`] = `
 <div>
-   testChild 
+  testChild
 </div>
 `;
 
 exports[`createProvider method should create correct component tree without children 2`] = `
 <div>
-   testChild 
+  testChild
 </div>
 `;
 
@@ -16,7 +16,7 @@ exports[`createProvider method should create correct component tree without chil
 <ScopeProvider>
   <Observer>
     <div>
-       testChild 
+      testChild
     </div>
   </Observer>
 </ScopeProvider>
@@ -93,7 +93,7 @@ exports[`createProvider method should create correct component tree without chil
       }
     >
       <div>
-         testChild 
+        testChild
       </div>
     </ScopedObserver>
   </Observer>
@@ -105,7 +105,7 @@ exports[`createProvider method should render correct component tree 1`] = `
   <Observer>
     <ScopeConsumer>
       <div>
-         Content 
+        Content
       </div>
     </ScopeConsumer>
   </Observer>
@@ -184,7 +184,7 @@ exports[`createProvider method should render correct component tree 2`] = `
     >
       <ScopeConsumer>
         <div>
-           Content 
+          Content
         </div>
       </ScopeConsumer>
     </ScopedObserver>

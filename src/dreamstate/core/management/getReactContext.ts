@@ -14,21 +14,17 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * @template S - The type of the context state.
  * @template M - The type of the context manager constructor.
  * @param {M} ManagerClass - The context manager constructor reference used to identify the context.
- * @param {Partial<S> | null} [defaultContext] - The default context value to apply if no manager
- *   context is provided.
  * @returns {Context<S>} - A React context instance with a pre-defined default value.
  */
 export function getReactContext<S extends TAnyObject, M extends IContextManagerConstructor<S>>(
-  ManagerClass: M,
-  defaultContext: Partial<S> | null = null
+  ManagerClass: M
 ): Context<S> {
   if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(ManagerClass)) {
     return CONTEXT_REACT_CONTEXTS_REGISTRY.get(ManagerClass) as Context<S>;
   } else {
-    // todo: call getDefaultContext only when needed here:
-    const reactContext: Context<S> = createContext(defaultContext as S);
+    const reactContext: Context<S> = createContext(ManagerClass.getDefaultContext() as S);
 
-    /**
+    /*
      * Later providers and consumers in tree will be displayed as
      * 'DS.Class.Provider' or 'DS.Class.Consumer'.
      */

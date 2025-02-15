@@ -4,6 +4,7 @@
 
 - Updated lib dependencies, use latest version of rollout/babel/ts
 - Added JSDoc blocks for exported functions and classes
+- Removed unnecessary calls to `getDefaultContext`
 
 ## 4.4.1 (5/13/2024)
 

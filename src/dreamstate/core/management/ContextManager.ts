@@ -89,8 +89,7 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
       );
     }
 
-    // todo: Do not call get default context every time, provide only `this` parameter.
-    return getReactContext(this as TConstructorKey, this.getDefaultContext());
+    return getReactContext(this as TConstructorKey);
   }
 
   /**
