@@ -8,29 +8,37 @@ import { EDreamstateErrorCode, IContextManagerConstructor, TAnyObject } from "@/
 import { IProviderProps } from "@/dreamstate/types/provision";
 
 export interface ICreateProviderProps {
+  /**
+   * A flag that determines whether to observe the context changes in one large React node
+   *   or as smaller scoped nodes for better performance.
+   */
   isCombined?: boolean;
 }
 
 /**
- * Method for provisioning component creation.
- * Observes context changes and uses react context providers.
- * All data can be consumed anywhere in react tree below created provider component with useManager/useContext hooks.
+ * Method for creation of a component that provides React contexts and observes context changes.
  *
- * @param {Array.<IContextManagerConstructor>>} sources - array of source classes references
- *   that should be provided in react tree when returned component renders.
- * @param {ICreateProviderProps} config - store provider configuration.
- * @param {boolean} config.isCombined - boolean flag that switches observing between one big react node
- *   vs small scoped nodes.
- * @returns {FunctionComponent} react provider component for source classes.
+ * This function generates a React provider component that listens to changes in context state,
+ * using the provided context managers and their corresponding configurations. The created provider
+ * component can be used to wrap parts of the React component tree, making data from the context managers
+ * available to all components within the tree via hooks like `useManager` and `useContext`.
  *
- * @throws {TypeError} - wrong sources param type supplied, should be array.
- * @throws {TypeError} - wrong source object in array supplied, should be class extending ContextManager.
+ * @param {Array<IContextManagerConstructor>} sources - An array of context manager class references
+ *   that should be provided as context in the React tree when the returned provider component renders.
+ * @param {ICreateProviderProps} config - Configuration options for the store provider.
+ * @param {boolean} config.isCombined - A flag that determines whether to observe the context changes
+ *   in one large React node or as smaller scoped nodes for better performance.
+ * @returns {FunctionComponent} A React function component that acts as a provider for the specified
+ *   context manager classes, making their data accessible to the React tree.
+ *
+ * @throws {TypeError} If the `sources` parameter is not an array.
+ * @throws {TypeError} If any object in the `sources` array is not a class that extends `ContextManager`.
  */
 export function createProvider<T extends TAnyObject = TAnyObject>(
   sources: Array<IContextManagerConstructor>,
   config: ICreateProviderProps = {}
 ): FunctionComponent<IProviderProps<T>> {
-  /**
+  /*
    * Validate provision sources parameter.
    * Supplied 'sources' should contain array of context manager class references.
    */
@@ -41,7 +49,7 @@ export function createProvider<T extends TAnyObject = TAnyObject>(
     );
   }
 
-  /**
+  /*
    * Validate provision sources on creation stage before actual component rendering.
    * All classes should be valid context managers with correct metadata and core methods.
    */
@@ -54,7 +62,9 @@ export function createProvider<T extends TAnyObject = TAnyObject>(
     }
   }
 
-  /**
+  // todo: Use scoped provided with newer versions.
+
+  /*
    * Supply two different versions of provision creation.
    * Combined - pre v4 variant with single observer.
    * Scoped - new v4 variant with separated react nodes.

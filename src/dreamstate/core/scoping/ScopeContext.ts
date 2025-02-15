@@ -14,86 +14,117 @@ import {
   TQueryResponse,
   TQueryType,
   TSignalListener,
-  TSignalType,
   TUpdateObserver,
   TUpdateSubscriber,
 } from "@/dreamstate/types";
 
 /**
- * Scope internals that normally should remain private and should not be accessed externally.
- * Used by dreamstate to manage data flow and signals/queries.
+ * Internals of the scope context, meant for internal use only.
+ *
+ * This interface defines the internal properties and methods for managing data flow, signals,
+ * and queries within the scope. It is not intended for external access and should only be used
+ * by the `dreamstate` library for its internal operations.
  */
 export interface IScopeContextInternals {
   /**
    * Mutable registry that contains all references and scope data.
    */
   REGISTRY: IRegistry;
+
   /**
-   * Register ManagerClass in current scope and create instance for context provision.
+   * Registers a `ManagerClass` in the current scope and creates an instance for context provision.
    *
-   * @param {IContextManagerConstructor} ManagerClass - manager reference that should be registered in scope.
-   * @param {*=} initialState - initial state param that will be injected in manager constructor on creation.
-   * @param {*=} initialContext - initial context param that will be injected on creation and mixed with context.
+   * @template T - Type of initial state injected into the manager.
+   * @template C - Type of initial context injected into the manager.
+   * @param {IContextManagerConstructor} ManagerClass - The manager class that should be registered in the scope.
+   * @param {T | null} [initialState] - Optional initial state parameter that will be injected into the manager's
+   *   constructor upon creation.
+   * @param {Partial<C>} [initialContext] - Optional initial context parameter that will be injected into the
+   *   manager and mixed with the context.
+   * @returns {boolean} `true` if the service was successfully registered, `false` otherwise.
    */
   registerService<T extends TAnyObject, C extends TAnyObject>(
     ManagerClass: TAnyContextManagerConstructor,
     initialState?: T | null,
     initialContext?: Partial<C>
   ): boolean;
+
   /**
-   * Dispose ManagerClass from current scope.
-   * Cleanup memory and delete all internal references.
+   * Unregisters a `ManagerClass` from the current scope.
+   * Cleans up memory and removes all internal references associated with the manager.
    *
-   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference that should be unregistered from scope.
+   * @param {TAnyContextManagerConstructor} ManagerClass - The manager class that should be unregistered from the scope.
+   * @returns {boolean} `true` if the service was successfully unregistered, `false` otherwise.
    */
   unRegisterService(ManagerClass: TAnyContextManagerConstructor): boolean;
+
   /**
-   * Add observer to specified service.
+   * Adds an observer to a specified service.
+   * The observer will be notified when the manager's context is updated.
    *
-   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for observer addition.
-   * @param {TUpdateObserver} serviceObserver - observer that should be notified on manager updates.
-   * @param {number} referencesCount - optional count of manager references for injection, by default checks registry.
+   * @template T - Type of the manager's context.
+   * @param {TAnyContextManagerConstructor} ManagerClass - The manager class reference for which the observer
+   *   should be added.
+   * @param {TUpdateObserver} serviceObserver - The observer that should be notified on manager updates.
+   * @param {number} [referencesCount] - Optional count of manager references for injection.
+   *   By default, checks the registry.
    */
   addServiceObserver(
     ManagerClass: TAnyContextManagerConstructor,
     serviceObserver: TUpdateObserver,
     referencesCount?: number
   ): void;
+
   /**
-   * Remove observer from specified service.
+   * Removes an observer from a specified service.
+   * The observer will no longer be notified of updates from the manager's context.
    *
-   * @param {TAnyContextManagerConstructor} ManagerClass - manager reference for observer removal.
-   * @param {TUpdateObserver} serviceObserver - observer that should be removed from registry.
-   * @param {number} referencesCount - optional count of manager references for injection, by default checks registry.
+   * @template T - Type of the manager's context.
+   * @param {TAnyContextManagerConstructor} ManagerClass - The manager class reference for which
+   *   the observer should be removed.
+   * @param {TUpdateObserver} serviceObserver - The observer that should be removed from the registry.
+   * @param {number} [referencesCount] - Optional count of manager references for injection.
+   *   By default, checks the registry.
    */
   removeServiceObserver(
     ManagerClass: TAnyContextManagerConstructor,
     serviceObserver: TUpdateObserver,
     referencesCount?: number
   ): void;
+
   /**
-   * Notify observers method that updates all providers state based on manager instance context.
+   * Notifies all observers that are subscribed to a manager's context updates.
+   * This will update all providers based on the current context of the provided manager instance.
    *
-   * @param {ContextManager} manager - manager instance that should update subscribed providers.
+   * @template T - Type of the manager's context.
+   * @param {ContextManager<T>} manager - The manager instance whose context should trigger updates
+   *   to subscribed providers.
    */
   notifyObservers<T extends TAnyObject>(manager: ContextManager<T>): void;
+
   /**
-   * Subscribe to manager context updates.
-   * Provided callback will be fired on every manager instance context update.
+   * Subscribes to manager context updates.
+   * The provided callback will be triggered whenever the manager's context is updated.
    *
-   * @param {IContextManagerConstructor} ManagerClass - manager class reference for subscription.
-   * @param {TUpdateSubscriber} subscriber - callback that will be triggered on context updates.
-   * @returns {TCallable} un-subscriber function.
+   * @template T - Type of the manager's context.
+   * @template D - Type of the context manager constructor.
+   * @param {IContextManagerConstructor} ManagerClass - The manager class reference for which to subscribe.
+   * @param {TUpdateSubscriber<T>} subscriber - The callback function that will be triggered on context updates.
+   * @returns {TCallable} A function that can be used to unsubscribe from context updates.
    */
   subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T>>(
     ManagerClass: D,
     subscriber: TUpdateSubscriber<T>
   ): TCallable;
+
   /**
-   * Unsubscribe from manager context updates.
+   * Unsubscribes from manager context updates.
    *
-   * @param {IContextManagerConstructor} ManagerClass - manager class reference for un-subscription.
-   * @param {TUpdateSubscriber} subscriber - callback that should be removed from context updates subscription.
+   * @template T - Type of the manager's context.
+   * @template D - Type of the context manager constructor.
+   * @param {IContextManagerConstructor} ManagerClass - The manager class reference for which to unsubscribe.
+   * @param {TUpdateSubscriber<T>} subscriber - The callback function that should be removed
+   *   from context updates subscription.
    */
   unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T>>(
     ManagerClass: D,
@@ -102,83 +133,99 @@ export interface IScopeContextInternals {
 }
 
 /**
- * Current scope context.
- * Includes public methods to work with current scope.
+ * Represents the current scope context.
+ * Provides public methods to interact with the current scope, including managing context, signals, and queries.
  */
 export interface IScopeContext {
   /**
-   * Lib internals.
-   * Should not be used normally except unit testing.
+   * Library internals.
+   *
+   * @remarks Not intended for normal use, except during unit testing.
    */
   INTERNAL: IScopeContextInternals;
+
   /**
-   * Get current context snapshot for provided manager class.
+   * Retrieves the current context snapshot for the given manager class.
    *
-   * @param {TAnyContextManagerConstructor} manager - manager which context will be returned
+   * @template T - Type of the context.
+   * @template D - Type of the context manager constructor.
+   * @param manager - The manager class whose context is to be retrieved.
+   * @returns The current context snapshot for the specified manager.
    */
   getContextOf<T extends TAnyObject, D extends IContextManagerConstructor<T>>(manager: D): T;
+
   /**
-   * Emit signal for all subscribers in current dreamstate scope.
+   * Emits a signal for all subscribers in the current Dreamstate scope.
    *
-   * @param {Object} base - base signal that should trigger signal event for subscribers.
-   * @param {TSignalType} base.type - signal type.
-   * @param {*=} base.data - signal data that will be received by subscribers.
-   * @param {(TAnyContextManagerConstructor | null)=} emitter - signal emitter reference.
-   * @returns {Promise} promise that resolves after all handlers execution.
+   * @template D - Type of the signal data.
+   * @param base - The base signal object that triggers the event.
+   *   It includes a `type` field  and an optional `data` field.
+   * @param emitter - Optional signal emitter reference.
+   * @returns A signal event instance that wraps the emitted signal.
    */
   emitSignal<D = undefined>(base: IBaseSignal<D>, emitter?: TAnyContextManagerConstructor | null): ISignalEvent<D>;
+
   /**
-   * Subscribe to signals in current scope.
-   * Following callback will be triggered on each signal with signal event as first parameter.
+   * Subscribes to signals within the current scope.
+   * The listener will be invoked on every signal event.
    *
-   * @param {TSignalListener} listener - signals listener callback.
-   * @returns {TCallable} unsubscribing function.
+   * @template D - Type of the signal data.
+   * @param listener - The callback function to be invoked on signal events.
+   * @returns A callable function that unsubscribes the listener.
    */
   subscribeToSignals<D = undefined>(listener: TSignalListener<D>): TCallable;
+
   /**
-   * Unsubscribe provided callback from signals in current scope.
-   * Following callback will not be triggered on scope signals anymore.
+   * Unsubscribes a listener from signals in the current scope.
+   * The provided listener will no longer be invoked on signal events.
    *
-   * @param {TSignalListener} listener - signals listener callback.
+   * @template D - Type of the signal data.
+   * @param listener - The callback function to remove from signal subscriptions.
    */
   unsubscribeFromSignals<D = undefined>(listener: TSignalListener<D>): void;
+
   /**
-   * Register callback as query provider and answer query data calls with it.
+   * Registers a query provider callback to answer query data calls.
    *
-   * @param {TQueryType} queryType - type of query for data provisioning.
-   * @param {TQueryListener} listener - callback that will listen data queries and return evaluation data.
-   * @returns {TCallable} function that unsubscribes provided callback.
+   * @template T - Type of the query.
+   * @param queryType - The type of query for data provisioning.
+   * @param listener - The callback that listens to queries and returns evaluation data.
+   * @returns A callable function that unregisters the query provider.
    */
+
   registerQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): TCallable;
+
   /**
-   * Unregister callback as query provider and answer query data calls with it.
+   * Unregisters a query provider callback.
+   * The callback will no longer handle query data calls.
    *
-   * @param {TQueryType} queryType - type of query for data provisioning.
-   * @param {TQueryListener} listener - callback that will be unsubscribed from listening.
+   * @template T - Type of the query.
+   * @param queryType - The type of query for which the provider is unregistered.
+   * @param listener - The callback to be unregistered.
    */
   unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): void;
+
   /**
-   * Query data from current scope in a sync way.
-   * Handler that listen for provided query type will be executed and return value will be wrapped
-   * and returned as QueryResponse.
-   * Mainly used to get specific data in current context or receive current state of specific data without direct
-   * referencing to it.
+   * Queries data synchronously from the current scope.
+   * The handler for the specified query type is executed, and its result is wrapped as a query response.
    *
-   * @param {IOptionalQueryRequest} query - optional query request base for data retrieval, includes query type and
-   *  optional data field.
-   * @returns {TQueryResponse} response for provided query or null value if no handlers were found.
+   * @template D - Type of the data provided in the query request.
+   * @template T - Type of the query.
+   * @template Q - Type of the query request.
+   * @param query - The query request containing the query type and optional data.
+   * @returns The query response or null if no handler is found.
    */
   queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<any>;
+
   /**
-   * Query data from current scope in an sync way.
-   * Handler that listen for provided query type will be executed and return value will be wrapped
-   * and returned as QueryResponse.
-   * Mainly used to get specific data in current context or receive current state of specific data without direct
-   * referencing to it.
+   * Queries data asynchronously from the current scope.
+   * The handler for the specified query type is executed, and its result is wrapped as a query response.
    *
-   * @param {IOptionalQueryRequest} query - optional query request base for data retrieval, includes query type and
-   *  optional data field.
-   * @returns {Promise} response for provided query or null value if no handlers were found.
+   * @template D - Type of the data provided in the query request.
+   * @template T - Type of the query.
+   * @template Q - Type of the query request.
+   * @param query - The query request containing the query type and optional data.
+   * @returns A promise that resolves with the query response or null if no handler is found.
    */
   queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     query: Q
@@ -186,6 +233,8 @@ export interface IScopeContext {
 }
 
 /**
- * React context reference for dreamstate scope wrapping of VDOM tree.
+ * React context reference for the Dreamstate scope, used to wrap the virtual DOM tree.
+ * This context allows the React tree to be aware of the current scope and provides access
+ * to context management functionalities within the Dreamstate data flow.
  */
-export const ScopeContext: Context<IScopeContext> = createContext(null as any);
+export const ScopeContext: Context<IScopeContext> = createContext(null as unknown as IScopeContext);

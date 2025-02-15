@@ -14,9 +14,23 @@ import {
 } from "@/dreamstate/types";
 
 /**
- * Promisify query handler.
- * If it is async, add then and catch handlers.
- * If it is sync - return value or reject on catch.
+ * Promisifies a query handler by wrapping it in a `Promise`.
+ *
+ * This function takes a query handler, and if it's asynchronous, it adds `.then` and `.catch` handlers to it.
+ * If the query handler is synchronous, it directly returns the result or rejects the promise in case of an error.
+ * It is useful for handling queries that may either return a promise or a direct result, ensuring consistent
+ * promise-based handling.
+ *
+ * @template R - The type of the response expected from the query handler.
+ * @template D - The type of data associated with the query request (optional).
+ * @template T - The type of the query (defaults to `TQueryType`).
+ * @param {TQueryListener<T, D, R>} callback - The query handler function that is called when the query is executed.
+ *   It can either be synchronous or asynchronous.
+ * @param {IOptionalQueryRequest<D, T>} query - The query request containing necessary data for the query.
+ * @param {TAnyContextManagerConstructor | null} answerer - The context manager class reference
+ *   that is handling the query.
+ * @returns {Promise<TQueryResponse<R>>} A promise that resolves with the query response, either from the
+ *   synchronous result or the asynchronous operation.
  */
 function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   callback: TQueryListener<T, D, R>,
@@ -28,7 +42,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
       const timestamp: number = Date.now();
       const result: any = callback(query);
 
-      /**
+      /*
        * Not all query responders are sync or async.
        * Here we expect it to be either sync or async and handle it in an async way.
        */
@@ -58,8 +72,22 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
 }
 
 /**
- * Find correct async listener or array of listeners and return Promise response or null.
- * Try to find matching type and call related method.
+ * Finds the correct asynchronous listener or an array of listeners and returns the promise response or null.
+ *
+ * This function searches for a matching async listener based on the provided query type. If a listener is found,
+ * it invokes the corresponding method and returns the result as a promise. If no matching listener is found,
+ * the function returns `null`. It is useful for handling queries that require asynchronous processing and
+ * responding with a promise.
+ *
+ * @template R - The type of the response expected from the query.
+ * @template D - The type of the data associated with the query request.
+ * @template T - The type of the query.
+ * @template Q - The type of the query request (extends `IOptionalQueryRequest<D, T>`).
+ * @param {Q} query - The query request containing the necessary data for the query.
+ * @param {IRegistry} registry - An object containing registries for `CONTEXT_INSTANCES_REGISTRY`
+ *   and `QUERY_PROVIDERS_REGISTRY`, which store context instances and query providers for the respective queries.
+ * @returns {Promise<TQueryResponse<R> | null>} A promise that resolves with the query response if a matching listener
+ *   is found, or `null` if no listener matches the query type.
  */
 export function queryDataAsync<R, D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
   query: Q,
@@ -72,7 +100,7 @@ export function queryDataAsync<R, D, T extends TQueryType, Q extends IOptionalQu
     );
   }
 
-  /**
+  /*
    * Managers classes are in priority over custom handlers.
    * Registered in order of creation.
    */
@@ -90,7 +118,7 @@ export function queryDataAsync<R, D, T extends TQueryType, Q extends IOptionalQu
     }
   }
 
-  /**
+  /*
    * From class providers fallback to manually listed query provider factories.
    */
   if (QUERY_PROVIDERS_REGISTRY.has(query.type)) {
@@ -99,7 +127,7 @@ export function queryDataAsync<R, D, T extends TQueryType, Q extends IOptionalQu
     return promisifyQuery(handlerFunction, query, null);
   }
 
-  /**
+  /*
    * Resolve null if nothing was found to handle request.
    */
   return Promise.resolve(null);

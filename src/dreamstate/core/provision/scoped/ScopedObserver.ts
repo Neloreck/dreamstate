@@ -5,16 +5,33 @@ import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
 import { TAnyContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 export interface IScopedObserverProps<T> {
-  children?: ReactNode;
   ManagerClass: TAnyContextManagerConstructor;
-  scope: IScopeContext;
-  initialState?: T;
+  children?: ReactNode;
   dependencies: Array<TAnyContextManagerConstructor>;
+  initialState?: T;
+  scope: IScopeContext;
 }
 
 /**
- * ScopedObserver component that does data provision for specific source in an isolated react node.
- * Receives current scope information and specific manager reference for provision.
+ * A component that provides data for a specific context manager within an isolated React node.
+ *
+ * This component is responsible for observing changes within a specific scope and providing the
+ * context data for the given context manager (`ManagerClass`). It allows for isolated data provisioning
+ * and is useful for managing specific parts of the application state while preventing unnecessary
+ * re-renders of unrelated components.
+ *
+ * @template T - The type of the context data to be provided by the `ManagerClass`.
+ * @param {ReactNode} children - The child components that will receive the provided context data.
+ * @param {TAnyObject} props - The React component props provided on render.
+ * @param {TAnyObject | undefined} props.initialState - The initial state to be provided for the context manager.
+ * @param {Array<unknown>} props.dependencies - The dependencies used to determine when the component should
+ *   re-render, typically when specific context data changes.
+ * @param {TAnyContextManagerConstructor} props.ManagerClass - The context manager class reference that will provide
+ *   the data to the component.
+ * @param {string} props.scope - The scope information that defines the context and its relationship to other parts
+ *   of the application.
+ * @returns {ReactElement} A React element that provides the context data for the specified `ManagerClass`
+ *   within the defined scope.
  */
 export function ScopedObserver<T extends TAnyObject>({
   children,
@@ -25,7 +42,7 @@ export function ScopedObserver<T extends TAnyObject>({
 }: IScopedObserverProps<T>): ReactElement {
   const reducer: [TAnyObject | null, DispatchWithoutAction] = useReducer(forceUpdateReducer, null);
 
-  /**
+  /*
    * Use memo for first and single init of required components.
    * The point is to force registering before provider rendering for first init.
    *
@@ -36,7 +53,7 @@ export function ScopedObserver<T extends TAnyObject>({
     scope.INTERNAL.registerService(ManagerClass, initialState);
   }, dependencies);
 
-  /**
+  /*
    * Mount current observers and trigger related lifecycle methods when needed.
    * Count references of providers to detect whether we start provisioning or ending it.
    *
@@ -48,7 +65,7 @@ export function ScopedObserver<T extends TAnyObject>({
 
     scope.INTERNAL.addServiceObserver(ManagerClass, onUpdateNeeded);
 
-    /**
+    /*
      * Re-sync scope provider if it was registered.
      * Normally happens with HMR chunks exchange and caused problems that use react context without subscription.
      * Required to force render of subscribed components after HMR with newest fast-refresh plugins.
@@ -62,7 +79,7 @@ export function ScopedObserver<T extends TAnyObject>({
     };
   }, dependencies);
 
-  /**
+  /*
    * Create simple react provider based on current ManagerClass and provide data from scope registry.
    */
   return createElement(

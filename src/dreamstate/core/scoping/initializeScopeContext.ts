@@ -1,5 +1,5 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
-import { doNothing } from "@/dreamstate/core/error/nothing";
+import { noop } from "@/dreamstate/core/error/noop";
 import { throwAfterDisposal } from "@/dreamstate/core/error/throw";
 import {
   QUERY_METADATA_REGISTRY,
@@ -68,7 +68,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         if (!CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: InstanceType<TAnyContextManagerConstructor> = new ManagerClass(initialState);
 
-          /**
+          /*
            * Inject initial context fields if provided for overriding on manager construction.
            */
           if (initialContext) {
@@ -91,7 +91,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           SIGNAL_LISTENERS_REGISTRY.add(instance[SIGNALING_HANDLER_SYMBOL]);
           CONTEXT_INSTANCES_REGISTRY.set(ManagerClass, instance);
 
-          /**
+          /*
            * Notify subscribers if they exist.
            * Create new entry if it is needed.
            */
@@ -112,16 +112,16 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         if (CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as ContextManager<any>;
 
-          /**
+          /*
            * Unset handlers and stop affecting scope after unregister.
            * For external calls throw an exception (queries).
            */
           instance[SCOPE_SYMBOL] = null as TUninitializedValue;
 
-          instance["setContext"] = doNothing as TUninitializedValue;
-          instance["forceUpdate"] = doNothing as TUninitializedValue;
+          instance["setContext"] = noop as TUninitializedValue;
+          instance["forceUpdate"] = noop as TUninitializedValue;
 
-          /**
+          /*
            * Most likely code will fail with null pointer in case of warning.
            * Or it will start work in an unexpected way with 'null' check.
            */
@@ -129,7 +129,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           instance["queryDataSync"] = throwAfterDisposal as TUninitializedValue;
           instance["queryDataAsync"] = throwAfterDisposal as TUninitializedValue;
 
-          /**
+          /*
            * Mark instance as disposed to enable internal logic related to lifecycle and async actions/timers.
            */
           instance.IS_DISPOSED = true;
@@ -146,7 +146,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           return false;
         }
 
-        /**
+        /*
          * Observers and subscribers should not be affected by un-registering.
          */
       },
@@ -180,7 +180,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
 
         CONTEXT_STATES_REGISTRY.set(manager.constructor as TAnyContextManagerConstructor, nextContext);
 
-        /**
+        /*
          * Update observers of context manager (react context providers).
          */
         CONTEXT_OBSERVERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!.forEach(function(
@@ -188,7 +188,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         ) {
           it();
         });
-        /**
+        /*
          * Update subscribers of context manager.
          */
         CONTEXT_SUBSCRIBERS_REGISTRY.get(manager.constructor as TAnyContextManagerConstructor)!.forEach(function(
@@ -231,7 +231,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
     getContextOf<T extends TAnyObject, D extends IContextManagerConstructor<T>>(manager: D): T {
       const context: T | null = CONTEXT_STATES_REGISTRY.get(manager) as T;
 
-      /**
+      /*
        * Return new shallow copy of state to prevent modifications.
        * In case of non-existing manager typecasting value as T because it is
        *   rather not expected case to force check all the time.

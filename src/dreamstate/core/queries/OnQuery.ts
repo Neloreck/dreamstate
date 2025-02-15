@@ -6,20 +6,22 @@ import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethod
 import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
 
 /**
- * Class method decorator.
- * Marks decorated method as handler of provided type(s) queries.
- * All queries in current scope with specified type will be handled by callback.
+ * Class method decorator factory that marks the decorated method as a handler for specified query types.
  *
- * Correct query types: string, number, symbol.
+ * This decorator ensures that the decorated method will be invoked when a query of the specified type(s)
+ * is triggered within the current scope. It supports handling a single query type or an array of query types.
+ * The supported query types include `string`, `number`, and `symbol`.
  *
- * @param {(TQueryType|Array.<TQueryType>>)} queryType - signal or array of signals that should be handled.
+ * @param {TQueryType | Array<TQueryType>} queryType - The query type or an array of query types
+ *   that the decorated method will handle.
+ * @returns {MethodDecorator} A method decorator that attaches the query handler functionality to the method.
  */
 export function OnQuery(queryType: TQueryType): MethodDecorator {
   if (!isCorrectQueryType(queryType)) {
     throw new DreamstateError(EDreamstateErrorCode.INCORRECT_QUERY_TYPE, typeof queryType);
   }
 
-  /**
+  /*
    * Support old and new decorators with polyfill.
    */
   return createMethodDecorator<TAnyContextManagerConstructor>(function(

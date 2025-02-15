@@ -5,12 +5,17 @@ import { EDreamstateErrorCode, TCallable, TQueryListener, TQueryType } from "@/d
 import { isCorrectQueryType } from "@/dreamstate/utils/typechecking";
 
 /**
- * Register callback as query provider and answer calls.
+ * Registers a callback as a query provider to handle data queries.
  *
- * @param {TQueryType} queryType - type of query for data provisioning.
- * @param {TQueryListener} listener - callback that will listen data queries and return requested data.
- * @param {IRegistry} registry - current scope registry.
- * @returns {TCallable} function that unsubscribes subscribed handler.
+ * This function registers a query provider callback for a given query type in the current
+ * scope's registry. The listener will handle incoming data queries and return the requested data.
+ *
+ * @template T - The type of the query.
+ * @param {TQueryType} queryType - The type of query for which data provisioning is provided.
+ * @param {TQueryListener<T, any>} listener - The callback that listens to queries and returns
+ *   the requested data.
+ * @param {IRegistry} registry - The current scope registry where the query provider is registered.
+ * @returns {TCallable} A function that, when called, unsubscribes the registered query provider.
  */
 export function registerQueryProvider<T extends TQueryType>(
   queryType: T,
@@ -23,7 +28,7 @@ export function registerQueryProvider<T extends TQueryType>(
     throw new DreamstateError(EDreamstateErrorCode.INCORRECT_QUERY_TYPE, typeof queryType);
   }
 
-  /**
+  /*
    * Handle query providers as array so for one type many queries can be provided, but only first one will be called.
    */
   if (registry.QUERY_PROVIDERS_REGISTRY.has(queryType)) {
@@ -38,7 +43,7 @@ export function registerQueryProvider<T extends TQueryType>(
     registry.QUERY_PROVIDERS_REGISTRY.set(queryType, [listener]);
   }
 
-  /**
+  /*
    * Return un-subscriber callback.
    */
   return function(): void {
