@@ -62,16 +62,10 @@ export function createProvider<T extends TAnyObject = TAnyObject>(
     }
   }
 
-  // todo: Use scoped provided with newer versions.
-
   /*
    * Supply two different versions of provision creation.
    * Combined - pre v4 variant with single observer.
    * Scoped - new v4 variant with separated react nodes.
    */
-  if (config.isCombined === false) {
-    return createScopedProvider(sources);
-  } else {
-    return createCombinedProvider(sources);
-  }
+  return config.isCombined ? createCombinedProvider(sources) : createScopedProvider(sources);
 }
