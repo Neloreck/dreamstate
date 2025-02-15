@@ -14,7 +14,7 @@ Following folder contains simple create-react-app examples with dreamstate.
 import React, { render } from "react";
 import { ContextManager, ScopeProvider, createProvider, createActions, useManager } from "dreamstate";
 
-/**
+/*
  * Declare store context.
  */
 interface IExampleContext {
@@ -24,11 +24,10 @@ interface IExampleContext {
   stringValue: string;
 }
 
-/**
+/*
  * Declare store.
  */
 class ExampleManager extends ContextManager<IExampleContext> {
-
   public context: IExampleContext = {
     exampleActions: createActions({
       setStringValue: (value: string) => this.setStringValue(value)
@@ -39,15 +38,14 @@ class ExampleManager extends ContextManager<IExampleContext> {
   public setStringValue(value: string): void {
     this.setContext({ stringValue: value });
   }
-
 }
 
-/**
+/*
  * Create stores provider.
  */
 const ContextProvider = createProvider([ExampleManager]);
 
-/**
+/*
  * Root component of react application with providers.
  */
 function Application() {
@@ -60,7 +58,7 @@ function Application() {
   );
 }
 
-/**
+/*
  * Some custom component subscribed to the store.
  */
 function SubscribedComponent({ testContext: { stringValue, exampleActions } = useManager(ExampleManager) }) {
@@ -72,8 +70,8 @@ function SubscribedComponent({ testContext: { stringValue, exampleActions } = us
   );
 }
 
-/**
- * Render react into DOM.
+/*
+ * Render react APP into DOM.
  */
 render(<ApplicationProvider />, document.getElementById("application"));
 ```

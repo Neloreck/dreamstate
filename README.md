@@ -8,17 +8,17 @@
 
 <hr/>
 
-Simpler data management for react. <br/>
+Simple data management for react. <br/>
 <br/>
-Separation of application view and data without spaghetti-coded providers and boilerplate code. <br/>
-Library helps to create small stores with react-like lifecycle and scoped signaling. <br/>
+Separation of application view and data without spaghetti-coded contexts and boilerplate code. <br/>
+Library helps to create small stores with component-like lifecycle and scoped lifetime. <br/>
 
 - [x] Strictly typed
 - [x] No boilerplate code
 - [x] Fast
 - [x] Simple
 - [x] Testable
-- [x] Tree shaking
+- [x] Tree shakable
 
 ## Documentation
 

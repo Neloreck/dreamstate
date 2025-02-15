@@ -1,10 +1,16 @@
-## 4.5.0 (*/*/2025)
+## 4.5.0 (2/15/2025)
 
 ### Changed
 
 - Updated lib dependencies, use latest version of rollout/babel/ts
-- Added JSDoc blocks for exported functions and classes
+- Use scoped providers by default instead of single combined provider (still configurable value)
+- Added JSDoc blocks for exported functions and classes, corrected existing ones
+- Corrected and simplified some types (mostly reflects on JSDoc)
 - Removed unnecessary calls to `getDefaultContext`
+- Smaller optimizations with map lookups (has+get vs get+if)
+- Consistent displayName for dev bundles components
+- Do not set displayNames for prod bundles
+- Exclude sourcemaps from lib builds
 
 ## 4.4.1 (5/13/2024)
 
