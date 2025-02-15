@@ -27,7 +27,7 @@ const createPortableConfig = (env) => ({
     compact: env === EEnvironment.PRODUCTION,
     file: path.resolve(PORTABLE_ROOT, "dreamstate.js"),
     preserveModules: false,
-    sourcemap: true,
+    sourcemap: false,
     format: "es",
   },
   plugins: [
@@ -38,6 +38,7 @@ const createPortableConfig = (env) => ({
       IS_DEV: env !== EEnvironment.PRODUCTION,
     }),
     typescript({
+      sourceMap: false,
       tsconfig: TS_PORTABLE_CONFIG,
       declaration: false,
     }),

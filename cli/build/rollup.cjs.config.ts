@@ -27,7 +27,7 @@ const createCjsConfig = (env) => ({
     chunkFileNames: "lib.js",
     compact: env === EEnvironment.PRODUCTION,
     dir: path.resolve(CJS_ROOT, env),
-    sourcemap: true,
+    sourcemap: false,
     format: "cjs",
   },
   plugins: [
@@ -38,6 +38,7 @@ const createCjsConfig = (env) => ({
       IS_DEV: (env !== EEnvironment.PRODUCTION).toString(),
     }),
     typescript({
+      sourceMap: false,
       tsconfig: TS_BUILD_CONFIG,
       declaration: false,
     }),

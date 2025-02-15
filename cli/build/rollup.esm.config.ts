@@ -19,7 +19,7 @@ const createEsmConfig = (env) => ({
     compact: env === EEnvironment.PRODUCTION,
     dir: path.resolve(ESM_ROOT, env),
     preserveModules: true,
-    sourcemap: true,
+    sourcemap: false,
     format: "es",
   },
   plugins: [
@@ -30,6 +30,7 @@ const createEsmConfig = (env) => ({
       IS_DEV: env !== EEnvironment.PRODUCTION,
     }),
     typescript({
+      sourceMap: false,
       tsconfig: TS_BUILD_CONFIG,
       pretty: env !== EEnvironment.PRODUCTION,
       declaration: false,
