@@ -6,17 +6,20 @@ import { createMethodDecorator } from "@/dreamstate/utils/polyfills/createMethod
 import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
 /**
- * Class method decorator.
- * Marks decorated method as handler of provided type(s) signals.
- * All signals in current scope with specified type will be handled by callback.
+ * Class method decorator factory that marks the decorated method as a handler for specified signal types.
  *
- * Correct query types: string, number, symbol.
+ * This decorator ensures that the decorated method is invoked when a signal of the specified type(s)
+ * is emitted within the current scope. It supports handling a single signal type or an array of signal types.
  *
- * @param {(TSignalType|Array.<TSignalType>>)} signalType - signal or array of signals that should be handled.
+ * Supported signal types include: `string`, `number`, and `symbol`.
+ *
+ * @param {(TSignalType | Array<TSignalType>)} signalType - The signal type or an array of signal types
+ *   that the decorated method will handle.
+ * @returns {MethodDecorator} A method decorator that attaches the handler functionality to the method.
  */
 export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDecorator {
-  /**
-   * If array:
+  /*
+   * If Array:
    *  - Check not empty
    *  - Validate all elements
    * If single type:
@@ -36,7 +39,7 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
     );
   }
 
-  /**
+  /*
    * Support old and new decorators with polyfill.
    */
   return createMethodDecorator<TAnyContextManagerConstructor>(function(

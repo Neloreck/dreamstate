@@ -1,12 +1,13 @@
 import { IComputedBase, TAnyObject } from "@/dreamstate/types";
 
 /**
- * Class for nested computed values.
- * Used by context diff checker on updates by ContextManager class.
+ * A utility class for managing nested computed values.
+ *
+ * This class is used by the `ContextManager` to track and compare computed values during context updates.
+ * It helps optimize state management by recalculating values only when dependencies change.
  */
 export class ComputedValue<T extends TAnyObject, C extends TAnyObject> implements IComputedBase<T, C> {
   public readonly __selector__: (context: C) => T;
-
   public readonly __memo__?: (context: C) => Array<any>;
 
   public __diff__?: Array<any>;

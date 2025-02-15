@@ -2,19 +2,20 @@ import { mapDreamstateErrorMessage } from "@/dreamstate/core/error/mapErrorMessa
 import { EDreamstateErrorCode } from "@/dreamstate/types";
 
 /**
- * Error class describing generic dreamstate error.
+ * A custom error class that contains generic error information for Dreamstate-related issues.
+ *
+ * This class extends the native `Error` class and is used to represent errors specific
+ * to the Dreamstate library, providing more structured error handling.
  */
 export class DreamstateError extends Error {
   /**
-   * Name or error class to help differentiate error class in minimified environments.
+   * Name or error class to help differentiate error class in minified environments.
    */
   public readonly name: string = "DreamstateError";
-
   /**
-   * Error code describing the issues.
+   * Error code describing the issue.
    */
   public readonly code: EDreamstateErrorCode;
-
   /**
    * Error message describing the issue.
    */

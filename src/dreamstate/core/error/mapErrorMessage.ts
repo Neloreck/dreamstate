@@ -1,5 +1,17 @@
 import { EDreamstateErrorCode } from "@/dreamstate/types";
 
+/**
+ * Maps a Dreamstate error code to a human-readable error message.
+ *
+ * This function takes an error code and an optional detail string, returning a formatted
+ * error message that provides more context about the error. It's useful for handling and
+ * displaying Dreamstate-specific errors in a user-friendly way.
+ *
+ * @param {EDreamstateErrorCode} code - The error code representing the specific Dreamstate error.
+ * @param {string} [detail] - An optional string providing additional details to be included
+ *   in the error message.
+ * @returns {string} A formatted error message based on the provided error code and details.
+ */
 export function mapDreamstateErrorMessage(code: EDreamstateErrorCode, detail?: string): string {
   switch (code) {
     case EDreamstateErrorCode.INSTANCE_DISPOSED_LIFECYCLE:

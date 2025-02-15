@@ -15,13 +15,15 @@ export const SIGNALING_HANDLER_SYMBOL: unique symbol = Symbol("SIGNALING_HANDLER
 export const SCOPE_SYMBOL: unique symbol = Symbol("SCOPE");
 
 /**
- * Weak store of react context internals bound to a specific manager class.
+ * A weak map registry that stores React context instances bound to specific manager classes.
  *
- * Weak maps are required because library should not affect external code on general basis.
- * We cannot guarantee that used manager classes are still needed and should not catch them in global collections.
- * Every singleton/descriptive value can be stored in global collection to unlink it from specific reference.
+ * This registry ensures that the library does not retain unnecessary references to manager classes,
+ * preventing memory leaks and unintended side effects.
  *
- * Example cases: HMR, module unloads, scope disposal etc.
+ * This is particularly useful in scenarios such as:
+ * - Hot Module Replacement
+ * - Module unloading
+ * - Scope disposal
  */
 export const CONTEXT_REACT_CONTEXTS_REGISTRY: WeakMap<TAnyContextManagerConstructor, Context<any>> = new WeakMap();
 

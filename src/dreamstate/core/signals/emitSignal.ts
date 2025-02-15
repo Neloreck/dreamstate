@@ -12,8 +12,14 @@ import {
 import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
 /**
- * Callback for signal canceling.
- * Used in signal events for propagation stopping.
+ * Cancels the signal event, preventing further propagation to subsequent listeners.
+ *
+ * This method is used within signal events to stop their execution, ensuring that
+ * no additional subscribers receive the event after cancellation.
+ *
+ * @template D - The type of the signal event data, defaults to `undefined`.
+ * @this {ISignalEvent<D>} The signal event instance that is being canceled.
+ * @returns {ISignalEvent<D>} The canceled signal event instance.
  */
 function cancelSignal<D = undefined>(this: ISignalEvent<D>): ISignalEvent<D> {
   this.canceled = true;
@@ -22,9 +28,18 @@ function cancelSignal<D = undefined>(this: ISignalEvent<D>): ISignalEvent<D> {
 }
 
 /**
- * Emit signal and notify all subscribers in an async way.
- * Composes signal event from base data and notifies all listeners in current scope.
- * If event is canceled, stop its propagation to next handlers.
+ * Emits a signal and notifies all subscribed listeners.
+ *
+ * This function constructs a signal event from the provided base data and dispatches it
+ * to all registered listeners within the current scope. If any listener cancels the event,
+ * propagation to subsequent handlers is stopped.
+ *
+ * @template D - The type of the signal event data, defaults to `undefined`.
+ * @param {IBaseSignal<D>} base - The base signal data used to create the event.
+ * @param {TAnyContextManagerConstructor | null} [emitter=null] - The optional emitter of the signal,
+ *   typically a context manager class.
+ * @param {IRegistry} REGISTRY - The registry containing all signal event listeners.
+ * @returns {ISignalEvent<D>} The dispatched signal event instance.
  */
 export function emitSignal<D = undefined>(
   base: IBaseSignal<D>,
@@ -43,6 +58,7 @@ export function emitSignal<D = undefined>(
     cancel: cancelSignal,
   };
 
+  // todo: Use for-in and break loop on cancel.
   REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D>) {
     try {
       if (!signalEvent.canceled) {

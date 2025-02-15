@@ -1,67 +1,59 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`UseManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 1`] = `
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 1`] = `
 <span>
-   {"example":1000,"text":"value"} 
+  {"example":1000,"text":"value"}
 </span>
 `;
 
-exports[`UseManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 2`] = `
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 2`] = `
 <ScopeProvider>
   <Observer>
     <SampleConsumer>
       <span>
-         
         {"example":-1,"text":"value"}
-         
       </span>
     </SampleConsumer>
   </Observer>
 </ScopeProvider>
 `;
 
-exports[`UseManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 3`] = `
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 3`] = `
 <ScopeProvider>
   <Observer>
     <SampleConsumer>
       <span>
-         
         {"example":-1,"text":"anything"}
-         
       </span>
     </SampleConsumer>
   </Observer>
 </ScopeProvider>
 `;
 
-exports[`UseManager subscription and rendering should properly handle memoized subscriptions 1`] = `
+exports[`useManager subscription and rendering should properly handle memoized subscriptions 1`] = `
 <span>
-   {"example":1000,"text":"value"} 
+  {"example":1000,"text":"value"}
 </span>
 `;
 
-exports[`UseManager subscription and rendering should properly handle memoized subscriptions 2`] = `
+exports[`useManager subscription and rendering should properly handle memoized subscriptions 2`] = `
 <ScopeProvider>
   <Observer>
     <SampleConsumer>
       <span>
-         
         {"example":1000,"text":"value"}
-         
       </span>
     </SampleConsumer>
   </Observer>
 </ScopeProvider>
 `;
 
-exports[`UseManager subscription and rendering should properly handle memoized subscriptions 3`] = `
+exports[`useManager subscription and rendering should properly handle memoized subscriptions 3`] = `
 <ScopeProvider>
   <Observer>
     <SampleConsumer>
       <span>
-         
         {"example":-1,"text":"anything"}
-         
       </span>
     </SampleConsumer>
   </Observer>

@@ -3,13 +3,17 @@ import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { EDreamstateErrorCode, TAnyContextManagerConstructor, TContextManagerMetadata } from "@/dreamstate/types";
 
 /**
- * Collect metadata of prototype chain for provided context manager.
- * Solves problems with class extension + query/signal handlers.
+ * Collects metadata from the prototype chain of a given context manager class.
  *
- * @param target - metadata collection target, base context manager class for data collection.
- * @param registry - current registry of metadata to collect information.
+ * This function resolves issues related to class inheritance, particularly when dealing with query
+ * and signal handlers. It traverses the prototype chain of the provided context manager class,
+ * gathering metadata and ensuring all inherited behaviors are properly registered.
  *
- * @returns collected metadata array.
+ * @template T - The type of the context manager constructor.
+ * @template D - The type of the metadata stored in the registry.
+ * @param {T} target - The base context manager class from which metadata should be collected.
+ * @param {WeakMap<T, D>} registry - A weak map registry that holds metadata for context manager classes.
+ * @returns {D} The collected metadata for the given context manager.
  */
 export function collectProtoChainMetadata<T extends TAnyContextManagerConstructor, D extends TContextManagerMetadata>(
   target: T,

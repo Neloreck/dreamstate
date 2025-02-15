@@ -1,8 +1,11 @@
 import { ILoadable } from "@/dreamstate/types";
 
 /**
- * Class for nested stores extension and proper shallow checking.
- * Used by context diff checker on updates by ContextManager class.
+ * A utility class for extending nested stores with loadable state and enabling shallow checking.
+ *
+ * This class is used by the `ContextManager` to manage asynchronous data, track loading states,
+ * and detect changes efficiently. It helps in handling data fetching scenarios where state
+ * needs to reflect loading, success, or error conditions.
  */
 export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
   public value: T | null;
@@ -16,7 +19,6 @@ export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
   }
 
   /**
-   * Util for loadable.
    * Optionally set value for loading state.
    */
   public asLoading(value?: T): ILoadable<T, E> {
@@ -24,7 +26,6 @@ export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
   }
 
   /**
-   * Util for loadable.
    * Optionally set value for failed state.
    */
   public asFailed(error: E, value?: T): ILoadable<T, E> {
@@ -32,7 +33,6 @@ export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
   }
 
   /**
-   * Util for loadable.
    * Optionally set value for ready state.
    */
   public asReady(value?: T): ILoadable<T, E> {
@@ -40,7 +40,6 @@ export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
   }
 
   /**
-   * Util for loadable.
    * Optionally set loading state and error for update.
    */
   public asUpdated(this: ILoadable<T, E>, value: T, isLoading?: boolean, error?: E | null): ILoadable<T, E> {

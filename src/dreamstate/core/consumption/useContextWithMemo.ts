@@ -4,11 +4,18 @@ import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeCont
 import { IContextManagerConstructor, TAnyObject, TCallable } from "@/dreamstate/types";
 
 /**
- * Use manager hook with subscribed updates.
- * Same like common useContext hook, but has memo checks based on dependencySelector.
+ * A custom hook that subscribes to context updates with memoization.
  *
- * It is useful when specific manager has a lot of information that changes often and you do not need
- * all these checks inside your component that requires only single field from state.
+ * This hook functions similarly to the standard `useContext` hook but adds memoization based on a dependency selector.
+ * It is particularly useful when a context manager contains a large or frequently changing state,
+ * yet a component only requires updates for specific parts of that state.
+ *
+ * @template T - The type of the context state object.
+ * @template D - The type of the context manager constructor that provides the context state.
+ * @param {D} ManagerClass - The class constructor for the context manager which supplies the context state.
+ * @param {(context: T) => unknown[]} dependenciesSelector - A selector of dependencies from the context state.
+ *   The hook will re-render the component only when these selected dependencies change.
+ * @returns {T} The current context state, memoized based on the provided dependencies.
  */
 export function useContextWithMemo<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
   ManagerClass: D,
@@ -19,7 +26,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
     return scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T;
   });
 
-  /**
+  /*
    * Fire state change only if any of dependencies is updated.
    */
   useEffect(
@@ -31,7 +38,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
       // Flag `null` if HMR/StrictMode reset happen, usually just means HMR manager replacing or react 18 strict mode.
       let observed: Array<unknown> | null = subscriptionState ? dependenciesSelector(subscriptionState) : null;
 
-      /**
+      /*
        * Expected to be skipped first time, when state is picked with selector from registry.
        * Expected to be fired every time ManagerClass is changed - when HMR is called (state is same, effect triggered).
        */
