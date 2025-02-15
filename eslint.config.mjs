@@ -201,15 +201,6 @@ export default [
           beforeClosing: "never",
         },
       ],
-      "react/jsx-curly-spacing": [
-        "error",
-        {
-          when: "never",
-          children: {
-            when: "always",
-          },
-        },
-      ],
       semi: "error",
       "space-before-function-paren": [
         "error",

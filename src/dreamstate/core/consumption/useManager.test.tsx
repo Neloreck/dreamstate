@@ -47,7 +47,7 @@ describe("UseManager subscription and rendering", () => {
       rendersCount += 1;
       stateScope = scope;
 
-      return <span> { JSON.stringify(value) } </span>;
+      return <span> {JSON.stringify(value)} </span>;
     }
 
     const tree = mount(
@@ -104,7 +104,7 @@ describe("UseManager subscription and rendering", () => {
       rendersCount += 1;
       stateScope = scope;
 
-      return <span> { JSON.stringify(value) } </span>;
+      return <span> {JSON.stringify(value)} </span>;
     }
 
     const tree = mount(

@@ -35,14 +35,14 @@ export function SampleContextEditor({
 
   return (
     <div style={editorStyle}>
-      <div> Editor renders count: { rendersCount } </div>
+      <div> Editor renders count: {rendersCount} </div>
 
       <div>
-        <button onClick={sampleActions.incrementSampleNumber}> Increment sample number </button>
+        <button onClick={sampleActions.incrementSampleNumber}> Increment sample number</button>
       </div>
 
       <div>
-        <button onClick={onCommitChanges}> Commit local text changes </button>
+        <button onClick={onCommitChanges}> Commit local text changes</button>
         <input value={localSampleString} onChange={onLocalSampleChange}/>
       </div>
     </div>

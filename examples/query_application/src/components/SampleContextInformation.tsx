@@ -31,13 +31,12 @@ export function SampleContextInformation({
 
   return (
     <div style={informationStyle}>
-      <div> Information renders count: { rendersCount } </div>
-
-      <div> First context multiplied number: { multipliedNumber } </div>
-      <div> Second context sample number: { sampleNumber } </div>
+      <div> Information renders count: {rendersCount} </div>
+      <div> First context multiplied number: {multipliedNumber} </div>
+      <div> Second context sample number: {sampleNumber} </div>
       <br/>
-      <div> Queried value from component: { queryValueFromComponent } </div>
-      <button onClick={onSyncQueryValueFromComponent}> Get value from another component </button>
+      <div> Queried value from component: {queryValueFromComponent} </div>
+      <button onClick={onSyncQueryValueFromComponent}> Get value from another component</button>
     </div>
   );
 }

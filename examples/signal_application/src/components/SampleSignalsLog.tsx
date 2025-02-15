@@ -27,14 +27,14 @@ export function SampleSignalsLog(): ReactElement {
     <div style={editorStyle}>
       <div>
         <div> Signals log: </div>
-        { signalsLog.map(({ emitter, ...otherSignalFields }, index) => (
+        {signalsLog.map(({ emitter, ...otherSignalFields }, index) => (
           <div key={index}>
             <span>
-              [{ index }] [emitter: { emitter?.name ?? "Callback" }]
+              [{index}] [emitter: {emitter?.name ?? "Callback"}]
             </span>
-            <span> { JSON.stringify(otherSignalFields) } </span>
+            <span> {JSON.stringify(otherSignalFields)} </span>
           </div>
-        )) }
+        ))}
       </div>
     </div>
   );

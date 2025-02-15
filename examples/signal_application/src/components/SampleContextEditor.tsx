@@ -37,7 +37,7 @@ export function SampleContextEditor({
 
   return (
     <div style={editorStyle}>
-      <div> Editor renders count: { rendersCount } </div>
+      <div> Editor renders count: {rendersCount} </div>
 
       <div>
         <button onClick={onRandomizeNumber}> Emit randomize number signal </button>

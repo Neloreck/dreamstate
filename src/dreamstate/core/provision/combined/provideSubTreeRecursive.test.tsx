@@ -12,7 +12,7 @@ describe("provideSubTreeRecursive rendering", () => {
     const providers: Array<TAnyContextManagerConstructor> = [TestManager, NestedManager, TestManager];
 
     const emptyRecursiveRender = shallow(
-      <div>{ provideSubTreeRecursive(<div> bottom </div>, providers, registry.CONTEXT_STATES_REGISTRY) }</div>
+      <div>{provideSubTreeRecursive(<div> bottom </div>, providers, registry.CONTEXT_STATES_REGISTRY)}</div>
     );
 
     expect(emptyRecursiveRender).toMatchSnapshot();
@@ -21,7 +21,7 @@ describe("provideSubTreeRecursive rendering", () => {
     registry.CONTEXT_STATES_REGISTRY.set(NestedManager, { second: "is" });
 
     const providedRecursiveRender = shallow(
-      <div>{ provideSubTreeRecursive(<div> bottom </div>, providers, registry.CONTEXT_STATES_REGISTRY) }</div>
+      <div>{provideSubTreeRecursive(<div> bottom </div>, providers, registry.CONTEXT_STATES_REGISTRY)}</div>
     );
 
     expect(providedRecursiveRender).toMatchSnapshot();

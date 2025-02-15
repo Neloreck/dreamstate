@@ -30,7 +30,7 @@ describe("React tree for provided and consumed components", () => {
 
       testContextManager = getCurrent(TestManager, scope);
 
-      return <div> { JSON.stringify(context) }</div>;
+      return <div> {JSON.stringify(context)}</div>;
     }
 
     const reactTree = mount(<Root/>);

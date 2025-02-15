@@ -23,13 +23,11 @@ export function SampleContextInformation({
 
   return (
     <div style={informationStyle}>
-      <div> Information renders count: { rendersCount } </div>
-
-      <div> First sample number: { firstSampleNumber } </div>
-      <div> Second sample number: { secondSampleNumber } </div>
-
-      <div> Sample string: { sampleString } </div>
-      <div> Reflected string: { reflectedString } </div>
+      <div> Information renders count: {rendersCount} </div>
+      <div> First sample number: {firstSampleNumber} </div>
+      <div> Second sample number: {secondSampleNumber} </div>
+      <div> Sample string: {sampleString} </div>
+      <div> Reflected string: {reflectedString} </div>
     </div>
   );
 }

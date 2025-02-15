@@ -20,11 +20,9 @@ export function SampleContextInformation({
 
   return (
     <div style={informationStyle}>
-      <div> Information renders count: { rendersCount } </div>
-
-      <div> Sample number: { sampleNumber } </div>
-
-      <div> Sample string: { sampleString } </div>
+      <div> Information renders count: {rendersCount} </div>
+      <div> Sample number: {sampleNumber} </div>
+      <div> Sample string: {sampleString} </div>
     </div>
   );
 }
