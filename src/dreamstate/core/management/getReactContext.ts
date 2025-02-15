@@ -19,8 +19,10 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 export function getReactContext<S extends TAnyObject, M extends IContextManagerConstructor<S>>(
   ManagerClass: M
 ): Context<S> {
-  if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(ManagerClass)) {
-    return CONTEXT_REACT_CONTEXTS_REGISTRY.get(ManagerClass) as Context<S>;
+  const existing: Context<S> | undefined = CONTEXT_REACT_CONTEXTS_REGISTRY.get(ManagerClass);
+
+  if (existing) {
+    return existing;
   } else {
     const reactContext: Context<S> = createContext(ManagerClass.getDefaultContext() as S);
 
