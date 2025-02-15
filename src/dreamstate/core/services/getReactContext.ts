@@ -4,12 +4,19 @@ import { CONTEXT_REACT_CONTEXTS_REGISTRY } from "@/dreamstate/core/internals";
 import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
 /**
- * Get react context reference for provided ManagerClass.
- * Lazy internal creation only after first access attempt.
+ * Retrieves the React context reference associated with the provided `ManagerClass`.
+ * The context is lazily created only after the first access attempt. If no manager is provided in the scope,
+ * a default context value can be applied.
  *
- * @param ManagerClass - context manager constructor reference.
- * @param defaultContext - default context value to be applied if manager is not provided.
- * @returns {Context} react context instance with pre-defined default value.
+ * This function allows for the dynamic creation and retrieval of a context specific to a given manager,
+ * ensuring that the context is properly initialized and available for use.
+ *
+ * @template S - The type of the context state.
+ * @template M - The type of the context manager constructor.
+ * @param {M} ManagerClass - The context manager constructor reference used to identify the context.
+ * @param {Partial<S> | null} [defaultContext=null] - The default context value to apply if no manager
+ *   context is provided.
+ * @returns {Context<S>} - A React context instance with a pre-defined default value.
  */
 export function getReactContext<S extends TAnyObject, M extends IContextManagerConstructor<S>>(
   ManagerClass: M,
@@ -18,6 +25,7 @@ export function getReactContext<S extends TAnyObject, M extends IContextManagerC
   if (CONTEXT_REACT_CONTEXTS_REGISTRY.has(ManagerClass)) {
     return CONTEXT_REACT_CONTEXTS_REGISTRY.get(ManagerClass) as Context<S>;
   } else {
+    // todo: call getDefaultContext only when needed here:
     const reactContext: Context<S> = createContext(defaultContext as S);
 
     /**

@@ -27,34 +27,44 @@ import {
   TQueryType,
   TSignalListener,
   TSignalSubscriptionMetadata,
-  TSignalType,
 } from "@/dreamstate/types";
 import { isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
  * Abstract context manager class.
- * Wraps data and logic part separately from react tree and allows to create global/local storages
- *   that have lifecycle and can be cleaned up and ejected when needed.
+ * This class wraps data and logic, separating them from the React tree. It allows you to create
+ * global or local storages with lifecycles, which can be cleaned up and ejected when no longer needed.
  *
- * To provide specific ContextManager classes in react tree check 'createProvider' method.
- * To consume specific ContextManager data in react tree check 'useManager' method.
- * To get more details about shallow check on context updates, see 'createNested', 'createActions' and other methods.
+ * This class serves as a foundation for managing scoped data and logic in a React application using
+ * the Dreamstate library.
  *
- * Every class instance is created automatically by dreamstate scope if provision is needed.
- * Every class instance can emit signals/query data in scope where it was created.
- * Every class instance can register method as scope signal listener.
- * Every class instance can register method as scope query data provider.
- * Every class instance is responsible only for specific data part like reducer in redux.
- *   Examples: AuthManager, GraphicsManager, ChatManager, LocalMediaManager etc.
+ * To provide specific `ContextManager` classes in the React tree, use the `createProvider` method.
+ * To consume specific `ContextManager` data, use the `useManager` method.
+ * For more details on shallow checks of context updates, see the `createNested`, `createActions`,
+ * and other related methods.
  *
- * Async methods called after manager class unregistering will cause dev warnings and will not affect actual scope.
+ * Every instance of this class is automatically managed and created by Dreamstate scope if needed.
+ * - Instances can emit signals and query data within the scope where they were created.
+ * - Instances can register methods as scope signal listeners or query data providers.
+ * - Each instance is responsible for a specific data part (similar to reducers in Redux).
+ *
+ * Examples of `ContextManager` subclasses: AuthManager, GraphicsManager, ChatManager, LocalMediaManager, etc.
+ *
+ * **Important Notes**:
+ * - Async methods called after the manager class is unregistered will trigger warnings during development,
+ *   but they will not affect the actual scope after ejection.
+ *
+ *  @template T - The type of the context state managed by this class.
+ *  @template S - The type of additional data or metadata that can be attached to the manager.
  */
 export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S extends TAnyObject = TAnyObject> {
   /**
    * React context default value getter.
-   * Used to provide placeholder values when manager is not provided.
+   * This method provides placeholder values to context consumers when the corresponding manager is not provided.
    *
-   * @returns {TAnyObject|null} returns default value for context consumers when manager is not provided.
+   * @returns {TAnyObject | null}
+   * - Returns the default value for context consumers when the manager is not provided.
+   * - Defaults to `null` if no specific getter is defined.
    */
   public static getDefaultContext(): TAnyObject | null {
     return null;
@@ -62,8 +72,13 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
 
   /**
    * React context getter.
-   * Method allows to get related React.Context for manual renders or testing.
-   * Lazy initialization, even for static resolving before anything from ContextManager is used.
+   * This method allows access to the related React.Context, which can be useful for manual rendering
+   * or testing scenarios.
+   *
+   * The context is lazily initialized, even for static resolving, before any other elements of the
+   * ContextManager are used.
+   *
+   * @returns {Context<any>} The React context associated with this ContextManager.
    */
   public static get REACT_CONTEXT(): Context<any> {
     if (this === ContextManager) {
@@ -73,89 +88,95 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
       );
     }
 
+    // todo: Do not call get default context every time, provide only `this` parameter.
     return getReactContext(this as TConstructorKey, this.getDefaultContext());
   }
 
   /**
    * Manager instance scope reference.
-   * Used internally to emit signals/queries or subscribe to data.
+   * Used internally to emit signals/queries or subscribe to data within the current scope.
    */
   public [SCOPE_SYMBOL]!: IScopeContext;
+
   /**
-   * Signaling handler that operates scope signals and calls required method registered in metadata.
+   * Signaling handler that operates on scope signals and calls the required method
+   * registered in metadata to handle the signal event.
    */
   public [SIGNALING_HANDLER_SYMBOL]!: TSignalListener;
 
   /**
    * Manager instance signals metadata reference.
-   * Used internally to emit signals with instance based description.
+   * Used internally to emit signals, providing instance-based metadata description for the signals.
    */
   public [SIGNAL_METADATA_SYMBOL]!: TSignalSubscriptionMetadata;
-  /**  /**
-   * Manager instance signals metadata reference.
-   * Used internally to emit signals with instance based description.
+
+  /**
+   * Manager instance query metadata reference.
+   * Used internally to emit queries, providing instance-based metadata description for the queries.
    */
   public [QUERY_METADATA_SYMBOL]!: TQuerySubscriptionMetadata;
 
   /**
-   * Flag indicating whether current manager is still working or disposed.
-   * Once manager is disposed, it cannot be reused or continue working.
-   * Scope related methods (signals, queries) will not be visible, usage of scope related methods will throw exceptions.
+   * Flag indicating whether the current manager is still active or has been disposed.
+   * Once a manager is disposed, it cannot be reused or continue functioning.
+   * Scope-related methods (signals, queries) will be inaccessible, and using them will throw exceptions.
    */
   public IS_DISPOSED: boolean = false;
 
   /**
    * Manager instance context.
-   * Generic field that will be synchronized with react providers when 'setContext' method is called.
-   * Should be object value.
+   * This field will be synchronized with React providers when the 'setContext' method is called.
+   * It should hold an object value.
    *
-   * Manual nested values fields mutations are allowed, but not desired.
-   * After calling setContext it will be shallow compared with already provided context before react tree syncing.
-   * Meta fields created by dreamstate utils (createActions, createNested etc)
-   *   may have different comparison instead of shallow check.
+   * While manual mutations of nested value fields are allowed, they are not recommended.
+   * After calling 'setContext', the context will be shallowly compared with the existing context
+   * before it is synced with the React tree.
+   * Meta fields created by Dreamstate utilities (such as createActions, createNested, etc.) may
+   * have a different comparison mechanism instead of the standard shallow check.
    *
-   * If you need more details about shallow check, see 'createNested', 'createActions' and other methods.
+   * For more information about the shallow check process, refer to 'createNested', 'createActions',
+   * and similar methods.
    */
   public context: T = {} as T;
 
   /**
    * Generic context manager constructor.
-   * Initial state can be used as some initialization value or SSR provided data.
-   * Treating it as optional value can help to write more generic and re-usable code because manager can be
-   * provided in a different place with different initial state.
+   * The initial state can be used as an initialization value or SSR-provided data.
+   * Treating the initial state as an optional value allows for more generic and reusable code,
+   * as the manager can be provided in different places with different initial states.
    *
-   * @param initialState - initial state received from dreamstate Provider component properties.
+   * @param initialState - Optional initial state received from the Dreamstate Provider component properties.
    */
   public constructor(initialState?: S) {
-    /**
+    /*
      * Make sure values marked as computed ('createComputed') are calculated before provision.
      */
     processComputed(this.context);
   }
 
   /**
-   * Lifecycle method.
-   * First provider was injected into react tree.
-   * Same philosophy as 'componentWillMount' for class-based components.
+   * Lifecycle method called when the first provider is injected into the React tree.
+   * This follows a similar philosophy to 'componentWillMount' in class-based components.
    *
-   * Useful for data initialization and subscriptions creation.
+   * This method is useful for initializing data and setting up subscriptions.
    */
   public onProvisionStarted(): void {}
 
   /**
-   * Lifecycle method.
-   * Last provider was removed from react tree.
-   * Same philosophy as 'componentWillUnmount' for class-based components.
+   * Lifecycle method called when the last provider is removed from the React tree.
+   * This follows a similar philosophy to 'componentWillUnmount' in class-based components.
    *
-   * Useful for data disposal when context is being ejected/when HMR happens.
+   * This method is useful for disposing of data when the context is being ejected
+   * or when Hot Module Replacement (HMR) occurs.
    */
   public onProvisionEnded(): void {}
 
   /**
-   * Get current manager scope.
-   * Used to access current execution scope and some methods that allow getting manager instances in it.
+   * Get the current manager scope.
+   * This method allows access to the current execution scope and provides methods
+   * for retrieving manager instances within it.
    *
-   * @returns {IScopeContext} returns manager scope.
+   * @returns {IScopeContext} The current manager scope.
    */
   public getScope(): IScopeContext {
     if (this[SCOPE_SYMBOL]) {
@@ -166,17 +187,21 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   }
 
   /**
-   * Forces update and render of subscribed components.
-   * Just in case when you need forced update to keep everything in sync with your context.
+   * Forces an update and re-render of subscribed components.
+   * This is useful when you need to ensure that the components remain in sync with the current context.
    *
-   * Side effect: after successful update all subscribed components will be updated accordingly to their subscription.
+   * Side effect: After a successful update, all subscribed components will be re-rendered
+   * according to their subscription.
    *
-   * Note: it will only force update of provider, components that use useManager selectors will not be forced to render.
-   * Note: creates new shallow copy of 'this.context' reference after each call.
-   * Note: if manager is out of scope, it will simply replace 'this.context'.
+   * Note: This will only force an update of the provider; components using `useManager` selectors
+   * will not be forced to render.
+   *
+   * Note: A new shallow copy of `this.context` is created after each call.
+   *
+   * Note: If the manager is out of scope, the method will simply replace `this.context`.
    */
   public forceUpdate(): void {
-    /**
+    /*
      * Always do shallow copy to point new ref object in current context.
      */
     this.context = processComputed(Object.assign({}, this.context));
@@ -187,36 +212,42 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   }
 
   /**
-   * Update current context from partially supplied state or functional selector.
-   * Updates react providers tree only if 'shouldObserversUpdate' check has passed and anything has changed in store.
-   * Has same philosophy as 'setState' of react class components.
+   * Updates the current context from a partially supplied state or a functional selector.
+   * The update is applied to the React provider tree only if the `shouldObserversUpdate` check passes
+   * and if any changes have occurred in the store.
+   * This follows the same philosophy as `setState` in React class components.
    *
-   * Side effect: after successful update all subscribed components will be updated accordingly to their subscription.
+   * Side effect: After a successful update, all subscribed components will be updated accordingly
+   * to their subscription.
    *
-   * Note: partial context is needed or callback that returns partial context.
-   * Note: it will only update provider, components that use useManager selectors will not be forced to render.
-   * Note: if manager is out of scope, it just rewrites 'this.context' object without side effects.
+   * Note: A partial context object or a callback that returns a partial context is required.
    *
-   * @param {Object|Function} next - part of context that should be updated or context transformer function.
-   *   In case of functional callback, it will be executed immediately with 'currentContext' parameter.
+   * Note: This will only update the provider; components using `useManager` selectors will not be
+   * forced to render.
+   *
+   * Note: If the manager is out of scope, it will simply rewrite the `this.context` object without
+   * any side effects.
+   *
+   * @param {Object | Function} next - A part of the context to be updated or a context transformer function.
+   *   If a function is provided, it will be executed immediately with the `currentContext` as its parameter.
    */
   public setContext(next: Partial<T> | TPartialTransformer<T>): void {
     const nextContext: T = Object.assign(
       {},
       this.context,
-      /**
+      /*
        * Handle context transformer functions.
        */
       isFunction(next) ? (next as TPartialTransformer<T>)(this.context) : next
     );
 
-    /**
+    /*
      * Always update context, even if it was created out of scope.
      * In case of existing scope just send additional notification.
      */
     this.context = processComputed(nextContext);
 
-    /**
+    /*
      * Compare current context with saved for observing one.
      */
     if (
@@ -233,15 +264,17 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   }
 
   /**
-   * Emit signal for other managers and subscribers in current scope.
-   * Valid signal types: string, number, symbol.
+   * Emits a signal to other managers and subscribers within the current scope.
+   * Valid signal types include `string`, `number`, and `symbol`.
    *
-   * @throws {Error} - manager is out of scope.
+   * @template D - The type of the data associated with the signal.
+   * @param {IBaseSignal<D>} baseSignal - The base signal object containing a signal type and
+   *   optional data.
+   * @param {TSignalType} baseSignal.type - The type of the signal.
+   * @param {*} [baseSignal.data] - Optional data associated with the signal.
+   * @returns {ISignalEvent<D>} The signal event object that encapsulates the emitted signal.
    *
-   * @param {Object} baseSignal - signal base that contains basic descriptor of emitting signal.
-   * @param {TSignalType} baseSignal.type - signal type.
-   * @param {*=} baseSignal.data - optional signal data.
-   * @returns {Promise} promise that will be resolved after signal listeners call.
+   * @throws {Error} Throws an error if the manager is out of scope.
    */
   public emitSignal<D = undefined>(baseSignal: IBaseSignal<D>): ISignalEvent<D> {
     if (this[SCOPE_SYMBOL]) {
@@ -252,15 +285,21 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   }
 
   /**
-   * Send context query to retrieve data from query handler methods.
-   * Async method is useful when provider is async. Sync providers still will be handled correctly.
-   * Will return query response packed object in case if valid handler is found in scope.
-   * Will return null in case if no valid handler found in current scope.
+   * Sends a context query to retrieve data from query handler methods.
+   * This asynchronous method is particularly useful for async providers, although
+   * synchronous providers are handled as well.
    *
-   * @param {Object} queryRequest - query request base.
-   * @param {TQueryType} queryRequest.type - query type.
-   * @param {*=} queryRequest.data - optional query data, some kind of getter params.
-   * @return {Promise<null | TQueryResponse<*>>} result of query search or null, if no providers in current scope.
+   * If a valid query handler is found in the current scope, it returns a promise that resolves
+   * with a query response object; otherwise, it resolves with `null`.
+   *
+   * @template D - The type of the query data.
+   * @template T - The type of the query.
+   * @template Q - The query request type, extending IOptionalQueryRequest<D, T>.
+   * @param {Q} queryRequest - The query request object containing the query type and optional data.
+   * @param {TQueryType} queryRequest.type - The type of the query.
+   * @param {*} [queryRequest.data] - Optional data used as parameters for data retrieval.
+   * @returns {Promise<TQueryResponse<any> | null>} A promise that resolves with the query response if a valid
+   *   handler is found, or `null` if no handler exists in the current scope.
    */
   public queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
@@ -273,15 +312,21 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
   }
 
   /**
-   * Send context query to retrieve data from query handler methods.
-   * Sync method is useful when provider is sync. Async providers will return promise in a data field.
-   * Will return query response packed object in case if valid handler is found in scope.
-   * Will return null in case if no valid handler found in current scope.
+   * Sends a context query to retrieve data from query handler methods synchronously.
+   * This method is ideal for synchronous operations; asynchronous handlers will return a promise
+   * in the data field.
    *
-   * @param {Object} queryRequest - query request base.
-   * @param {TQueryType} queryRequest.type - query type.
-   * @param {*=} queryRequest.data - optional query data, some kind of getter params.
-   * @return {null | TQueryResponse<*>} result of query search or null, if no providers in current scope.
+   * If a valid query handler is found in the current scope, the method returns a query response object.
+   * Otherwise, it returns `null`.
+   *
+   * @template D - The type of the query data.
+   * @template T - The type of the query.
+   * @template Q - The type of the query request, extending IOptionalQueryRequest<D, T>.
+   * @param {Q} queryRequest - The query request object containing:
+   *   - `type`: The type of the query.
+   *   - `data` (optional): Additional data or parameters for data retrieval.
+   * @returns {TQueryResponse<any> | null} The query response object if a valid handler is found,
+   *   or `null` if no handler exists in the current scope.
    */
   public queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q

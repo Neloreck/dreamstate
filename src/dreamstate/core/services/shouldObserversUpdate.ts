@@ -8,12 +8,18 @@ import { EDreamstateErrorCode, TAnyObject } from "@/dreamstate/types";
 import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
- * Compare context manager state diff with shallow check + nested objects check.
- * Respect all meta-fields like NestedStore/ComputedValue/ActionsStore etc.
+ * Compares two context manager states to determine if there are any changes that would require
+ * observers to update. Performs a shallow comparison while respecting specific meta-fields like
+ * `NestedStore`, `ComputedValue`, `ActionsStore`, etc. to ensure that nested objects and specialized
+ * stores are taken into account during the comparison.
  *
- * @param previousContext - previous context to match.
- * @param nextContext - next context to match.
- * @returns {boolean} result of context objects comparison, whether observers should update or not.
+ * The comparison helps decide whether the observers need to react to the changes and re-render accordingly.
+ *
+ * @template T - The type of the context state.
+ * @param {T} previousContext - The previous context to be compared against.
+ * @param {T} nextContext - The new context to check for differences.
+ * @returns {boolean} - `true` if observers should update (i.e., if there is a difference between
+ *   the contexts); `false` otherwise.
  */
 export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, nextContext: T): boolean {
   if (!isObject(nextContext)) {
@@ -28,7 +34,7 @@ export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, 
   }
 
   return Object.keys(nextContext).some(function(key: string): boolean {
-    /**
+    /*
      * Ignore computed values.
      * Ignore action values.
      * Since nested computed stores are not representing data itself, we should not verify anything there.
@@ -37,7 +43,7 @@ export function shouldObserversUpdate<T extends TAnyObject>(previousContext: T, 
       return false;
     }
 
-    /**
+    /*
      * Shallow check for mutable objects created by library.
      * Optimization for sub-states to prevent pollution of context and improve performance.
      * We cannot guess about each object because it is (1) not obvious, (2) can be unwanted and (3) will not work for
