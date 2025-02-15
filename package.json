@@ -4,6 +4,16 @@
   "description": "Store management library based on context and observers",
   "private": true,
   "author": "Syrotenko Igor",
+  "keywords": [
+    "react",
+    "state",
+    "manager",
+    "management",
+    "context",
+    "redux",
+    "mobx",
+    "store"
+  ],
   "license": "MIT",
   "scripts": {
     "purge": "npx rimraf ./node_modules */node_modules */**/node_modules",
@@ -18,7 +28,7 @@
     "format": "prettier --write \"**/*.(js|ts|tsx)\" && eslint . --fix",
     "lint": "eslint .",
     "test": "jest --config cli/test/jest.config.js --detectOpenHandles --maxWorkers=100%",
-    "pre-deploy": "pnpm clean && pnpm lint && pnpm typecheck && pnpm test -- --coverage && pnpm build",
+    "pre-deploy": "pnpm clean && pnpm lint && pnpm typecheck && pnpm test && pnpm build",
     "deploy": "pnpm pre-deploy && cd ./target/pkg && npm publish",
     "deploy:experimental": "pnpm pre-deploy && cd ./target/pkg && npm publish --tag experimental"
   },
