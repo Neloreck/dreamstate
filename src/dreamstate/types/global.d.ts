@@ -3,7 +3,12 @@
  * Defines a method for performing a shallow equality check between two objects.
  */
 declare module "shallow-equal" {
-  export const shallowEqualObjects: (a: Record<string, unknown> | null, b: Record<string, unknown> | null) => boolean;
+  import { TAnyValue } from "@/dreamstate/types/general";
+
+  export const shallowEqualObjects: (
+    a: Record<string, TAnyValue> | null,
+    b: Record<string, TAnyValue> | null
+  ) => boolean;
 }
 
 /**
