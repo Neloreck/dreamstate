@@ -4,15 +4,18 @@ import { EDreamstateErrorCode, TAnyObject, TNested } from "@/dreamstate/types";
 import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
- * Create nested sub-state for deeper shallow checking.
- * Useful when your context has some nested objects that should be checked separately.
+ * Creates a nested sub-state for deeper shallow checking, useful when the context contains nested objects
+ * that need to be checked separately during updates.
  *
  * As an example:
- * { first: 'first', second: { one: 1, two: 2 } } - first, second will be checked, one and will be ignored in this case
- * { first: 'first', second: createNested({ one: 1, two: 2 }) } - first, one and two will be checked between updates
+ * - `{ first: 'first', second: { one: 1, two: 2 } }` - `first` and `second` will be checked,
+ *   while `one` and `two` will be ignored.
+ * - `{ first: 'first', second: createNested({ one: 1, two: 2 }) }` - `first`, `one`, and `two`
+ *   will be checked during updates.
  *
- * @param {Object} initialValue - initial value of nested store object.
- * @returns {NestedStore} instance of nested store containing initial state and marked for deeper shallow checking.
+ * @template T The type of the nested object.
+ * @param {T} initialValue The initial value of the nested store object.
+ * @returns {TNested<T>} An instance of a nested store containing the initial state, marked for deeper shallow checking.
  */
 export function createNested<T extends TAnyObject>(initialValue: T): TNested<T> {
   if (isObject(initialValue)) {
@@ -20,7 +23,7 @@ export function createNested<T extends TAnyObject>(initialValue: T): TNested<T> 
   } else {
     throw new DreamstateError(
       EDreamstateErrorCode.INCORRECT_PARAMETER,
-      `Nested stores should be initialized with an object, got ${typeof initialValue} instead.`
+      `Nested stores should be initialized with an object, got '${typeof initialValue}' instead.`
     );
   }
 }

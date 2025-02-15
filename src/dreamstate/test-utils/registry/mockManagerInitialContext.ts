@@ -1,11 +1,14 @@
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 /**
- * Mock manager initial context on service registration.
- * Packs manager and context in map in a type-safe way instead of manual way.
+ * Mocks the initial context of a manager during service registration.
+ * This method ensures type safety by packaging the manager and its initial context in a structured way.
  *
- * @param ManagerClass - manager class to provide initial context to.
- * @param context - initial context partial for applying on provision.
+ * @template D - The type of the context manager constructor.
+ * @param {D} ManagerClass - The manager class to which the initial context should be applied.
+ * @param {Partial<D["prototype"]["context"]>} context - A partial initial context to be used during provision.
+ * @returns {[D, Partial<D["prototype"]["context"]>]} A tuple containing the manager class and the provided
+ *   initial context.
  */
 export function mockManagerInitialContext<D extends TAnyContextManagerConstructor>(
   ManagerClass: D,

@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * Dreamstate context manager providers props.
+ * Properties for the Dreamstate context manager provider.
+ * Defines the props used for initializing and configuring the provider.
  */
 export interface IProviderProps<T> {
   initialState?: T;

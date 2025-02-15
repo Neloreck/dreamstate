@@ -4,16 +4,16 @@ import { EDreamstateErrorCode, TAnyObject } from "@/dreamstate/types";
 import { isObject } from "@/dreamstate/utils/typechecking";
 
 /**
- * Create actions store.
- * Actions store is readonly methods links containing object.
- * Intention of this function is to create container that is visually and programmatically distinguishable as
- *   actions containing sub-storage.
+ * Creates an actions store, which is an object containing readonly method links representing actions.
+ * The intention is to provide a container that is visually and programmatically distinguishable as
+ * a storage of actions.
  *
- * Every 'setContext' call comparison of current 'context' before update will not check actions objects,
- *   it expects it to be immutable and same all the time.
+ * Every call to 'setContext' will perform a comparison of the current 'context' before updating,
+ * excluding the actions object, as it is expected to be immutable and consistent.
  *
- * @param {Object} actions - object containing set of mutation operations.
- * @returns instance of ActionsStore class containing supplied actions.
+ * @template T The type of actions object.
+ * @param {T} actions - An object containing a set of mutation operations (actions).
+ * @returns {Readonly<T>} An instance of an ActionsStore class containing the supplied actions.
  */
 export function createActions<T extends TAnyObject>(actions: T): Readonly<T> {
   if (isObject(actions)) {
@@ -21,7 +21,7 @@ export function createActions<T extends TAnyObject>(actions: T): Readonly<T> {
   } else {
     throw new DreamstateError(
       EDreamstateErrorCode.INCORRECT_PARAMETER,
-      `Actions store should be initialized with an object, got ${typeof actions} instead.`
+      `Actions store should be initialized with an object, got '${typeof actions}' instead.`
     );
   }
 }

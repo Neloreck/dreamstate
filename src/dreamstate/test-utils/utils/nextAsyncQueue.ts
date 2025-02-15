@@ -1,11 +1,11 @@
 import { TCallable } from "@/dreamstate/types";
 
 /**
- * Wait for all queued events or wait for specified time.
- * Promisified setTimeout(,time || 0).
+ * Waits for all queued events or a specified amount of time.
+ * This function is essentially a promisified `setTimeout`.
  *
- * @param {number=0} ms - time in milliseconds that should be awaited, defaults to 0.
- * @returns {Promise} resolving promise after selected amount of time.
+ * @param {number} [ms=0] - The time in milliseconds to wait. Defaults to 0 if not specified.
+ * @returns {Promise<void>} A promise that resolves after the specified time has elapsed.
  */
 export function nextAsyncQueue(ms: number = 0): Promise<void> {
   return new Promise((resolve: TCallable) => setTimeout(resolve, ms));

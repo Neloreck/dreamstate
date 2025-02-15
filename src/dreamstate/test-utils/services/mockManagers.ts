@@ -3,21 +3,24 @@ import { mockScope } from "@/dreamstate/test-utils/registry/mockScope";
 import { IContextManagerConstructor, TAnyObject, TManagerInstanceMap } from "@/dreamstate/types";
 
 /**
- * Mock managers and scope for isolated testing.
- * Returns scope where all managers are registered and can be found with 'getCurrent' test util.
- * Intended to be used when some managers should be paired together for specific test cases.
+ * Mocks multiple context managers and a scope for isolated testing.
  *
- * @param {IContextManagerConstructor} managerClasses - class reference of context manager that should be created.
- * @param {TAnyObject} initialState - initial state that should be injected in class constructor.
- * @param {IScopeContext} scope - scope where managers should be mocked, mocked by default.
- * @returns array with manager class instance and mocked scope context object.
+ * This is useful when multiple managers need to be paired together for specific test cases.
+ *
+ * @template T - The type of the manager's state.
+ * @template S - The type of the initial state injected into each manager.
+ * @template M - The type of a single context manager constructor.
+ * @param {M[]} managerClasses - An array of context manager constructor references to be created.
+ * @param {S | null} initialState - An optional initial state to inject into each manager's constructor.
+ * @param {IScopeContext} [scope=mockScope()] - The scope where managers should be mocked. A mocked scope is
+ *   used by default.
+ * @returns {TManagerInstanceMap} A mapping of manager instances along with the mocked scope context.
  */
-export function mockManagers<
-  T extends TAnyObject,
-  S extends TAnyObject,
-  M extends IContextManagerConstructor<T, S>,
-  E extends Array<M>,
->(managerClasses: E, initialState?: S | null, scope: IScopeContext = mockScope()): TManagerInstanceMap {
+export function mockManagers<T extends TAnyObject, S extends TAnyObject, M extends IContextManagerConstructor<T, S>>(
+  managerClasses: Array<M>,
+  initialState?: S | null,
+  scope: IScopeContext = mockScope()
+): TManagerInstanceMap {
   for (let it = 0; it < managerClasses.length; it ++) {
     scope.INTERNAL.registerService(managerClasses[it], initialState);
   }

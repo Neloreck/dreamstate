@@ -2,12 +2,13 @@ import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 /**
- * Get current manager instance from current scope.
- * Returns null if nothing is found.
+ * Retrieves the current instance of a context manager from the given scope.
+ * Returns `null` if the manager is not found in the current scope.
  *
- * @param {TAnyContextManagerConstructor} ManagerClass - class reference of context manager.
- * @param {IScopeContext} scope - scope where manager should be found.
- * @returns manager class instance or null if it is not created in current scope.
+ * @template T - The type of the context manager constructor.
+ * @param {T} ManagerClass - The constructor reference of the context manager to retrieve.
+ * @param {IScopeContext} scope - The scope in which to search for the manager instance.
+ * @returns {InstanceType<T> | null} The instance of the specified manager class if found, otherwise `null`.
  */
 export function getCurrent<T extends TAnyContextManagerConstructor>(
   ManagerClass: T,

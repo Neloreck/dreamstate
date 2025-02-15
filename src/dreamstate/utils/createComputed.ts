@@ -4,12 +4,16 @@ import { EDreamstateErrorCode, TAnyObject, TComputed } from "@/dreamstate/types"
 import { isFunction, isUndefined } from "@/dreamstate/utils/typechecking";
 
 /**
- * Create computed value that will be re-calculated after each context update.
+ * Creates a computed value that will be re-calculated after each context update.
+ * The computed value is recalculated only when its dependencies, as determined by the memo function,
+ * are updated.
  *
- * @param {Function} selector - generic selector that will return computed values on update.
- * @param {Function} memo - memo checker that will return array of dependencies
- *   indicating whether computed should be updated.
- * @returns {TComputed<T, C>} computed value object.
+ * @template T The type of the computed value.
+ * @template C The type of the context the computed value depends on.
+ * @param {Function} selector A generic selector function that returns computed values on update.
+ * @param {Function} memo An optional memo checker function that returns an array of dependencies,
+ *   indicating whether the computed value should be updated.
+ * @returns {TComputed<T, C>} A computed value object that will be updated based on context changes.
  */
 export function createComputed<T extends TAnyObject, C extends TAnyObject>(
   selector: (context: C) => T,

@@ -3,12 +3,13 @@ import { Provider } from "react";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 
 /**
- * Mock scope with initial clean state.
- * Can be used to mock whole scope context.
+ * Creates a mock scope provider with an initial clean state.
+ * This can be used to mock the entire scope context in a React tree.
  *
- * Should be used in pair with 'mockScope' method so 'value' property of ScopeContext.Provider will be correct.
+ * Must be used together with the `mockScope` method to ensure that the `value` property
+ * of `ScopeContext.Provider` is correctly set.
  *
- * @returns {Provider} ScopeContext.Provider component for react rendering.
+ * @returns {Provider<IScopeContext>} A `ScopeContext.Provider` component for React rendering.
  */
 export function mockScopeProvider(): Provider<IScopeContext> {
   return ScopeContext.Provider;

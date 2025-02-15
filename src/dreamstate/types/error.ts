@@ -1,5 +1,8 @@
 /**
- * Error code describing the problem with dreamstate usage.
+ * Error codes describing various issues related to Dreamstate usage.
+ * These error codes are used to categorize different types of errors.
+ *
+ * @enum {string}
  */
 export enum EDreamstateErrorCode {
   UNEXPECTED_ERROR = "UNEXPECTED_ERROR",

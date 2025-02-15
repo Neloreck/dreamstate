@@ -8,16 +8,18 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
- * Mock context provider that does not fire provision event and just constructs instances.
- * Can be used to mock tree provision where required.
+ * Creates a mock context provider that constructs instances without firing provision events.
+ * This is useful for testing or mocking tree provision where required.
  *
- * @param {Array.<IContextManagerConstructor>>} sources - array of source classes references
- *   that should be provided in react tree when returned component renders.
- * @param {ICreateProviderProps} config - store provider configuration.
- * @param {boolean} config.isCombined - boolean flag that switches observing between one big react node
- *   vs small scoped nodes.
- * @param {IScopeContext} scope - scope where providers should be injected, mocked by default.
- * @returns {FunctionComponent} mocked react provider component for source classes in mocked scope.
+ * @template T - The type of the provided context value, defaults to `TAnyObject`.
+ * @param {IContextManagerConstructor[]} sources - An array of context manager constructors that should be
+ *   provided within the React tree when the returned component renders.
+ * @param {ICreateProviderProps} config - Configuration for the store provider.
+ * @param {boolean} config.isCombined - Determines whether to use a single large React node for observing
+ *   changes or multiple smaller scoped nodes.
+ * @param {IScopeContext} scope - The scope where providers should be injected. Uses a mocked scope by default.
+ * @returns {FunctionComponent<IProviderProps<T>>} A mocked React provider component that provides the source
+ *   classes within the mocked scope.
  */
 export function mockContextProvider<T extends TAnyObject = TAnyObject>(
   sources: Array<IContextManagerConstructor>,
@@ -28,14 +30,14 @@ export function mockContextProvider<T extends TAnyObject = TAnyObject>(
   const ContextProvider: FunctionComponent<IProviderProps<T>> = createProvider(sources, config);
   const ScopeProvider: Provider<IScopeContext> = mockScopeProvider();
 
-  /**
+  /*
    * Create provider component that can be used by react to automatically inject specific scope.
    */
   function MockedProvider(props: T): ReactNode {
     return createElement(ScopeProvider, scopeProviderProps, createElement(ContextProvider, props));
   }
 
-  /**
+  /*
    * Indicate that following provider is mocked.
    */
   MockedProvider.displayName = "MockedProvider";

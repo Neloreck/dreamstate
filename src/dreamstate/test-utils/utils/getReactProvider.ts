@@ -3,10 +3,11 @@ import { Context } from "react";
 import { TAnyContextManagerConstructor } from "@/dreamstate/types";
 
 /**
- * Get react provider of selected context manager.
+ * Retrieves the React context provider for the specified context manager.
  *
- * @param {TAnyContextManagerConstructor} ManagerClass - context manager class reference.
- * @returns {Context.Provider} context provider reference for specified manager class.
+ * @template T - The type of the context manager constructor.
+ * @param {T} ManagerClass - The constructor reference of the context manager.
+ * @returns {Context<T["prototype"]["context"]>["Provider"]} The React context provider for the specified manager class.
  */
 export function getReactProvider<T extends TAnyContextManagerConstructor>(
   ManagerClass: T

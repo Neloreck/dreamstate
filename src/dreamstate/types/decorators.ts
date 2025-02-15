@@ -1,6 +1,6 @@
 import type { TConstructor } from "@/dreamstate/types/general";
 
-/**
+/*
  * Typedefs from the TC39 Decorators proposal.
  */
 
