@@ -11,6 +11,6 @@ module.exports = {
   },
   testEnvironment: "jsdom",
   globals: {
-    IS_DEV: false,
+    IS_DEV: true,
   },
 };
