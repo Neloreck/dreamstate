@@ -1,3 +1,10 @@
+## 4.5.0 (*/*/2025)
+
+### Changed
+
+- Updated lib dependencies, use latest version of rollout/babel/ts
+- Added JSDoc blocks for exported functions and classes
+
 ## 4.4.1 (5/13/2024)
 
 ### Changed
@@ -44,9 +51,11 @@
 
 ### Updated:
 
-- HMR, case when tree was not synced with actual store data when subscribed with simple useContext managers (useManager without memo)
+- HMR, case when tree was not synced with actual store data when subscribed with simple useContext managers (useManager
+  without memo)
 - setContext and forceUpdate methods can be called out of scope. In this case simply modify class and continue working
-- Signal/query methods correctly throw exception if called out of scope (created with new or when doing it from constructor)
+- Signal/query methods correctly throw exception if called out of scope (created with new or when doing it from
+  constructor)
 - Validate signals types for signals decorators and methods
 - Validate queries types for query decorators and methods
 - Register method now allows overriding default initial context for mocking/testing
@@ -87,7 +96,8 @@
 
 - register/observing methods (test-utils) removed
 - getCurrentContext (test-utils) removed
-- IS_SINGLE removed in favor of scoped storages without global storing // related to HMR problems and best approach for data management
+- IS_SINGLE removed in favor of scoped storages without global storing // related to HMR problems and best approach for
+  data management
 - ContextService removed in favor of ContextManager
 - Provide decorator removed
 - Consume decorator removed
@@ -113,7 +123,8 @@
 
 ## 3.3.2 (4/11/2021)
 
-- 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and partial reload of context managers
+- 'partialHotReplacement' parameter for created provider elements that are disabled by default -> allow hot updates and
+  partial reload of context managers
 - deprecated multiple queries at once for queryData methods
 
 ## 3.3.1 (4/6/2021)
@@ -166,14 +177,14 @@
 
 - Arrays as queryData method parameters for multiple queries fetching
 - Core update:
-  - ContextWorker -> ContextService to reduce confusion with workers and responsibility scope
+    - ContextWorker -> ContextService to reduce confusion with workers and responsibility scope
 - Test utils update:
-  - registerWorker -> registerService
-  - unRegisterWorker -> unRegisterService
-  - getWorkerObserversCount -> getServiceObserversCount
-  - isWorkerProvided -> isServiceProvided
-  - addManagerObserver -> addServiceObserver
-  - removeManagerObserver -> removeServiceObserver
+    - registerWorker -> registerService
+    - unRegisterWorker -> unRegisterService
+    - getWorkerObserversCount -> getServiceObserversCount
+    - isWorkerProvided -> isServiceProvided
+    - addManagerObserver -> addServiceObserver
+    - removeManagerObserver -> removeServiceObserver
 - Minor implementation fixes - shorter code samples/simplified call checks.
 
 ## 3.0.0 (5/9/2020)
@@ -183,17 +194,17 @@
 - Tree shaking
 - Added "dreamstate/test-utils" for lib testing
 - Signals API added
-  - OnSignal decorator added
-  - useSignals hook added
-  - unsubscribeFromSignals method added
-  - subscribeToSignals method added
-  - emitSignal method added
-  - ContextManager::emitSignal method added
+    - OnSignal decorator added
+    - useSignals hook added
+    - unsubscribeFromSignals method added
+    - subscribeToSignals method added
+    - emitSignal method added
+    - ContextManager::emitSignal method added
 - Query API added
-  - OnQuery decorator added
-  - ContextManager::queryData method added
+    - OnQuery decorator added
+    - ContextManager::queryData method added
 - ContextWorker added
-  - Exposed base abstract class for signals and queries observing with provision lifecycle
+    - Exposed base abstract class for signals and queries observing with provision lifecycle
 - getCurrentContext method added
 - getCurrent method added
 - createSetter method added
