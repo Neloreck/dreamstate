@@ -3,7 +3,7 @@
  * Defines a method for performing a shallow equality check between two objects.
  */
 declare module "shallow-equal" {
-  export const shallowEqualObjects: (a: Record<string, any> | null, b: Record<string, any> | null) => boolean;
+  export const shallowEqualObjects: (a: Record<string, unknown> | null, b: Record<string, unknown> | null) => boolean;
 }
 
 /**

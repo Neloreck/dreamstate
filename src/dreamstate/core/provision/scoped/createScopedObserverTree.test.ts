@@ -2,6 +2,7 @@ import { shallow } from "enzyme";
 import { createElement } from "react";
 
 import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/createScopedObserverTree";
+import { TUninitializedValue } from "@/dreamstate/types";
 import { NestedManager, TestManager } from "@/fixtures";
 
 describe("createScopedObserverTree rendering", () => {
@@ -13,7 +14,7 @@ describe("createScopedObserverTree rendering", () => {
         createScopedObserverTree(
           [TestManager, NestedManager, TestManager],
           { children: createElement("div", {}, "bottom") },
-          null as any
+          null as TUninitializedValue
         )
       )
     );

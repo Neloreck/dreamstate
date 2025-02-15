@@ -1,4 +1,4 @@
-import { IComputedBase, TAnyObject } from "@/dreamstate/types";
+import { IComputedBase, TAnyObject, TAnyValue } from "@/dreamstate/types";
 
 /**
  * A utility class for managing nested computed values.
@@ -8,11 +8,11 @@ import { IComputedBase, TAnyObject } from "@/dreamstate/types";
  */
 export class ComputedValue<T extends TAnyObject, C extends TAnyObject> implements IComputedBase<T, C> {
   public readonly __selector__: (context: C) => T;
-  public readonly __memo__?: (context: C) => Array<any>;
+  public readonly __memo__?: (context: C) => Array<TAnyValue>;
 
-  public __diff__?: Array<any>;
+  public __diff__?: Array<TAnyValue>;
 
-  public constructor(selector: (context: C) => T, memo?: (context: C) => Array<any>) {
+  public constructor(selector: (context: C) => T, memo?: (context: C) => Array<TAnyValue>) {
     this.__selector__ = selector;
     this.__memo__ = memo;
   }
@@ -20,7 +20,7 @@ export class ComputedValue<T extends TAnyObject, C extends TAnyObject> implement
   public process(context: C): void {
     // Process memoized computed in a special way, updated default computed every time.
     if (this.__memo__) {
-      const diff: Array<any> = this.__memo__(context);
+      const diff: Array<TAnyValue> = this.__memo__(context);
 
       // Warn if someone provided wrong selector.
       if (IS_DEV) {
@@ -32,7 +32,7 @@ export class ComputedValue<T extends TAnyObject, C extends TAnyObject> implement
       // If diff initialized and we can check memo values.
       if (
         !this.__diff__ ||
-        this.__diff__.some(function(it: any, idx: number) {
+        this.__diff__.some(function(it: TAnyValue, idx: number): boolean {
           return it !== diff[idx];
         })
       ) {

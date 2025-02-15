@@ -1,5 +1,5 @@
 import { DreamstateError } from "@/dreamstate";
-import { EDreamstateErrorCode } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyValue } from "@/dreamstate/types";
 import { createActions } from "@/dreamstate/utils/createActions";
 import { getCallableError } from "@/fixtures";
 
@@ -28,14 +28,14 @@ describe("createActions method functionality", () => {
   });
 
   it("should validate provided params object", () => {
-    expect(() => createActions("" as any)).toThrow(DreamstateError);
-    expect(() => createActions(null as any)).toThrow(DreamstateError);
-    expect(() => createActions(undefined as any)).toThrow(DreamstateError);
-    expect(() => createActions(false as any)).toThrow(DreamstateError);
-    expect(() => createActions(0 as any)).toThrow(DreamstateError);
+    expect(() => createActions("" as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createActions(null as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createActions(undefined as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createActions(false as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createActions(0 as TAnyValue)).toThrow(DreamstateError);
     expect(() => createActions(() => 0)).toThrow(DreamstateError);
     expect(() => createActions({})).not.toThrow();
-    expect(getCallableError<DreamstateError>(() => createActions(false as any)).code).toBe(
+    expect(getCallableError<DreamstateError>(() => createActions(false as TAnyValue)).code).toBe(
       EDreamstateErrorCode.INCORRECT_PARAMETER
     );
   });

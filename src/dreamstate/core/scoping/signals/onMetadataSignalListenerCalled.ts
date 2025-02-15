@@ -1,6 +1,6 @@
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { ISignalEvent } from "@/dreamstate/types";
+import { ISignalEvent, TAnyValue } from "@/dreamstate/types";
 
 /**
  * Processes a metadata signal and dispatches it to the corresponding metadata listeners
@@ -15,7 +15,7 @@ import { ISignalEvent } from "@/dreamstate/types";
  * @returns {void}
  */
 export function onMetadataSignalListenerCalled<D = undefined>(
-  this: ContextManager<any>,
+  this: ContextManager<TAnyValue>,
   signal: ISignalEvent<D>
 ): void {
   /*
@@ -23,7 +23,7 @@ export function onMetadataSignalListenerCalled<D = undefined>(
    */
   for (const [method, subscribed] of this[SIGNAL_METADATA_SYMBOL]) {
     if (Array.isArray(subscribed) ? subscribed.includes(signal.type) : signal.type === subscribed) {
-      (this as any)[method](signal);
+      (this as TAnyValue)[method](signal);
     }
   }
 }

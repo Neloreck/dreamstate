@@ -1,7 +1,7 @@
 import { ContextManager, DreamstateError } from "@/dreamstate";
 import { processComputed } from "@/dreamstate/core/storing/processComputed";
 import { mockManager } from "@/dreamstate/test-utils";
-import { EDreamstateErrorCode, TComputed } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyValue, TComputed } from "@/dreamstate/types";
 import { createComputed } from "@/dreamstate/utils/createComputed";
 import { getCallableError } from "@/fixtures";
 
@@ -110,23 +110,23 @@ describe("createComputed method functionality", () => {
   });
 
   it("should validate provided params object", () => {
-    expect(() => createComputed("" as any)).toThrow(DreamstateError);
-    expect(() => createComputed(null as any)).toThrow(DreamstateError);
-    expect(() => createComputed(undefined as any)).toThrow(DreamstateError);
-    expect(() => createComputed(false as any)).toThrow(DreamstateError);
-    expect(() => createComputed(0 as any)).toThrow(DreamstateError);
-    expect(() => createComputed({} as any)).toThrow(DreamstateError);
-    expect(() => createComputed(() => ({}), "" as any)).toThrow(DreamstateError);
-    expect(() => createComputed(() => ({}), 0 as any)).toThrow(DreamstateError);
-    expect(() => createComputed(() => ({}), false as any)).toThrow(DreamstateError);
-    expect(() => createComputed(() => ({}), {} as any)).toThrow(DreamstateError);
+    expect(() => createComputed("" as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(null as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(undefined as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(false as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(0 as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed({} as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), "" as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), 0 as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), false as TAnyValue)).toThrow(DreamstateError);
+    expect(() => createComputed(() => ({}), {} as TAnyValue)).toThrow(DreamstateError);
     expect(() => createComputed(() => ({}))).not.toThrow();
     expect(() =>
       createComputed(
         () => ({}),
         () => []
       )).not.toThrow();
-    expect(getCallableError<DreamstateError>(() => createComputed(false as any)).code).toBe(
+    expect(getCallableError<DreamstateError>(() => createComputed(false as TAnyValue)).code).toBe(
       EDreamstateErrorCode.INCORRECT_PARAMETER
     );
   });

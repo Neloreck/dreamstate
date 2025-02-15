@@ -2,6 +2,7 @@ import type { Context } from "react";
 
 import type {
   TAnyContextManagerConstructor,
+  TAnyValue,
   TQuerySubscriptionMetadata,
   TSignalSubscriptionMetadata,
 } from "@/dreamstate/types";
@@ -25,7 +26,10 @@ export const SCOPE_SYMBOL: unique symbol = Symbol("SCOPE");
  * - Module unloading
  * - Scope disposal
  */
-export const CONTEXT_REACT_CONTEXTS_REGISTRY: WeakMap<TAnyContextManagerConstructor, Context<any>> = new WeakMap();
+export const CONTEXT_REACT_CONTEXTS_REGISTRY: WeakMap<
+  TAnyContextManagerConstructor,
+  Context<TAnyValue>
+> = new WeakMap();
 
 export const SIGNAL_METADATA_REGISTRY: WeakMap<TAnyContextManagerConstructor, TSignalSubscriptionMetadata> =
   new WeakMap();

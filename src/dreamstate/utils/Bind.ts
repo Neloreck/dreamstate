@@ -1,5 +1,5 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
-import { EDreamstateErrorCode, MethodDescriptor, TAnyObject } from "@/dreamstate/types";
+import { EDreamstateErrorCode, MethodDescriptor, TAnyObject, TAnyValue } from "@/dreamstate/types";
 
 /**
  * Factory function that creates a bound method descriptor for a given method.
@@ -25,11 +25,11 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
           typeof from.value !== "function"
          */
       ) {
-        return from.value as any;
+        return from.value as TAnyValue;
       }
 
       // Expect only functions to be called, throw errors on other cases.
-      const bound: T = (from.value as any).bind(this);
+      const bound: T = (from.value as TAnyValue).bind(this);
 
       definingProperty = true;
 

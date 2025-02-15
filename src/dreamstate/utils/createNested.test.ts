@@ -1,6 +1,6 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { NestedStore } from "@/dreamstate/core/storing/NestedStore";
-import { EDreamstateErrorCode, TNested } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyValue, TNested } from "@/dreamstate/types";
 import { createNested } from "@/dreamstate/utils/createNested";
 import { getCallableError } from "@/fixtures";
 
@@ -33,8 +33,8 @@ describe("Nested util", () => {
   });
 
   it("should properly throw error for non-objects initial values", () => {
-    expect(() => createNested(5 as any)).toThrow(DreamstateError);
-    expect(getCallableError<DreamstateError>(() => createNested(false as any)).code).toBe(
+    expect(() => createNested(5 as TAnyValue)).toThrow(DreamstateError);
+    expect(getCallableError<DreamstateError>(() => createNested(false as TAnyValue)).code).toBe(
       EDreamstateErrorCode.INCORRECT_PARAMETER
     );
   });

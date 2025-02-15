@@ -4,6 +4,7 @@ import { act } from "react-dom/test-utils";
 
 import { ContextManager, createProvider, ScopeProvider, useManager, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
+import { TUninitializedValue } from "@/dreamstate/types";
 
 describe("useManager subscription and rendering", () => {
   const onStarted = jest.fn();
@@ -38,7 +39,7 @@ describe("useManager subscription and rendering", () => {
 
   it("should properly fire provision events for functional subscribers and clean-up memory", async () => {
     let rendersCount: number = 0;
-    let stateScope: IScopeContext = null as any;
+    let stateScope: IScopeContext = null as TUninitializedValue;
 
     function SampleConsumer(): ReactElement {
       const scope: IScopeContext = useScope();
@@ -95,7 +96,7 @@ describe("useManager subscription and rendering", () => {
 
   it("should properly handle memoized subscriptions", async () => {
     let rendersCount: number = 0;
-    let stateScope: IScopeContext = null as any;
+    let stateScope: IScopeContext = null as TUninitializedValue;
 
     function SampleConsumer(): ReactElement {
       const scope: IScopeContext = useScope();

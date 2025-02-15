@@ -4,7 +4,7 @@ import { default as React, ReactElement, useEffect } from "react";
 import { createProvider, DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { TOptionalQueryResponse, TQueryResponse } from "@/dreamstate/types";
+import { TAnyValue, TOptionalQueryResponse, TQueryResponse } from "@/dreamstate/types";
 import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("queryDataAsync and queries processing", () => {
@@ -34,17 +34,17 @@ describe("queryDataAsync and queries processing", () => {
 
   it("should validate queryDataAsync params", async () => {
     const tree = testQueryTree(({ queryDataAsync }) => {
-      expect(() => queryDataAsync([] as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(["asd" as any] as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync([{} as any] as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(undefined as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(false as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(true as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(NaN as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync("123" as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(1 as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync(null as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync({} as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync([] as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(["asd" as TAnyValue] as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync([{} as TAnyValue] as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(undefined as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(false as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(true as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(NaN as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync("123" as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(1 as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(null as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataAsync({} as TAnyValue)).toThrow(DreamstateError);
     });
 
     await nextAsyncQueue();

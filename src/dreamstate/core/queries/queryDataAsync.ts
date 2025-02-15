@@ -8,6 +8,7 @@ import {
   IQueryResponse,
   TAnyCallable,
   TAnyContextManagerConstructor,
+  TAnyValue,
   TQueryListener,
   TQueryResponse,
   TQueryType,
@@ -40,7 +41,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
   return new Promise(function(resolve: (response: IQueryResponse<R, T>) => void, reject: (error: unknown) => void) {
     try {
       const timestamp: number = Date.now();
-      const result: any = callback(query);
+      const result: TAnyValue = callback(query);
 
       /*
        * Not all query responders are sync or async.
@@ -48,7 +49,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
        */
       if (result instanceof Promise) {
         return result
-          .then(function(data: any): void {
+          .then(function(data: TAnyValue): void {
             resolve({
               answerer: answerer || (callback as TAnyCallable),
               type: query.type,
@@ -110,7 +111,7 @@ export function queryDataAsync<R, D, T extends TQueryType, Q extends IOptionalQu
         const method: string | symbol = entry[0];
 
         return promisifyQuery(
-          (service as any)[method].bind(service),
+          (service as TAnyValue)[method].bind(service),
           query,
           service.constructor as TAnyContextManagerConstructor
         );

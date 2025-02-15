@@ -4,7 +4,7 @@ import { log } from "@/macroses/log.macro";
 
 import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/createScopedObserverTree";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { TAnyContextManagerConstructor } from "@/dreamstate/types";
+import { TAnyContextManagerConstructor, TAnyValue } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
 
 /**
@@ -21,7 +21,7 @@ import { IProviderProps } from "@/dreamstate/types/provision";
  * @returns {FunctionComponent<IProviderProps<T>>} A React function component that acts as a scoped provider
  *   for the specified context manager classes, optimizing re-renders.
  */
-export function createScopedProvider<T extends IProviderProps<any>>(
+export function createScopedProvider<T extends IProviderProps<TAnyValue>>(
   sources: Array<TAnyContextManagerConstructor>
 ): FunctionComponent<IProviderProps<T>> {
   function Observer(props: T): ReactNode {

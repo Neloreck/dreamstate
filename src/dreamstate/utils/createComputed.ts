@@ -1,6 +1,6 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
-import { EDreamstateErrorCode, TAnyObject, TComputed } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyObject, TAnyValue, TComputed } from "@/dreamstate/types";
 import { isFunction, isUndefined } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -17,11 +17,11 @@ import { isFunction, isUndefined } from "@/dreamstate/utils/typechecking";
  */
 export function createComputed<T extends TAnyObject, C extends TAnyObject>(
   selector: (context: C) => T,
-  memo?: (context: C) => Array<any>
+  memo?: (context: C) => Array<TAnyValue>
 ): TComputed<T, C> {
   if (isFunction(selector) && (isUndefined(memo) || isFunction(memo))) {
     // Cast computed to T & TComputed since it works like state object later.
-    return new ComputedValue<T, C>(selector, memo) as any as TComputed<T, C>;
+    return new ComputedValue<T, C>(selector, memo) as unknown as TComputed<T, C>;
   } else {
     throw new DreamstateError(
       EDreamstateErrorCode.INCORRECT_PARAMETER,

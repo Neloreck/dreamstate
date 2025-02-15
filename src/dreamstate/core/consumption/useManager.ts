@@ -1,7 +1,7 @@
 import { useContext } from "react";
 
 import { useContextWithMemo } from "@/dreamstate/core/consumption/useContextWithMemo";
-import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
+import { IContextManagerConstructor, TAnyObject, TAnyValue } from "@/dreamstate/types";
 
 /**
  * Custom hook that wraps `useContext` to provide scoped context data with optional update
@@ -11,7 +11,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  * @template T - The type of the context state.
  * @template D - The type of the context manager constructor.
  * @param {D} ManagerClass - The manager class whose instance context is returned.
- * @param {(context: D["prototype"]["context"]) => any[]} [dependenciesSelector] - An optional function
+ * @param {(context: D["prototype"]["context"]) => TAnyValue[]} dependenciesSelector - An optional function
  *   that receives the current context and returns an array of dependencies. The component re-renders
  *   only if values in this array change. Without it, the component updates on every context change.
  * @returns {D["prototype"]["context"]} The context data provided by the manager within the current
@@ -19,7 +19,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
  */
 export function useManager<T extends TAnyObject, D extends IContextManagerConstructor<T>>(
   ManagerClass: D,
-  dependenciesSelector?: (context: D["prototype"]["context"]) => Array<any>
+  dependenciesSelector?: (context: D["prototype"]["context"]) => Array<TAnyValue>
 ): D["prototype"]["context"] {
   /*
    * Use pub-sub + checking approach only if dependency selector was provided.

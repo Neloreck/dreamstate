@@ -15,12 +15,12 @@ export type TCallable = () => void;
 /**
  * A callable function type that can accept any number of parameters and return any type of value.
  */
-export type TAnyCallable = (...args: Array<any>) => any;
+export type TAnyCallable = (...args: Array<TAnyValue>) => TAnyValue;
 
 /**
  * An object type that can contain any properties with any values.
  */
-export type TAnyObject = Record<string, any>;
+export type TAnyObject = Record<string, TAnyValue>;
 
 /**
  * An object type that cannot be accessed because data is unknown.
@@ -28,11 +28,11 @@ export type TAnyObject = Record<string, any>;
 export type TEmptyObject = Record<string, unknown>;
 
 /**
- * Represents an uninitialized value.
- */
-export type TUninitializedValue = any;
-
-/**
  * Represents any value.
  */
 export type TAnyValue = any;
+
+/**
+ * Represents an uninitialized value.
+ */
+export type TUninitializedValue = TAnyValue;

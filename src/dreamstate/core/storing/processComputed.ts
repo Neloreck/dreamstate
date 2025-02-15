@@ -1,5 +1,5 @@
 import { ComputedValue } from "@/dreamstate/core/storing/ComputedValue";
-import { TComputed, TAnyObject } from "@/dreamstate/types";
+import { TAnyObject } from "@/dreamstate/types";
 
 /**
  * Processes computed values within the given context.
@@ -14,7 +14,7 @@ import { TComputed, TAnyObject } from "@/dreamstate/types";
  */
 export function processComputed<T extends TAnyObject>(context: T): T {
   for (const key in context) {
-    const it: TComputed<any> | unknown = context[key];
+    const it: unknown = context[key];
 
     if (it instanceof ComputedValue) {
       it.process(context);

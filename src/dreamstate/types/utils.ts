@@ -1,4 +1,4 @@
-import { TAnyObject } from "@/dreamstate/types/general";
+import { TAnyObject, TAnyValue } from "@/dreamstate/types/general";
 
 /**
  * Represents a loadable store entry that manages transactional transitions for state updates.
@@ -82,15 +82,15 @@ export interface IComputedBase<T extends TAnyObject, C extends TAnyObject> {
    *
    * @param context The context used to compute the memoized value.
    */
-  readonly __memo__?: (context: C) => Array<any>;
+  readonly __memo__?: (context: C) => Array<TAnyValue>;
 
   /**
    * An optional diff array used to track differences in the computed value.
    */
-  readonly __diff__?: Array<any>;
+  readonly __diff__?: Array<TAnyValue>;
 }
 
 /**
  * A computed type that combines the base computed functionality with the specific type of the computed value.
  */
-export type TComputed<T extends TAnyObject, C extends TAnyObject = any> = T & IComputedBase<T, C>;
+export type TComputed<T extends TAnyObject, C extends TAnyObject = TAnyValue> = T & IComputedBase<T, C>;

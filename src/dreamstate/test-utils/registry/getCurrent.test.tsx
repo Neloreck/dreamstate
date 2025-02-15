@@ -4,11 +4,12 @@ import { default as React, ReactElement } from "react";
 import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getCurrent } from "@/dreamstate/test-utils/registry/getCurrent";
+import { TUninitializedValue } from "@/dreamstate/types";
 import { TestManager } from "@/fixtures";
 
 describe("getCurrent method functionality", () => {
   it("should properly return current service instance", () => {
-    let globalScope: IScopeContext = null as any;
+    let globalScope: IScopeContext = null as TUninitializedValue;
 
     const Provider = createProvider([TestManager]);
 

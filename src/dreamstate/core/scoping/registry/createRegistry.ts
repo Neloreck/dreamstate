@@ -7,6 +7,7 @@ import {
   TSignalListener,
   TUpdateObserver,
   TUpdateSubscriber,
+  TAnyValue,
 } from "@/dreamstate/types";
 
 /**
@@ -47,19 +48,19 @@ export interface IRegistry {
    * ContextManager subscribers registry for data updates.
    * Used by Pub-Sub subscribers to directly consume data updates from context managers.
    */
-  CONTEXT_SUBSCRIBERS_REGISTRY: TManagerMap<Set<TUpdateSubscriber<any>>>;
+  CONTEXT_SUBSCRIBERS_REGISTRY: TManagerMap<Set<TUpdateSubscriber<TAnyValue>>>;
 
   /**
    * Registry of signal handlers.
    * Stores signal listeners that are registered to handle signals emitted within the scope.
    */
-  SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<any>>;
+  SIGNAL_LISTENERS_REGISTRY: Set<TSignalListener<TAnyValue>>;
 
   /**
    * Registry of query request handlers.
    * Stores query providers for various query types that can return data for specific requests.
    */
-  QUERY_PROVIDERS_REGISTRY: Map<TQueryType, Array<TQueryListener<any, any>>>;
+  QUERY_PROVIDERS_REGISTRY: Map<TQueryType, Array<TQueryListener<TAnyValue, TAnyValue>>>;
 }
 
 /**

@@ -28,6 +28,7 @@ import {
   ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
+  TAnyValue,
   TCallable,
   TQueryListener,
   TQueryResponse,
@@ -78,7 +79,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           }
 
           // todo: Add checkContext method call for dev bundle with warnings for initial state nesting.
-          processComputed((instance as ContextManager<any>).context);
+          processComputed((instance as ContextManager<TAnyValue>).context);
 
           instance[SCOPE_SYMBOL] = scope;
           instance[SIGNAL_METADATA_SYMBOL] = collectProtoChainMetadata(ManagerClass, SIGNAL_METADATA_REGISTRY);
@@ -112,7 +113,9 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
       },
       unRegisterService(ManagerClass: TAnyContextManagerConstructor): boolean {
         if (CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
-          const instance: ContextManager<any> = CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as ContextManager<any>;
+          const instance: ContextManager<TAnyValue> = CONTEXT_INSTANCES_REGISTRY.get(
+            ManagerClass
+          ) as ContextManager<TAnyValue>;
 
           /*
            * Unset handlers and stop affecting scope after unregister.
@@ -199,7 +202,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           it(nextContext);
         });
       },
-      subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T, any>>(
+      subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<TAnyValue, T, TAnyValue>>(
         ManagerClass: D,
         subscriber: TUpdateSubscriber<T>
       ): TCallable {
@@ -216,7 +219,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
         };
       },
-      unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T>>(
+      unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<TAnyValue, T>>(
         ManagerClass: D,
         subscriber: TUpdateSubscriber<T>
       ): void {
@@ -264,19 +267,19 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
     unsubscribeFromSignals<D = undefined>(listener: TSignalListener<D>): void {
       SIGNAL_LISTENERS_REGISTRY.delete(listener);
     },
-    registerQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): TCallable {
+    registerQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, TAnyValue>): TCallable {
       return registerQueryProvider(queryType, listener, registry);
     },
-    unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): void {
+    unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, TAnyValue>): void {
       return unRegisterQueryProvider(queryType, listener, registry);
     },
-    queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<any> {
-      return queryDataSync<any, D, T, Q>(query, registry)!;
+    queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<TAnyValue> {
+      return queryDataSync<TAnyValue, D, T, Q>(query, registry)!;
     },
     queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
       queryRequest: Q
-    ): Promise<TQueryResponse<any>> {
-      return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any>>;
+    ): Promise<TQueryResponse<TAnyValue>> {
+      return queryDataAsync<TAnyValue, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<TAnyValue>>;
     },
   };
 

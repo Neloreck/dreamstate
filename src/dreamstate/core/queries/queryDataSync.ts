@@ -7,6 +7,7 @@ import {
   IQueryRequest,
   TAnyCallable,
   TAnyContextManagerConstructor,
+  TAnyValue,
   TQueryListener,
   TQueryResponse,
   TQueryType,
@@ -78,7 +79,7 @@ export function queryDataSync<R, D, T extends TQueryType, Q extends IOptionalQue
         const method: string | symbol = entry[0];
 
         return executeQuerySync(
-          (service as any)[method].bind(service),
+          (service as TAnyValue)[method].bind(service),
           query,
           service.constructor as TAnyContextManagerConstructor
         );

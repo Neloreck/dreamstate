@@ -1,7 +1,7 @@
 import { ContextManager, DreamstateError } from "@/dreamstate";
 import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { TAnyObject } from "@/dreamstate/types";
+import { TAnyObject, TAnyValue } from "@/dreamstate/types";
 import { TestManager } from "@/fixtures";
 
 describe("InitializeScopeContext method", () => {
@@ -52,8 +52,8 @@ describe("InitializeScopeContext method", () => {
 
     const exampleSubscriber = jest.fn();
 
-    expect(() => subscribeToManager(ExampleClass as any, exampleSubscriber)).toThrow(DreamstateError);
-    expect(() => unsubscribeFromManager(ExampleClass as any, exampleSubscriber)).toThrow(DreamstateError);
+    expect(() => subscribeToManager(ExampleClass as TAnyValue, exampleSubscriber)).toThrow(DreamstateError);
+    expect(() => unsubscribeFromManager(ExampleClass as TAnyValue, exampleSubscriber)).toThrow(DreamstateError);
 
     registerService(ExampleManagerClass);
 
@@ -104,15 +104,15 @@ describe("InitializeScopeContext method", () => {
   it("should subscribe only with functional params for handling", () => {
     const { subscribeToSignals }: IScopeContext = initializeScopeContext();
 
-    expect(() => subscribeToSignals(1 as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals(0 as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals("" as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals({} as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals([] as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals(new Map() as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals(Symbol("TEST") as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals(null as any)).toThrow(DreamstateError);
-    expect(() => subscribeToSignals(undefined as any)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals(1 as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals(0 as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals("" as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals({} as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals([] as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals(new Map() as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals(Symbol("TEST") as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals(null as TAnyValue)).toThrow(DreamstateError);
+    expect(() => subscribeToSignals(undefined as TAnyValue)).toThrow(DreamstateError);
   });
 
   it("should properly return register status", () => {

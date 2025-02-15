@@ -4,13 +4,14 @@ import { createElement, FunctionComponent } from "react";
 import { ContextManager, ScopeProvider } from "@/dreamstate";
 import { createProvider } from "@/dreamstate/core/provision/createProvider";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
+import { TAnyValue } from "@/dreamstate/types";
 
 /**
  * Construction occurs before initial provision start.
  * So mounting order does not impact listening start/stop.
  */
 describe("Sending query on provision start", () => {
-  const count = jest.fn((value: any) => {
+  const count = jest.fn((value: TAnyValue) => {
     expect(value.type).toBe("START");
     expect(value.data).toBe("value");
   });

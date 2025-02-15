@@ -3,7 +3,7 @@ import { default as React, ReactElement, useEffect } from "react";
 
 import { createProvider, DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
-import { TQueryResponse } from "@/dreamstate/types";
+import { TAnyValue, TQueryResponse } from "@/dreamstate/types";
 import { EQuery, RespondingManager } from "@/fixtures/queries";
 
 describe("queryDataSync and queries processing", () => {
@@ -34,14 +34,14 @@ describe("queryDataSync and queries processing", () => {
   it("should validate queryDataAsync params", async () => {
     const tree = testQueryTree(({ queryDataSync }) => {
       expect(() => queryDataSync({ type: "TEST", data: undefined })).not.toThrow(DreamstateError);
-      expect(() => queryDataSync(undefined as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(false as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(true as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(NaN as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync("123" as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(1 as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(null as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync({} as any)).toThrow(DreamstateError);
+      expect(() => queryDataSync(undefined as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(false as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(true as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(NaN as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync("123" as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(1 as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(null as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync({} as TAnyValue)).toThrow(DreamstateError);
     });
 
     tree.unmount();
@@ -50,14 +50,14 @@ describe("queryDataSync and queries processing", () => {
   it("should properly handle sync and async queryDataAsync listeners", async () => {
     const tree = testQueryTree(({ queryDataSync }) => {
       expect(() => queryDataSync({ type: "TEST", data: undefined })).not.toThrow(DreamstateError);
-      expect(() => queryDataSync(undefined as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(false as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(true as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(NaN as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync("123" as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(1 as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync(null as any)).toThrow(DreamstateError);
-      expect(() => queryDataSync({} as any)).toThrow(DreamstateError);
+      expect(() => queryDataSync(undefined as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(false as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(true as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(NaN as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync("123" as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(1 as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync(null as TAnyValue)).toThrow(DreamstateError);
+      expect(() => queryDataSync({} as TAnyValue)).toThrow(DreamstateError);
 
       const stringResponse: TQueryResponse<string> = queryDataSync({
         type: EQuery.SYNC_STRING_QUERY,

@@ -13,10 +13,10 @@ describe("Computed value class", () => {
 
     const firstComputedValue: TComputed<{ r: number }> = new ComputedValue(({ a, b }: IContext) => ({
       r: a * b,
-    })) as any as TComputed<{ r: number }>;
+    })) as unknown as TComputed<{ r: number }>;
     const secondComputedValue: TComputed<{ r: number }> = new ComputedValue(({ a, b }: IContext) => ({
       r: a * b,
-    })) as any as TComputed<{ r: number }>;
+    })) as unknown as TComputed<{ r: number }>;
 
     const context: IContext = { a: 15, b: 100, c: firstComputedValue };
     const sameButWithNewRef: IContext = { ...context, a: 15, b: 100 };

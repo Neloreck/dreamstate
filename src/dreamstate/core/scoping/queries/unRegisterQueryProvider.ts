@@ -1,6 +1,6 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
-import { EDreamstateErrorCode, TQueryListener, TQueryType } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyValue, TQueryListener, TQueryType } from "@/dreamstate/types";
 import { isCorrectQueryType, isFunction } from "@/dreamstate/utils/typechecking";
 
 /**
@@ -11,13 +11,13 @@ import { isCorrectQueryType, isFunction } from "@/dreamstate/utils/typechecking"
  *
  * @template T - The type of the query.
  * @param {TQueryType} queryType - The type of query that the listener should be unsubscribed from.
- * @param {TQueryListener<T, any>} listener - The callback listener to be removed from query handling.
+ * @param {TQueryListener<T, TAnyValue>} listener - The callback listener to be removed from query handling.
  * @param {IRegistry} registry - The current scope registry containing the query providers.
  * @returns {void} This function does not return a value; it performs the unsubscribe action.
  */
 export function unRegisterQueryProvider<T extends TQueryType>(
   queryType: T,
-  listener: TQueryListener<T, any>,
+  listener: TQueryListener<T, TAnyValue>,
   { QUERY_PROVIDERS_REGISTRY }: IRegistry
 ): void {
   if (!isFunction(listener)) {
@@ -27,11 +27,11 @@ export function unRegisterQueryProvider<T extends TQueryType>(
   }
 
   if (QUERY_PROVIDERS_REGISTRY.has(queryType)) {
-    const nextProviders: Array<TQueryListener<any, any>> = QUERY_PROVIDERS_REGISTRY.get(queryType)!.filter(function(
-      it: TQueryListener<any, any>
-    ): boolean {
-      return it !== listener;
-    });
+    const nextProviders: Array<TQueryListener<TAnyValue, TAnyValue>> = QUERY_PROVIDERS_REGISTRY.get(queryType)!.filter(
+      function(it: TQueryListener<TAnyValue, TAnyValue>): boolean {
+        return it !== listener;
+      }
+    );
 
     if (nextProviders.length) {
       QUERY_PROVIDERS_REGISTRY.set(queryType, nextProviders);

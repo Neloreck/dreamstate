@@ -2,7 +2,7 @@ import { ContextManager, DreamstateError } from "@/dreamstate";
 import { SIGNAL_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { OnSignal } from "@/dreamstate/core/signals/OnSignal";
 import { mockManager } from "@/dreamstate/test-utils";
-import { TSignalSubscriptionMetadata, TSignalType } from "@/dreamstate/types";
+import { TAnyValue, TSignalSubscriptionMetadata, TSignalType } from "@/dreamstate/types";
 import { ESignal, SubscribedManager } from "@/fixtures/signals";
 
 describe("@OnSignal metadata decorator", () => {
@@ -42,7 +42,7 @@ describe("@OnSignal metadata decorator", () => {
   it("should not work with non-context service classes and bad queries", () => {
     const createTestedClass = <T>(signalType: T) => {
       class Manager extends ContextManager {
-        @OnSignal(signalType as any)
+        @OnSignal(signalType as TAnyValue)
         private willWork(): void {}
       }
 

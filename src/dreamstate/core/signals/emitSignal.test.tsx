@@ -5,45 +5,52 @@ import { DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { emitSignal } from "@/dreamstate/core/signals/emitSignal";
-import { EDreamstateErrorCode, IBaseSignal, ISignalEvent, ISignalWithData } from "@/dreamstate/types";
+import {
+  EDreamstateErrorCode,
+  IBaseSignal,
+  ISignalEvent,
+  ISignalWithData,
+  TAnyValue,
+  TUninitializedValue,
+} from "@/dreamstate/types";
 import { ESignal, getCallableError } from "@/fixtures";
 
 describe("emitSignal method", () => {
   it("should properly reject bad emit parameters", () => {
     const registry: IRegistry = createRegistry();
 
-    expect(() => emitSignal(null as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(false as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(NaN as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(undefined as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(Symbol.for("TEST") as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(Symbol("TEST") as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(0 as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(1 as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal([] as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal(new Set() as any, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal({} as any, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(null as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(false as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(NaN as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(undefined as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(Symbol.for("TEST") as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(Symbol("TEST") as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(0 as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(1 as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal([] as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal(new Set() as TAnyValue, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal({} as TAnyValue, null, registry)).toThrow(DreamstateError);
     expect(() => emitSignal({ type: Symbol.for("TEST") }, null, registry)).not.toThrow();
     expect(() => emitSignal({ type: Symbol("TEST") }, null, registry)).not.toThrow();
     expect(() => emitSignal({ type: 0 }, null, registry)).not.toThrow();
     expect(() => emitSignal({ type: 98 }, null, registry)).not.toThrow();
     expect(() => emitSignal({ type: "VALIDATION" }, null, registry)).not.toThrow();
-    expect(() => emitSignal({ type: [] as any }, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal({ type: undefined as any }, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal({ type: null as any }, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal({ type: {} as any }, null, registry)).toThrow(DreamstateError);
-    expect(() => emitSignal({ type: new Map() as any }, null, registry)).toThrow(DreamstateError);
-    expect(getCallableError<DreamstateError>(() => emitSignal({ type: new Map() as any }, null, registry)).code).toBe(
-      EDreamstateErrorCode.INCORRECT_SIGNAL_TYPE
-    );
+    expect(() => emitSignal({ type: [] as TAnyValue }, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal({ type: undefined as TAnyValue }, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal({ type: null as TAnyValue }, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal({ type: {} as TAnyValue }, null, registry)).toThrow(DreamstateError);
+    expect(() => emitSignal({ type: new Map() as TAnyValue }, null, registry)).toThrow(DreamstateError);
+    expect(
+      getCallableError<DreamstateError>(() => emitSignal({ type: new Map() as TAnyValue }, null, registry)).code
+    ).toBe(EDreamstateErrorCode.INCORRECT_SIGNAL_TYPE);
   });
 
   function MountEmitter({
     subscriber,
     emitter,
   }: {
-    subscriber: (signal: ISignalEvent<any>) => void;
-    emitter: () => [IBaseSignal | ISignalWithData<any>, any];
+    subscriber: (signal: ISignalEvent<TAnyValue>) => void;
+    emitter: () => [IBaseSignal | ISignalWithData<TAnyValue>, TAnyValue];
   }): ReactElement {
     const scope: IScopeContext = useScope();
 
@@ -105,7 +112,7 @@ describe("emitSignal method", () => {
 
     const tree = mount(
       <ScopeProvider>
-        <MountEmitter subscriber={subscriber} emitter={() => [{ type: "WITH_EMITTER" }, 0 as any]}/>
+        <MountEmitter subscriber={subscriber} emitter={() => [{ type: "WITH_EMITTER" }, 0 as TAnyValue]}/>
       </ScopeProvider>
     );
 
@@ -115,8 +122,8 @@ describe("emitSignal method", () => {
   });
 
   it("signal subscribers should properly cancel events and be called in declared order", async () => {
-    let emitter: (base: IBaseSignal) => void = null as any;
-    const mock = jest.fn().mockImplementationOnce((signalEvent: ISignalEvent<any>) => {
+    let emitter: (base: IBaseSignal) => void = null as TUninitializedValue;
+    const mock = jest.fn().mockImplementationOnce((signalEvent: ISignalEvent<TAnyValue>) => {
       signalEvent.cancel();
     });
 

@@ -19,6 +19,7 @@ import {
   ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
+  TAnyValue,
   TConstructorKey,
   TEmptyObject,
   TPartialTransformer,
@@ -78,9 +79,9 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * The context is lazily initialized, even for static resolving, before any other elements of the
    * ContextManager are used.
    *
-   * @returns {Context<any>} The React context associated with this ContextManager.
+   * @returns {Context<TAnyValue>} The React context associated with this ContextManager.
    */
-  public static get REACT_CONTEXT(): Context<any> {
+  public static get REACT_CONTEXT(): Context<TAnyValue> {
     if (this === ContextManager) {
       throw new DreamstateError(
         EDreamstateErrorCode.RESTRICTED_OPERATION,
@@ -298,12 +299,12 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * @param {Q} queryRequest - The query request object containing the query type and optional data.
    * @param {TQueryType} queryRequest.type - The type of the query.
    * @param {*} [queryRequest.data] - Optional data used as parameters for data retrieval.
-   * @returns {Promise<TQueryResponse<any> | null>} A promise that resolves with the query response if a valid
+   * @returns {Promise<TQueryResponse<TAnyValue> | null>} A promise that resolves with the query response if a valid
    *   handler is found, or `null` if no handler exists in the current scope.
    */
   public queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
-  ): Promise<TQueryResponse<any>> {
+  ): Promise<TQueryResponse<TAnyValue>> {
     if (this[SCOPE_SYMBOL]) {
       return this[SCOPE_SYMBOL].queryDataAsync(queryRequest);
     } else {
@@ -325,12 +326,12 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
    * @param {Q} queryRequest - The query request object containing:
    *   - `type`: The type of the query.
    *   - `data` (optional): Additional data or parameters for data retrieval.
-   * @returns {TQueryResponse<any> | null} The query response object if a valid handler is found,
+   * @returns {TQueryResponse<TAnyValue> | null} The query response object if a valid handler is found,
    *   or `null` if no handler exists in the current scope.
    */
   public queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     queryRequest: Q
-  ): TQueryResponse<any> {
+  ): TQueryResponse<TAnyValue> {
     if (this[SCOPE_SYMBOL]) {
       return this[SCOPE_SYMBOL].queryDataSync(queryRequest);
     } else {

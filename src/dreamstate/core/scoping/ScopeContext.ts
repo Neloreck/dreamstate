@@ -9,6 +9,7 @@ import {
   ISignalEvent,
   TAnyContextManagerConstructor,
   TAnyObject,
+  TAnyValue,
   TCallable,
   TQueryListener,
   TQueryResponse,
@@ -112,7 +113,7 @@ export interface IScopeContextInternals {
    * @param {TUpdateSubscriber<T>} subscriber - The callback function that will be triggered on context updates.
    * @returns {TCallable} A function that can be used to unsubscribe from context updates.
    */
-  subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T>>(
+  subscribeToManager<T extends TAnyObject, D extends IContextManagerConstructor<TAnyValue, T>>(
     ManagerClass: D,
     subscriber: TUpdateSubscriber<T>
   ): TCallable;
@@ -126,7 +127,7 @@ export interface IScopeContextInternals {
    * @param {TUpdateSubscriber<T>} subscriber - The callback function that should be removed
    *   from context updates subscription.
    */
-  unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<any, T>>(
+  unsubscribeFromManager<T extends TAnyObject, D extends IContextManagerConstructor<TAnyValue, T>>(
     ManagerClass: D,
     subscriber: TUpdateSubscriber<T>
   ): void;
@@ -192,7 +193,7 @@ export interface IScopeContext {
    * @returns A callable function that unregisters the query provider.
    */
 
-  registerQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): TCallable;
+  registerQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, TAnyValue>): TCallable;
 
   /**
    * Unregisters a query provider callback.
@@ -202,7 +203,7 @@ export interface IScopeContext {
    * @param queryType - The type of query for which the provider is unregistered.
    * @param listener - The callback to be unregistered.
    */
-  unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, any>): void;
+  unRegisterQueryProvider<T extends TQueryType>(queryType: T, listener: TQueryListener<T, TAnyValue>): void;
 
   /**
    * Queries data synchronously from the current scope.
@@ -214,7 +215,7 @@ export interface IScopeContext {
    * @param query - The query request containing the query type and optional data.
    * @returns The query response or null if no handler is found.
    */
-  queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<any>;
+  queryDataSync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(query: Q): TQueryResponse<TAnyValue>;
 
   /**
    * Queries data asynchronously from the current scope.
@@ -228,7 +229,7 @@ export interface IScopeContext {
    */
   queryDataAsync<D, T extends TQueryType, Q extends IOptionalQueryRequest<D, T>>(
     query: Q
-  ): Promise<TQueryResponse<any>>;
+  ): Promise<TQueryResponse<TAnyValue>>;
 }
 
 /**

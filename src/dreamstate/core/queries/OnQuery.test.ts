@@ -3,7 +3,7 @@ import { QUERY_METADATA_SYMBOL } from "@/dreamstate/core/internals";
 import { OnQuery } from "@/dreamstate/core/queries/OnQuery";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
 import { mockManager } from "@/dreamstate/test-utils/services/mockManager";
-import { EDreamstateErrorCode, TQuerySubscriptionMetadata } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyValue, TQuerySubscriptionMetadata } from "@/dreamstate/types";
 import { getCallableError } from "@/fixtures";
 import { RespondingManager } from "@/fixtures/queries";
 
@@ -23,7 +23,7 @@ describe("@OnQuery and queries processing", () => {
   it("should not work with non-context service classes and bad queries", () => {
     const createTestedClass = <T>(queryType: T) => {
       class Manager extends ContextManager {
-        @OnQuery(queryType as any)
+        @OnQuery(queryType as TAnyValue)
         private willWork(): void {}
       }
 

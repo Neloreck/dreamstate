@@ -4,7 +4,7 @@ import { default as React, ReactElement, useEffect, useLayoutEffect } from "reac
 import { DreamstateError, ScopeProvider, useScope } from "@/dreamstate";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { nextAsyncQueue } from "@/dreamstate/test-utils/utils/nextAsyncQueue";
-import { EDreamstateErrorCode, TQueryResponse } from "@/dreamstate/types";
+import { EDreamstateErrorCode, TAnyValue, TQueryResponse } from "@/dreamstate/types";
 import { getCallableError } from "@/fixtures";
 
 describe("registerQueryProvider method", () => {
@@ -107,16 +107,16 @@ describe("registerQueryProvider method", () => {
   it("should throw if handler is not a function", async () => {
     const tree = testQueryTree(({ registerQueryProvider, INTERNAL: { REGISTRY } }) => {
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(1);
-      expect(() => registerQueryProvider("TYPE", null as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", 1 as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", false as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", {} as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", Symbol(123) as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", new Map() as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", new Set() as any)).toThrow(Error);
-      expect(() => registerQueryProvider("TYPE", [] as any)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", null as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", 1 as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", false as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", {} as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", Symbol(123) as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", new Map() as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", new Set() as TAnyValue)).toThrow(Error);
+      expect(() => registerQueryProvider("TYPE", [] as TAnyValue)).toThrow(Error);
       expect(() => registerQueryProvider("TYPE", () => {})).not.toThrow(Error);
-      expect(getCallableError<DreamstateError>(() => registerQueryProvider("TEST", "D" as any)).code).toBe(
+      expect(getCallableError<DreamstateError>(() => registerQueryProvider("TEST", "D" as TAnyValue)).code).toBe(
         EDreamstateErrorCode.INCORRECT_QUERY_PROVIDER
       );
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(2);
@@ -133,15 +133,15 @@ describe("registerQueryProvider method", () => {
       expect(() => registerQueryProvider(1000, () => {})).not.toThrow();
       expect(() => registerQueryProvider(Symbol("TEST"), () => {})).not.toThrow();
       expect(() => registerQueryProvider(Symbol.for("EXAMPLE"), () => {})).not.toThrow();
-      expect(() => registerQueryProvider({} as any, () => {})).toThrow(DreamstateError);
-      expect(() => registerQueryProvider(null as any, () => {})).toThrow(DreamstateError);
-      expect(() => registerQueryProvider(undefined as any, () => {})).toThrow(DreamstateError);
-      expect(() => registerQueryProvider([] as any, () => {})).toThrow(DreamstateError);
-      expect(() => registerQueryProvider(new Map() as any, () => {})).toThrow(DreamstateError);
-      expect(() => registerQueryProvider(new Set() as any, () => {})).toThrow(DreamstateError);
-      expect(getCallableError<DreamstateError>(() => registerQueryProvider(new Set() as any, () => {})).code).toBe(
-        EDreamstateErrorCode.INCORRECT_QUERY_TYPE
-      );
+      expect(() => registerQueryProvider({} as TAnyValue, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(null as TAnyValue, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(undefined as TAnyValue, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider([] as TAnyValue, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(new Map() as TAnyValue, () => {})).toThrow(DreamstateError);
+      expect(() => registerQueryProvider(new Set() as TAnyValue, () => {})).toThrow(DreamstateError);
+      expect(
+        getCallableError<DreamstateError>(() => registerQueryProvider(new Set() as TAnyValue, () => {})).code
+      ).toBe(EDreamstateErrorCode.INCORRECT_QUERY_TYPE);
       expect(REGISTRY.QUERY_PROVIDERS_REGISTRY.size).toBe(6);
     });
 

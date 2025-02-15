@@ -1,6 +1,11 @@
 import { DreamstateError } from "@/dreamstate/core/error/DreamstateError";
 import { ContextManager } from "@/dreamstate/core/services/ContextManager";
-import { EDreamstateErrorCode, TAnyContextManagerConstructor, TContextManagerMetadata } from "@/dreamstate/types";
+import {
+  EDreamstateErrorCode,
+  TAnyContextManagerConstructor,
+  TAnyValue,
+  TContextManagerMetadata,
+} from "@/dreamstate/types";
 
 /**
  * Collects metadata from the prototype chain of a given context manager class.
@@ -35,7 +40,7 @@ export function collectProtoChainMetadata<T extends TAnyContextManagerConstructo
     return metadata.reduce(
       function(pr: D, it: D) {
         if (it) {
-          return pr.concat(it as any) as D;
+          return pr.concat(it as TAnyValue) as D;
         } else {
           return pr;
         }
