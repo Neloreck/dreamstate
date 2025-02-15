@@ -50,26 +50,34 @@ jobs:
         run: pnpm install
 
       - run: pnpm lint
+
       - run: pnpm typecheck
+
       - run: pnpm test
+
       - run: pnpm build:dts
+
       - run: pnpm build:cjs
+
       - run: pnpm build:esm
+
       - run: pnpm build:ptb
+
+      - run: pnpm build:pkg
 
       - name: Install zip
         uses: montudor/action-zip@v1
 
       - name: Archive build artifacts
         working-directory: target/
-        run: zip -qq -r packages.zip dist/ pkg/
+        run: zip -qq -r package.zip dist/ pkg/
 
-      - name: Upload build packages
+      - name: Upload build package
         uses: actions/upload-artifact@v4
         with:
           if-no-files-found: error
-          name: packages
-          path: target/packages.zip
+          name: package
+          path: target/package.zip
           retention-days: 1
 
   upload-nightly:
@@ -82,7 +90,7 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: packages
+          name: package
 
       - name: Update nightly tag
         uses: EndBug/latest-tag@latest
@@ -90,8 +98,8 @@ jobs:
         with:
           ref: nightly
 
-      - name: Publish nightly packages release
+      - name: Publish nightly package release
         if: ${{ steps.update-nightly-tag.outcome == 'success' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload --clobber nightly packages.zip
+        run: gh release upload --clobber nightly package.zip
