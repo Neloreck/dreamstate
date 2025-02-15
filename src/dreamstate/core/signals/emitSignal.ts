@@ -7,7 +7,7 @@ import {
   IBaseSignal,
   ISignalEvent,
   TAnyContextManagerConstructor,
-  TSignalListener
+  TSignalListener,
 } from "@/dreamstate/types";
 import { isCorrectSignalType } from "@/dreamstate/utils/typechecking";
 
@@ -40,7 +40,7 @@ export function emitSignal<D = undefined>(
     data: base.data as D,
     emitter,
     timestamp: Date.now(),
-    cancel: cancelSignal
+    cancel: cancelSignal,
   };
 
   REGISTRY.SIGNAL_LISTENERS_REGISTRY.forEach(function(it: TSignalListener<D>) {

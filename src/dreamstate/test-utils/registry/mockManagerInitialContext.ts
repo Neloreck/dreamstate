@@ -11,5 +11,5 @@ export function mockManagerInitialContext<D extends TAnyContextManagerConstructo
   ManagerClass: D,
   context: Partial<D["prototype"]["context"]>
 ): [D, Partial<D["prototype"]["context"]>] {
-  return [ ManagerClass, context ];
+  return [ManagerClass, context];
 }

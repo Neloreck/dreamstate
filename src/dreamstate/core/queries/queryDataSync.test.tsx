@@ -9,7 +9,7 @@ import { EQuery, RespondingManager } from "@/fixtures/queries";
 describe("queryDataSync and queries processing", () => {
   type TQueryCb = (scope: IScopeContext) => void;
 
-  const Provider = createProvider([ RespondingManager ]);
+  const Provider = createProvider([RespondingManager]);
 
   function testQueryTree(checker: TQueryCb): ReactWrapper {
     return mount(
@@ -61,11 +61,11 @@ describe("queryDataSync and queries processing", () => {
 
       const stringResponse: TQueryResponse<string> = queryDataSync({
         type: EQuery.SYNC_STRING_QUERY,
-        data: "query"
+        data: "query",
       });
       const asyncNumberResponse: TQueryResponse<Promise<number>> = queryDataSync({
         type: EQuery.ASYNC_NUMBER_QUERY,
-        data: undefined
+        data: undefined,
       });
 
       expect(stringResponse).not.toBeNull();

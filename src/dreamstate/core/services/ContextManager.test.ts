@@ -12,9 +12,8 @@ import { EmittingManager, ExtendingManager, TestManager } from "@/fixtures";
 describe("ContextManager class", () => {
   it("should correctly handle setContext method out of scope", () => {
     class SampleManager extends ContextManager<{ first: number }> {
-
       public context = {
-        first: 1
+        first: 1,
       };
 
       public constructor() {
@@ -23,7 +22,6 @@ describe("ContextManager class", () => {
         expect(this[SCOPE_SYMBOL]).toBeUndefined();
         this.setContext({ first: 1000 });
       }
-
     }
 
     const manager: SampleManager = mockManager(SampleManager);
@@ -40,16 +38,14 @@ describe("ContextManager class", () => {
 
   it("should correctly handle forceUpdate method out of scope", () => {
     class SampleManager extends ContextManager<{ first: number }> {
-
       public context = {
-        first: 1
+        first: 1,
       };
 
       public constructor() {
         super();
         this.forceUpdate();
       }
-
     }
 
     const manager: SampleManager = mockManager(SampleManager);

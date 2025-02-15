@@ -3,7 +3,7 @@ import { TestManager } from "@/fixtures";
 
 describe("mockManagerInitialContext test util", () => {
   it("should create tuple for map initialization", () => {
-    const [ manager, overrodeContext ] = mockManagerInitialContext(TestManager, { third: true });
+    const [manager, overrodeContext] = mockManagerInitialContext(TestManager, { third: true });
 
     expect(mockManagerInitialContext(TestManager, {})).toHaveLength(2);
     expect(manager).toBe(TestManager);

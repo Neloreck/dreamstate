@@ -11,7 +11,7 @@ import type { TSignalSubscriptionMetadata } from "@/dreamstate/types/signals";
 export interface IContextManagerConstructor<
   T extends TAnyObject = TAnyObject,
   S extends TAnyObject = any,
-  C extends ContextManager<T> = ContextManager<T>
+  C extends ContextManager<T> = ContextManager<T>,
 > {
   REACT_CONTEXT: Context<T>;
   prototype: C;

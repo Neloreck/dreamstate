@@ -18,7 +18,7 @@ export {
   TQueryRequest as QueryRequest,
   TQueryResponse as QueryResponse,
   TQueryType as QueryType,
-  TSignalType as SignalType
+  TSignalType as SignalType,
 } from "@/dreamstate/types";
 
 export { DreamstateError } from "@/dreamstate/core/error/DreamstateError";

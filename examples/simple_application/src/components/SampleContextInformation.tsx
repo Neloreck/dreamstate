@@ -7,14 +7,14 @@ import { SampleManager } from "../stores/SampleManager";
 const informationStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
-  border: "1px solid black"
+  border: "1px solid black",
 };
 
 /**
  * Update on every context update and keep current component up-to-date always.
  */
 export function SampleContextInformation({
-  sampleContext: { sampleNumber, sampleString } = useManager(SampleManager)
+  sampleContext: { sampleNumber, sampleString } = useManager(SampleManager),
 }): ReactElement {
   const rendersCount: number = useRendersCount();
 

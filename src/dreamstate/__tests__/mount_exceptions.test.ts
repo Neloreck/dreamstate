@@ -7,7 +7,6 @@ import { createProvider } from "@/dreamstate/core/provision/createProvider";
 describe("Mount expections for providers", () => {
   const generateManagers = (mountList: Array<string>, unmountList: Array<string>) => {
     class BaseManager extends ContextManager {
-
       public onProvisionStarted(): void {
         mountList.push(this.constructor.name);
       }
@@ -15,18 +14,15 @@ describe("Mount expections for providers", () => {
       public onProvisionEnded(): void {
         unmountList.push(this.constructor.name);
       }
-
     }
 
     class First extends BaseManager {}
 
     class Second extends BaseManager {
-
       public onProvisionStarted(): void {
         super.onProvisionStarted();
         throw new DreamstateError();
       }
-
     }
 
     class Third extends BaseManager {}
@@ -36,9 +32,8 @@ describe("Mount expections for providers", () => {
 
   const mountProviderTree = (provider: FunctionComponent) => {
     class Boundary extends Component {
-
       public state: { isFailed: boolean } = {
-        isFailed: false
+        isFailed: false,
       };
 
       public componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
@@ -48,7 +43,6 @@ describe("Mount expections for providers", () => {
       public render(): ReactNode {
         return this.state.isFailed ? null : this.props.children;
       }
-
     }
 
     return mount(createElement(ScopeProvider, {}, createElement(Boundary, {}, createElement(provider))));
@@ -59,8 +53,8 @@ describe("Mount expections for providers", () => {
     const unmountList: Array<string> = [];
 
     const { First, Second, Third } = generateManagers(mountList, unmountList);
-    const Provider = createProvider([ First, Second, Third ], {
-      isCombined
+    const Provider = createProvider([First, Second, Third], {
+      isCombined,
     });
 
     const tree = mountProviderTree(Provider);

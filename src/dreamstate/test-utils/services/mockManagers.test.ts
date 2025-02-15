@@ -8,7 +8,7 @@ import { ExtendingManager, TestManager } from "@/fixtures";
 describe("mockManagers test util", () => {
   it("should properly mock manager with context", () => {
     const scope: IScopeContext = mockScope();
-    const map: TManagerInstanceMap = mockManagers([ TestManager ], null, scope);
+    const map: TManagerInstanceMap = mockManagers([TestManager], null, scope);
 
     expect(map.get(TestManager)).toBeInstanceOf(TestManager);
     expect(map.get(ExtendingManager)).toBeUndefined();

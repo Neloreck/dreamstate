@@ -15,10 +15,9 @@ describe("UseManager subscription and rendering", () => {
   }
 
   class SampleContextManager extends ContextManager<ISampleContext> {
-
     public context: ISampleContext = {
       example: 1000,
-      text: "value"
+      text: "value",
     };
 
     public onProvisionStarted(): void {
@@ -28,10 +27,9 @@ describe("UseManager subscription and rendering", () => {
     public onProvisionEnded(): void {
       onEnded();
     }
-
   }
 
-  const SampleProvider = createProvider([ SampleContextManager ]);
+  const SampleProvider = createProvider([SampleContextManager]);
 
   afterEach(() => {
     onEnded.mockClear();
@@ -77,7 +75,7 @@ describe("UseManager subscription and rendering", () => {
 
     act(() => {
       stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({
-        text: "anything"
+        text: "anything",
       });
     });
     tree.update();
@@ -101,7 +99,7 @@ describe("UseManager subscription and rendering", () => {
 
     function SampleConsumer(): ReactElement {
       const scope: IScopeContext = useScope();
-      const value: ISampleContext = useManager(SampleContextManager, ({ text }) => [ text ]);
+      const value: ISampleContext = useManager(SampleContextManager, ({ text }) => [text]);
 
       rendersCount += 1;
       stateScope = scope;
@@ -129,7 +127,7 @@ describe("UseManager subscription and rendering", () => {
 
     act(() => {
       stateScope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(SampleContextManager)!.setContext({
-        text: "anything"
+        text: "anything",
       });
     });
     tree.update();

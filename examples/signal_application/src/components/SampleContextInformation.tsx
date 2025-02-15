@@ -8,12 +8,12 @@ import { SecondManager } from "../stores/SecondManager";
 const informationStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
-  border: "1px solid black"
+  border: "1px solid black",
 };
 
 export function SampleContextInformation({
   firstContext: { sampleNumber: firstSampleNumber, reflectedString } = useManager(FirstManager),
-  secondContext: { sampleString, sampleNumber: secondSampleNumber } = useManager(SecondManager)
+  secondContext: { sampleString, sampleNumber: secondSampleNumber } = useManager(SecondManager),
 }): ReactElement {
   /**
    * Update on every context update and keep current component up-to-date always.

@@ -3,7 +3,7 @@ import type { Context } from "react";
 import type {
   TAnyContextManagerConstructor,
   TQuerySubscriptionMetadata,
-  TSignalSubscriptionMetadata
+  TSignalSubscriptionMetadata,
 } from "@/dreamstate/types";
 
 /**

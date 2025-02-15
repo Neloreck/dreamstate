@@ -5,7 +5,6 @@ import { EDreamstateErrorCode } from "@/dreamstate/types";
  * Error class describing generic dreamstate error.
  */
 export class DreamstateError extends Error {
-
   /**
    * Name or error class to help differentiate error class in minimified environments.
    */
@@ -27,5 +26,4 @@ export class DreamstateError extends Error {
     this.code = code;
     this.message = mapDreamstateErrorMessage(code, detail);
   }
-
 }

@@ -6,7 +6,7 @@ import {
   QUERY_METADATA_SYMBOL,
   SCOPE_SYMBOL,
   SIGNAL_METADATA_SYMBOL,
-  SIGNALING_HANDLER_SYMBOL
+  SIGNALING_HANDLER_SYMBOL,
 } from "@/dreamstate/core/internals";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { getReactContext } from "@/dreamstate/core/services/getReactContext";
@@ -27,7 +27,7 @@ import {
   TQueryType,
   TSignalListener,
   TSignalSubscriptionMetadata,
-  TSignalType
+  TSignalType,
 } from "@/dreamstate/types";
 import { isFunction } from "@/dreamstate/utils/typechecking";
 
@@ -50,7 +50,6 @@ import { isFunction } from "@/dreamstate/utils/typechecking";
  * Async methods called after manager class unregistering will cause dev warnings and will not affect actual scope.
  */
 export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S extends TAnyObject = TAnyObject> {
-
   /**
    * React context default value getter.
    * Used to provide placeholder values when manager is not provided.
@@ -293,5 +292,4 @@ export abstract class ContextManager<T extends TAnyObject = TEmptyObject, S exte
       throwOutOfScope();
     }
   }
-
 }

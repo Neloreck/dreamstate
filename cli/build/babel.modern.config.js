@@ -1,26 +1,26 @@
 export const BABEL_CONFIG = {
-  extensions: [ ".ts", ".js" ],
+  extensions: [".ts", ".js"],
   presets: [
     [
       "@babel/preset-env",
       {
         modules: false,
         loose: true,
-        targets: "> 10%"
-      }
+        targets: "> 10%",
+      },
     ],
-    "@babel/preset-typescript"
+    "@babel/preset-typescript",
   ],
   plugins: [
     [
       "module-resolver",
       {
-        root: [ "./" ],
+        root: ["./"],
         alias: {
-          "@": "./src"
-        }
-      }
+          "@": "./src",
+        },
+      },
     ],
-    "macros"
-  ]
+    "macros",
+  ],
 };

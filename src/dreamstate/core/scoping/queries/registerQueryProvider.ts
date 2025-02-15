@@ -35,7 +35,7 @@ export function registerQueryProvider<T extends TQueryType>(
     }
   } else {
     // Just add new entry.
-    registry.QUERY_PROVIDERS_REGISTRY.set(queryType, [ listener ]);
+    registry.QUERY_PROVIDERS_REGISTRY.set(queryType, [listener]);
   }
 
   /**

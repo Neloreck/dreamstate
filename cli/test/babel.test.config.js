@@ -4,28 +4,28 @@ module.exports = {
       "@babel/preset-env",
       {
         targets: {
-          node: "current"
+          node: "current",
         },
         modules: false,
-        loose: true
-      }
+        loose: true,
+      },
     ],
     "@babel/preset-typescript",
-    "@babel/preset-react"
+    "@babel/preset-react",
   ],
   plugins: [
     "@babel/plugin-transform-modules-commonjs",
-    [ "@babel/plugin-proposal-decorators", { legacy: true } ],
-    [ "@babel/plugin-proposal-class-properties", { loose: true } ],
+    ["@babel/plugin-proposal-decorators", { legacy: true }],
+    ["@babel/plugin-proposal-class-properties", { loose: true }],
     [
       "module-resolver",
       {
-        root: [ "./" ],
+        root: ["./"],
         alias: {
-          "@": "./src"
-        }
-      }
+          "@": "./src",
+        },
+      },
     ],
-    "macros"
-  ]
+    "macros",
+  ],
 };

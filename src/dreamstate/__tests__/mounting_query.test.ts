@@ -16,20 +16,16 @@ describe("Sending query on provision start", () => {
   });
 
   class QueryingOnStart extends ContextManager {
-
     public onProvisionStarted(): void {
       count(this.queryDataSync({ type: "START" }));
     }
-
   }
 
   class AnsweringOnStart extends ContextManager {
-
     @OnQuery("START")
     private onQuery(): string {
       return "value";
     }
-
   }
 
   it("should properly query data while mounting", async () => {
@@ -43,17 +39,17 @@ describe("Sending query on provision start", () => {
       count.mockClear();
     }
 
-    await testProvider(createProvider([ AnsweringOnStart, QueryingOnStart ], { isCombined: true }), 1);
-    await testProvider(createProvider([ QueryingOnStart, AnsweringOnStart ], { isCombined: true }), 1);
+    await testProvider(createProvider([AnsweringOnStart, QueryingOnStart], { isCombined: true }), 1);
+    await testProvider(createProvider([QueryingOnStart, AnsweringOnStart], { isCombined: true }), 1);
     await testProvider(
-      createProvider([ AnsweringOnStart, QueryingOnStart ], {
-        isCombined: false
+      createProvider([AnsweringOnStart, QueryingOnStart], {
+        isCombined: false,
       }),
       1
     );
     await testProvider(
-      createProvider([ QueryingOnStart, AnsweringOnStart ], {
-        isCombined: false
+      createProvider([QueryingOnStart, AnsweringOnStart], {
+        isCombined: false,
       }),
       1
     );

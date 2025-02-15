@@ -9,7 +9,7 @@ import { NestedManager, TestManager } from "@/fixtures";
 describe("provideSubTreeRecursive rendering", () => {
   it("should match snapshot", () => {
     const registry: IRegistry = createRegistry();
-    const providers: Array<TAnyContextManagerConstructor> = [ TestManager, NestedManager, TestManager ];
+    const providers: Array<TAnyContextManagerConstructor> = [TestManager, NestedManager, TestManager];
 
     const emptyRecursiveRender = shallow(
       <div>{ provideSubTreeRecursive(<div> bottom </div>, providers, registry.CONTEXT_STATES_REGISTRY) }</div>

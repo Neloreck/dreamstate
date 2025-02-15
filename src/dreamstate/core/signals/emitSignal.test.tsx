@@ -40,7 +40,7 @@ describe("emitSignal method", () => {
 
   function MountEmitter({
     subscriber,
-    emitter
+    emitter,
   }: {
     subscriber: (signal: ISignalEvent<any>) => void;
     emitter: () => [IBaseSignal | ISignalWithData<any>, any];
@@ -69,7 +69,7 @@ describe("emitSignal method", () => {
 
     const tree = mount(
       <ScopeProvider>
-        <MountEmitter subscriber={subscriber} emitter={() => [ { type: "TEST" }, null ]}/>
+        <MountEmitter subscriber={subscriber} emitter={() => [{ type: "TEST" }, null]}/>
       </ScopeProvider>
     );
 
@@ -87,7 +87,7 @@ describe("emitSignal method", () => {
 
     const tree = mount(
       <ScopeProvider>
-        <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_PARAM", data: 155 }, null ]}/>
+        <MountEmitter subscriber={subscriber} emitter={() => [{ type: "WITH_PARAM", data: 155 }, null]}/>
       </ScopeProvider>
     );
 
@@ -105,7 +105,7 @@ describe("emitSignal method", () => {
 
     const tree = mount(
       <ScopeProvider>
-        <MountEmitter subscriber={subscriber} emitter={() => [ { type: "WITH_EMITTER" }, 0 as any ]}/>
+        <MountEmitter subscriber={subscriber} emitter={() => [{ type: "WITH_EMITTER" }, 0 as any]}/>
       </ScopeProvider>
     );
 

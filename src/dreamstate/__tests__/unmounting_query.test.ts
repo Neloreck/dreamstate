@@ -10,20 +10,16 @@ describe("Emitting signal on provision end", () => {
   const mock = jest.fn();
 
   class QueryingOnProvisionEnd extends ContextManager {
-
     public async onProvisionEnded() {
       await this.queryDataAsync({ type: "END" });
     }
-
   }
 
   class AnsweringOnProvisionEnd extends ContextManager {
-
     @OnQuery("END")
     private onQuery(): void {
       mock();
     }
-
   }
 
   it("should properly notify current managers when sending signal on unmount with combined provision", async () => {
@@ -38,26 +34,26 @@ describe("Emitting signal on provision end", () => {
     }
 
     await testProvider(
-      createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], {
-        isCombined: false
+      createProvider([AnsweringOnProvisionEnd, QueryingOnProvisionEnd], {
+        isCombined: false,
       }),
       0
     );
     await testProvider(
-      createProvider([ AnsweringOnProvisionEnd, QueryingOnProvisionEnd ], {
-        isCombined: true
+      createProvider([AnsweringOnProvisionEnd, QueryingOnProvisionEnd], {
+        isCombined: true,
       }),
       0
     );
     await testProvider(
-      createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], {
-        isCombined: false
+      createProvider([QueryingOnProvisionEnd, AnsweringOnProvisionEnd], {
+        isCombined: false,
       }),
       1
     );
     await testProvider(
-      createProvider([ QueryingOnProvisionEnd, AnsweringOnProvisionEnd ], {
-        isCombined: true
+      createProvider([QueryingOnProvisionEnd, AnsweringOnProvisionEnd], {
+        isCombined: true,
       }),
       1
     );

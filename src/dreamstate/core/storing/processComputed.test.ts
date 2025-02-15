@@ -16,8 +16,8 @@ describe("processComputed method", () => {
     const context = {
       value: "default",
       computed: createComputed((context: { value: string }) => ({
-        concat: context.value + "!"
-      }))
+        concat: context.value + "!",
+      })),
     };
 
     expect(context.value).toBe("default");
@@ -36,10 +36,10 @@ describe("processComputed method", () => {
       a: "1233",
       b: 123123,
       c: false,
-      d: [ 1, 2, 3, 4, 5, 6, 7 ],
+      d: [1, 2, 3, 4, 5, 6, 7],
       e: createComputed((context: ITestContext) => ({
-        odd: context.d.filter((it: number) => it % 2 === 0)
-      }))
+        odd: context.d.filter((it: number) => it % 2 === 0),
+      })),
     };
 
     processComputed(defaultContext);
@@ -71,13 +71,13 @@ describe("processComputed method", () => {
       a: "1233",
       b: 123123,
       c: false,
-      d: [ 1, 2, 3, 4, 5, 6, 7 ],
+      d: [1, 2, 3, 4, 5, 6, 7],
       e: createComputed(
         (context: ITestContext) => ({
-          odd: context.d.filter((it: number) => it % 2 === 0)
+          odd: context.d.filter((it: number) => it % 2 === 0),
         }),
-        (context: ITestContext) => [ context.d ]
-      )
+        (context: ITestContext) => [context.d]
+      ),
     };
 
     processComputed(memoContext);
@@ -97,7 +97,7 @@ describe("processComputed method", () => {
     expect(first).toBe(memoContext.e.odd);
     expect(firstComputed).toBe(memoContext.e);
 
-    memoContext.d = [ 1, 4, 12, 25 ];
+    memoContext.d = [1, 4, 12, 25];
 
     processComputed(memoContext);
 

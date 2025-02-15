@@ -10,6 +10,6 @@ export class TestManager extends ContextManager<ITestContext> {
   public readonly context: ITestContext = {
     first: "first",
     second: 2,
-    third: false
+    third: false,
   };
 }

@@ -10,10 +10,10 @@ import { TestManager } from "@/fixtures";
 describe("mockContextProvider util", () => {
   it("should correctly provide mocked state for nested components", () => {
     const Provider = mockContextProvider(
-      [ TestManager ],
+      [TestManager],
       {},
       mockScope({
-        applyInitialContexts: [ mockManagerInitialContext(TestManager, { first: "this test", second: 1000 }) ]
+        applyInitialContexts: [mockManagerInitialContext(TestManager, { first: "this test", second: 1000 })],
       })
     );
 
@@ -25,7 +25,7 @@ describe("mockContextProvider util", () => {
       return createElement("div", {}, [
         createElement("span", { key: 1 }, first),
         createElement("span", { key: 2 }, second),
-        createElement("span", { key: 3 }, JSON.stringify(third))
+        createElement("span", { key: 3 }, JSON.stringify(third)),
       ]);
     };
 

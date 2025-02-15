@@ -6,7 +6,7 @@ import {
   TManagerMap,
   TSignalListener,
   TUpdateObserver,
-  TUpdateSubscriber
+  TUpdateSubscriber,
 } from "@/dreamstate/types";
 
 /**
@@ -61,6 +61,6 @@ export function createRegistry(): IRegistry {
     CONTEXT_STATES_REGISTRY: new Map(),
     CONTEXT_SERVICES_REFERENCES: new Map(),
     CONTEXT_OBSERVERS_REGISTRY: new Map(),
-    CONTEXT_SUBSCRIBERS_REGISTRY: new Map()
+    CONTEXT_SUBSCRIBERS_REGISTRY: new Map(),
   };
 }

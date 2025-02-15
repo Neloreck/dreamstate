@@ -15,58 +15,58 @@ import {
   PORTABLE_ROOT,
   EEnvironment,
   DS_ROOT,
-  STATS_ROOT
+  STATS_ROOT,
 } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
 const createPortableConfig = (env) => ({
-  external: [ "react", "shallow-equal" ],
+  external: ["react", "shallow-equal"],
   input: PORTABLE_ENTRY,
   output: {
     compact: env === EEnvironment.PRODUCTION,
     file: path.resolve(PORTABLE_ROOT, "dreamstate.js"),
     preserveModules: false,
     sourcemap: true,
-    format: "es"
+    format: "es",
   },
   plugins: [
     commonjs(),
     babel({ ...BABEL_CONFIG, babelHelpers: "bundled" }),
     replace({
       preventAssignment: true,
-      IS_DEV: env !== EEnvironment.PRODUCTION
+      IS_DEV: env !== EEnvironment.PRODUCTION,
     }),
     typescript({
       tsconfig: TS_PORTABLE_CONFIG,
-      declaration: false
+      declaration: false,
     }),
     visualizer({
       filename: path.resolve(STATS_ROOT, "ptb-stats.html"),
       gzipSize: true,
-      projectRoot: DS_ROOT
+      projectRoot: DS_ROOT,
     }),
     clear({
-      targets: [ PORTABLE_ROOT ]
-    })
-  ]
+      targets: [PORTABLE_ROOT],
+    }),
+  ],
 });
 
 const createPortableDtsConfig = (env) => ({
-  input: [ PORTABLE_ENTRY ],
+  input: [PORTABLE_ENTRY],
   output: {
     file: path.resolve(PORTABLE_ROOT, "dreamstate.d.ts"),
-    format: "es"
+    format: "es",
   },
   plugins: [
     dts.default({
       compilerOptions: {
         baseUrl: tsconfig.compilerOptions.baseUrl,
         paths: tsconfig.compilerOptions.paths,
-        rootDir: tsconfig.compilerOptions.rootDir
-      }
-    })
-  ]
+        rootDir: tsconfig.compilerOptions.rootDir,
+      },
+    }),
+  ],
 });
 
-export default [ createPortableDtsConfig(EEnvironment.PRODUCTION), createPortableConfig(EEnvironment.PRODUCTION) ];
+export default [createPortableDtsConfig(EEnvironment.PRODUCTION), createPortableConfig(EEnvironment.PRODUCTION)];

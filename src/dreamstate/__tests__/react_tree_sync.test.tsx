@@ -10,7 +10,7 @@ import { ITestContext, TestManager } from "@/fixtures";
 
 describe("React tree for provided and consumed components", () => {
   it("should correctly update subscribed to functional provider elements view", () => {
-    const ContextProvider = createProvider([ TestManager ]);
+    const ContextProvider = createProvider([TestManager]);
 
     function Root(): ReactElement {
       return (
@@ -41,7 +41,7 @@ describe("React tree for provided and consumed components", () => {
       testContextManager!.setContext({
         first: "updated",
         second: 101010,
-        third: true
+        third: true,
       });
     });
 

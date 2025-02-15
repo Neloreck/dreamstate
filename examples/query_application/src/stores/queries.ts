@@ -6,7 +6,7 @@ import { QueryResponse } from "dreamstate";
  */
 export enum EGenericQuery {
   SAMPLE_NUMBER = "SAMPLE_NUMBER_CHANGED",
-  STRING_FROM_COMPONENT = "STRING_FROM_COMPONENT"
+  STRING_FROM_COMPONENT = "STRING_FROM_COMPONENT",
 }
 
 /**

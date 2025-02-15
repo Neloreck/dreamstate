@@ -7,7 +7,7 @@ import { SecondManager } from "./stores/SecondManager";
 /**
  * Provider of sample context managers.
  */
-const StoreProvider = createProvider([ FirstManager, SecondManager ]);
+const StoreProvider = createProvider([FirstManager, SecondManager]);
 
 /**
  * Global application provider.

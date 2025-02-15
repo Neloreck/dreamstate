@@ -40,10 +40,10 @@ describe("registerQueryProvider method", () => {
   it("should properly subscribe to queries", async () => {
     const tree = testQueryTree(async ({ queryDataSync, queryDataAsync, INTERNAL: { REGISTRY } }) => {
       const resultSync: TQueryResponse<number> = queryDataSync({
-        type: "ANY"
+        type: "ANY",
       });
       const resultAsync: TQueryResponse<number> = await queryDataAsync({
-        type: "ANY"
+        type: "ANY",
       });
 
       expect(resultSync.data).toBe(1);

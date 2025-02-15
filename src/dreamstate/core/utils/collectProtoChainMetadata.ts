@@ -28,13 +28,16 @@ export function collectProtoChainMetadata<T extends TAnyContextManagerConstructo
      * todo: Remove duplicates from an array?
      * todo: If overriding signal handling methods and adding @OnSignal, it may cause issues with double call of method.
      */
-    return metadata.reduce(function(pr: D, it: D) {
-      if (it) {
-        return pr.concat(it as any) as D;
-      } else {
-        return pr;
-      }
-    }, [] as unknown as D);
+    return metadata.reduce(
+      function(pr: D, it: D) {
+        if (it) {
+          return pr.concat(it as any) as D;
+        } else {
+          return pr;
+        }
+      },
+      [] as unknown as D
+    );
   } else {
     throw new DreamstateError(
       EDreamstateErrorCode.INCORRECT_PARAMETER,

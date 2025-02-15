@@ -7,7 +7,7 @@ import {
   SCOPE_SYMBOL,
   SIGNAL_METADATA_REGISTRY,
   SIGNAL_METADATA_SYMBOL,
-  SIGNALING_HANDLER_SYMBOL
+  SIGNALING_HANDLER_SYMBOL,
 } from "@/dreamstate/core/internals";
 import { queryDataAsync } from "@/dreamstate/core/queries/queryDataAsync";
 import { queryDataSync } from "@/dreamstate/core/queries/queryDataSync";
@@ -35,7 +35,7 @@ import {
   TSignalListener,
   TUninitializedValue,
   TUpdateObserver,
-  TUpdateSubscriber
+  TUpdateSubscriber,
 } from "@/dreamstate/types";
 import { isFunction } from "@/dreamstate/utils/typechecking";
 
@@ -53,7 +53,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
     QUERY_PROVIDERS_REGISTRY,
     CONTEXT_SERVICES_REFERENCES,
     CONTEXT_INSTANCES_REGISTRY,
-    CONTEXT_SUBSCRIBERS_REGISTRY
+    CONTEXT_SUBSCRIBERS_REGISTRY,
   } = registry;
 
   const scope: IScopeContext = {
@@ -226,7 +226,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         }
 
         registry.CONTEXT_SUBSCRIBERS_REGISTRY.get(ManagerClass)!.delete(subscriber);
-      }
+      },
     },
     getContextOf<T extends TAnyObject, D extends IContextManagerConstructor<T>>(manager: D): T {
       const context: T | null = CONTEXT_STATES_REGISTRY.get(manager) as T;
@@ -275,7 +275,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
       queryRequest: Q
     ): Promise<TQueryResponse<any>> {
       return queryDataAsync<any, D, T, Q>(queryRequest, registry) as Promise<TQueryResponse<any>>;
-    }
+    },
   };
 
   return scope;

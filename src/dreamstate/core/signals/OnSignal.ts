@@ -51,9 +51,9 @@ export function OnSignal(signalType: Array<TSignalType> | TSignalType): MethodDe
     }
 
     if (SIGNAL_METADATA_REGISTRY.has(ManagerClass)) {
-      SIGNAL_METADATA_REGISTRY.get(ManagerClass)!.push([ method, signalType ]);
+      SIGNAL_METADATA_REGISTRY.get(ManagerClass)!.push([method, signalType]);
     } else {
-      SIGNAL_METADATA_REGISTRY.set(ManagerClass, [ [ method, signalType ] ]);
+      SIGNAL_METADATA_REGISTRY.set(ManagerClass, [[method, signalType]]);
     }
   });
 }

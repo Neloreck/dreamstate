@@ -15,14 +15,13 @@ export interface IFirstContext {
  * Declare manager class that handles declared data.
  */
 export class FirstManager extends ContextManager<IFirstContext> {
-
   /**
    * Initial context data.
    */
   public context: IFirstContext = {
     sampleActions: createActions({}),
     sampleNumber: 0,
-    reflectedString: ""
+    reflectedString: "",
   };
 
   /**
@@ -42,5 +41,4 @@ export class FirstManager extends ContextManager<IFirstContext> {
     window.console.info(FirstManager.name, "received signal", type, data);
     this.setContext({ reflectedString: data });
   }
-
 }

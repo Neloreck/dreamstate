@@ -13,39 +13,39 @@ import { CORE_ENTRY, ESM_ROOT, TS_BUILD_CONFIG, EEnvironment, DS_ROOT, STATS_ROO
 import { BABEL_CONFIG } from "./babel.modern.config";
 
 const createEsmConfig = (env) => ({
-  external: [ "react", "shallow-equal", "tslib" ],
+  external: ["react", "shallow-equal", "tslib"],
   input: CORE_ENTRY,
   output: {
     compact: env === EEnvironment.PRODUCTION,
     dir: path.resolve(ESM_ROOT, env),
     preserveModules: true,
     sourcemap: true,
-    format: "es"
+    format: "es",
   },
   plugins: [
     commonjs(),
     babel({ ...BABEL_CONFIG, babelHelpers: "bundled" }),
     replace({
       preventAssignment: true,
-      IS_DEV: env !== EEnvironment.PRODUCTION
+      IS_DEV: env !== EEnvironment.PRODUCTION,
     }),
     typescript({
       tsconfig: TS_BUILD_CONFIG,
       pretty: env !== EEnvironment.PRODUCTION,
-      declaration: false
-    })
+      declaration: false,
+    }),
   ]
-    .concat(env === EEnvironment.PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
+    .concat(env === EEnvironment.PRODUCTION ? [terser({ output: { beautify: false, comments: false } })] : [])
     .concat([
       visualizer({
         filename: path.resolve(STATS_ROOT, `esm-${env}-stats.html`),
         gzipSize: true,
-        projectRoot: DS_ROOT
+        projectRoot: DS_ROOT,
       }),
       clear({
-        targets: [ path.resolve(ESM_ROOT, env) ]
-      })
-    ])
+        targets: [path.resolve(ESM_ROOT, env)],
+      }),
+    ]),
 });
 
-export default [ createEsmConfig(EEnvironment.PRODUCTION), createEsmConfig(EEnvironment.DEVELOPMENT) ];
+export default [createEsmConfig(EEnvironment.PRODUCTION), createEsmConfig(EEnvironment.DEVELOPMENT)];

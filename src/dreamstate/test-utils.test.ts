@@ -1,7 +1,6 @@
 import { DreamstateError, DreamstateErrorCode } from "@/dreamstate";
 
 describe("Library test utils exports", () => {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const testUtilsRoot = require("./test-utils");
 
   const expectedTestUtilsExports: Array<string> = [
@@ -15,7 +14,7 @@ describe("Library test utils exports", () => {
     "mockRegistry",
     "mockManagerInitialContext",
     "mockScope",
-    "nextAsyncQueue"
+    "nextAsyncQueue",
   ];
 
   const assertListIntersection = (first: Array<string>, second: Array<string>) => {

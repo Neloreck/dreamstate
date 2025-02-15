@@ -10,7 +10,7 @@ import { EQuery, RespondingManager } from "@/fixtures/queries";
 describe("queryDataAsync and queries processing", () => {
   type TQueryCb = (scope: IScopeContext) => void;
 
-  const Provider = createProvider([ RespondingManager ]);
+  const Provider = createProvider([RespondingManager]);
 
   function testQueryTree(checker: TQueryCb): ReactWrapper {
     return mount(
@@ -35,8 +35,8 @@ describe("queryDataAsync and queries processing", () => {
   it("should validate queryDataAsync params", async () => {
     const tree = testQueryTree(({ queryDataAsync }) => {
       expect(() => queryDataAsync([] as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync([ "asd" as any ] as any)).toThrow(DreamstateError);
-      expect(() => queryDataAsync([ {} as any ] as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync(["asd" as any] as any)).toThrow(DreamstateError);
+      expect(() => queryDataAsync([{} as any] as any)).toThrow(DreamstateError);
       expect(() => queryDataAsync(undefined as any)).toThrow(DreamstateError);
       expect(() => queryDataAsync(false as any)).toThrow(DreamstateError);
       expect(() => queryDataAsync(true as any)).toThrow(DreamstateError);
@@ -55,11 +55,11 @@ describe("queryDataAsync and queries processing", () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
       const stringResponse: TQueryResponse<string> = await queryDataAsync({
         type: EQuery.ASYNC_STRING_QUERY,
-        data: "query"
+        data: "query",
       });
       const booleanResponse: TQueryResponse<boolean> = await queryDataAsync({
         type: EQuery.SYNC_BOOLEAN_QUERY,
-        data: null
+        data: null,
       });
 
       expect(stringResponse).not.toBeNull();
@@ -91,11 +91,11 @@ describe("queryDataAsync and queries processing", () => {
     const tree = testQueryTree(async ({ queryDataAsync }) => {
       const numberResponse: TOptionalQueryResponse<number> = await queryDataAsync({
         type: EQuery.ASYNC_NUMBER_QUERY,
-        data: undefined
+        data: undefined,
       });
       const undefinedResponse: TOptionalQueryResponse<215> = await queryDataAsync({
         type: EQuery.UNDEFINED_QUERY,
-        data: undefined
+        data: undefined,
       });
 
       expect(numberResponse).not.toBeNull();

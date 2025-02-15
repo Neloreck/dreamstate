@@ -16,17 +16,16 @@ export interface ISampleContext {
  * Declare manager class that handles declared data.
  */
 export class SampleManager extends ContextManager<ISampleContext> {
-
   /**
    * Initial context data.
    */
   public context: ISampleContext = {
     sampleActions: createActions({
       incrementSampleNumber: () => this.incrementSampleNumber(),
-      setSampleString: (value: string) => this.setSampleString(value)
+      setSampleString: (value: string) => this.setSampleString(value),
     }),
     sampleNumber: 0,
-    sampleString: "default"
+    sampleString: "default",
   };
 
   public setSampleString(value: string): void {
@@ -54,5 +53,4 @@ export class SampleManager extends ContextManager<ISampleContext> {
   public onProvisionEnded(): void {
     window.console.info(SampleManager.name, "provision ended");
   }
-
 }

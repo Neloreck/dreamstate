@@ -9,7 +9,7 @@ import {
   TAnyContextManagerConstructor,
   TQueryListener,
   TQueryResponse,
-  TQueryType
+  TQueryType,
 } from "@/dreamstate/types";
 
 /**
@@ -24,7 +24,7 @@ function executeQuerySync<R, D = undefined, T extends TQueryType = TQueryType>(
     answerer: answerer || (callback as TAnyCallable),
     type: query.type,
     data: callback(query),
-    timestamp: Date.now()
+    timestamp: Date.now(),
   };
 }
 

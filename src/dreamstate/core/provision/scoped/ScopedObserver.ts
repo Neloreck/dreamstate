@@ -1,12 +1,4 @@
-import {
-  createElement,
-  DispatchWithoutAction,
-  ReactElement,
-  ReactNode,
-  useEffect,
-  useMemo,
-  useReducer
-} from "react";
+import { createElement, DispatchWithoutAction, ReactElement, ReactNode, useEffect, useMemo, useReducer } from "react";
 
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { forceUpdateReducer } from "@/dreamstate/core/utils/forceUpdateReducer";
@@ -29,7 +21,7 @@ export function ScopedObserver<T extends TAnyObject>({
   initialState,
   dependencies,
   ManagerClass,
-  scope
+  scope,
 }: IScopedObserverProps<T>): ReactElement {
   const reducer: [TAnyObject | null, DispatchWithoutAction] = useReducer(forceUpdateReducer, null);
 
@@ -76,7 +68,7 @@ export function ScopedObserver<T extends TAnyObject>({
   return createElement(
     ManagerClass.REACT_CONTEXT.Provider,
     {
-      value: scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass)
+      value: scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass),
     },
     children
   );

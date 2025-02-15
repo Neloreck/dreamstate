@@ -23,10 +23,8 @@ describe("@OnQuery and queries processing", () => {
   it("should not work with non-context service classes and bad queries", () => {
     const createTestedClass = <T>(queryType: T) => {
       class Manager extends ContextManager {
-
         @OnQuery(queryType as any)
         private willWork(): void {}
-
       }
 
       return Manager;
@@ -38,10 +36,8 @@ describe("@OnQuery and queries processing", () => {
     expect(
       getCallableError<DreamstateError>(() => {
         class Custom {
-
           @OnQuery("WILL_NOT_WORK")
           private willNotWork(): void {}
-
         }
       }).code
     ).toBe(EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED);

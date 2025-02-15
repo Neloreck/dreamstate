@@ -10,7 +10,7 @@ import {
   TAnyContextManagerConstructor,
   TQueryListener,
   TQueryResponse,
-  TQueryType
+  TQueryType,
 } from "@/dreamstate/types";
 
 /**
@@ -39,7 +39,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
               answerer: answerer || (callback as TAnyCallable),
               type: query.type,
               data,
-              timestamp
+              timestamp,
             });
           })
           .catch(reject);
@@ -48,7 +48,7 @@ function promisifyQuery<R, D = undefined, T extends TQueryType = TQueryType>(
           answerer: answerer || (callback as TAnyCallable),
           type: query.type,
           data: result,
-          timestamp
+          timestamp,
         });
       }
     } catch (error: unknown) {

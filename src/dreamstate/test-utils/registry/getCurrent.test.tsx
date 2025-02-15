@@ -10,7 +10,7 @@ describe("getCurrent method functionality", () => {
   it("should properly return current service instance", () => {
     let globalScope: IScopeContext = null as any;
 
-    const Provider = createProvider([ TestManager ]);
+    const Provider = createProvider([TestManager]);
 
     function Consumer(): ReactElement {
       const scope: IScopeContext = useScope();

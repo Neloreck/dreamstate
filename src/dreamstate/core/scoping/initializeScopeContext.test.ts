@@ -12,8 +12,8 @@ describe("InitializeScopeContext method", () => {
         subscribeToManager,
         unsubscribeFromManager,
         unRegisterService,
-        REGISTRY: { CONTEXT_SUBSCRIBERS_REGISTRY }
-      }
+        REGISTRY: { CONTEXT_SUBSCRIBERS_REGISTRY },
+      },
     }: IScopeContext = initializeScopeContext();
 
     const exampleSubscriber = () => {};
@@ -41,15 +41,13 @@ describe("InitializeScopeContext method", () => {
 
   it("should properly subscribe and unsubscribe only from contextManagers", () => {
     const {
-      INTERNAL: { registerService, subscribeToManager, unsubscribeFromManager, unRegisterService }
+      INTERNAL: { registerService, subscribeToManager, unsubscribeFromManager, unRegisterService },
     }: IScopeContext = initializeScopeContext();
 
     class ExampleClass {}
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {
-
       public readonly context: TAnyObject = {};
-
     }
 
     const exampleSubscriber = jest.fn();
@@ -68,17 +66,15 @@ describe("InitializeScopeContext method", () => {
   it("should properly get current state of managers", () => {
     const {
       INTERNAL: { registerService, unRegisterService, REGISTRY },
-      getContextOf
+      getContextOf,
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {
-
       public readonly context: TAnyObject = {
         a: 1,
         b: 2,
-        c: 3
+        c: 3,
       };
-
     }
 
     registerService(ExampleManagerClass);
@@ -121,7 +117,7 @@ describe("InitializeScopeContext method", () => {
 
   it("should properly return register status", () => {
     const {
-      INTERNAL: { registerService, unRegisterService }
+      INTERNAL: { registerService, unRegisterService },
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
@@ -138,7 +134,7 @@ describe("InitializeScopeContext method", () => {
   it("should override context on register if required", () => {
     const {
       INTERNAL: { registerService },
-      getContextOf
+      getContextOf,
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
@@ -152,7 +148,7 @@ describe("InitializeScopeContext method", () => {
       second: 2,
       third: false,
       fourth: 4,
-      fifth: "fifth"
+      fifth: "fifth",
     });
   });
 });

@@ -7,7 +7,6 @@ import { createProvider } from "@/dreamstate/core/provision/createProvider";
 describe("Mount order for providers", () => {
   const generateManagers = (mountList: Array<string>, unmountList: Array<string>) => {
     class BaseManager extends ContextManager {
-
       public onProvisionStarted(): void {
         mountList.push(this.constructor.name);
       }
@@ -15,7 +14,6 @@ describe("Mount order for providers", () => {
       public onProvisionEnded(): void {
         unmountList.push(this.constructor.name);
       }
-
     }
 
     class First extends BaseManager {}
@@ -35,8 +33,8 @@ describe("Mount order for providers", () => {
     const unmountList: Array<string> = [];
 
     const { First, Second, Third } = generateManagers(mountList, unmountList);
-    const Provider = createProvider([ First, Second, Third ], {
-      isCombined
+    const Provider = createProvider([First, Second, Third], {
+      isCombined,
     });
 
     const tree = mountProviderTree(Provider);

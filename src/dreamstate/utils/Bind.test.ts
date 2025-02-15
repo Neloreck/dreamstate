@@ -2,7 +2,6 @@ import { Bind } from "@/dreamstate/utils/Bind";
 
 describe("@Bind decorator", () => {
   class Base {
-
     public field: number = 0;
 
     // @ts-ignore case for pure JS.
@@ -13,7 +12,6 @@ describe("@Bind decorator", () => {
     public method(): this {
       return this;
     }
-
   }
 
   class Extending extends Base {}
@@ -62,7 +60,7 @@ describe("@Bind decorator", () => {
     expect(() => {
       Object.defineProperty(base, "method", {
         value: () => 50,
-        writable: false
+        writable: false,
       });
     }).not.toThrow();
 

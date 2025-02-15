@@ -34,9 +34,9 @@ export function OnQuery(queryType: TQueryType): MethodDecorator {
     }
 
     if (QUERY_METADATA_REGISTRY.has(ManagerClass)) {
-      QUERY_METADATA_REGISTRY.get(ManagerClass)!.push([ method, queryType ]);
+      QUERY_METADATA_REGISTRY.get(ManagerClass)!.push([method, queryType]);
     } else {
-      QUERY_METADATA_REGISTRY.set(ManagerClass, [ [ method, queryType ] ]);
+      QUERY_METADATA_REGISTRY.set(ManagerClass, [[method, queryType]]);
     }
   });
 }

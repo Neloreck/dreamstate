@@ -13,7 +13,6 @@ describe("Initial state provision on service registration", () => {
   }
 
   class ContextManagerWithInitialState extends ContextManager<TAnyObject, IInitialState> {
-
     public context: TAnyObject = {};
     public num: number;
 
@@ -22,10 +21,9 @@ describe("Initial state provision on service registration", () => {
 
       this.num = initialState?.num || 0;
     }
-
   }
 
-  const Provider = createProvider([ ContextManagerWithInitialState ]);
+  const Provider = createProvider([ContextManagerWithInitialState]);
 
   it("should properly query data while mounting", async () => {
     let contextManager: ContextManagerWithInitialState | null = null;

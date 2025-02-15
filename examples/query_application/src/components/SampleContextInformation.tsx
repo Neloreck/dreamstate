@@ -9,25 +9,25 @@ import { SecondManager } from "../stores/SecondManager";
 const informationStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
-  border: "1px solid black"
+  border: "1px solid black",
 };
 
 export function SampleContextInformation({
   firstContext: { multipliedNumber } = useManager(FirstManager),
-  secondContext: { sampleNumber } = useManager(SecondManager)
+  secondContext: { sampleNumber } = useManager(SecondManager),
 }): ReactElement {
   const scope: ScopeContext = useScope();
   const rendersCount: number = useRendersCount();
 
-  const [ queryValueFromComponent, setQueryValueFromComponent ] = useState("");
+  const [queryValueFromComponent, setQueryValueFromComponent] = useState("");
 
   const onSyncQueryValueFromComponent = useCallback(() => {
     const { data }: TStringFromComponentQueryResponse = scope.queryDataSync({
-      type: EGenericQuery.STRING_FROM_COMPONENT
+      type: EGenericQuery.STRING_FROM_COMPONENT,
     });
 
     setQueryValueFromComponent(data);
-  }, [ scope ]);
+  }, [scope]);
 
   return (
     <div style={informationStyle}>

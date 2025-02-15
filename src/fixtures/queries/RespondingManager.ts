@@ -6,7 +6,7 @@ import {
   TAsyncStringQuery,
   TSyncBooleanQuery,
   TSyncExceptionQuery,
-  TSyncStringQuery
+  TSyncStringQuery,
 } from "@/fixtures/queries/types";
 
 export class RespondingManager extends ContextManager {

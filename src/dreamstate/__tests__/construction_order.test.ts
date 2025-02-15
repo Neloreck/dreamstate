@@ -7,37 +7,31 @@ import { createProvider } from "@/dreamstate/core/provision/createProvider";
 describe("Mount order for providers", () => {
   it("should create elements in an expected order", async () => {
     class First extends ContextManager {
-
       public constructor() {
         super();
         list.push(First.name);
       }
-
     }
 
     class Second extends ContextManager {
-
       public constructor() {
         super();
         list.push(Second.name);
       }
-
     }
 
     class Third extends ContextManager {
-
       public constructor() {
         super();
         list.push(Third.name);
       }
-
     }
 
-    const CombinedProvider = createProvider([ First, Second, Third ], {
-      isCombined: true
+    const CombinedProvider = createProvider([First, Second, Third], {
+      isCombined: true,
     });
-    const ScopedProvider = createProvider([ First, Second, Third ], {
-      isCombined: false
+    const ScopedProvider = createProvider([First, Second, Third], {
+      isCombined: false,
     });
     let list: Array<string> = [];
 

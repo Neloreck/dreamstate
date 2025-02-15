@@ -5,9 +5,7 @@
 import { TAnyObject } from "@/dreamstate/types";
 
 export class ActionsStore<T extends TAnyObject = TAnyObject> {
-
   public constructor(actions: T) {
     Object.assign(this, actions);
   }
-
 }

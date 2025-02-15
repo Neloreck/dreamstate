@@ -19,11 +19,11 @@ export class ManagerWithUtils extends ContextManager<IContextWithUtils> {
   public readonly context: IContextWithUtils = {
     nested: createNested({
       loadable: createLoadable(10),
-      simpleString: "10"
+      simpleString: "10",
     }),
     computed: createComputed((context: IContextWithUtils) => ({
       booleanSwitch: context.nested.simpleString.length > 2,
-      concatenated: context.nested.simpleString + context.nested.simpleString + "!"
-    }))
+      concatenated: context.nested.simpleString + context.nested.simpleString + "!",
+    })),
   };
 }

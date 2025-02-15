@@ -20,18 +20,18 @@ describe("@OnSignal metadata decorator", () => {
     expect(signalListenersList[2]).toBeInstanceOf(Array);
     expect(signalListenersList[2]).toHaveLength(2);
 
-    const [ firstMethod, firstSubscribed ] = signalListenersList[0];
+    const [firstMethod, firstSubscribed] = signalListenersList[0];
 
     expect(firstMethod).toBe("onNumberSignal");
     expect(firstSubscribed).toBe(ESignal.NUMBER_SIGNAL);
 
-    const [ secondMethod, secondSubscribed ] = signalListenersList[1];
+    const [secondMethod, secondSubscribed] = signalListenersList[1];
 
     expect(secondMethod).toBe("onStringSignal");
     expect(secondSubscribed).toHaveLength(1);
     expect((secondSubscribed as Array<TSignalType>).includes(ESignal.STRING_SIGNAL)).toBeTruthy();
 
-    const [ thirdMethod, thirdSubscribed ] = signalListenersList[2];
+    const [thirdMethod, thirdSubscribed] = signalListenersList[2];
 
     expect(thirdMethod).toBe("onStringOrNumberSignal");
     expect(thirdSubscribed).toHaveLength(2);
@@ -42,10 +42,8 @@ describe("@OnSignal metadata decorator", () => {
   it("should not work with non-context service classes and bad queries", () => {
     const createTestedClass = <T>(signalType: T) => {
       class Manager extends ContextManager {
-
         @OnSignal(signalType as any)
         private willWork(): void {}
-
       }
 
       return Manager;
@@ -56,10 +54,8 @@ describe("@OnSignal metadata decorator", () => {
      */
     expect(() => {
       class Custom {
-
         @OnSignal("WILL_NOT_WORK")
         private willNotWork(): void {}
-
       }
     }).toThrow(DreamstateError);
 
@@ -70,12 +66,12 @@ describe("@OnSignal metadata decorator", () => {
     expect(() => createTestedClass(new Error())).toThrow(DreamstateError);
     expect(() => createTestedClass(void 0)).toThrow(DreamstateError);
     expect(() => createTestedClass([])).toThrow(DreamstateError);
-    expect(() => createTestedClass([ undefined ])).toThrow(DreamstateError);
-    expect(() => createTestedClass([ null ])).toThrow(DreamstateError);
-    expect(() => createTestedClass([ {} ])).toThrow(DreamstateError);
-    expect(() => createTestedClass([ 123 ])).not.toThrow(DreamstateError);
-    expect(() => createTestedClass([ 123, "TEST" ])).not.toThrow(DreamstateError);
-    expect(() => createTestedClass([ 123, "TEST", Symbol("CHECK") ])).not.toThrow(DreamstateError);
-    expect(() => createTestedClass([ Symbol.for("TEST_EXAMPLE"), "TEST" ])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([undefined])).toThrow(DreamstateError);
+    expect(() => createTestedClass([null])).toThrow(DreamstateError);
+    expect(() => createTestedClass([{}])).toThrow(DreamstateError);
+    expect(() => createTestedClass([123])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([123, "TEST"])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([123, "TEST", Symbol("CHECK")])).not.toThrow(DreamstateError);
+    expect(() => createTestedClass([Symbol.for("TEST_EXAMPLE"), "TEST"])).not.toThrow(DreamstateError);
   });
 });

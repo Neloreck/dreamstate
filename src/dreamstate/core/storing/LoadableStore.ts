@@ -5,7 +5,6 @@ import { ILoadable } from "@/dreamstate/types";
  * Used by context diff checker on updates by ContextManager class.
  */
 export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
-
   public value: T | null;
   public isLoading: boolean;
   public error: E | null;
@@ -51,5 +50,4 @@ export class LoadableStore<T, E extends Error = Error> implements ILoadable<T> {
       arguments.length > 2 ? (error as E) : this.error
     );
   }
-
 }

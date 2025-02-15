@@ -51,8 +51,8 @@ describe("shouldObserversUpdate method functionality", () => {
       nested: {
         a: 1,
         b: 2,
-        c: 3
-      }
+        c: 3,
+      },
     };
     let next = { nested: { ...base.nested } };
 

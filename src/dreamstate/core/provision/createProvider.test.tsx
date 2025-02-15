@@ -10,8 +10,8 @@ import { EDreamstateErrorCode } from "@/dreamstate/types";
 import { getCallableError, TestManager } from "@/fixtures";
 
 describe("createProvider method", () => {
-  const CombinedProvider = createProvider([ TestManager ], { isCombined: true });
-  const ScopedProvider = createProvider([ TestManager ], { isCombined: false });
+  const CombinedProvider = createProvider([TestManager], { isCombined: true });
+  const ScopedProvider = createProvider([TestManager], { isCombined: false });
 
   it("should render correct component tree", async () => {
     let currentScope: IScopeContext = null as any;
@@ -55,22 +55,22 @@ describe("createProvider method", () => {
     expect(() => createProvider(false as any)).toThrow(DreamstateError);
     expect(() => createProvider(null as any)).toThrow(DreamstateError);
     expect(() => createProvider(null as any)).toThrow(DreamstateError);
-    expect(() => createProvider([ null as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ 0 as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ "0" as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ false as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ {} as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ new Function() as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ [] as any ])).toThrow(DreamstateError);
-    expect(() => createProvider([ class ExampleClass {} as any ])).toThrow(DreamstateError);
+    expect(() => createProvider([null as any])).toThrow(DreamstateError);
+    expect(() => createProvider([0 as any])).toThrow(DreamstateError);
+    expect(() => createProvider(["0" as any])).toThrow(DreamstateError);
+    expect(() => createProvider([false as any])).toThrow(DreamstateError);
+    expect(() => createProvider([{} as any])).toThrow(DreamstateError);
+    expect(() => createProvider([new Function() as any])).toThrow(DreamstateError);
+    expect(() => createProvider([[] as any])).toThrow(DreamstateError);
+    expect(() => createProvider([class ExampleClass {} as any])).toThrow(DreamstateError);
     expect(() => createProvider([])).toThrow();
 
-    expect(() => createProvider([ TestManager ])).not.toThrow();
+    expect(() => createProvider([TestManager])).not.toThrow();
 
     expect(getCallableError<DreamstateError>(() => createProvider(null as any)).code).toBe(
       EDreamstateErrorCode.INCORRECT_PARAMETER
     );
-    expect(getCallableError<DreamstateError>(() => createProvider([ null ] as any)).code).toBe(
+    expect(getCallableError<DreamstateError>(() => createProvider([null] as any)).code).toBe(
       EDreamstateErrorCode.TARGET_CONTEXT_MANAGER_EXPECTED
     );
   });
@@ -98,7 +98,7 @@ describe("createProvider method", () => {
   });
 
   it("should have default provider names for production environment", () => {
-    expect(createScopedProvider([ TestManager ]).displayName).toBeUndefined();
-    expect(createCombinedProvider([ TestManager ]).displayName).toBeUndefined();
+    expect(createScopedProvider([TestManager]).displayName).toBeUndefined();
+    expect(createCombinedProvider([TestManager]).displayName).toBeUndefined();
   });
 });

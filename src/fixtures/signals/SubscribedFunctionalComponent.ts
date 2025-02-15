@@ -6,12 +6,12 @@ import { ESignal } from "@/fixtures/signals/ESignal";
 import { TStringSignalEvent } from "@/fixtures/signals/types";
 
 export function SubscribedFunctionalComponent({
-  onInternalSignal
+  onInternalSignal,
 }: {
   onInternalSignal: (signal: TStringSignalEvent) => void;
 }): ReactElement {
   const { subscribeToSignals }: IScopeContext = useScope();
-  const [ value, setValue ] = useState("initial");
+  const [value, setValue] = useState("initial");
 
   useEffect(() => {
     return subscribeToSignals((signal: TStringSignalEvent) => {
@@ -21,7 +21,7 @@ export function SubscribedFunctionalComponent({
         onInternalSignal(signal);
       }
     });
-  }, [ onInternalSignal ]);
+  }, [onInternalSignal]);
 
   return createElement("div", {}, value);
 }

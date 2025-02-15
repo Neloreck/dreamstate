@@ -48,13 +48,13 @@ describe("Loadable util", () => {
 
   it("should properly declare loadable objects flags", () => {
     const loadable: ILoadable<{ test: boolean }> = createLoadable({
-      test: true
+      test: true,
     });
 
     expect(loadable instanceof LoadableStore).toBeTruthy();
 
     const next: ILoadable<{ test: boolean }> = loadable.asUpdated({
-      test: false
+      test: false,
     });
 
     expect(next instanceof LoadableStore).toBeTruthy();

@@ -11,7 +11,7 @@ describe("onMetadataSignalListenerCalled method functionality", () => {
       timestamp: Date.now(),
       emitter: null,
       data: null,
-      cancel: jest.fn()
+      cancel: jest.fn(),
     });
   });
 });

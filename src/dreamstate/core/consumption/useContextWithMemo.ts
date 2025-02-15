@@ -26,7 +26,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
     function(): TCallable {
       const initialState: T = state[0];
       const setState: Dispatch<SetStateAction<T>> = state[1];
-      const subscriptionState: T = scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T || null;
+      const subscriptionState: T = (scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(ManagerClass) as T) || null;
 
       // Flag `null` if HMR/StrictMode reset happen, usually just means HMR manager replacing or react 18 strict mode.
       let observed: Array<unknown> | null = subscriptionState ? dependenciesSelector(subscriptionState) : null;
@@ -57,7 +57,7 @@ export function useContextWithMemo<T extends TAnyObject, D extends IContextManag
         }
       });
     },
-    [ ManagerClass, scope.INTERNAL ]
+    [ManagerClass, scope.INTERNAL]
   );
 
   return state[0];

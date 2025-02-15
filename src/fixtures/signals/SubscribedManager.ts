@@ -11,12 +11,12 @@ export class SubscribedManager extends ContextManager<TAnyObject> {
     return;
   }
 
-  @OnSignal([ ESignal.STRING_SIGNAL ])
+  @OnSignal([ESignal.STRING_SIGNAL])
   public onStringSignal(signal: TStringSignalEvent): void {
     return;
   }
 
-  @OnSignal([ ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL ])
+  @OnSignal([ESignal.NUMBER_SIGNAL, ESignal.STRING_SIGNAL])
   public onStringOrNumberSignal(signal: TStringSignalEvent | TNumberSignalEvent): void {
     return;
   }

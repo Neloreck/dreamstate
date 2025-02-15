@@ -30,7 +30,7 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
       Object.defineProperty(this, property, {
         configurable: true,
         writable: false,
-        value: bound
+        value: bound,
       });
 
       definingProperty = false;
@@ -42,7 +42,7 @@ function createBoundDescriptor<T>(from: TypedPropertyDescriptor<T>, property: Pr
         EDreamstateErrorCode.RESTRICTED_OPERATION,
         "Direct runtime modification of bound method is not allowed."
       );
-    }
+    },
   };
 }
 

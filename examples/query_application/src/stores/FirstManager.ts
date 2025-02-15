@@ -16,15 +16,14 @@ export interface IFirstContext {
  * Declare manager class that handles declared data.
  */
 export class FirstManager extends ContextManager<IFirstContext> {
-
   /**
    * Initial context data.
    */
   public context: IFirstContext = {
     firstActions: createActions({
-      updateMultipliedNumberValue: () => this.updateMultipliedNumberValue()
+      updateMultipliedNumberValue: () => this.updateMultipliedNumberValue(),
     }),
-    multipliedNumber: 0
+    multipliedNumber: 0,
   };
 
   public onProvisionStarted(): void {
@@ -43,11 +42,10 @@ export class FirstManager extends ContextManager<IFirstContext> {
       data: sampleNumber,
       ...rest
     }: TSampleNumberQueryResponse = this.queryDataSync({
-      type: EGenericQuery.SAMPLE_NUMBER
+      type: EGenericQuery.SAMPLE_NUMBER,
     });
 
     window.console.info(FirstManager.name, "got query response:", type, sampleNumber, rest);
     this.setContext({ multipliedNumber: sampleNumber * 2 });
   }
-
 }

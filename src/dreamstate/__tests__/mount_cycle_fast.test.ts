@@ -5,7 +5,7 @@ import { createProvider, ScopeProvider, useScope } from "@/dreamstate";
 import { TestManager } from "@/fixtures";
 
 describe("Mount order for providers", () => {
-  const Provider = createProvider([ TestManager ]);
+  const Provider = createProvider([TestManager]);
 
   it("should properly have ready state if it was mounted-unmounted many times", async () => {
     for (let it = 0; it < 1000; it ++) {
@@ -18,8 +18,8 @@ describe("Mount order for providers", () => {
       createElement(ScopeProvider, {}, () => {
         const {
           INTERNAL: {
-            REGISTRY: { CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
-          }
+            REGISTRY: { CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY },
+          },
         } = useScope();
 
         expect(CONTEXT_STATES_REGISTRY.get(TestManager)).toBeUndefined();
@@ -43,8 +43,8 @@ describe("Mount order for providers", () => {
       createElement(ScopeProvider, {}, () => {
         const {
           INTERNAL: {
-            REGISTRY: { CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY }
-          }
+            REGISTRY: { CONTEXT_STATES_REGISTRY, CONTEXT_INSTANCES_REGISTRY },
+          },
         } = useScope();
 
         expect(CONTEXT_STATES_REGISTRY.get(TestManager)).toBeDefined();

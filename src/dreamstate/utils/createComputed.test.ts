@@ -13,7 +13,7 @@ describe("createComputed method functionality", () => {
       third: createComputed(
         () => ({ another: false }),
         () => []
-      )
+      ),
     };
 
     expect(context.first.nullValue).toBeUndefined();
@@ -59,15 +59,13 @@ describe("createComputed method functionality", () => {
     }
 
     class ComputedManager extends ContextManager<IComputedContext> {
-
       public context: IComputedContext = {
         example: createComputed((context: IComputedContext) => ({
           multipliedByThree: context.testValue * 3,
-          multipliedByTwo: context.testValue * 2
+          multipliedByTwo: context.testValue * 2,
         })),
-        testValue: 25
+        testValue: 25,
       };
-
     }
 
     const manager: ComputedManager = mockManager(ComputedManager);
@@ -92,14 +90,12 @@ describe("createComputed method functionality", () => {
     }
 
     class ComputedManager extends ContextManager<IComputedContext> {
-
       public context: IComputedContext = {
         computed: createComputed((context: IComputedContext) => ({
-          greaterThanFive: context.numbers.filter((it: number) => it > 5)
+          greaterThanFive: context.numbers.filter((it: number) => it > 5),
         })),
-        numbers: [ 0, 2, 4, 6, 8, 12 ]
+        numbers: [0, 2, 4, 6, 8, 12],
       };
-
     }
 
     const manager: ComputedManager = mockManager(ComputedManager);
@@ -107,7 +103,7 @@ describe("createComputed method functionality", () => {
     expect(manager.context.numbers).toHaveLength(6);
     expect(manager.context.computed.greaterThanFive).toHaveLength(3);
 
-    manager.setContext({ numbers: [ 1, 2, 10 ] });
+    manager.setContext({ numbers: [1, 2, 10] });
 
     expect(manager.context.numbers).toHaveLength(3);
     expect(manager.context.computed.greaterThanFive).toHaveLength(1);

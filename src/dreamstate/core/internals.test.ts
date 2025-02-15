@@ -2,7 +2,7 @@ import {
   CONTEXT_REACT_CONTEXTS_REGISTRY,
   SCOPE_SYMBOL,
   SIGNALING_HANDLER_SYMBOL,
-  SIGNAL_METADATA_REGISTRY
+  SIGNAL_METADATA_REGISTRY,
 } from "@/dreamstate/core/internals";
 
 describe("Dreamstate internals", () => {

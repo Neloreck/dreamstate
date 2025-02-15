@@ -15,11 +15,11 @@ export class NestedManager extends ContextManager<INestedContext> {
   public readonly context: INestedContext = {
     first: {
       a: 1,
-      b: 2
+      b: 2,
     },
     second: {
       c: 3,
-      d: 4
-    }
+      d: 4,
+    },
   };
 }

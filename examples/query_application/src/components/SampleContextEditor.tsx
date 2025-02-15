@@ -9,18 +9,18 @@ import { SecondManager } from "../stores/SecondManager";
 const editorStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
-  border: "1px solid black"
+  border: "1px solid black",
 };
 
 export function SampleContextEditor({
   firstContext: { firstActions } = useManager(FirstManager),
-  secondContext: { sampleNumber, secondActions } = useManager(SecondManager)
+  secondContext: { sampleNumber, secondActions } = useManager(SecondManager),
 }): ReactElement {
   const scope: ScopeContext = useScope();
   const rendersCount: number = useRendersCount();
 
-  const [ localSampleNumber, setLocalSampleNumber ] = useState(sampleNumber);
-  const [ queryProvidedString, setQueryProvidedString ] = useState("provided sample");
+  const [localSampleNumber, setLocalSampleNumber] = useState(sampleNumber);
+  const [queryProvidedString, setQueryProvidedString] = useState("provided sample");
 
   const onLocalSampleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     setLocalSampleNumber(Number.parseInt(event.target.value));
@@ -32,7 +32,7 @@ export function SampleContextEditor({
 
   const onCommitChanges = useCallback(
     () => secondActions.setSampleNumber(localSampleNumber),
-    [ localSampleNumber, secondActions ]
+    [localSampleNumber, secondActions]
   );
 
   /**
@@ -46,7 +46,7 @@ export function SampleContextEditor({
      */
 
     return scope.registerQueryProvider(EGenericQuery.STRING_FROM_COMPONENT, () => queryProvidedString);
-  }, [ scope, queryProvidedString ]);
+  }, [scope, queryProvidedString]);
 
   return (
     <div style={editorStyle}>

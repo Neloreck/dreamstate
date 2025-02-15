@@ -8,11 +8,11 @@ describe("createActions method functionality", () => {
     const context = {
       a: createActions({
         first: (num: number) => num,
-        second: () => false
+        second: () => false,
       }),
       b: createActions({
-        first: (str: string) => str
-      })
+        first: (str: string) => str,
+      }),
     };
 
     expect(Object.keys(context)).toHaveLength(2);

@@ -6,7 +6,7 @@ import { SampleManager } from "./stores/SampleManager";
 /**
  * Provider of sample context managers.
  */
-const StoreProvider = createProvider([ SampleManager ]);
+const StoreProvider = createProvider([SampleManager]);
 
 /**
  * Global application provider.

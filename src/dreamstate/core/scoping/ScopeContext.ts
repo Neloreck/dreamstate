@@ -16,7 +16,7 @@ import {
   TSignalListener,
   TSignalType,
   TUpdateObserver,
-  TUpdateSubscriber
+  TUpdateSubscriber,
 } from "@/dreamstate/types";
 
 /**

@@ -8,14 +8,14 @@ import { EGenericSignal } from "../stores/signals";
 const editorStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
-  border: "1px solid black"
+  border: "1px solid black",
 };
 
 export function SampleContextEditor({
-  secondContext: { sampleString, sampleActions } = useManager(SecondManager, () => [])
+  secondContext: { sampleString, sampleActions } = useManager(SecondManager, () => []),
 }): ReactElement {
   const scope: ScopeContext = useScope();
-  const [ localSampleString, setLocalSampleString ] = useState(sampleString);
+  const [localSampleString, setLocalSampleString] = useState(sampleString);
   const rendersCount: number = useRendersCount();
 
   const onLocalSampleChange = useCallback((event: ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +24,7 @@ export function SampleContextEditor({
 
   const onCommitChanges = useCallback(
     () => sampleActions.setSampleString(localSampleString),
-    [ localSampleString, sampleActions ]
+    [localSampleString, sampleActions]
   );
 
   /**
@@ -33,7 +33,7 @@ export function SampleContextEditor({
    */
   const onRandomizeNumber = useCallback(() => {
     scope.emitSignal({ type: EGenericSignal.SAMPLE_NUMBER_CHANGED, data: Math.random() });
-  }, [ scope ]);
+  }, [scope]);
 
   return (
     <div style={editorStyle}>

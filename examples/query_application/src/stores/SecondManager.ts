@@ -16,15 +16,14 @@ export interface ISecondContext {
  * Declare manager class that handles declared data.
  */
 export class SecondManager extends ContextManager<ISecondContext> {
-
   /**
    * Initial context data.
    */
   public context: ISecondContext = {
     secondActions: createActions({
-      setSampleNumber: (value: number) => this.setSampleNumber(value)
+      setSampleNumber: (value: number) => this.setSampleNumber(value),
     }),
-    sampleNumber: 0
+    sampleNumber: 0,
   };
 
   public onProvisionStarted(): void {
@@ -53,5 +52,4 @@ export class SecondManager extends ContextManager<ISecondContext> {
 
     return this.context.sampleNumber;
   }
-
 }

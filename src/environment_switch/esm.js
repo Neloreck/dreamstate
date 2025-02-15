@@ -16,7 +16,7 @@ import {
   createComputed as DcreateComputed,
   createActions as DcreateActions,
   DreamstateErrorCode as DDreamstateErrorCode,
-  DreamstateError as DDreamstateError
+  DreamstateError as DDreamstateError,
 } from "./development";
 import {
   ContextManager as PContextManager,
@@ -32,7 +32,7 @@ import {
   createComputed as PcreateComputed,
   createActions as PcreateActions,
   DreamstateErrorCode as PDreamstateErrorCode,
-  DreamstateError as PDreamstateError
+  DreamstateError as PDreamstateError,
 } from "./production";
 
 export const DreamstateErrorCode = process.env.NODE_ENV === "production" ? PDreamstateErrorCode : DDreamstateErrorCode;

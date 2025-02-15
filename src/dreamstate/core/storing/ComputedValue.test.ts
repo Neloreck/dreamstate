@@ -12,10 +12,10 @@ describe("Computed value class", () => {
     }
 
     const firstComputedValue: TComputed<{ r: number }> = new ComputedValue(({ a, b }: IContext) => ({
-      r: a * b
+      r: a * b,
     })) as any as TComputed<{ r: number }>;
     const secondComputedValue: TComputed<{ r: number }> = new ComputedValue(({ a, b }: IContext) => ({
-      r: a * b
+      r: a * b,
     })) as any as TComputed<{ r: number }>;
 
     const context: IContext = { a: 15, b: 100, c: firstComputedValue };
@@ -24,7 +24,7 @@ describe("Computed value class", () => {
       ...context,
       a: 100,
       b: 1,
-      c: secondComputedValue
+      c: secondComputedValue,
     };
 
     processComputed(context);

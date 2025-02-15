@@ -5,24 +5,24 @@ import { default as tsconfig } from "../../tsconfig.json";
 import { CORE_ENTRY, TEST_UTILS_ENTRY, TYPES_ROOT } from "../config/build.constants";
 
 export const DTS_CONFIG = {
-  input: [ CORE_ENTRY, TEST_UTILS_ENTRY ],
+  input: [CORE_ENTRY, TEST_UTILS_ENTRY],
   output: {
     chunkFileNames: "lib",
     dir: TYPES_ROOT,
-    format: "es"
+    format: "es",
   },
   plugins: [
     dts.default({
       compilerOptions: {
         baseUrl: tsconfig.compilerOptions.baseUrl,
         paths: tsconfig.compilerOptions.paths,
-        rootDir: tsconfig.compilerOptions.rootDir
-      }
+        rootDir: tsconfig.compilerOptions.rootDir,
+      },
     }),
     clear({
-      targets: [ TYPES_ROOT ]
-    })
-  ]
+      targets: [TYPES_ROOT],
+    }),
+  ],
 };
 
-export default [ DTS_CONFIG ];
+export default [DTS_CONFIG];

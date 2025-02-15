@@ -16,7 +16,7 @@ export function mockManagers<
   T extends TAnyObject,
   S extends TAnyObject,
   M extends IContextManagerConstructor<T, S>,
-  E extends Array<M>
+  E extends Array<M>,
 >(managerClasses: E, initialState?: S | null, scope: IScopeContext = mockScope()): TManagerInstanceMap {
   for (let it = 0; it < managerClasses.length; it ++) {
     scope.INTERNAL.registerService(managerClasses[it], initialState);

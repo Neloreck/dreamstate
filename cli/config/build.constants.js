@@ -2,7 +2,7 @@ import * as path from "path";
 
 export const EEnvironment = {
   PRODUCTION: "production",
-  DEVELOPMENT: "development"
+  DEVELOPMENT: "development",
 };
 
 export const ENV = process.env.NODE_ENV || "development";

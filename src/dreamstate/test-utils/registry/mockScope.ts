@@ -6,7 +6,7 @@ import {
   IContextManagerConstructor,
   TAnyContextManagerConstructor,
   TAnyObject,
-  TUpdateObserver
+  TUpdateObserver,
 } from "@/dreamstate/types";
 
 export interface IMockScopeConfig {
@@ -66,7 +66,7 @@ export function mockScope(mockConfig: IMockScopeConfig = {}, registry: IRegistry
     scope.INTERNAL.registerService = function <
       T extends TAnyObject,
       C extends TAnyObject,
-      M extends IContextManagerConstructor<C, T>
+      M extends IContextManagerConstructor<C, T>,
     >(ManagerClass: M, initialState?: T | null, initialContext?: C) {
       return registerService(
         ManagerClass,

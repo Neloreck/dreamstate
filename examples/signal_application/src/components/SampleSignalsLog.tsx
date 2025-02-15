@@ -4,12 +4,12 @@ import { CSSProperties, default as React, ReactElement, useEffect, useState } fr
 const editorStyle: CSSProperties = {
   padding: "4px",
   margin: "4px",
-  border: "1px solid black"
+  border: "1px solid black",
 };
 
 export function SampleSignalsLog(): ReactElement {
   const scope: ScopeContext = useScope();
-  const [ signalsLog, setSignalsLog ] = useState<Array<SignalEvent>>([]);
+  const [signalsLog, setSignalsLog] = useState<Array<SignalEvent>>([]);
 
   /**
    * Subscribe to all signals and show log of what happened in the scope.
@@ -19,9 +19,9 @@ export function SampleSignalsLog(): ReactElement {
      * Returns un-subscriber.
      */
     return scope.subscribeToSignals((signalEvent: SignalEvent) => {
-      setSignalsLog((it) => [ ...it, signalEvent ]);
+      setSignalsLog((it) => [...it, signalEvent]);
     });
-  }, [ scope ]);
+  }, [scope]);
 
   return (
     <div style={editorStyle}>

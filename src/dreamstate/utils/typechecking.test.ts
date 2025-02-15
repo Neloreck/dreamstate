@@ -5,7 +5,7 @@ import {
   isNumber,
   isObject,
   isString,
-  isUndefined
+  isUndefined,
 } from "@/dreamstate/utils/typechecking";
 
 describe("typecheing utils functionality", () => {

@@ -13,7 +13,7 @@ export function onMetadataSignalListenerCalled<D = undefined>(
   /**
    * For each metadata entry do a check/call for signal handler.
    */
-  for (const [ method, subscribed ] of this[SIGNAL_METADATA_SYMBOL]) {
+  for (const [method, subscribed] of this[SIGNAL_METADATA_SYMBOL]) {
     if (Array.isArray(subscribed) ? subscribed.includes(signal.type) : signal.type === subscribed) {
       (this as any)[method](signal);
     }

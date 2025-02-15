@@ -5,7 +5,6 @@ import { IComputedBase, TAnyObject } from "@/dreamstate/types";
  * Used by context diff checker on updates by ContextManager class.
  */
 export class ComputedValue<T extends TAnyObject, C extends TAnyObject> implements IComputedBase<T, C> {
-
   public readonly __selector__: (context: C) => T;
 
   public readonly __memo__?: (context: C) => Array<any>;
@@ -44,5 +43,4 @@ export class ComputedValue<T extends TAnyObject, C extends TAnyObject> implement
       Object.assign(this, this.__selector__(context));
     }
   }
-
 }

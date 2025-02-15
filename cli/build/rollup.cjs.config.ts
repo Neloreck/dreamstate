@@ -15,44 +15,44 @@ import {
   CJS_ROOT,
   EEnvironment,
   DS_ROOT,
-  STATS_ROOT
+  STATS_ROOT,
 } from "../config/build.constants";
 
 import { BABEL_CONFIG } from "./babel.modern.config";
 
 const createCjsConfig = (env) => ({
-  external: [ "react", "shallow-equal", "tslib" ],
-  input: [ CORE_ENTRY, TEST_UTILS_ENTRY ],
+  external: ["react", "shallow-equal", "tslib"],
+  input: [CORE_ENTRY, TEST_UTILS_ENTRY],
   output: {
     chunkFileNames: "lib.js",
     compact: env === EEnvironment.PRODUCTION,
     dir: path.resolve(CJS_ROOT, env),
     sourcemap: true,
-    format: "cjs"
+    format: "cjs",
   },
   plugins: [
     commonjs(),
     babel({ ...BABEL_CONFIG, babelHelpers: "bundled" }),
     replace({
       preventAssignment: true,
-      IS_DEV: (env !== EEnvironment.PRODUCTION).toString()
+      IS_DEV: (env !== EEnvironment.PRODUCTION).toString(),
     }),
     typescript({
       tsconfig: TS_BUILD_CONFIG,
-      declaration: false
-    })
+      declaration: false,
+    }),
   ]
-    .concat(env === EEnvironment.PRODUCTION ? [ terser({ output: { beautify: false, comments: false } }) ] : [])
+    .concat(env === EEnvironment.PRODUCTION ? [terser({ output: { beautify: false, comments: false } })] : [])
     .concat([
       visualizer({
         filename: path.resolve(STATS_ROOT, `cjs-${env}-stats.html`),
         gzipSize: true,
-        projectRoot: DS_ROOT
+        projectRoot: DS_ROOT,
       }),
       clear({
-        targets: [ path.resolve(CJS_ROOT, env) ]
-      })
-    ])
+        targets: [path.resolve(CJS_ROOT, env)],
+      }),
+    ]),
 });
 
-export default [ createCjsConfig(EEnvironment.PRODUCTION), createCjsConfig(EEnvironment.DEVELOPMENT) ];
+export default [createCjsConfig(EEnvironment.PRODUCTION), createCjsConfig(EEnvironment.DEVELOPMENT)];

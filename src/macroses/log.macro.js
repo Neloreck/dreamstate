@@ -1,4 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createMacro } = require("babel-plugin-macros");
 
 function log({ references, babel }) {
@@ -15,7 +14,7 @@ function log({ references, babel }) {
       const logStatement = types.expressionStatement(
         types.callExpression(types.memberExpression(types.identifier("console"), types.identifier(method)), [
           types.stringLiteral("[DS]"),
-          ...args
+          ...args,
         ])
       );
 

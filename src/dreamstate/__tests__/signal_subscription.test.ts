@@ -21,25 +21,22 @@ describe("Signal subscription of test classes", () => {
     data: {
       strValue: "a",
       numValue: 1,
-      boolValue: true
-    }
+      boolValue: true,
+    },
   };
 
   const emptySignal: TDerivedSignal = {
-    type: "EMPTY"
+    type: "EMPTY",
   };
 
   class EmittingOnProvisionStart extends ContextManager {
-
     public onProvisionStarted(): void {
       this.emitSignal(demoSignal);
       this.emitSignal(emptySignal);
     }
-
   }
 
   class SubscribedToStartSignal extends ContextManager {
-
     @OnSignal(demoSignal.type)
     private onDemo(signal: TDemoSignal): void {
       count();
@@ -62,7 +59,6 @@ describe("Signal subscription of test classes", () => {
       expect(type).toBe("EMPTY");
       expect(data).toBeUndefined();
     }
-
   }
 
   it("should properly catch signals from other managers", async () => {
@@ -75,26 +71,26 @@ describe("Signal subscription of test classes", () => {
     }
 
     await testProvider(
-      createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], {
-        isCombined: true
+      createProvider([SubscribedToStartSignal, EmittingOnProvisionStart], {
+        isCombined: true,
       }),
       2
     );
     await testProvider(
-      createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], {
-        isCombined: true
+      createProvider([EmittingOnProvisionStart, SubscribedToStartSignal], {
+        isCombined: true,
       }),
       4
     );
     await testProvider(
-      createProvider([ SubscribedToStartSignal, EmittingOnProvisionStart ], {
-        isCombined: false
+      createProvider([SubscribedToStartSignal, EmittingOnProvisionStart], {
+        isCombined: false,
       }),
       6
     );
     await testProvider(
-      createProvider([ EmittingOnProvisionStart, SubscribedToStartSignal ], {
-        isCombined: false
+      createProvider([EmittingOnProvisionStart, SubscribedToStartSignal], {
+        isCombined: false,
       }),
       8
     );

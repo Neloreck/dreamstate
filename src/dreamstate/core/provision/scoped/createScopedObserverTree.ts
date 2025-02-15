@@ -30,7 +30,7 @@ export function createScopedObserverTree<T extends TAnyObject>(
         ManagerClass: sources[current],
         initialState: props.initialState,
         dependencies: sources,
-        scope
+        scope,
       },
       createScopedObserverTree(sources, props, scope, current + 1)
     );
