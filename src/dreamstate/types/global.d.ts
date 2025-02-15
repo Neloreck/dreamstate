@@ -15,4 +15,4 @@ declare module "shallow-equal" {
  * A global compiler flag indicating if the environment is development.
  * Code within 'if (IS_DEV)' will be removed in production bundles.
  */
-declare const IS_DEV: boolean;
+declare let IS_DEV: boolean;
