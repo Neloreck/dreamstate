@@ -238,3 +238,7 @@ export interface IScopeContext {
  * to context management functionalities within the Dreamstate data flow.
  */
 export const ScopeContext: Context<IScopeContext> = createContext(null as unknown as IScopeContext);
+
+if (IS_DEV) {
+  ScopeContext.displayName = "Dreamstate.ScopeContext";
+}

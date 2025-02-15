@@ -23,7 +23,7 @@ import { IProviderProps } from "@/dreamstate/types/provision";
 export function createCombinedProvider<T extends TAnyObject>(
   sources: Array<TAnyContextManagerConstructor>
 ): FunctionComponent<IProviderProps<T>> {
-  function Observer(props: IProviderProps<T>): ReactNode {
+  function Provider(props: IProviderProps<T>): ReactNode {
     const registry: Map<TAnyContextManagerConstructor, TAnyObject> = useSourceObserving(sources, props.initialState);
 
     return provideSubTreeRecursive(props.children, sources, registry);
@@ -33,10 +33,12 @@ export function createCombinedProvider<T extends TAnyObject>(
    * One observer for all provider sources and many context providers.
    */
   if (IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextManagerConstructor): string {
+    Provider.displayName = `Dreamstate.CombinedProvider[${sources.map(function(
+      it: TAnyContextManagerConstructor
+    ): string {
       return it.name;
     })}]`;
   }
 
-  return Observer as FunctionComponent<IProviderProps<T>>;
+  return Provider as FunctionComponent<IProviderProps<T>>;
 }

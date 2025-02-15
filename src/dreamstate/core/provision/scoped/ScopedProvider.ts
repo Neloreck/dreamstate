@@ -33,7 +33,7 @@ export interface IScopedObserverProps<T> {
  * @returns {ReactElement} A React element that provides the context data for the specified `ManagerClass`
  *   within the defined scope.
  */
-export function ScopedObserver<T extends TAnyObject>({
+export function ScopedProvider<T extends TAnyObject>({
   children,
   initialState,
   dependencies,
@@ -88,4 +88,11 @@ export function ScopedObserver<T extends TAnyObject>({
     },
     children
   );
+}
+
+/*
+ * Easier devtools usage for dev environment.
+ */
+if (IS_DEV) {
+  ScopedProvider.displayName = "Dreamstate.ScopedProvider";
 }

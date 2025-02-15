@@ -2,7 +2,7 @@
 
 exports[`createScopedObserverTree rendering should match snapshot 1`] = `
 <div>
-  <ScopedObserver
+  <Dreamstate.ScopedProvider
     ManagerClass={[Function]}
     dependencies={
       Array [
@@ -13,7 +13,7 @@ exports[`createScopedObserverTree rendering should match snapshot 1`] = `
     }
     scope={null}
   >
-    <ScopedObserver
+    <Dreamstate.ScopedProvider
       ManagerClass={[Function]}
       dependencies={
         Array [
@@ -24,7 +24,7 @@ exports[`createScopedObserverTree rendering should match snapshot 1`] = `
       }
       scope={null}
     >
-      <ScopedObserver
+      <Dreamstate.ScopedProvider
         ManagerClass={[Function]}
         dependencies={
           Array [
@@ -38,8 +38,8 @@ exports[`createScopedObserverTree rendering should match snapshot 1`] = `
         <div>
           bottom
         </div>
-      </ScopedObserver>
-    </ScopedObserver>
-  </ScopedObserver>
+      </Dreamstate.ScopedProvider>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProvider>
 </div>
 `;

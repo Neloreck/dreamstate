@@ -13,19 +13,19 @@ exports[`createProvider method should create correct component tree without chil
 `;
 
 exports[`createProvider method should create correct component tree without children 3`] = `
-<ScopeProvider>
-  <Observer>
+<Dreamstate.ScopeProvider>
+  <Dreamstate.CombinedProvider[TestManager]>
     <div>
       testChild
     </div>
-  </Observer>
-</ScopeProvider>
+  </Dreamstate.CombinedProvider[TestManager]>
+</Dreamstate.ScopeProvider>
 `;
 
 exports[`createProvider method should create correct component tree without children 4`] = `
-<ScopeProvider>
-  <Observer>
-    <ScopedObserver
+<Dreamstate.ScopeProvider>
+  <Dreamstate.ScopedProviders[TestManager]>
+    <Dreamstate.ScopedProvider
       ManagerClass={[Function]}
       dependencies={
         Array [
@@ -95,27 +95,27 @@ exports[`createProvider method should create correct component tree without chil
       <div>
         testChild
       </div>
-    </ScopedObserver>
-  </Observer>
-</ScopeProvider>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProviders[TestManager]>
+</Dreamstate.ScopeProvider>
 `;
 
 exports[`createProvider method should render correct component tree 1`] = `
-<ScopeProvider>
-  <Observer>
+<Dreamstate.ScopeProvider>
+  <Dreamstate.CombinedProvider[TestManager]>
     <ScopeConsumer>
       <div>
         Content
       </div>
     </ScopeConsumer>
-  </Observer>
-</ScopeProvider>
+  </Dreamstate.CombinedProvider[TestManager]>
+</Dreamstate.ScopeProvider>
 `;
 
 exports[`createProvider method should render correct component tree 2`] = `
-<ScopeProvider>
-  <Observer>
-    <ScopedObserver
+<Dreamstate.ScopeProvider>
+  <Dreamstate.ScopedProviders[TestManager]>
+    <Dreamstate.ScopedProvider
       ManagerClass={[Function]}
       dependencies={
         Array [
@@ -187,7 +187,7 @@ exports[`createProvider method should render correct component tree 2`] = `
           Content
         </div>
       </ScopeConsumer>
-    </ScopedObserver>
-  </Observer>
-</ScopeProvider>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProviders[TestManager]>
+</Dreamstate.ScopeProvider>
 `;

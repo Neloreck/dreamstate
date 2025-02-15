@@ -1,6 +1,6 @@
 import { createElement, ReactNode } from "react";
 
-import { ScopedObserver } from "@/dreamstate/core/provision/scoped/ScopedObserver";
+import { ScopedProvider } from "@/dreamstate/core/provision/scoped/ScopedProvider";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
@@ -23,7 +23,7 @@ import { IProviderProps } from "@/dreamstate/types/provision";
  * @returns {ReactNode} A React node representing the recursively created observer tree for the given
  *   context managers within the specified scope.
  */
-export function createScopedObserverTree<T extends TAnyObject>(
+export function createScopedProviderTree<T extends TAnyObject>(
   sources: Array<TAnyContextManagerConstructor>,
   props: IProviderProps<T>,
   scope: IScopeContext,
@@ -35,13 +35,13 @@ export function createScopedObserverTree<T extends TAnyObject>(
   return current >= sources.length
     ? props.children
     : createElement(
-      ScopedObserver,
+      ScopedProvider,
       {
         ManagerClass: sources[current],
         initialState: props.initialState,
         dependencies: sources,
         scope,
       },
-      createScopedObserverTree(sources, props, scope, current + 1)
+      createScopedProviderTree(sources, props, scope, current + 1)
     );
 }

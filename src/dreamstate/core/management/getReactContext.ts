@@ -28,9 +28,11 @@ export function getReactContext<S extends TAnyObject, M extends IContextManagerC
 
     /*
      * Later providers and consumers in tree will be displayed as
-     * 'DS.Class.Provider' or 'DS.Class.Consumer'.
+     * 'Dreamstate.Class.Provider' or 'Dreamstate.Class.Consumer'.
      */
-    reactContext.displayName = "DS." + ManagerClass.name;
+    if (IS_DEV) {
+      reactContext.displayName = "Dreamstate." + ManagerClass.name;
+    }
 
     CONTEXT_REACT_CONTEXTS_REGISTRY.set(ManagerClass, reactContext);
 

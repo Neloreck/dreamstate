@@ -2,7 +2,7 @@ import { FunctionComponent, ReactNode, useContext } from "react";
 
 import { log } from "@/macroses/log.macro";
 
-import { createScopedObserverTree } from "@/dreamstate/core/provision/scoped/createScopedObserverTree";
+import { createScopedProviderTree } from "@/dreamstate/core/provision/scoped/createScopedProviderTree";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyContextManagerConstructor, TAnyValue } from "@/dreamstate/types";
 import { IProviderProps } from "@/dreamstate/types/provision";
@@ -24,7 +24,7 @@ import { IProviderProps } from "@/dreamstate/types/provision";
 export function createScopedProvider<T extends IProviderProps<TAnyValue>>(
   sources: Array<TAnyContextManagerConstructor>
 ): FunctionComponent<IProviderProps<T>> {
-  function Observer(props: T): ReactNode {
+  function Provider(props: T): ReactNode {
     const scope: IScopeContext = useContext(ScopeContext);
 
     /*
@@ -36,17 +36,19 @@ export function createScopedProvider<T extends IProviderProps<TAnyValue>>(
       }
     }
 
-    return createScopedObserverTree(sources, props, scope);
+    return createScopedProviderTree(sources, props, scope);
   }
 
   /*
    * Single wrapper, many observers + providers in isolated scopes.
    */
   if (IS_DEV) {
-    Observer.displayName = `Dreamstate.Observer[${sources.map(function(it: TAnyContextManagerConstructor): string {
+    Provider.displayName = `Dreamstate.ScopedProviders[${sources.map(function(
+      it: TAnyContextManagerConstructor
+    ): string {
       return it.name;
     })}]`;
   }
 
-  return Observer as FunctionComponent<IProviderProps<T>>;
+  return Provider as FunctionComponent<IProviderProps<T>>;
 }

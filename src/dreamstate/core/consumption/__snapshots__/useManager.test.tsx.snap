@@ -1,61 +1,389 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 1`] = `
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory (combined) 1`] = `
 <span>
   {"example":1000,"text":"value"}
 </span>
 `;
 
-exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 2`] = `
-<ScopeProvider>
-  <Observer>
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory (combined) 2`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.CombinedProvider[SampleContextManager]>
     <SampleConsumer>
       <span>
         {"example":-1,"text":"value"}
       </span>
     </SampleConsumer>
-  </Observer>
-</ScopeProvider>
+  </Dreamstate.CombinedProvider[SampleContextManager]>
+</Dreamstate.ScopeProvider>
 `;
 
-exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory 3`] = `
-<ScopeProvider>
-  <Observer>
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory (combined) 3`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.CombinedProvider[SampleContextManager]>
     <SampleConsumer>
       <span>
         {"example":-1,"text":"anything"}
       </span>
     </SampleConsumer>
-  </Observer>
-</ScopeProvider>
+  </Dreamstate.CombinedProvider[SampleContextManager]>
+</Dreamstate.ScopeProvider>
 `;
 
-exports[`useManager subscription and rendering should properly handle memoized subscriptions 1`] = `
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory (scoped) 1`] = `
 <span>
   {"example":1000,"text":"value"}
 </span>
 `;
 
-exports[`useManager subscription and rendering should properly handle memoized subscriptions 2`] = `
-<ScopeProvider>
-  <Observer>
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory (scoped) 2`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.ScopedProviders[SampleContextManager]>
+    <Dreamstate.ScopedProvider
+      ManagerClass={[Function]}
+      dependencies={
+        Array [
+          [Function],
+        ]
+      }
+      scope={
+        Object {
+          "INTERNAL": Object {
+            "REGISTRY": Object {
+              "CONTEXT_INSTANCES_REGISTRY": Map {
+                [Function] => SampleContextManager {
+                  "IS_DISPOSED": false,
+                  "context": Object {
+                    "example": -1,
+                    "text": "value",
+                  },
+                  Symbol(SCOPE): [Circular],
+                  Symbol(SIGNALING_HANDLER): [Function],
+                  Symbol(SIGNAL_METADATA): Array [],
+                  Symbol(QUERY_METADATA): Array [],
+                },
+              },
+              "CONTEXT_OBSERVERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "CONTEXT_SERVICES_REFERENCES": Map {
+                [Function] => 1,
+              },
+              "CONTEXT_STATES_REGISTRY": Map {
+                [Function] => Object {
+                  "example": -1,
+                  "text": "value",
+                },
+              },
+              "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+                [Function] => Set {},
+              },
+              "QUERY_PROVIDERS_REGISTRY": Map {},
+              "SIGNAL_LISTENERS_REGISTRY": Set {
+                [Function],
+              },
+            },
+            "addServiceObserver": [Function],
+            "notifyObservers": [Function],
+            "registerService": [Function],
+            "removeServiceObserver": [Function],
+            "subscribeToManager": [Function],
+            "unRegisterService": [Function],
+            "unsubscribeFromManager": [Function],
+          },
+          "emitSignal": [Function],
+          "getContextOf": [Function],
+          "queryDataAsync": [Function],
+          "queryDataSync": [Function],
+          "registerQueryProvider": [Function],
+          "subscribeToSignals": [Function],
+          "unRegisterQueryProvider": [Function],
+          "unsubscribeFromSignals": [Function],
+        }
+      }
+    >
+      <SampleConsumer>
+        <span>
+          {"example":-1,"text":"value"}
+        </span>
+      </SampleConsumer>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProviders[SampleContextManager]>
+</Dreamstate.ScopeProvider>
+`;
+
+exports[`useManager subscription and rendering should properly fire provision events for functional subscribers and clean-up memory (scoped) 3`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.ScopedProviders[SampleContextManager]>
+    <Dreamstate.ScopedProvider
+      ManagerClass={[Function]}
+      dependencies={
+        Array [
+          [Function],
+        ]
+      }
+      scope={
+        Object {
+          "INTERNAL": Object {
+            "REGISTRY": Object {
+              "CONTEXT_INSTANCES_REGISTRY": Map {
+                [Function] => SampleContextManager {
+                  "IS_DISPOSED": false,
+                  "context": Object {
+                    "example": -1,
+                    "text": "anything",
+                  },
+                  Symbol(SCOPE): [Circular],
+                  Symbol(SIGNALING_HANDLER): [Function],
+                  Symbol(SIGNAL_METADATA): Array [],
+                  Symbol(QUERY_METADATA): Array [],
+                },
+              },
+              "CONTEXT_OBSERVERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "CONTEXT_SERVICES_REFERENCES": Map {
+                [Function] => 1,
+              },
+              "CONTEXT_STATES_REGISTRY": Map {
+                [Function] => Object {
+                  "example": -1,
+                  "text": "anything",
+                },
+              },
+              "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+                [Function] => Set {},
+              },
+              "QUERY_PROVIDERS_REGISTRY": Map {},
+              "SIGNAL_LISTENERS_REGISTRY": Set {
+                [Function],
+              },
+            },
+            "addServiceObserver": [Function],
+            "notifyObservers": [Function],
+            "registerService": [Function],
+            "removeServiceObserver": [Function],
+            "subscribeToManager": [Function],
+            "unRegisterService": [Function],
+            "unsubscribeFromManager": [Function],
+          },
+          "emitSignal": [Function],
+          "getContextOf": [Function],
+          "queryDataAsync": [Function],
+          "queryDataSync": [Function],
+          "registerQueryProvider": [Function],
+          "subscribeToSignals": [Function],
+          "unRegisterQueryProvider": [Function],
+          "unsubscribeFromSignals": [Function],
+        }
+      }
+    >
+      <SampleConsumer>
+        <span>
+          {"example":-1,"text":"anything"}
+        </span>
+      </SampleConsumer>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProviders[SampleContextManager]>
+</Dreamstate.ScopeProvider>
+`;
+
+exports[`useManager subscription and rendering should properly handle memoized subscriptions (combined) 1`] = `
+<span>
+  {"example":1000,"text":"value"}
+</span>
+`;
+
+exports[`useManager subscription and rendering should properly handle memoized subscriptions (combined) 2`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.CombinedProvider[SampleContextManager]>
     <SampleConsumer>
       <span>
         {"example":1000,"text":"value"}
       </span>
     </SampleConsumer>
-  </Observer>
-</ScopeProvider>
+  </Dreamstate.CombinedProvider[SampleContextManager]>
+</Dreamstate.ScopeProvider>
 `;
 
-exports[`useManager subscription and rendering should properly handle memoized subscriptions 3`] = `
-<ScopeProvider>
-  <Observer>
+exports[`useManager subscription and rendering should properly handle memoized subscriptions (combined) 3`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.CombinedProvider[SampleContextManager]>
     <SampleConsumer>
       <span>
         {"example":-1,"text":"anything"}
       </span>
     </SampleConsumer>
-  </Observer>
-</ScopeProvider>
+  </Dreamstate.CombinedProvider[SampleContextManager]>
+</Dreamstate.ScopeProvider>
+`;
+
+exports[`useManager subscription and rendering should properly handle memoized subscriptions (scoped) 1`] = `
+<span>
+  {"example":1000,"text":"value"}
+</span>
+`;
+
+exports[`useManager subscription and rendering should properly handle memoized subscriptions (scoped) 2`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.ScopedProviders[SampleContextManager]>
+    <Dreamstate.ScopedProvider
+      ManagerClass={[Function]}
+      dependencies={
+        Array [
+          [Function],
+        ]
+      }
+      scope={
+        Object {
+          "INTERNAL": Object {
+            "REGISTRY": Object {
+              "CONTEXT_INSTANCES_REGISTRY": Map {
+                [Function] => SampleContextManager {
+                  "IS_DISPOSED": false,
+                  "context": Object {
+                    "example": -1,
+                    "text": "value",
+                  },
+                  Symbol(SCOPE): [Circular],
+                  Symbol(SIGNALING_HANDLER): [Function],
+                  Symbol(SIGNAL_METADATA): Array [],
+                  Symbol(QUERY_METADATA): Array [],
+                },
+              },
+              "CONTEXT_OBSERVERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "CONTEXT_SERVICES_REFERENCES": Map {
+                [Function] => 1,
+              },
+              "CONTEXT_STATES_REGISTRY": Map {
+                [Function] => Object {
+                  "example": -1,
+                  "text": "value",
+                },
+              },
+              "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "QUERY_PROVIDERS_REGISTRY": Map {},
+              "SIGNAL_LISTENERS_REGISTRY": Set {
+                [Function],
+              },
+            },
+            "addServiceObserver": [Function],
+            "notifyObservers": [Function],
+            "registerService": [Function],
+            "removeServiceObserver": [Function],
+            "subscribeToManager": [Function],
+            "unRegisterService": [Function],
+            "unsubscribeFromManager": [Function],
+          },
+          "emitSignal": [Function],
+          "getContextOf": [Function],
+          "queryDataAsync": [Function],
+          "queryDataSync": [Function],
+          "registerQueryProvider": [Function],
+          "subscribeToSignals": [Function],
+          "unRegisterQueryProvider": [Function],
+          "unsubscribeFromSignals": [Function],
+        }
+      }
+    >
+      <SampleConsumer>
+        <span>
+          {"example":1000,"text":"value"}
+        </span>
+      </SampleConsumer>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProviders[SampleContextManager]>
+</Dreamstate.ScopeProvider>
+`;
+
+exports[`useManager subscription and rendering should properly handle memoized subscriptions (scoped) 3`] = `
+<Dreamstate.ScopeProvider>
+  <Dreamstate.ScopedProviders[SampleContextManager]>
+    <Dreamstate.ScopedProvider
+      ManagerClass={[Function]}
+      dependencies={
+        Array [
+          [Function],
+        ]
+      }
+      scope={
+        Object {
+          "INTERNAL": Object {
+            "REGISTRY": Object {
+              "CONTEXT_INSTANCES_REGISTRY": Map {
+                [Function] => SampleContextManager {
+                  "IS_DISPOSED": false,
+                  "context": Object {
+                    "example": -1,
+                    "text": "anything",
+                  },
+                  Symbol(SCOPE): [Circular],
+                  Symbol(SIGNALING_HANDLER): [Function],
+                  Symbol(SIGNAL_METADATA): Array [],
+                  Symbol(QUERY_METADATA): Array [],
+                },
+              },
+              "CONTEXT_OBSERVERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "CONTEXT_SERVICES_REFERENCES": Map {
+                [Function] => 1,
+              },
+              "CONTEXT_STATES_REGISTRY": Map {
+                [Function] => Object {
+                  "example": -1,
+                  "text": "anything",
+                },
+              },
+              "CONTEXT_SUBSCRIBERS_REGISTRY": Map {
+                [Function] => Set {
+                  [Function],
+                },
+              },
+              "QUERY_PROVIDERS_REGISTRY": Map {},
+              "SIGNAL_LISTENERS_REGISTRY": Set {
+                [Function],
+              },
+            },
+            "addServiceObserver": [Function],
+            "notifyObservers": [Function],
+            "registerService": [Function],
+            "removeServiceObserver": [Function],
+            "subscribeToManager": [Function],
+            "unRegisterService": [Function],
+            "unsubscribeFromManager": [Function],
+          },
+          "emitSignal": [Function],
+          "getContextOf": [Function],
+          "queryDataAsync": [Function],
+          "queryDataSync": [Function],
+          "registerQueryProvider": [Function],
+          "subscribeToSignals": [Function],
+          "unRegisterQueryProvider": [Function],
+          "unsubscribeFromSignals": [Function],
+        }
+      }
+    >
+      <SampleConsumer>
+        <span>
+          {"example":-1,"text":"anything"}
+        </span>
+      </SampleConsumer>
+    </Dreamstate.ScopedProvider>
+  </Dreamstate.ScopedProviders[SampleContextManager]>
+</Dreamstate.ScopeProvider>
 `;

@@ -13,6 +13,10 @@ describe("createProvider method", () => {
   const CombinedProvider = createProvider([TestManager], { isCombined: true });
   const ScopedProvider = createProvider([TestManager], { isCombined: false });
 
+  beforeEach(() => {
+    IS_DEV = true;
+  });
+
   it("should render correct component tree", async () => {
     let currentScope: IScopeContext = null as TUninitializedValue;
 
@@ -97,7 +101,16 @@ describe("createProvider method", () => {
     expect(scopedTree).toMatchSnapshot();
   });
 
+  it("should have assigned provider names for dev environment", () => {
+    IS_DEV = true;
+
+    expect(createScopedProvider([TestManager]).displayName).toBe("Dreamstate.ScopedProviders[TestManager]");
+    expect(createCombinedProvider([TestManager]).displayName).toBe("Dreamstate.CombinedProvider[TestManager]");
+  });
+
   it("should have default provider names for production environment", () => {
+    IS_DEV = false;
+
     expect(createScopedProvider([TestManager]).displayName).toBeUndefined();
     expect(createCombinedProvider([TestManager]).displayName).toBeUndefined();
   });
