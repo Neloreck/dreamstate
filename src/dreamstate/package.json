@@ -1,6 +1,6 @@
 {
   "name": "dreamstate",
-  "version": "4.5.0",
+  "version": "4.5.1",
   "description": "Store management library based on react context and observers",
   "sideEffects": false,
   "author": "Syrotenko Igor",
@@ -17,17 +17,19 @@
     "url": "https://github.com/neloreck/dreamstate/issues"
   },
   "keywords": [
-    "action",
     "class-based",
+    "context",
     "declarative",
-    "decorator",
-    "metadata",
+    "management",
+    "manager",
+    "mobx",
     "react",
-    "reducer",
+    "redux",
     "redux",
     "state",
-    "typescript",
-    "utility"
+    "state",
+    "store",
+    "typescript"
   ],
   "dependencies": {
     "shallow-equal": ">=1.0.0",

@@ -4,16 +4,6 @@
   "description": "Store management library based on context and observers",
   "private": true,
   "author": "Syrotenko Igor",
-  "keywords": [
-    "react",
-    "state",
-    "manager",
-    "management",
-    "context",
-    "redux",
-    "mobx",
-    "store"
-  ],
   "license": "MIT",
   "scripts": {
     "purge": "npx rimraf ./node_modules */node_modules */**/node_modules",
