@@ -1,4 +1,4 @@
-import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
+import { createScope } from "@/dreamstate/core/scoping/createScope";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 
@@ -17,7 +17,7 @@ import { IContextManagerConstructor, TAnyObject } from "@/dreamstate/types";
 export function mockManager<T extends TAnyObject, S extends TAnyObject, M extends IContextManagerConstructor<T, S>>(
   ManagerClass: M,
   initialState?: S | null,
-  scope: IScopeContext = initializeScopeContext()
+  scope: IScopeContext = createScope()
 ): InstanceType<M> {
   scope.INTERNAL.registerManager(ManagerClass, initialState);
 

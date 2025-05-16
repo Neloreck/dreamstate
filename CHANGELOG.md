@@ -1,3 +1,10 @@
+## 4.6.0 (2/15/2025)
+
+### Changed
+
+- Add `getInstanceOf` scope method
+- Add `createScope` method export
+
 ## 4.5.0 (2/15/2025)
 
 ### Changed

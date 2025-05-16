@@ -48,7 +48,7 @@ import { isFunction } from "@/dreamstate/utils/typechecking";
  * @param {IRegistry} [registry] - Optional registry object to initialize.
  * @returns {IScopeContext} Mutable scope with a set of methods and registry stores for the React VDOM tree.
  */
-export function initializeScopeContext(registry: IRegistry = createRegistry()): IScopeContext {
+export function createScope(registry: IRegistry = createRegistry()): IScopeContext {
   const {
     SIGNAL_LISTENERS_REGISTRY,
     CONTEXT_STATES_REGISTRY,

@@ -1,10 +1,10 @@
 import { ContextManager, DreamstateError } from "@/dreamstate";
-import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
+import { createScope } from "@/dreamstate/core/scoping/createScope";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { TAnyObject, TAnyValue } from "@/dreamstate/types";
 import { TestManager } from "@/fixtures";
 
-describe("InitializeScopeContext method", () => {
+describe("createScope method", () => {
   it("should properly add contextManagers subscribers", () => {
     const {
       INTERNAL: {
@@ -14,7 +14,7 @@ describe("InitializeScopeContext method", () => {
         unRegisterManager,
         REGISTRY: { CONTEXT_SUBSCRIBERS_REGISTRY },
       },
-    }: IScopeContext = initializeScopeContext();
+    }: IScopeContext = createScope();
 
     const exampleSubscriber = () => {};
 
@@ -42,7 +42,7 @@ describe("InitializeScopeContext method", () => {
   it("should properly subscribe and unsubscribe only from contextManagers", () => {
     const {
       INTERNAL: { registerManager, subscribeToManager, unsubscribeFromManager, unRegisterManager },
-    }: IScopeContext = initializeScopeContext();
+    }: IScopeContext = createScope();
 
     class ExampleClass {}
 
@@ -68,7 +68,7 @@ describe("InitializeScopeContext method", () => {
       INTERNAL: { registerManager, unRegisterManager, REGISTRY },
       getContextOf,
       getInstanceOf,
-    }: IScopeContext = initializeScopeContext();
+    }: IScopeContext = createScope();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {
       public readonly context: TAnyObject = {
@@ -101,7 +101,7 @@ describe("InitializeScopeContext method", () => {
   });
 
   it("should properly get null for not registered managers", () => {
-    const { getContextOf, getInstanceOf }: IScopeContext = initializeScopeContext();
+    const { getContextOf, getInstanceOf }: IScopeContext = createScope();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
@@ -110,7 +110,7 @@ describe("InitializeScopeContext method", () => {
   });
 
   it("should subscribe only with functional params for handling", () => {
-    const { subscribeToSignals }: IScopeContext = initializeScopeContext();
+    const { subscribeToSignals }: IScopeContext = createScope();
 
     expect(() => subscribeToSignals(1 as TAnyValue)).toThrow(DreamstateError);
     expect(() => subscribeToSignals(0 as TAnyValue)).toThrow(DreamstateError);
@@ -126,7 +126,7 @@ describe("InitializeScopeContext method", () => {
   it("should properly return register status", () => {
     const {
       INTERNAL: { registerManager, unRegisterManager },
-    }: IScopeContext = initializeScopeContext();
+    }: IScopeContext = createScope();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
@@ -144,7 +144,7 @@ describe("InitializeScopeContext method", () => {
       INTERNAL: { registerManager },
       getContextOf,
       getInstanceOf,
-    }: IScopeContext = initializeScopeContext();
+    }: IScopeContext = createScope();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 

@@ -33,5 +33,6 @@ export { createComputed } from "@/dreamstate/utils/createComputed";
 export { createLoadable } from "@/dreamstate/utils/createLoadable";
 export { createNested } from "@/dreamstate/utils/createNested";
 export { createProvider } from "@/dreamstate/core/provision/createProvider";
+export { createScope } from "@/dreamstate/core/scoping/createScope";
 export { useManager } from "@/dreamstate/core/consumption/useManager";
 export { useScope } from "@/dreamstate/core/scoping/useScope";

@@ -1,6 +1,6 @@
 import { createElement, Dispatch, ProviderProps, ReactElement, ReactNode, SetStateAction, useState } from "react";
 
-import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
+import { createScope } from "@/dreamstate/core/scoping/createScope";
 import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 
 /**
@@ -10,7 +10,7 @@ import { IScopeContext, ScopeContext } from "@/dreamstate/core/scoping/ScopeCont
  * @returns {ProviderProps<IScopeContext>} The initialized props object for the scope provider.
  */
 function scopeStateInitializer(): ProviderProps<IScopeContext> {
-  return { value: initializeScopeContext() };
+  return { value: createScope() };
 }
 
 export interface IScopeProviderProps {

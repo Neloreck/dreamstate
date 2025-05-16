@@ -1,4 +1,4 @@
-import { initializeScopeContext } from "@/dreamstate/core/scoping/initializeScopeContext";
+import { createScope } from "@/dreamstate/core/scoping/createScope";
 import { createRegistry, IRegistry } from "@/dreamstate/core/scoping/registry/createRegistry";
 import { IScopeContext } from "@/dreamstate/core/scoping/ScopeContext";
 import { IS_MOCKED } from "@/dreamstate/test-utils/internals";
@@ -27,7 +27,7 @@ export interface IMockScopeConfig {
 export function mockScope(mockConfig: IMockScopeConfig = {}, registry: IRegistry = createRegistry()): IScopeContext {
   const { isLifecycleDisabled = true, applyInitialContexts = [] } = mockConfig;
   const appliedContexts: Map<TAnyContextManagerConstructor, TAnyObject> = new Map(applyInitialContexts);
-  const scope: IScopeContext = initializeScopeContext(registry);
+  const scope: IScopeContext = createScope(registry);
 
   /*
    * Mark scope as mocked.
