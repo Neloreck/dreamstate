@@ -247,6 +247,9 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
         return null as unknown as T;
       }
     },
+    getInstanceOf<T extends IContextManagerConstructor>(manager: T): InstanceType<T> {
+      return (CONTEXT_INSTANCES_REGISTRY.get(manager) || null) as InstanceType<T>;
+    },
     emitSignal<D = undefined>(
       base: IBaseSignal<D>,
       emitter: TAnyContextManagerConstructor | null = null

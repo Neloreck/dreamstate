@@ -155,6 +155,15 @@ export interface IScopeContext {
   getContextOf<T extends TAnyObject, D extends IContextManagerConstructor<T>>(manager: D): T;
 
   /**
+   * Retrieves the current context manager instance if it was provisioned.
+   *
+   * @template T - Type of the context manager class.
+   * @param manager - The manager class whose instance is to be retrieved.
+   * @returns The current context manager instance for the specified manager class.
+   */
+  getInstanceOf<T extends IContextManagerConstructor>(manager: T): InstanceType<T>;
+
+  /**
    * Emits a signal for all subscribers in the current Dreamstate scope.
    *
    * @template D - Type of the signal data.

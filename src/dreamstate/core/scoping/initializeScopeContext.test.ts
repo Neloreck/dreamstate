@@ -67,6 +67,7 @@ describe("InitializeScopeContext method", () => {
     const {
       INTERNAL: { registerService, unRegisterService, REGISTRY },
       getContextOf,
+      getInstanceOf,
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {
@@ -79,7 +80,11 @@ describe("InitializeScopeContext method", () => {
 
     registerService(ExampleManagerClass);
 
+    const manager: ExampleManagerClass = getInstanceOf(ExampleManagerClass);
     const context: TAnyObject = getContextOf(ExampleManagerClass);
+
+    expect(manager).toBeDefined();
+    expect(manager).toBeInstanceOf(ExampleManagerClass);
 
     expect(context).toBeDefined();
     expect(context).not.toBeNull();
@@ -90,14 +95,17 @@ describe("InitializeScopeContext method", () => {
     expect(context.b).toBe(2);
     expect(context.c).toBe(3);
 
+    expect(manager.context).toEqual(context);
+
     unRegisterService(ExampleManagerClass);
   });
 
   it("should properly get null for not registered managers", () => {
-    const { getContextOf }: IScopeContext = initializeScopeContext();
+    const { getContextOf, getInstanceOf }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
+    expect(getInstanceOf(ExampleManagerClass)).toBeNull();
     expect(getContextOf(ExampleManagerClass)).toBeNull();
   });
 
@@ -135,11 +143,13 @@ describe("InitializeScopeContext method", () => {
     const {
       INTERNAL: { registerService },
       getContextOf,
+      getInstanceOf,
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
     registerService(ExampleManagerClass, {}, { one: 1, two: 2 });
+    expect(getInstanceOf(ExampleManagerClass).context).toStrictEqual({ one: 1, two: 2 });
     expect(getContextOf(ExampleManagerClass)).toStrictEqual({ one: 1, two: 2 });
 
     registerService(TestManager, {}, { fourth: 4, fifth: "fifth" });
