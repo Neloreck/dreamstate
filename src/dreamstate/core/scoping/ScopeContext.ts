@@ -44,7 +44,7 @@ export interface IScopeContextInternals {
    *   manager and mixed with the context.
    * @returns {boolean} `true` if the service was successfully registered, `false` otherwise.
    */
-  registerService<T extends TAnyObject, C extends TAnyObject>(
+  registerManager<T extends TAnyObject, C extends TAnyObject>(
     ManagerClass: TAnyContextManagerConstructor,
     initialState?: T | null,
     initialContext?: Partial<C>
@@ -57,7 +57,7 @@ export interface IScopeContextInternals {
    * @param {TAnyContextManagerConstructor} ManagerClass - The manager class that should be unregistered from the scope.
    * @returns {boolean} `true` if the service was successfully unregistered, `false` otherwise.
    */
-  unRegisterService(ManagerClass: TAnyContextManagerConstructor): boolean;
+  unRegisterManager(ManagerClass: TAnyContextManagerConstructor): boolean;
 
   /**
    * Adds an observer to a specified service.

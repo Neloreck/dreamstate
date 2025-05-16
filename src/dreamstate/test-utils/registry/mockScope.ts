@@ -60,12 +60,12 @@ export function mockScope(mockConfig: IMockScopeConfig = {}, registry: IRegistry
    * Mock post-register contexts.
    */
   if (appliedContexts.size) {
-    const registerService = scope.INTERNAL.registerService;
+    const registerService = scope.INTERNAL.registerManager;
 
     /*
      * On register apply provided context from map parameter.
      */
-    scope.INTERNAL.registerService = function <
+    scope.INTERNAL.registerManager = function <
       T extends TAnyObject,
       C extends TAnyObject,
       M extends IContextManagerConstructor<C, T>,

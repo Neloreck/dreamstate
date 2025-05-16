@@ -33,7 +33,7 @@ describe("mockScope test util", () => {
       applyInitialContexts: [mockManagerInitialContext(TestManager, { first: "some-secret-param" })],
     });
 
-    scope.INTERNAL.registerService(TestManager, {});
+    scope.INTERNAL.registerManager(TestManager, {});
 
     expect(scope.INTERNAL.REGISTRY.CONTEXT_STATES_REGISTRY.get(TestManager)).toStrictEqual({
       first: "some-secret-param",

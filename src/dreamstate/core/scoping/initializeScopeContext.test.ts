@@ -8,17 +8,17 @@ describe("InitializeScopeContext method", () => {
   it("should properly add contextManagers subscribers", () => {
     const {
       INTERNAL: {
-        registerService,
+        registerManager,
         subscribeToManager,
         unsubscribeFromManager,
-        unRegisterService,
+        unRegisterManager,
         REGISTRY: { CONTEXT_SUBSCRIBERS_REGISTRY },
       },
     }: IScopeContext = initializeScopeContext();
 
     const exampleSubscriber = () => {};
 
-    registerService(TestManager);
+    registerManager(TestManager);
 
     expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
@@ -33,7 +33,7 @@ describe("InitializeScopeContext method", () => {
     expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
 
-    unRegisterService(TestManager);
+    unRegisterManager(TestManager);
 
     expect(typeof CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)).toBe("object");
     expect(CONTEXT_SUBSCRIBERS_REGISTRY.get(TestManager)!.size).toBe(0);
@@ -41,7 +41,7 @@ describe("InitializeScopeContext method", () => {
 
   it("should properly subscribe and unsubscribe only from contextManagers", () => {
     const {
-      INTERNAL: { registerService, subscribeToManager, unsubscribeFromManager, unRegisterService },
+      INTERNAL: { registerManager, subscribeToManager, unsubscribeFromManager, unRegisterManager },
     }: IScopeContext = initializeScopeContext();
 
     class ExampleClass {}
@@ -55,17 +55,17 @@ describe("InitializeScopeContext method", () => {
     expect(() => subscribeToManager(ExampleClass as TAnyValue, exampleSubscriber)).toThrow(DreamstateError);
     expect(() => unsubscribeFromManager(ExampleClass as TAnyValue, exampleSubscriber)).toThrow(DreamstateError);
 
-    registerService(ExampleManagerClass);
+    registerManager(ExampleManagerClass);
 
     expect(() => subscribeToManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
     expect(() => unsubscribeFromManager(ExampleManagerClass, exampleSubscriber)).not.toThrow();
 
-    unRegisterService(ExampleManagerClass);
+    unRegisterManager(ExampleManagerClass);
   });
 
   it("should properly get current state of managers", () => {
     const {
-      INTERNAL: { registerService, unRegisterService, REGISTRY },
+      INTERNAL: { registerManager, unRegisterManager, REGISTRY },
       getContextOf,
       getInstanceOf,
     }: IScopeContext = initializeScopeContext();
@@ -78,7 +78,7 @@ describe("InitializeScopeContext method", () => {
       };
     }
 
-    registerService(ExampleManagerClass);
+    registerManager(ExampleManagerClass);
 
     const manager: ExampleManagerClass = getInstanceOf(ExampleManagerClass);
     const context: TAnyObject = getContextOf(ExampleManagerClass);
@@ -97,7 +97,7 @@ describe("InitializeScopeContext method", () => {
 
     expect(manager.context).toEqual(context);
 
-    unRegisterService(ExampleManagerClass);
+    unRegisterManager(ExampleManagerClass);
   });
 
   it("should properly get null for not registered managers", () => {
@@ -125,34 +125,34 @@ describe("InitializeScopeContext method", () => {
 
   it("should properly return register status", () => {
     const {
-      INTERNAL: { registerService, unRegisterService },
+      INTERNAL: { registerManager, unRegisterManager },
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
-    expect(registerService(ExampleManagerClass)).toBeTruthy();
-    expect(registerService(ExampleManagerClass)).toBeFalsy();
-    expect(registerService(ExampleManagerClass)).toBeFalsy();
+    expect(registerManager(ExampleManagerClass)).toBeTruthy();
+    expect(registerManager(ExampleManagerClass)).toBeFalsy();
+    expect(registerManager(ExampleManagerClass)).toBeFalsy();
 
-    expect(unRegisterService(ExampleManagerClass)).toBeTruthy();
-    expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
-    expect(unRegisterService(ExampleManagerClass)).toBeFalsy();
+    expect(unRegisterManager(ExampleManagerClass)).toBeTruthy();
+    expect(unRegisterManager(ExampleManagerClass)).toBeFalsy();
+    expect(unRegisterManager(ExampleManagerClass)).toBeFalsy();
   });
 
   it("should override context on register if required", () => {
     const {
-      INTERNAL: { registerService },
+      INTERNAL: { registerManager },
       getContextOf,
       getInstanceOf,
     }: IScopeContext = initializeScopeContext();
 
     class ExampleManagerClass extends ContextManager<TAnyObject> {}
 
-    registerService(ExampleManagerClass, {}, { one: 1, two: 2 });
+    registerManager(ExampleManagerClass, {}, { one: 1, two: 2 });
     expect(getInstanceOf(ExampleManagerClass).context).toStrictEqual({ one: 1, two: 2 });
     expect(getContextOf(ExampleManagerClass)).toStrictEqual({ one: 1, two: 2 });
 
-    registerService(TestManager, {}, { fourth: 4, fifth: "fifth" });
+    registerManager(TestManager, {}, { fourth: 4, fifth: "fifth" });
     expect(getContextOf(TestManager)).toStrictEqual({
       first: "first",
       second: 2,

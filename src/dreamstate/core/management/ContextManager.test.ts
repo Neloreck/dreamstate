@@ -98,8 +98,8 @@ describe("ContextManager class", () => {
   it("should properly manage extended managers", () => {
     const scope: IScopeContext = mockScope();
 
-    scope.INTERNAL.registerService(TestManager);
-    scope.INTERNAL.registerService(ExtendingManager);
+    scope.INTERNAL.registerManager(TestManager);
+    scope.INTERNAL.registerManager(ExtendingManager);
 
     expect(getCurrent(TestManager, scope)).not.toBeNull();
     expect(getCurrent(ExtendingManager, scope)).not.toBeNull();
@@ -109,8 +109,8 @@ describe("ContextManager class", () => {
     expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(TestManager)).toBeTruthy();
     expect(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.has(ExtendingManager)).toBeTruthy();
 
-    scope.INTERNAL.unRegisterService(TestManager);
-    scope.INTERNAL.unRegisterService(ExtendingManager);
+    scope.INTERNAL.unRegisterManager(TestManager);
+    scope.INTERNAL.unRegisterManager(ExtendingManager);
 
     expect(getCurrent(TestManager, scope)).toBeNull();
     expect(getCurrent(ExtendingManager, scope)).toBeNull();

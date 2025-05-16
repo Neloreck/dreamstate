@@ -22,7 +22,7 @@ export function mockManagers<T extends TAnyObject, S extends TAnyObject, M exten
   scope: IScopeContext = mockScope()
 ): TManagerInstanceMap {
   for (let it = 0; it < managerClasses.length; it ++) {
-    scope.INTERNAL.registerService(managerClasses[it], initialState);
+    scope.INTERNAL.registerManager(managerClasses[it], initialState);
   }
 
   return new Map(scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY);

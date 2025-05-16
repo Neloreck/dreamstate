@@ -62,7 +62,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
   const scope: IScopeContext = {
     INTERNAL: {
       REGISTRY: registry,
-      registerService<T, C extends TAnyObject>(
+      registerManager<T, C extends TAnyObject>(
         ManagerClass: TAnyContextManagerConstructor,
         initialState: T,
         initialContext?: C
@@ -111,7 +111,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
           return false;
         }
       },
-      unRegisterService(ManagerClass: TAnyContextManagerConstructor): boolean {
+      unRegisterManager(ManagerClass: TAnyContextManagerConstructor): boolean {
         if (CONTEXT_INSTANCES_REGISTRY.has(ManagerClass)) {
           const instance: ContextManager<TAnyValue> = CONTEXT_INSTANCES_REGISTRY.get(
             ManagerClass
@@ -177,7 +177,7 @@ export function initializeScopeContext(registry: IRegistry = createRegistry()): 
 
         if (referencesCount === 0) {
           CONTEXT_INSTANCES_REGISTRY.get(ManagerClass)!["onProvisionEnded"]();
-          this.unRegisterService(ManagerClass);
+          this.unRegisterManager(ManagerClass);
         }
       },
       notifyObservers<T extends TAnyObject>(manager: ContextManager<T>): void {

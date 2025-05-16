@@ -45,7 +45,7 @@ export function useSourceObserving(
    */
   useMemo(function(): void {
     for (let it = 0; it < sources.length; it ++) {
-      scope.INTERNAL.registerService(sources[it], initialState);
+      scope.INTERNAL.registerManager(sources[it], initialState);
     }
   }, sources);
 
@@ -63,7 +63,7 @@ export function useSourceObserving(
       /*
        * If something is registered, memoize it and force update to sync useEffect and actual provision tree.
        */
-      const registered: boolean = scope.INTERNAL.registerService(sources[it], initialState);
+      const registered: boolean = scope.INTERNAL.registerManager(sources[it], initialState);
 
       scope.INTERNAL.addServiceObserver(sources[it], forceUpdate);
 

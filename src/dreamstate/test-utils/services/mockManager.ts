@@ -19,7 +19,7 @@ export function mockManager<T extends TAnyObject, S extends TAnyObject, M extend
   initialState?: S | null,
   scope: IScopeContext = initializeScopeContext()
 ): InstanceType<M> {
-  scope.INTERNAL.registerService(ManagerClass, initialState);
+  scope.INTERNAL.registerManager(ManagerClass, initialState);
 
   return scope.INTERNAL.REGISTRY.CONTEXT_INSTANCES_REGISTRY.get(ManagerClass) as InstanceType<M>;
 }

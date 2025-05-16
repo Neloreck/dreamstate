@@ -50,7 +50,7 @@ export function ScopedProvider<T extends TAnyObject>({
    * Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useMemo(function(): void {
-    scope.INTERNAL.registerService(ManagerClass, initialState);
+    scope.INTERNAL.registerManager(ManagerClass, initialState);
   }, dependencies);
 
   /*
@@ -60,7 +60,7 @@ export function ScopedProvider<T extends TAnyObject>({
    * ! Dependencies array is mostly used for HMR updates to force reloading on class reference changes.
    */
   useEffect(function(): TCallable {
-    const isRegistered: boolean = scope.INTERNAL.registerService(ManagerClass, initialState);
+    const isRegistered: boolean = scope.INTERNAL.registerManager(ManagerClass, initialState);
 
     scope.INTERNAL.addServiceObserver(ManagerClass, forceUpdate);
 
