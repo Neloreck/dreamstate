@@ -21,6 +21,7 @@ Library helps to create small stores with component-like lifecycle and scoped li
 
 ## Documentation
 
+- [usage](https://neloreck.github.io/dreamstate-book/usage.html)
 - [book](https://neloreck.github.io/dreamstate-book/)
 - [code examples](https://github.com/Neloreck/dreamstate/tree/master/examples)
 
