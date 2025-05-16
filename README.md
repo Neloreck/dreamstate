@@ -18,7 +18,6 @@ Library helps to create small stores with component-like lifecycle and scoped li
 - [x] Fast
 - [x] Simple
 - [x] Testable
-- [x] Tree shakable
 
 ## Documentation
 
