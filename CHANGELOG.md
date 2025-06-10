@@ -1,3 +1,9 @@
+## 4.6.1 (6/10/2025)
+
+### Changed
+
+- Updated constructor type
+
 ## 4.6.0 (5/16/2025)
 
 ### Changed
